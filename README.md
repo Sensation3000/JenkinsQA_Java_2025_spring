@@ -1,1 +1,1 @@
-# Owner-avatar-JenkinsQA_Java_2025_string
+# JenkinsQA_Java_2025_spring
