@@ -1,0 +1,1 @@
+# Owner-avatar-JenkinsQA_Java_2025_string
