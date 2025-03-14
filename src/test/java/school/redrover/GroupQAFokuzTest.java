@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -49,6 +50,29 @@ public class GroupQAFokuzTest {
         String currentUrl = driver.getCurrentUrl();
         assert currentUrl != null;
         Assert.assertTrue(currentUrl.contains("submitted"), "Форма не была отправлена");
+    }
+
+    @Test
+    public void btnClick() {
+        driver.get("https://demoqa.com/buttons");
+
+        Actions actions = new Actions(driver);
+
+        WebElement DoubleClickMe = driver.findElement(By.xpath("//*[@id='doubleClickBtn']"));
+        actions.doubleClick(DoubleClickMe).perform();
+
+        WebElement rightClickMe = driver.findElement(By.xpath("//*[@id='rightClickBtn']"));
+        actions.contextClick(rightClickMe).perform();
+
+        WebElement clickMe = driver.findElement(By.xpath("//*[@id='button1']"));
+        actions.click(clickMe).perform();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='doubleClickMessage']"))
+                .isDisplayed(), "Кнопка была не нажата");
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='rightClickMessage']"))
+                .isDisplayed(), "Кнопка была не правым кликом");
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='button1Clicked']"))
+                .isDisplayed(), "Кнопка была не нажата");
     }
 
     @AfterMethod
