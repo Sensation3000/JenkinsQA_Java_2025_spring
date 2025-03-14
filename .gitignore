@@ -40,8 +40,4 @@ build/
 .DS_Store
 
 ### project ###
-local.properties
-/.allure/
-/log/
-
-/screenshots
+.properties
