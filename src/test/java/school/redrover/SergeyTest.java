@@ -25,7 +25,7 @@ public class SergeyTest {
         textBox.sendKeys("Selenium");
         submitButton.click();
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         WebElement message = driver.findElement(By.id("message"));
         String value = message.getText();
