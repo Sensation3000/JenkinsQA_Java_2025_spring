@@ -12,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 public class SergeyTest {
 
     @Test
-    public void testSum() throws InterruptedException {
+    public void testExample() {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
@@ -25,7 +25,11 @@ public class SergeyTest {
         textBox.sendKeys("Selenium");
         submitButton.click();
 
-        Thread.sleep(1000);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         WebElement message = driver.findElement(By.id("message"));
         String value = message.getText();
