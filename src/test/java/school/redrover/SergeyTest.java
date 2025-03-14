@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class MainTest {
+public class SergeyTest {
 
     @Test
     public void testSum() throws InterruptedException {
