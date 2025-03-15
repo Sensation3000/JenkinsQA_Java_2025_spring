@@ -153,16 +153,16 @@ public class GroupCodeCraftTest {
     public void testToolsQATestBox() throws InterruptedException {
 
         Actions action = new Actions(driver);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://demoqa.com");
 
         driver.findElement
-                (By.xpath("//div[1][@class='card mt-4 top-card']"))
+                        (By.xpath("//div[1][@class='card mt-4 top-card']"))
                 .click();
 
         driver.findElement
-                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
+                        (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
                 .click();
 
         String fullName = "Poopa Loopa";
@@ -182,16 +182,26 @@ public class GroupCodeCraftTest {
         WebElement submit = wait.until
                 (ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='submit']")));
 
+        Thread.sleep(2000);
+
         action.click(submit).perform();
 
-        assertEquals(driver.findElement(By.xpath("//*[@id='name']"))
-                        .getText(), "Name:" + fullName);
-        assertEquals(driver.findElement(By.xpath("//p[@id='email']"))
-                        .getText(), "Email:" + eMail);
-        assertEquals(driver.findElement(By.xpath("//p[@id='currentAddress']"))
-                        .getText(), "Current Address :" + currentAddress);
-        assertEquals(driver.findElement(By.xpath("//p[@id='permanentAddress']"))
-                        .getText(), "Permananet Address :" + permAddress);
+        WebElement fullNameWeb = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='name']")));
+
+        WebElement eMailWeb = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='email']")));
+
+        WebElement currentAddressWeb = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='currentAddress']")));
+
+        WebElement permAddressWeb = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='permanentAddress']")));
+
+        assertEquals(fullNameWeb.getText(), "Name:" + fullName);
+        assertEquals(eMailWeb.getText(), "Email:" + eMail);
+        assertEquals(currentAddressWeb.getText(), "Current Address :" + currentAddress);
+        assertEquals(permAddressWeb.getText(), "Permananet Address :" + permAddress);
 
     }
 }
