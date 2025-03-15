@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-public class GroupAQARookies {
+public class GroupAQARookiesTest {
 
     @Test
     public void testOnliner() throws InterruptedException {
