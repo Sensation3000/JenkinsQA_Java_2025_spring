@@ -58,9 +58,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     @BeforeMethod
     protected void start() {
-
         getDriver();
-
         getDriver().manage().window().maximize();
     }
 
@@ -77,19 +75,14 @@ public class GroupRedRoverJavaUTC3Test {
         getDriver().get("https://school.qa.guru/cms/system/login?required=true");
 
         getDriver().findElement(By.name("email")).sendKeys("gjcjavxusj@zvvzuv.com");
-
         getDriver().findElement(By.name("password")).sendKeys("E3&i&d1B");
-
         getDriver().findElement(By.id("xdget33092_1_1")).click();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//*[@id='gcAccountUserMenu']/div/ul/li[1]/a"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@title='Профиль']"))).click();
 
-        getDriver().findElement(
-                By.xpath("//*[@id='gcAccountUserMenu']/div/div/ul/li[1]/a")).click();
+        getDriver().findElement(By.xpath("//*[@target='_self']")).click();
 
-        String getName = getDriver().findElement(
-                By.xpath("/html/body/div[2]/div/div[1]/div/div[3]/h1")).getText();
+        String getName = getDriver().findElement(By.xpath("//h1[contains(text(),'Мой профиль')]")).getText();
 
         Assert.assertEquals(getName, "Мой профиль");
     }
