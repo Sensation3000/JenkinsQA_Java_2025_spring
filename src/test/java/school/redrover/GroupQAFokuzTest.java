@@ -1,9 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,8 +19,9 @@ public class GroupQAFokuzTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        driver = new ChromeDriver(options);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class GroupQAFokuzTest {
         Actions actions = new Actions(driver);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        
+
         WebElement btnYes = wait.until(
                 ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='yesRadio']"))
         );
@@ -109,6 +109,162 @@ public class GroupQAFokuzTest {
         Assert.assertEquals(textImp, "Impressive", "Текст элемента не совпадает с 'Impressive'");
         String textNo = btnNo.getText();
         Assert.assertEquals(textNo, "No", "Текст элемента не совпадает с 'No'");
+    }
+
+
+    @Test
+    public void testFormPractice() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        driver.get("https://demoqa.com/automation-practice-form");
+
+        WebElement firstNameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("firstName")));
+        firstNameInput.sendKeys("Denis");
+
+        WebElement lastNameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("lastName")));
+        lastNameInput.sendKeys("Novicov");
+
+        WebElement emailInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("userEmail")));
+        emailInput.sendKeys("denisnovicov@example.com");
+
+        WebElement phoneInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("userNumber")));
+        phoneInput.sendKeys("7999999999");
+
+        WebElement genderRadio = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//label[contains(text(),'Male')]")
+        ));
+        genderRadio.click();
+
+        WebElement subjectInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subjectsInput")));
+        subjectInput.sendKeys("English");
+        subjectInput.sendKeys(Keys.ENTER);
+
+        subjectInput.sendKeys("Commerce");
+        subjectInput.sendKeys(Keys.ENTER);
+
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        WebElement sportsCheckbox = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//label[@for='hobbies-checkbox-1']")
+        ));
+        sportsCheckbox.click();
+
+        WebElement readingCheckbox = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//label[contains(text(),'Reading')]")
+        ));
+        readingCheckbox.click();
+
+        WebElement musicCheckbox = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//label[contains(text(),'Music')]")
+        ));
+        musicCheckbox.click();
+
+        WebElement addressInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("currentAddress")));
+        addressInput.sendKeys("Prague, Vodickova 123/34");
+
+        WebElement stateDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='state']/div/div[2]")));
+        stateDropdown.click();
+
+        WebElement stateOption = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[text()='NCR']")
+        ));
+        stateOption.click();
+
+        WebElement cityDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("city")));
+        cityDropdown.click();
+
+        WebElement cityOption = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[text()='Delhi']")
+        ));
+        cityOption.click();
+
+        WebElement submitButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("submit")));
+        submitButton.click();
+
+        WebElement modalTitle = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='modal-title h4' and text()='Thanks for submitting the form']")
+        ));
+        Assert.assertTrue(modalTitle.isDisplayed(), "Модальное окно не отображается");
+
+        WebElement table = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")
+        ));
+        Assert.assertTrue(table.isDisplayed(), "Таблица не отображается");
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Student Name']/following-sibling::td")
+                )).getText(),
+                "Denis Novicov",
+                "Неверное имя студента"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Student Email']/following-sibling::td")
+                )).getText(),
+                "denisnovicov@example.com",
+                "Неверный email"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Gender']/following-sibling::td")
+                )).getText(),
+                "Male",
+                "Неверный пол"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Mobile']/following-sibling::td")
+                )).getText(),
+                "7999999999",
+                "Неверный номер телефона"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Date of Birth']/following-sibling::td")
+                )).getText(),
+                "15 March,2025",
+                "Неверная дата рождения"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Subjects']/following-sibling::td")
+                )).getText(),
+                "English, Commerce",
+                "Неверные предметы"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Hobbies']/following-sibling::td")
+                )).getText(),
+                "Sports, Reading, Music",
+                "Неверные хобби"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='Address']/following-sibling::td")
+                )).getText(),
+                "Prague, Vodickova 123/34",
+                "Неверный адрес"
+        );
+
+        Assert.assertEquals(
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//td[text()='State and City']/following-sibling::td")
+                )).getText(),
+                "NCR Delhi",
+                "Неверный штат и город"
+        );
+        WebElement closeButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//button[@id='closeLargeModal']")
+        ));
+        closeButton.click();
     }
 
     @AfterMethod
