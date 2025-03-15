@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class StarshipTroopersTest {
-    //REJECT THIS PR, PLS
+    //hot-fix
     private WebDriver driver;
 
     @BeforeMethod
