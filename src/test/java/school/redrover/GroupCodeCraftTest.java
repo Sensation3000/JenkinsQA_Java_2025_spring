@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
-public class GroupCodecraftTest {
+public class GroupCodeCraftTest {
 
     @Test
     public void testSwagLabs() throws InterruptedException {
