@@ -4,15 +4,36 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
+
 import static org.testng.Assert.*;
 
 public class GroupCodeCraftTest {
 
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void teardown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Test
     public void testSwagLabs() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.saucedemo.com");
 
@@ -125,7 +146,52 @@ public class GroupCodeCraftTest {
                 getText(), "Swag Labs");
 
         Thread.sleep(2000);
+    }
 
-        driver.quit();
+
+    @Test
+    public void testToolsQATestBox() throws InterruptedException {
+
+        Actions action = new Actions(driver);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+
+        driver.get("https://demoqa.com");
+
+        driver.findElement
+                (By.xpath("//div[1][@class='card mt-4 top-card']"))
+                .click();
+
+        driver.findElement
+                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
+                .click();
+
+        String fullName = "Poopa Loopa";
+        String eMail = "poopa@loopa.com";
+        String currentAddress = "Pushkin's street, Kolotushkin's house";
+        String permAddress = "Same as current";
+
+        driver.findElement(By.xpath("//input[@placeholder='Full Name']"))
+                .sendKeys(fullName);
+        driver.findElement(By.xpath("//input[@id='userEmail']"))
+                .sendKeys(eMail);
+        driver.findElement(By.xpath("//textarea[@id='currentAddress']"))
+                .sendKeys(currentAddress);
+        driver.findElement(By.xpath("//textarea[@id='permanentAddress']"))
+                .sendKeys(permAddress);
+
+        WebElement submit = wait.until
+                (ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='submit']")));
+
+        action.click(submit).perform();
+
+        assertEquals(driver.findElement(By.xpath("//*[@id='name']"))
+                        .getText(), "Name:" + fullName);
+        assertEquals(driver.findElement(By.xpath("//p[@id='email']"))
+                        .getText(), "Email:" + eMail);
+        assertEquals(driver.findElement(By.xpath("//p[@id='currentAddress']"))
+                        .getText(), "Current Address :" + currentAddress);
+        assertEquals(driver.findElement(By.xpath("//p[@id='permanentAddress']"))
+                        .getText(), "Permananet Address :" + permAddress);
+
     }
 }
