@@ -5,11 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
 import org.testng.annotations.Test;
+import java.time.Duration;
+
 
 public class GroupQAFokuzTest {
 
@@ -57,6 +60,7 @@ public class GroupQAFokuzTest {
         driver.get("https://demoqa.com/buttons");
 
         Actions actions = new Actions(driver);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         WebElement DoubleClickMe = driver.findElement(By.xpath("//*[@id='doubleClickBtn']"));
         actions.doubleClick(DoubleClickMe).perform();
@@ -64,15 +68,47 @@ public class GroupQAFokuzTest {
         WebElement rightClickMe = driver.findElement(By.xpath("//*[@id='rightClickBtn']"));
         actions.contextClick(rightClickMe).perform();
 
-        WebElement clickMe = driver.findElement(By.xpath("//*[@id='button1']"));
+        WebElement clickMe = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Click Me']")));
         actions.click(clickMe).perform();
 
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='doubleClickMessage']"))
                 .isDisplayed(), "Кнопка была не нажата");
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='rightClickMessage']"))
                 .isDisplayed(), "Кнопка была не правым кликом");
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='button1Clicked']"))
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='dynamicClickMessage']"))
                 .isDisplayed(), "Кнопка была не нажата");
+    }
+
+    @Test
+    public void radioButton() {
+        driver.get("https://demoqa.com/radio-button");
+
+        Actions actions = new Actions(driver);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        
+        WebElement btnYes = wait.until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='yesRadio']"))
+        );
+        actions.click(btnYes).perform();
+
+        WebElement btnImpressive = wait.until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='impressiveRadio']"))
+        );
+        actions.click(btnImpressive).perform();
+
+        WebElement btnNo = wait.until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='noRadio']"))
+        );
+        actions.click(btnNo).perform();
+
+
+        String textYes = btnYes.getText();
+        Assert.assertEquals(textYes, "Yes", "Текст элемента не совпадает с 'Yes'");
+        String textImp = btnImpressive.getText();
+        Assert.assertEquals(textImp, "Impressive", "Текст элемента не совпадает с 'Impressive'");
+        String textNo = btnNo.getText();
+        Assert.assertEquals(textNo, "No", "Текст элемента не совпадает с 'No'");
     }
 
     @AfterMethod
