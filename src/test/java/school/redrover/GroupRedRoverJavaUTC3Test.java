@@ -2,14 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.testng.Assert;
-
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -24,7 +21,6 @@ public class GroupRedRoverJavaUTC3Test {
     private WebDriverWait wait10;
 
     protected WebDriverWait getWait5() {
-
         if (wait5 == null) {
             synchronized (WebDriverWait.class) {
                 wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
@@ -35,7 +31,6 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     protected WebDriverWait getWait10() {
-
         if (wait10 == null) {
             synchronized (WebDriverWait.class) {
                 wait10 = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
@@ -46,7 +41,6 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     protected WebDriver getDriver() {
-
         if (driver == null) {
             synchronized (WebDriver.class) {
                 driver = new ChromeDriver();
