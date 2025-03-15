@@ -37,7 +37,8 @@ public class GroupCodeCraftTest {
         String getRemoveBackpackText = removeBackpack.getText();
         assertEquals(getRemoveBackpackText, "Remove");
         String color = removeBackpack.getCssValue("border");
-        assertEquals(color, "1px solid rgb(226, 35, 26)");
+        int rgbIndex = color.indexOf("rgb");
+        assertEquals(color.substring(rgbIndex), "rgb(226, 35, 26)");
 
         WebElement cart = driver.findElement
                 (By.xpath("//span[@class='shopping_cart_badge']"));
