@@ -35,7 +35,7 @@ public class StarshipTroopersTest {
         driver.findElement(By.xpath("//h5[text()='Forms']")).click();
         driver.findElement(By.xpath("//span[text()='Practice Form']")).click();
 
-        driver.findElement(By.id("firstName")).sendKeys("ALEX");
+        driver.findElement(By.id("firstName")).sendKeys("MARINA");
         driver.findElement(By.id("lastName")).sendKeys("IVANOV");
         driver.findElement(By.id("userEmail")).sendKeys("ALEX@IVANOV.COM");
         driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/div[2]/form/div[3]/div[2]/div[3]")).click();
