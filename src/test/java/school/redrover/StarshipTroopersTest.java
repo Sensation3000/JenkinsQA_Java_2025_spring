@@ -29,17 +29,24 @@ public class StarshipTroopersTest {
 
     @Test
     public void testDemoQAForm () throws InterruptedException {
+
         driver.get("https://demoqa.com/");
+
         driver.findElement(By.xpath("//h5[text()='Forms']")).click();
         driver.findElement(By.xpath("//span[text()='Practice Form']")).click();
+
         driver.findElement(By.id("firstName")).sendKeys("MARINA");
         driver.findElement(By.id("lastName")).sendKeys("IVANOV");
         driver.findElement(By.id("userEmail")).sendKeys("ALEX@IVANOV.COM");
         driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/div[2]/form/div[3]/div[2]/div[3]")).click();
         driver.findElement(By.id("userNumber")).sendKeys("1234567890");
+
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
         driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/div[2]/form/div[11]/div/button")).click();
+
         Thread.sleep(1000);
+
         String result = driver.findElement(By.id("example-modal-sizes-title-lg")).getText();
         Assert.assertEquals(result,"Thanks for submitting the form");
 
