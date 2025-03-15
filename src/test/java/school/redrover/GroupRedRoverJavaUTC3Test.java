@@ -80,4 +80,19 @@ public class GroupRedRoverJavaUTC3Test {
 
         Assert.assertEquals(getName, "Мой профиль");
     }
+
+    @Test
+    public void RickAstleyTest () throws InterruptedException {
+        //sorry fo this joke, but it's still a test!
+        getDriver().get("https://www.youtube.com/watch?v=hPr-Yc92qaY");
+        Thread.sleep(3000);
+        getDriver().findElement(By.xpath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[1]/div[2]/div/div/ytd-player/div/div/div[30]/div[2]/div[1]/button")).click();
+        int count = 0;
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(8000);
+            getDriver().findElement(By.xpath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[1]/div[2]/div/div/ytd-player/div/div/div[30]/div[2]/div[1]/button")).click();
+            count++;
+        }
+        Assert.assertEquals(count,10);
+    }
 }
