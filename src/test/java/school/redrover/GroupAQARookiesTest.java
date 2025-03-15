@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.AssertJUnit.assertEquals;
+
 public class GroupAQARookiesTest {
 
     @Test
@@ -28,6 +31,27 @@ public class GroupAQARookiesTest {
 
         String title2 = driver.getTitle();
         Assert.assertEquals(title2, "iPhone 16e 128GB белый (Айфон 16е) купить в Минске");
+
+        driver.quit();
+    }
+
+    @Test
+    public void duckDuckGoTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://duckduckgo.com/");
+
+        WebElement textBox = driver.findElement(By.id("searchbox_input"));
+        WebElement submitButton = driver.findElement(By.cssSelector("button[aria-label='Search']"));
+
+        textBox.sendKeys("Selenium");
+        submitButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement spanText = driver.findElement(By.xpath("//*[@id=\"r1-0\"]/div[2]/div/div/a/div/p/span"));
+        String value = spanText.getText();
+        assertEquals("https://www.selenium.dev", value);
 
         driver.quit();
     }
