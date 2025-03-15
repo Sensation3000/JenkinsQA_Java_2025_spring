@@ -3,7 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-//import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -42,6 +42,9 @@ public class StarshipTroopersTest {
         Thread.sleep(1000);
         String result = driver.findElement(By.id("example-modal-sizes-title-lg")).getText();
         Assert.assertEquals(result,"Thanks for submitting the form");
+
+        String result2 = driver.findElement(By.xpath("/html/body/div[5]/div/div/div[2]/div/table/tbody/tr[2]/td[2]")).getText();
+        Assert.assertEquals(result2,"ALEX@IVANOV.COM");
     }
 
 }
