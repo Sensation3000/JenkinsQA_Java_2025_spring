@@ -14,8 +14,6 @@ import static org.testng.Assert.assertFalse;
 
 public class Group_javaninjas {
 
-    public class SelenuimBonigarciaTest {
-
         @Test
         public void test() throws InterruptedException {
             WebDriver driver = new ChromeDriver();
@@ -101,4 +99,3 @@ public class Group_javaninjas {
             }
         }
 
-    }
