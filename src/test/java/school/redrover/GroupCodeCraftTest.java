@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -406,5 +407,98 @@ public class GroupCodeCraftTest {
         WebElement accountCreated = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div")));
         assertEquals(accountCreated.getText(), "Thank you for registering with Main Website Store.");
+    }
+
+    @Test
+    public void demoQAFormTest() throws InterruptedException {
+        //заходим на сайт
+        driver.get("https://demoqa.com");
+
+        //выбираем кнопку по её xPath и нажимаем
+        WebElement elementButton = driver.findElement(By.xpath(("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[2]")));
+        elementButton.click();
+
+        Thread.sleep(1000); //подождем немного
+
+        WebElement webTables = driver.findElement(By.xpath("//*[@id=\"item-3\"]/span"));
+        webTables.click();
+
+        WebElement addButton = driver.findElement(By.id("addNewRecordButton"));
+        addButton.click();
+
+        //заполняем поля формы по очереди, ищем их по id
+        WebElement inputFirstName = driver.findElement(By.id("firstName"));
+        inputFirstName.sendKeys("Emiel Regis Rohellec");
+
+        WebElement inputLastName = driver.findElement(By.id("lastName"));
+        inputLastName.sendKeys("Terzieff-Godefroy");
+
+        WebElement inputEmail = driver.findElement(By.id("userEmail"));
+        inputEmail.sendKeys("garlic@forever.va");
+
+        WebElement inputAge = driver.findElement(By.id("age"));
+        inputAge.sendKeys("99");
+
+        WebElement inputSalary = driver.findElement(By.id("salary"));
+        inputSalary.sendKeys("50000");
+
+        WebElement inputDepartment = driver.findElement(By.id("department"));
+        inputDepartment.sendKeys("Geralt's company");
+
+        //отправляем данные в форму
+        WebElement submitButton1 = driver.findElement(By.id("submit"));
+        submitButton1.click();
+
+        //получаем текстовые данные из последней строки таблицы
+        WebElement tableName4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[1]"));
+        String addedName4 = tableName4.getText();
+
+        WebElement tableLastName4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[2]"));
+        String addedLastName4 = tableLastName4.getText();
+
+        WebElement tableEmail4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[4]"));
+        String addedEmail4 = tableEmail4.getText();
+
+        WebElement tableAge4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[3]"));
+        String addedAge4 = tableAge4.getText();
+
+        WebElement tableSalary4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[5]"));
+        String addedSalary4 = tableSalary4.getText();
+
+        WebElement tableDepartment4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[6]"));
+        String addedDepartment4 = tableDepartment4.getText();
+
+        //проверяем соответствие сохранённых данных введённым ранее
+        Assert.assertEquals(addedName4, "Emiel Regis Rohellec");
+        Assert.assertEquals(addedLastName4, "Terzieff-Godefroy");
+        Assert.assertEquals(addedEmail4, "garlic@forever.va");
+        Assert.assertEquals(addedAge4, "99");
+        Assert.assertEquals(addedSalary4, "50000");
+        Assert.assertEquals(addedDepartment4, "Geralt's company");
+
+        //изменяем данные имеющейся строки
+        WebElement changeButton = driver.findElement(By.id("edit-record-3"));
+        changeButton.click();
+
+        WebElement editFirstName = driver.findElement(By.id("firstName"));
+        editFirstName.clear();
+        editFirstName.sendKeys("Jane");
+        WebElement submitButton2 = driver.findElement(By.id("submit"));
+        submitButton2.click();
+
+        //проверяем, что данные изменились
+        WebElement tableName3 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[3]/div/div[1]"));
+        String addedName3 = tableName3.getText();
+        Assert.assertEquals(addedName3, "Jane");
+
+        //удаляем созданную ранее строку
+        WebElement deleteButton = driver.findElement(By.id("delete-record-4"));
+        deleteButton.click();
+
+        //проверяем что строка пустая
+        tableName4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[1]"));
+        addedName4 = tableName4.getText();
+        Assert.assertEquals(addedName4, " ");
+
     }
 }
