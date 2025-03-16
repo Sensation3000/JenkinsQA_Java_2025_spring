@@ -9,6 +9,8 @@ import org.testng.annotations.*;
 
 import java.time.Duration;
 
+import static org.testng.Assert.*;
+
 public class GroupRedRoverJavaUTC3Test {
 
     private WebDriver driver;
@@ -156,6 +158,44 @@ public class GroupRedRoverJavaUTC3Test {
             System.out.println("Изображение в формате PNG: " + imageUrl);
         } else {
             System.out.println("Изображение НЕ в формате PNG: " + imageUrl);
+        }
+    }
+
+
+    @Test
+    public void itemAddRemoveToCartTest() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement inputUsername = driver.findElement(By.id("user-name"));
+        WebElement inputPassword = driver.findElement(By.id("password"));
+
+        inputUsername.sendKeys("standard_user");
+        inputPassword.sendKeys("secret_sauce");
+
+        WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
+        loginButton.click();
+
+        getDriver().findElement(By.cssSelector("#item_0_title_link > div")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"add-to-cart\"]")).click();
+
+        WebElement badgeCart = driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a/span"));
+        assertEquals(badgeCart.getText(), "1");
+
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"remove-sauce-labs-bike-light\"]")).click();
+
+        Thread.sleep(2000);
+
+        assertFalse(isDisplayed(badgeCart));
+    }
+
+    boolean isDisplayed(WebElement badgeElement) {
+        try {
+            return badgeElement.isDisplayed();
+        } catch (StaleElementReferenceException e) {
+            return false;
         }
     }
 
