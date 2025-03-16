@@ -165,13 +165,21 @@ public class GroupCodeCraftTest {
 
         driver.get("https://demoqa.com");
 
-        driver.findElement
-                        (By.xpath("//div[1][@class='card mt-4 top-card']"))
-                .click();
 
-        driver.findElement
-                        (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
-                .click();
+
+        WebElement card = driver.findElement
+                        (By.xpath("//div[1][@class='card mt-4 top-card']"));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", card);
+
+        card.click();
+
+        WebElement element = driver.findElement
+                        (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+
+        element.click();
 
         String fullName = "Poopa Loopa";
         String eMail = "poopa@loopa.com";
@@ -190,7 +198,7 @@ public class GroupCodeCraftTest {
         WebElement submit = wait.until
                 (ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='submit']")));
 
-        Thread.sleep(2000);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submit);
 
         action.click(submit).perform();
 
@@ -288,6 +296,8 @@ public class GroupCodeCraftTest {
         WebElement defaultRadio = wait.until
                 (ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='my-radio-2']")));
 
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", defaultRadio);
+
         Thread.sleep(100);
         checkedCheckbox.click();
 
@@ -301,7 +311,6 @@ public class GroupCodeCraftTest {
         assertFalse(defaultCheckbox.isSelected());
 
         assertTrue(checkedRadio.isSelected());
-        Thread.sleep(500);
         defaultRadio.click();
         assertFalse(checkedRadio.isSelected());
         assertTrue(defaultRadio.isSelected());
@@ -318,13 +327,20 @@ public class GroupCodeCraftTest {
         js.executeScript("arguments[0].value = '#C47A12';", colorPicker);
         // Я так особо и не разобрался как с Color Picker работать, даже нейронки особо не помогают
 
-        WebElement dateField = driver.findElement(By.xpath("//input[@name='my-date']"));
+        WebElement dateField = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='my-date']")));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", dateField);
+
+        Thread.sleep(500);
+
         dateField.click();
 
-        Thread.sleep(100);
+        Thread.sleep(500);
 
         WebElement previousMonth = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", previousMonth);
 
         for (int i = 0; i < 5; i++) {
             previousMonth.click();
