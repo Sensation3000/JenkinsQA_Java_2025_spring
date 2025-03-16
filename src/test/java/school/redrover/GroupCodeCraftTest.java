@@ -401,12 +401,14 @@ public class GroupCodeCraftTest {
                 .with(EN_LOWERCASE,4)
                 .with(DEFAULT_SPECIAL,2)
                 .with(DIGITS, 3).build());
-        System.out.println(password);
 
         driver.get("https://magento.softwaretestingboard.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        Thread.sleep(1000);
 
+        WebElement acceptCookies = driver.findElement(By.className("css-1n36tvh"));
+        if(acceptCookies.isDisplayed()) {
+            acceptCookies.click();
+        }
         WebElement createAccount = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
         createAccount.click();
@@ -515,6 +517,5 @@ public class GroupCodeCraftTest {
         tableName4 = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/div[4]/div/div[1]"));
         addedName4 = tableName4.getText();
         Assert.assertEquals(addedName4, " ");
-
     }
 }
