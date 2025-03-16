@@ -13,7 +13,7 @@ import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class Group_javaqa_MarinaAz {
+public class GroupJavaQAMarinaAzTest {
 
     @Test
     public void testSelenium() {
