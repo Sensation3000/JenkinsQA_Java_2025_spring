@@ -124,5 +124,31 @@ public class GroupRedRoverJavaUTC3Test {
 
     }
 
+    @Test
+
+    public void testAmazon() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.amazon.com/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%2C%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%2F-%2Fes%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%252F-%252Fes%252Fcustomer-preferences%252Fedit%253Fie%253DUTF8%2526preferencesReturnUrl%253D%25252Fs%25253Fk%25253Dball%252526language%25253Des_US%252526crid%25253DXEQUFPHXIKJE%252526sprefix%25253Dball%2525252Caps%2525252C380%252526ref%25253Dnb_sb_noss_1%2526ref_%253Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26language%3Den_US%26currency%3DUSD&ref_=topnav_lang_ais");
+
+        WebElement dismiss = driver.findElement(By.xpath("//*[@class='a-button a-spacing-top-base a-button-base glow-toaster-button glow-toaster-button-dismiss']"));
+        dismiss.click();
+
+        Thread.sleep(2000);
+
+        WebElement input = driver.findElement(By.xpath("(//i[@class='a-icon a-icon-radio'])[2]"));
+        input.click();
+
+        WebElement btn = driver.findElement(By.id("icp-save-button"));
+        btn.click();
+
+        Thread.sleep(2000);
+
+        WebElement languageES = driver.findElement(By.cssSelector(".nav-line-2 div"));
+        Assert.assertEquals(languageES.getText(), "ES");
+
+        driver.quit();
+
+    }
+
 
 }
