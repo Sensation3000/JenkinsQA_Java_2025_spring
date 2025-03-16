@@ -441,6 +441,7 @@ public class GroupCodeCraftTest {
 
         //изменяем данные имеющейся строки
         WebElement changeButton = driver.findElement(By.id("edit-record-3"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", changeButton);
         changeButton.click();
 
         WebElement editFirstName = driver.findElement(By.id("firstName"));
