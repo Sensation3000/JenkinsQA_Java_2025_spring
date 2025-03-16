@@ -122,7 +122,10 @@ public class GroupAQARookiesTest {
         WebElement button = driver.findElement(By.xpath("//button[@id='submitContact']"));
         button.click();
 
-        Assert.assertEquals("Thanks for getting in touch", "Thanks for getting in touch");
+        Thread.sleep(1000);
+
+        WebElement heading = driver.findElement(By.xpath("//h2[contains(text(),'Thanks for getting in touch')]"));
+        Assert.assertEquals(heading.getText(), "Thanks for getting in touch Vasiliy!");
 
         driver.quit();
     }
