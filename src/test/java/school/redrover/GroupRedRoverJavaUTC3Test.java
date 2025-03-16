@@ -4,11 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
@@ -146,6 +143,26 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
+    public void ImageFormatCheck() {
+        // Открываем страницу
+        getDriver().get("https://redrover.school/?lang=en");
+
+        // Ожидаем, пока изображение загрузится
+        WebElement image = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//img[contains(@alt, 'Sergey')]")));
+
+        // Получаем URL изображения
+        String imageUrl = image.getAttribute("src");
+
+        // Проверяем, что ссылка заканчивается на .png
+        if (imageUrl.toLowerCase().endsWith(".png")) {
+            System.out.println("Изображение в формате PNG: " + imageUrl);
+        } else {
+            System.out.println("Изображение НЕ в формате PNG: " + imageUrl);
+        }
+    }
+
+
+    @Test
     public void itemAddRemoveToCartTest() throws InterruptedException {
         getDriver().get("https://www.saucedemo.com/");
 
@@ -183,3 +200,4 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
 }
+
