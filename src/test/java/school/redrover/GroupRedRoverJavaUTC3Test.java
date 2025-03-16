@@ -1,20 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
-
-import static org.testng.Assert.assertEquals;
 
 public class GroupRedRoverJavaUTC3Test {
 
@@ -146,4 +139,25 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement languageES = getDriver().findElement(By.cssSelector(".nav-line-2 div"));
         Assert.assertEquals(languageES.getText(), "ES");
     }
+
+    @Test
+    public void ImageFormatCheck() {
+        // Открываем страницу
+        getDriver().get("https://redrover.school/?lang=en");
+
+        // Ожидаем, пока изображение загрузится
+        WebElement image = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//img[contains(@alt, 'Sergey')]")));
+
+        // Получаем URL изображения
+        String imageUrl = image.getAttribute("src");
+
+        // Проверяем, что ссылка заканчивается на .png
+        if (imageUrl.toLowerCase().endsWith(".png")) {
+            System.out.println("Изображение в формате PNG: " + imageUrl);
+        } else {
+            System.out.println("Изображение НЕ в формате PNG: " + imageUrl);
+        }
+    }
+
 }
+
