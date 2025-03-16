@@ -85,30 +85,35 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest () throws InterruptedException {
-        //sorry fo this joke, but it's still a test!
+    public void RickAstleyTest() {
+
+        String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
+        String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
 
         getDriver().get("https://www.youtube.com/watch?v=hPr-Yc92qaY");
 
-        Thread.sleep(3000);
+        WebElement rejectButton = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathReject)));
 
-        getDriver().findElement(By.xpath("//button[@aria-label='Pause (k)']")).click();
+        if (rejectButton.isDisplayed()) {
+            rejectButton.click();
+        }
+
+        getDriver().findElement(By.xpath(xPathPlayButton)).click();
 
         int count = 0;
-        //   Pause keyboard shortcut k
-        WebElement button = getDriver().findElement(By.xpath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[1]/div[2]/div/div/ytd-player/div/div/div[30]/div[2]/div[1]/button"));
-        //WebElement button = getDriver().findElement(By.xpath("//button[@aria-label='Pause keyboard shortcut k']")); // NOT WORKING
+
+        WebElement button = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathPlayButton)));
 
         for (int i = 0; i < 10; i++) {
-            Thread.sleep(8000);
             button.click();
             count++;
         }
-        Assert.assertEquals(count,10);
-    }
-    @Test
 
-    public void testCheckBox () throws InterruptedException {
+        Assert.assertEquals(count, 10);
+    }
+
+    @Test
+    public void testCheckBox() throws InterruptedException {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -118,11 +123,9 @@ public class GroupRedRoverJavaUTC3Test {
 
         Thread.sleep(2000);
 
-        String value= getDriver().findElement(By.id("message")).getText();
+        String value = getDriver().findElement(By.id("message")).getText();
 
         Assert.assertEquals(value, "Received!");
 
     }
-
-
 }
