@@ -1,13 +1,14 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -64,6 +65,61 @@ public class Group_javaninjas {
             assertEquals(data,selectDateText);
             driver.quit();
         }
+//Alert
+        @Test
+        public void test2() {
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+            driver.manage().window().maximize();
+            driver.manage().deleteAllCookies();
+            WebElement dialogBoxes = driver.findElement(By.xpath("//a[text() = 'Dialog boxes']"));
+            dialogBoxes.click();
+            WebElement dialogTitle = driver.findElement(By.className("display-6"));
+            String dialogTitleText = dialogTitle.getText();
+            assertEquals(dialogTitleText, "Dialog boxes");
+            WebElement launchAlert = driver.findElement(By.id("my-alert"));
+            launchAlert.click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            String alertText = alert.getText();
+            System.out.println("Текст алерта: " + alertText);
+            alert.accept();
+            driver.quit();
+        }
+//Launch confirm
+            @Test
+                    public void test3(){
+
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+            driver.manage().window().maximize();
+            driver.manage().deleteAllCookies();
+                WebElement dialogBoxes = driver.findElement(By.xpath("//a[text() = 'Dialog boxes']"));
+                dialogBoxes.click();
+                WebElement dialogTitle = driver.findElement(By.className("display-6"));
+                String dialogTitleText = dialogTitle.getText();
+                assertEquals(dialogTitleText, "Dialog boxes");
+                WebElement launchAlert = driver.findElement(By.id("my-confirm"));
+                launchAlert.click();
+                // Ожидаем появления алерта
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+                String alertText = alert.getText();
+                // Получаем текст из алерта (опционально)
+                System.out.println("Текст алерта: " + alertText);
+                // Выбор действия: нажать "OK" или "Отмена"
+                String action = "OK"; // Можете изменить на "Отмена" для другого действия
+                if (action.equals("OK")) {
+                    // Нажимаем "OK"
+                    alert.accept();
+                    System.out.println("Нажата кнопка 'OK'");
+                } else {
+                    // Нажимаем "Отмена"
+                    alert.dismiss();
+                    System.out.println("Нажата кнопка 'Отмена'");
+                }
+            }
 
             @Test
             public void testSearchLamoda() throws InterruptedException {
