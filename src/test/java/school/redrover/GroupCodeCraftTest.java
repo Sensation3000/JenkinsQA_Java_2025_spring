@@ -520,7 +520,6 @@ public class GroupCodeCraftTest {
 
     @Test
     public void testNoiseless() throws InterruptedException {
-        //  WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
 
@@ -535,8 +534,6 @@ public class GroupCodeCraftTest {
         submitSearch.click();
         Thread.sleep(400);
 
-        WebElement siteMaven = driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div/div/div/div/div/div[1]/div/span/a/h3"));
-        submitSearch.click();
 
         WebElement text = driver.findElement(By.xpath("/html/head/title"));
         String getText = text.getText();
