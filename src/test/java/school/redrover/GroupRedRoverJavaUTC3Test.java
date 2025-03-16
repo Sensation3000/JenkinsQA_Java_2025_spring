@@ -85,7 +85,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest() {
+    public void RickAstleyTest() throws InterruptedException {
 
         String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
