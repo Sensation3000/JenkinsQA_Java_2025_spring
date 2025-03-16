@@ -285,6 +285,7 @@ public class GroupCodeCraftTest {
         WebElement defaultRadio = wait.until
                 (ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='my-radio-2']")));
 
+        Thread.sleep(100);
         checkedCheckbox.click();
 
         assertFalse(checkedCheckbox.isSelected());
@@ -297,7 +298,7 @@ public class GroupCodeCraftTest {
         assertFalse(defaultCheckbox.isSelected());
 
         assertTrue(checkedRadio.isSelected());
-        Thread.sleep(100);
+        Thread.sleep(500);
         defaultRadio.click();
         assertFalse(checkedRadio.isSelected());
         assertTrue(defaultRadio.isSelected());
@@ -317,8 +318,10 @@ public class GroupCodeCraftTest {
         WebElement dateField = driver.findElement(By.xpath("//input[@name='my-date']"));
         dateField.click();
 
+        Thread.sleep(100);
+
         WebElement previousMonth = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//th[@class='prev']")));
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
 
         for (int i = 0; i < 5; i++) {
             previousMonth.click();
@@ -349,13 +352,17 @@ public class GroupCodeCraftTest {
                         (By.xpath("//span[text()='Jun']")));
         monthClick.click();
 
+        assertEquals(dateField.getDomProperty("value"), "03/02/2025");
+
         defaultRadio.click();
 
         WebElement range = driver.findElement(By.xpath("//input[@name='my-range']"));
 
         for (int i = 0; i < 11; i++) {
-            String x = String.valueOf(i);
-            js.executeScript("arguments[0].value = '" + x + "';", range);
+            String value = String.valueOf(i);
+            js.executeScript("arguments[0].value = '" + value + "';", range);
+            String valueCheck = range.getDomProperty("valueAsNumber");
+            assertEquals(value, valueCheck);
         }
 
         WebElement submit = driver.findElement(By.tagName("button"));
