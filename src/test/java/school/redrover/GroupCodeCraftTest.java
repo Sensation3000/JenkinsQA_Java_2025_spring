@@ -518,4 +518,28 @@ public class GroupCodeCraftTest {
         addedName4 = tableName4.getText();
         Assert.assertEquals(addedName4, " ");
     }
+
+    @Test
+    public void testNoiseless() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://google.com");
+
+        WebElement textSearch = driver.findElement(By.xpath("//*[@id=\"APjFqb\"]"));
+        textSearch.click();
+        Thread.sleep(400);
+        textSearch.sendKeys("maven");
+
+        WebElement submitSearch = driver.findElement(By.xpath("/html/body/div[1]/div[3]/form/div[1]/div[1]/div[2]/div[4]/div[6]/center/input[1]"));
+        submitSearch.click();
+        Thread.sleep(400);
+
+
+        WebElement text = driver.findElement(By.xpath("/html/head/title"));
+        String getText = text.getText();
+        Assert.assertEquals(getText,"Welcome to Apache Maven – Maven");
+
+        driver.quit();
+    }
 }
