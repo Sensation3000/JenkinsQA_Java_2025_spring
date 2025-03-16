@@ -14,6 +14,8 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+import static org.testng.Assert.assertEquals;
+
 public class GroupRedRoverJavaUTC3Test {
 
     private WebDriver driver;
@@ -104,4 +106,23 @@ public class GroupRedRoverJavaUTC3Test {
         }
         Assert.assertEquals(count,10);
     }
+    @Test
+
+    public void testCheckBox () throws InterruptedException {
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        getDriver().findElement(By.cssSelector("#my-check-2")).click();
+
+        getDriver().findElement(By.xpath("//button[@class='btn btn-outline-primary mt-3']")).click();
+
+        Thread.sleep(2000);
+
+        String value= getDriver().findElement(By.id("message")).getText();
+
+        Assert.assertEquals(value, "Received!");
+
+    }
+
+
 }
