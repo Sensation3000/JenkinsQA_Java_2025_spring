@@ -92,10 +92,6 @@ public class Group_javaninjas {
                 WebElement shoes = driver.findElement(By.xpath("//a[@href='/c/15/shoes-women/?sitelink=topmenuW&l=4']"));
                 shoes.click();
                 Thread.sleep(3000);
-
-//WebElement title = driver.findElement(By.xpath("//h1"));
-//String titleText = title.getText();
-//assertEquals(title, "Женская обувь");
             }
         }
 
