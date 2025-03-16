@@ -13,11 +13,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import java.io.File;
 import java.io.IOException;
+import net.datafaker.Faker;
+import net.datafaker.providers.base.Text;
 import java.time.Duration;
-
+import java.util.Locale;
+import static net.datafaker.providers.base.Text.*;
 import static org.testng.Assert.*;
 
 public class GroupCodeCraftTest {
@@ -368,6 +370,41 @@ public class GroupCodeCraftTest {
         WebElement submit = driver.findElement(By.tagName("button"));
         submit.click();
         driver.navigate().back();
+    }
 
+    @Test
+    public void testLumaCreateAccount() throws InterruptedException {
+        var faker = new Faker(new Locale("en"));
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String email = firstName.toLowerCase() + lastName.toLowerCase() + "@gmail.com";
+        String password = faker.text().text(Text.TextSymbolsBuilder.builder()
+                .len(14)
+                .with(EN_UPPERCASE, 3)
+                .with(EN_LOWERCASE,4)
+                .with(DEFAULT_SPECIAL,2)
+                .with(DIGITS, 3).build());
+        System.out.println(password);
+
+        driver.get("https://magento.softwaretestingboard.com/");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Thread.sleep(1000);
+
+        WebElement createAccount = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
+        createAccount.click();
+
+        WebElement firstname = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.id("firstname")));
+        firstname.sendKeys(firstName);
+        driver.findElement(By.id("lastname")).sendKeys(lastName);
+        driver.findElement(By.id("email_address")).sendKeys(email);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id("password-confirmation")).sendKeys(password);
+        driver.findElement(By.cssSelector(".action.submit.primary")).click();
+
+        WebElement accountCreated = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div")));
+        assertEquals(accountCreated.getText(), "Thank you for registering with Main Website Store.");
     }
 }
