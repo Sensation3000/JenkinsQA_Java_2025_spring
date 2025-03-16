@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,7 +12,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 public class GroupRedRoverJavaUTC3Test {
 
@@ -146,4 +144,42 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement languageES = getDriver().findElement(By.cssSelector(".nav-line-2 div"));
         Assert.assertEquals(languageES.getText(), "ES");
     }
+
+    @Test
+    public void itemAddRemoveToCartTest() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement inputUsername = driver.findElement(By.id("user-name"));
+        WebElement inputPassword = driver.findElement(By.id("password"));
+
+        inputUsername.sendKeys("standard_user");
+        inputPassword.sendKeys("secret_sauce");
+
+        WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
+        loginButton.click();
+
+        getDriver().findElement(By.cssSelector("#item_0_title_link > div")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"add-to-cart\"]")).click();
+
+        WebElement badgeCart = driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a/span"));
+        assertEquals(badgeCart.getText(), "1");
+
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"remove-sauce-labs-bike-light\"]")).click();
+
+        Thread.sleep(2000);
+
+        assertFalse(isDisplayed(badgeCart));
+    }
+
+    boolean isDisplayed(WebElement badgeElement) {
+        try {
+            return badgeElement.isDisplayed();
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
 }
