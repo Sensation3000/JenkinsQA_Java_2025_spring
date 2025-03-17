@@ -13,7 +13,7 @@ import static org.testng.AssertJUnit.assertEquals;
 public class GroupAQARookiesTest {
 
     @Test
-    public void testOnliner() throws InterruptedException {
+    public void onlinerTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.onliner.by/");
@@ -88,6 +88,44 @@ public class GroupAQARookiesTest {
 
         WebElement heading = driver.findElement(By.tagName("h1"));
         Assert.assertEquals(heading.getText(), "оформление заказа");
+
+        driver.quit();
+    }
+
+    @Test
+    public void bookOldFarmhouseTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://automationintesting.online/");
+
+        Thread.sleep(500);
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Restful-booker-platform demo");
+
+        WebElement inputName = driver.findElement(By.xpath("//input[@id='name']"));
+        inputName.sendKeys("Vasiliy");
+
+        WebElement inputEmail = driver.findElement(By.xpath("//input[@id='email']"));
+        inputEmail.sendKeys("qwerty@mailto.ru");
+
+        WebElement inputPhone = driver.findElement(By.xpath("//input[@id='phone']"));
+        inputPhone.sendKeys("+345456789234");
+
+        WebElement inputSubject = driver.findElement(By.cssSelector("input#subject"));
+        inputSubject.sendKeys("The Old Farmhouse, Shady Street, Newfordburyshire, NE1 410S");
+
+        WebElement textArea = driver.findElement(By.cssSelector("textarea.form-control"));
+        textArea.sendKeys("Hello! I and my family, we want to book your house.\n" +
+                "From: 28.03.2025 To: 10.04.2025\n" + "Best regards Vasiliy Family.");
+
+        WebElement button = driver.findElement(By.xpath("//button[@id='submitContact']"));
+        button.click();
+
+        Thread.sleep(1000);
+
+        WebElement heading = driver.findElement(By.xpath("//h2[contains(text(),'Thanks for getting in touch')]"));
+        Assert.assertEquals(heading.getText(), "Thanks for getting in touch Vasiliy!");
 
         driver.quit();
     }

@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.List;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 public class ZeroToQAHeroTest {
 
     @Test
@@ -40,5 +42,35 @@ public class ZeroToQAHeroTest {
         String actualItemInCart =  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//tr[@class='success']/td[2]"))).getText();
         Assert.assertEquals(actualItemInCart,itemTitle);
         driver.quit();
+    }
+
+    @Test
+    public void testLogin() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.saucedemo.com/");
+
+        String title = driver.getTitle();
+        assertEquals("Swag Labs", title);
+
+        WebElement userName = driver.findElement(By.id("user-name"));
+        userName.sendKeys("standard_user");
+
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("secret_sauce");
+
+        WebElement submitButton = driver.findElement(By.id("login-button"));
+        Thread.sleep(1000);
+        submitButton.click();
+
+        //String productsTitile = driver.getTitle();
+        WebElement pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span"));
+        assertEquals("Products", pageName.getText());
+
+        driver.quit();
+
     }
 }
