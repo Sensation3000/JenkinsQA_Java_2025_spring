@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static org.testng.Assert.*;
 
@@ -20,9 +21,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     protected WebDriverWait getWait5() {
         if (wait5 == null) {
-            synchronized (WebDriverWait.class) {
-                wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-            }
+            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         }
 
         return wait5;
@@ -30,27 +29,19 @@ public class GroupRedRoverJavaUTC3Test {
 
     protected WebDriverWait getWait10() {
         if (wait10 == null) {
-            synchronized (WebDriverWait.class) {
-                wait10 = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-            }
+            wait10 = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         }
 
         return wait10;
     }
 
     protected WebDriver getDriver() {
-        if (driver == null) {
-            synchronized (WebDriver.class) {
-                driver = new ChromeDriver();
-            }
-        }
-
         return driver;
     }
 
     @BeforeMethod
     protected void start() {
-        getDriver();
+        driver = new ChromeDriver();
         getDriver().manage().window().maximize();
     }
 
@@ -58,6 +49,9 @@ public class GroupRedRoverJavaUTC3Test {
     protected void stop() {
         if (driver != null) {
             driver.quit();
+            driver = null;
+            wait5 = null;
+            wait10 = null;
         }
     }
 
@@ -74,23 +68,24 @@ public class GroupRedRoverJavaUTC3Test {
 
         getDriver().findElement(By.xpath("//*[@target='_self']")).click();
 
-        String getName = getDriver().findElement(By.xpath("//h1[contains(text(),'Мой профиль')]")).getText();
+        WebElement getName = getDriver().findElement(By.xpath("//h1[contains(text(),'Мой профиль')]"));
 
-        Assert.assertEquals(getName, "Мой профиль");
+        Assert.assertEquals(getName.getText(), "Мой профиль");
     }
 
     @Test
-    public void RickAstleyTest() throws InterruptedException {
+    public void RickAstleyTest() {
 
         String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
 
         getDriver().get("https://www.youtube.com/watch?v=hPr-Yc92qaY");
 
-        WebElement rejectButton = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathReject)));
-
-        if (rejectButton.isDisplayed()) {
+        try {
+            WebElement rejectButton = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathReject)));
             rejectButton.click();
+        } catch (TimeoutException e) {
+            System.out.println("The 'Reject' button didn't appear");
         }
 
         getDriver().findElement(By.xpath(xPathPlayButton)).click();
@@ -108,7 +103,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void testCheckBox() throws InterruptedException {
+    public void testCheckBox() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -116,11 +111,9 @@ public class GroupRedRoverJavaUTC3Test {
 
         getDriver().findElement(By.xpath("//button[@class='btn btn-outline-primary mt-3']")).click();
 
-        Thread.sleep(2000);
-
-        String value = getDriver().findElement(By.id("message")).getText();
-
-        Assert.assertEquals(value, "Received!");
+        WebElement message = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("message")));
+        System.out.println("Actual message text: " + message.getText());
+        Assert.assertEquals(message.getText(), "Received!");
 
     }
 
@@ -128,15 +121,19 @@ public class GroupRedRoverJavaUTC3Test {
     public void testAmazon() throws InterruptedException {
         getDriver().get("https://www.amazon.com/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%2C%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%2F-%2Fes%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%252F-%252Fes%252Fcustomer-preferences%252Fedit%253Fie%253DUTF8%2526preferencesReturnUrl%253D%25252Fs%25253Fk%25253Dball%252526language%25253Des_US%252526crid%25253DXEQUFPHXIKJE%252526sprefix%25253Dball%2525252Caps%2525252C380%252526ref%25253Dnb_sb_noss_1%2526ref_%253Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26language%3Den_US%26currency%3DUSD&ref_=topnav_lang_ais");
 
-        getDriver().findElement(By.xpath("//*[contains(@class, 'glow-toaster-button-dismiss')]")).click();
+        try {
+            WebElement toaster = getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//*[contains(@class, 'glow-toaster-button-dismiss')]")));
+            toaster.click();
+        } catch (TimeoutException e) {
+            System.out.println("No toaster appeared within 5 seconds, moving on!");
+        }
 
-        Thread.sleep(2000);
-
-        getDriver().findElement(By.xpath("(//i[@class='a-icon a-icon-radio'])[2]")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//i[@class='a-icon a-icon-radio'])[2]"))).click();
 
         getDriver().findElement(By.id("icp-save-button")).click();
 
-        Thread.sleep(2000);
+        getWait10().until(ExpectedConditions.textToBe(By.cssSelector(".nav-line-2 div"), "ES"));
 
         WebElement languageES = getDriver().findElement(By.cssSelector(".nav-line-2 div"));
         Assert.assertEquals(languageES.getText(), "ES");
@@ -151,14 +148,12 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement image = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//img[contains(@alt, 'Sergey')]")));
 
         // Получаем URL изображения
-        String imageUrl = image.getAttribute("src");
+        String imageUrl = image.getDomAttribute("src");
+        String safeImageUrl = Objects.toString(imageUrl, "");
 
         // Проверяем, что ссылка заканчивается на .png
-        if (imageUrl.toLowerCase().endsWith(".png")) {
-            System.out.println("Изображение в формате PNG: " + imageUrl);
-        } else {
-            System.out.println("Изображение НЕ в формате PNG: " + imageUrl);
-        }
+        Assert.assertTrue(safeImageUrl.toLowerCase().endsWith(".png"), "Image URL does not end with .png: " + safeImageUrl);
+        System.out.println("Изображение НЕ в формате PNG: " + safeImageUrl);
     }
 
 
@@ -166,27 +161,21 @@ public class GroupRedRoverJavaUTC3Test {
     public void itemAddRemoveToCartTest() throws InterruptedException {
         getDriver().get("https://www.saucedemo.com/");
 
-        WebElement inputUsername = driver.findElement(By.id("user-name"));
-        WebElement inputPassword = driver.findElement(By.id("password"));
+        getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
 
-        inputUsername.sendKeys("standard_user");
-        inputPassword.sendKeys("secret_sauce");
-
-        WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
-        loginButton.click();
+        getDriver().findElement(By.cssSelector("#login-button")).click();
 
         getDriver().findElement(By.cssSelector("#item_0_title_link > div")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"add-to-cart\"]")).click();
+        getDriver().findElement(By.xpath("//*[@id='add-to-cart']")).click();
 
-        WebElement badgeCart = driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a/span"));
+        WebElement badgeCart = driver.findElement(By.xpath("//*[@id='shopping_cart_container']/a/span"));
         assertEquals(badgeCart.getText(), "1");
 
-        Thread.sleep(2000);
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='shopping_cart_container']/a"))).click();
+        getDriver().findElement(By.xpath("//*[@id='remove-sauce-labs-bike-light']")).click();
 
-        getDriver().findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"remove-sauce-labs-bike-light\"]")).click();
-
-        Thread.sleep(2000);
+        getWait10().until(ExpectedConditions.invisibilityOf(badgeCart));
 
         assertFalse(isDisplayed(badgeCart));
     }
@@ -195,8 +184,8 @@ public class GroupRedRoverJavaUTC3Test {
     public void testShopsSearch() {
         getDriver().get("https://sadovy.ru/semena/");
 
-        driver.findElement(By.xpath("//*[@id='search_input']")).sendKeys("S020130");
-        driver.findElement(By.className("ty-search-magnifier")).click();
+        getDriver().findElement(By.xpath("//*[@id='search_input']")).sendKeys("S020130");
+        getDriver().findElement(By.className("ty-search-magnifier")).click();
 
         WebElement searchResult = driver.findElement(By.className("product-title"));
 
@@ -210,6 +199,4 @@ public class GroupRedRoverJavaUTC3Test {
             return false;
         }
     }
-
 }
-
