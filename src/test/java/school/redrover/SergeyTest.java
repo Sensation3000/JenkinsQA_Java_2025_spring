@@ -15,7 +15,7 @@ public class SergeyTest {
     public void testSelenium() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
 
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = DriverManager.getChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 

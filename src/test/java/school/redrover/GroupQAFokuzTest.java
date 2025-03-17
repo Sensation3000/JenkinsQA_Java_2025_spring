@@ -20,7 +20,7 @@ public class GroupQAFokuzTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
+        driver = DriverManager.getChromeDriver();
         driver.manage().window().maximize();
     }
 
