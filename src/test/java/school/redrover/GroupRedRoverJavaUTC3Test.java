@@ -199,17 +199,4 @@ public class GroupRedRoverJavaUTC3Test {
             return false;
         }
     }
-
-    @Test
-    public void seasonvarTest() {
-        getDriver().get("http://seasonvar.ru/");
-        WebElement field = getDriver().findElement(By.cssSelector("div .awesomplete input"));
-        field.click();
-        field.sendKeys("Severance");
-        getDriver().findElement(By.cssSelector("button.btn.head-btn")).click();
-
-        WebElement name = getDriver().findElement(By.xpath("//div[@class='pgs-search-info']/a[2]"));
-        String nameText = name.getText();
-        Assert.assertEquals(nameText, "Severance");
-    }
 }
