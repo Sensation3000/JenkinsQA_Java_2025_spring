@@ -28,24 +28,24 @@ public class IPetrichorTest {
         }
     }
 
-    static class Data {
-        static final String BUTTON_DEFAULT_COLOR = "rgba(247, 247, 247, 1)";
+    private static class Data {
+        private static final String BUTTON_DEFAULT_COLOR = "rgba(247, 247, 247, 1)";
 
-        enum Lamp {
+        private enum Lamp {
             LAMP1("lamp1", "rgba(255, 0, 0, 1)"),
             LAMP2("lamp2", "rgba(64, 64, 64, 1)"),
             LAMP3("lamp3", "rgba(64, 64, 64, 1)"),
             LAMP4("lamp4", "rgba(64, 64, 64, 1)");
 
-            public final String id;
-            public final String color;
+            private final String id;
+            private final String color;
 
             Lamp(String id, String color) {
                 this.id = id;
                 this.color = color;
             }
 
-            static Lamp byId(String id) {
+            private static Lamp byId(String id) {
                 for (Lamp value : values()) {
                     if (value.id.equals(id)) {
                         return value;
