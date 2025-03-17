@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,6 +42,7 @@ public class GroupFallRisersTest {
         fillTextInput(By.xpath("//input[@id='userEmail']"), "email@example.com");
         fillTextInput(By.xpath("//textarea[@id='currentAddress']"), "3993 Boulevard Saint-Laurent");
         fillTextInput(By.xpath("//textarea[@id='permanentAddress']"), "Am Kanalschuppen 6");
+        scrollToElement(By.xpath("(//button[normalize-space()='Submit'])[1]"));
         clickElement(By.xpath("(//button[normalize-space()='Submit'])[1]"));
         assertEquals( driver.findElement(By.xpath("//div[@id='output']")).getText(),
                 """
@@ -55,12 +57,21 @@ public class GroupFallRisersTest {
         clickElement(By.xpath("//button[@title='Toggle']//*[name()='svg']"));
         clickElement(By.xpath("(//button[@title='Toggle'])[2]"));
         clickElement(By.xpath(".//label[@for='tree-node-home']//span[@class='rct-checkbox']//*[name()='svg']"));
+        String actualText = driver.findElement(By.id("result")).getText()
+                .replace("\n", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
+        String expectedText = "You have selected : home desktop notes commands documents workspace react angular veu" +
+                " office public private classified general downloads wordFile excelFile";
+        assertEquals(actualText, expectedText, "Text is not correct");
 
         //radio button section
         clickElement(By.xpath("//span[normalize-space()='Radio Button']"));
         clickElement(By.xpath("//label[@for='yesRadio']"));
         clickElement(By.xpath("//label[@for='impressiveRadio']"));
         clickElement(By.xpath("//label[@for='noRadio']"));
+        assertEquals(driver.findElement(By.xpath("//span[@class='text-success']")).getText(),
+                "Impressive", "Text is not correct");
 
         //web table section
         clickElement(By.xpath("//span[normalize-space()='Web Tables']"));
@@ -117,5 +128,10 @@ public class GroupFallRisersTest {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         action.contextClick(element).perform();
         System.out.println("Right-click on element: " + locator);
+    }
+
+    private void scrollToElement(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 }
