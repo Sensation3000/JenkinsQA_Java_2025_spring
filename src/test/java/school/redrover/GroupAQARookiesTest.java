@@ -130,4 +130,35 @@ public class GroupAQARookiesTest {
         driver.quit();
     }
 
+    @Test
+    public void testErartaSearch() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.erarta.com");
+
+        Thread.sleep(4000);
+
+        WebElement header1 = driver.findElement(By.xpath("//h1[text()='проведите незабываемый день']"));
+
+        WebElement search = driver.findElement(By.cssSelector("svg.header__search-svg"));
+        search.click();
+
+        WebElement searchInput = driver.findElement(By.cssSelector("input.search-popup__input"));
+        searchInput.sendKeys("весна");
+
+        Thread.sleep(1000);
+
+        WebElement searchButton = driver.findElement(By.cssSelector("button.search-popup__submit"));
+        searchButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement searchResult = driver.findElement(By.cssSelector("a.search-page__result-title"));
+        String resultText = searchResult.getText();
+
+        Assert.assertTrue(resultText.contains("весн") || resultText.contains("весен"));
+
+        driver.quit();
+    }
+
 }
