@@ -655,4 +655,26 @@ public class GroupCodeCraftTest {
 
         driver.quit();
     }
+    @Test
+    public void testSearch() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://krasivoe.by/");
+
+        WebElement input = driver.findElement(By.xpath("//*[@id=\"search\"]/input"));
+        input.click();
+        input.sendKeys("браслет");
+
+        Thread.sleep(1000);
+
+        WebElement button = driver.findElement(By.xpath("//*[@id=\"search\"]/button"));
+        button.click();
+
+        WebElement cite = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1"));
+        String citeText = cite.getText();
+
+        Assert.assertEquals(citeText, "ПОИСК - БРАСЛЕТ");
+
+
+        driver.quit();
+    }
 }
