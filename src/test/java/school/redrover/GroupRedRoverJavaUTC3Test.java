@@ -191,6 +191,18 @@ public class GroupRedRoverJavaUTC3Test {
         assertFalse(isDisplayed(badgeCart));
     }
 
+    @Test
+    public void testShopsSearch() {
+        getDriver().get("https://sadovy.ru/semena/");
+
+        driver.findElement(By.xpath("//*[@id='search_input']")).sendKeys("S020130");
+        driver.findElement(By.className("ty-search-magnifier")).click();
+
+        WebElement searchResult = driver.findElement(By.className("product-title"));
+
+        assertEquals(searchResult.getText(), "Томат Мохнатый шмель 0.05г (Семена Алтая)");
+    }
+
     boolean isDisplayed(WebElement badgeElement) {
         try {
             return badgeElement.isDisplayed();
