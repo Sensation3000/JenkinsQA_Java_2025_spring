@@ -111,5 +111,11 @@ public class GroupQA2025Test {
 
         Assert.assertEquals(labelTextSuccessText, "Welcome, UserName!");
     }
+   @ Test
+    public void linkIsClickableTest(){
+       driver.get("http://uitestingplayground.com/");
+       WebElement link = driver.findElement(By.cssSelector("[href=\"/dynamicid\"]"));
 
+       Assert.assertTrue(link.isEnabled());
+   }
 }
