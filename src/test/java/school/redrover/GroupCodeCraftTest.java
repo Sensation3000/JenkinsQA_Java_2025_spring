@@ -252,15 +252,15 @@ public class GroupCodeCraftTest {
 
         WebElement name = driver.findElement(By.id("my-text-id"));
         name.sendKeys(fullName);
-        assertEquals(name.getAttribute("value"), fullName);
+        assertEquals(name.getDomProperty("value"), fullName);
 
         WebElement passwordField = driver.findElement(By.xpath("//input[@type='password']"));
         passwordField.sendKeys(password);
-        assertEquals(passwordField.getAttribute("value"), password);
+        assertEquals(passwordField.getDomProperty("value"), password);
 
         WebElement textArea = driver.findElement(By.tagName("textarea"));
         textArea.sendKeys(text);
-        assertEquals(textArea.getAttribute("value"), text);
+        assertEquals(textArea.getDomProperty("value"), text);
 
         boolean inputDisabledCheck = driver.findElement
                 (By.xpath("//input[@name='my-disabled']")).isEnabled();
@@ -277,13 +277,13 @@ public class GroupCodeCraftTest {
         Select select = new Select(dropDownMenu);
 
         select.selectByContainsVisibleText("Open this select menu");
-        assertEquals(dropDownMenu.getAttribute("value"), "Open this select menu");
+        assertEquals(dropDownMenu.getDomProperty("value"), "Open this select menu");
         select.selectByValue("1");
-        assertEquals(dropDownMenu.getAttribute("value"), "1");
+        assertEquals(dropDownMenu.getDomProperty("value"), "1");
         select.selectByIndex(2);
-        assertEquals(dropDownMenu.getAttribute("value"), "2");
+        assertEquals(dropDownMenu.getDomProperty("value"), "2");
         select.selectByContainsVisibleText("Three");
-        assertEquals(dropDownMenu.getAttribute("value"), "3");
+        assertEquals(dropDownMenu.getDomProperty("value"), "3");
 
 
         WebElement dropDownMenuDataList = wait.until
@@ -366,7 +366,8 @@ public class GroupCodeCraftTest {
         Thread.sleep(500);
 
         WebElement previousMonth = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
+                (ExpectedConditions.visibilityOfElementLocated
+                        (By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
         js.executeScript("arguments[0].scrollIntoView(true);", previousMonth);
 
         for (int i = 0; i < 5; i++) {
@@ -405,6 +406,12 @@ public class GroupCodeCraftTest {
         WebElement range = driver.findElement(By.xpath("//input[@name='my-range']"));
 
         for (int i = 0; i < 11; i++) {
+            String value = String.valueOf(i);
+            js.executeScript("arguments[0].value = '" + value + "';", range);
+            String valueCheck = range.getDomProperty("valueAsNumber");
+            assertEquals(value, valueCheck);
+        }
+        for (int i = 10; i != 0; i--) {
             String value = String.valueOf(i);
             js.executeScript("arguments[0].value = '" + value + "';", range);
             String valueCheck = range.getDomProperty("valueAsNumber");
