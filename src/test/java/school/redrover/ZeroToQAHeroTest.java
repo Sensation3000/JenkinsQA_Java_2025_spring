@@ -67,12 +67,10 @@ public class ZeroToQAHeroTest {
         Thread.sleep(1000);
         submitButton.click();
 
-        //String productsTitile = driver.getTitle();
         WebElement pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span"));
         assertEquals("Products", pageName.getText());
 
         driver.quit();
-
     }
 
     @Test
@@ -142,6 +140,41 @@ public class ZeroToQAHeroTest {
         String searchText = search.getText();
 
         Assert.assertEquals(searchText, "ВАЛИДОЛ");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSortItems() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        String expectedProductName = "Sauce Labs Onesie";
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.saucedemo.com/");
+
+        String title = driver.getTitle();
+        assertEquals("Swag Labs", title);
+
+        WebElement userName = driver.findElement(By.id("user-name"));
+        userName.sendKeys("standard_user");
+
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("secret_sauce");
+
+        WebElement submitButton = driver.findElement(By.id("login-button"));
+        submitButton.click();
+
+        WebElement sortMenu = driver.findElement(By.xpath("//*[@data-test='product-sort-container']"));
+        sortMenu.click();
+
+        WebElement sortOption = driver.findElement(By.xpath("//*[@data-test='product-sort-container']/option[3]"));
+        sortOption.click();
+
+        WebElement productName = driver.findElement(By.xpath("//*[@id=\"item_2_title_link\"]/div"));
+
+        assertEquals(expectedProductName, productName.getText());
 
         driver.quit();
     }
