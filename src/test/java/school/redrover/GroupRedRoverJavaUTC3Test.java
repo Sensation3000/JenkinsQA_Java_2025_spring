@@ -244,7 +244,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     @Test
 
-    public void testBayRedirectionToLoginPAge() {
+    public void testEbayRedirectionToLoginPage() {
 
         getDriver().get("https://www.ebay.com/");
 
