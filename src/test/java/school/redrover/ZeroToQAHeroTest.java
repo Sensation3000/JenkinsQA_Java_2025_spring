@@ -149,7 +149,7 @@ public class ZeroToQAHeroTest {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
-        String expectedErrorMessage = "Sauce Labs Onesie";
+        String expectedProductName = "Sauce Labs Onesie";
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         driver.get("https://www.saucedemo.com/");
@@ -174,7 +174,7 @@ public class ZeroToQAHeroTest {
 
         WebElement productName = driver.findElement(By.xpath("//*[@id=\"item_2_title_link\"]/div"));
 
-        assertEquals(expectedErrorMessage, productName.getText());
+        assertEquals(expectedProductName, productName.getText());
 
         driver.quit();
     }
