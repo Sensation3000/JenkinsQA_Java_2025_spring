@@ -105,4 +105,44 @@ public class ZeroToQAHeroTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testLogIn() {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demo.applitools.com/"); //открываем главную страницу
+
+        WebElement usernameBox = driver.findElement(By.id("username"));
+        usernameBox.sendKeys("Natasha_test");
+
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("12345678!");
+
+        WebElement SignIn = driver.findElement(By.id("log-in"));
+        SignIn.click();
+
+        driver.quit();
+    }
+
+    @Test
+    public void testTabletka() {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://tabletka.by/"); //открываем главную страницу
+
+        WebElement textBox = driver.findElement(By.className("ls-select-input"));
+        textBox.sendKeys("Валидол");
+
+        WebElement submitLupa = driver.findElement(By.className("lupa"));
+        submitLupa.click();
+
+        WebElement search = driver.findElement(By.className("tooltip-info-header"));
+        String searchText = search.getText();
+
+        Assert.assertEquals(searchText, "ВАЛИДОЛ");
+
+        driver.quit();
+    }
 }
