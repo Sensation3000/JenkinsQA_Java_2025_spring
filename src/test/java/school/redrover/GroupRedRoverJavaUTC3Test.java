@@ -74,7 +74,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest() {
+    public void RickAstleyTest() throws InterruptedException {
 
         String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
@@ -211,4 +211,23 @@ public class GroupRedRoverJavaUTC3Test {
         String nameText = getDriver().findElement(By.xpath("//div[@class='pgs-search-info']/a[2]")).getText();
         Assert.assertEquals(nameText, "Severance");
     }
+
+    @Test
+    public void TestAuthentificationForm() {
+
+        getDriver().get("https://the-internet.herokuapp.com/login");
+
+        getDriver().findElement(By.id("username")).sendKeys("tomsmith");
+
+        getDriver().findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+
+        getDriver().findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']")).click();
+
+        String messageText= getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
+
+        Assert.assertEquals(messageText,  "Welcome to the Secure Area. When you are done click logout below.");
+
+
+    }
+
 }
