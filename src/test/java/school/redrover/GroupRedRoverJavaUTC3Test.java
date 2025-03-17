@@ -230,4 +230,16 @@ public class GroupRedRoverJavaUTC3Test {
 
     }
 
+    @Test
+    public void testTPlus() {
+
+        getDriver().get("https://www.tplusgroup.ru/");
+
+        getDriver().findElement(By.xpath("//*[@id=\"website-menu\"]/ul/li[1]/a")).click();
+
+        String value = getDriver().findElement(By.xpath("//*[@id=\"content-header\"]/h1")).getText();
+        Assert.assertEquals(value, "О компании");
+
+    }
+
 }
