@@ -11,9 +11,9 @@ import static org.testng.Assert.assertEquals;
 
 public class OshTest {
     @Test
-    public void OshTest() throws InterruptedException {
+    public void LearningEnglish() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        Actions action = new Actions(driver);
+
 
         driver.get("https://learningenglish.voanews.com/p/5610.html");
 
