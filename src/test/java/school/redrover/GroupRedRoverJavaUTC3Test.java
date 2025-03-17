@@ -242,4 +242,9 @@ public class GroupRedRoverJavaUTC3Test {
 
     }
 
+    @Test
+
+    public void testBayRedirectionToLoginPAge() {
+
+    }
 }
