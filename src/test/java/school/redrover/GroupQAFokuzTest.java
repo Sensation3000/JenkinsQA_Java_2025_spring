@@ -297,5 +297,6 @@ public class GroupQAFokuzTest {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("pinterest"), "The switch did not happen.");
         driver.quit();
+
     }
 }
