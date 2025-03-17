@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,6 +12,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.time.Duration;
+import java.util.Set;
 
 
 public class GroupQAFokuzTest {
@@ -272,5 +274,28 @@ public class GroupQAFokuzTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testClickPinterest() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://wonderl.ink/@fokuz.photo/");
+        Thread.sleep(5000);
+        WebElement pinterestButton = driver.findElement(By.linkText("Pinterest"));
+        Assert.assertTrue( pinterestButton.isDisplayed(), "Button 'Pinterest' not found on page.");
+        pinterestButton.click();
+        Thread.sleep(5000);
+        Set<String> windowHandles = driver.getWindowHandles(); // Pinterest открывается в новой вкладке
+        String originalWindow = driver.getWindowHandle();
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("pinterest"), "The switch did not happen.");
+        driver.quit();
     }
 }
