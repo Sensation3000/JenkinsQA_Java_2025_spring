@@ -246,5 +246,18 @@ public class GroupRedRoverJavaUTC3Test {
 
     public void testBayRedirectionToLoginPAge() {
 
+        getDriver().get("https://www.ebay.com/");
+
+        WebElement signInLink = getDriver().findElement(By.xpath("//*[@id=\"gh\"]/nav/div[1]/span[1]/span/a"));
+
+        signInLink.click();
+
+        String currentTitle = getDriver().getTitle();
+        String currentUrl = getDriver().getCurrentUrl();
+
+        Assert.assertEquals(currentTitle, "Sign in or Register | eBay");
+        Assert.assertEquals(currentUrl, "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
+
+        getDriver().quit();
     }
 }
