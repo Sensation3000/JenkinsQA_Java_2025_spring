@@ -677,4 +677,47 @@ public class GroupCodeCraftTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testClickAndNewWindowTitle() throws InterruptedException {
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        Thread.sleep(1000);
+
+        driver.findElement(By.tagName("button")).click();
+        Thread.sleep(1000);
+
+        String newWindowTitle = driver.findElement(By.className("display-6")).getText();
+
+        Assert.assertEquals(newWindowTitle, "Form submitted");
+    }
+
+    @Test
+    public void testSelectSimpleDropDown() throws InterruptedException {
+        driver.get("https://www.selenium.dev/selenium/web/selectPage.html");
+        WebElement selectWithoutMultiple = driver.findElement(By.id("selectWithoutMultiple"));
+        Thread.sleep(1000);
+
+        Select simpleDropDown = new Select(selectWithoutMultiple);
+        simpleDropDown.selectByValue("two");
+        Thread.sleep(1000);
+
+        String value = selectWithoutMultiple.getAttribute("value");
+
+        Assert.assertEquals(value, "two");
+    }
+
+    @Test
+    public void testLongList() throws InterruptedException {
+        driver.get("https://www.selenium.dev/selenium/web/selectPage.html");
+        Thread.sleep(1000);
+        WebElement selectElement = driver.findElement(By.id("selectWithMultipleLongList"));
+
+        Select select = new Select(selectElement);
+        select.selectByVisibleText("six");
+        Thread.sleep(1000);
+
+        String value = selectElement.getAttribute("value");
+
+        Assert.assertEquals(value, "six");
+    }
 }
