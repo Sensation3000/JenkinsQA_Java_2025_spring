@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -72,5 +73,36 @@ public class ZeroToQAHeroTest {
 
         driver.quit();
 
+    }
+
+    @Test
+    public void testFailedLogin() {
+
+        WebDriver driver = new ChromeDriver();
+
+        String randomUserName = UUID.randomUUID().toString();
+        String randomUserPswd = UUID.randomUUID().toString();
+        String expectedErrorMessage = "Epic sadface: Username and password do not match any user in this service";
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.saucedemo.com/");
+
+        String title = driver.getTitle();
+        assertEquals("Swag Labs", title);
+
+        WebElement userName = driver.findElement(By.id("user-name"));
+        userName.sendKeys(randomUserName);
+
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys(randomUserPswd);
+
+        WebElement submitButton = driver.findElement(By.id("login-button"));
+        submitButton.click();
+
+        WebElement error = driver.findElement(By.xpath("//*[@data-test='error']"));
+        System.out.println(error.getText());
+        assertEquals(expectedErrorMessage, error.getText());
+
+        driver.quit();
     }
 }
