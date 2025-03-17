@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Random;
 
 import static net.datafaker.providers.base.Text.*;
 import static org.testng.Assert.*;
@@ -40,6 +41,16 @@ public class GroupCodeCraftTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    public static String[] generateRandomHexColors(int count) {
+        Random random = new Random();
+        String[] colors = new String[count];
+        for (int i = 0; i < count; i++) {
+            String hexColor = String.format("#%06x", random.nextInt(0xFFFFFF + 1));
+            colors[i] = hexColor;
+        }
+        return colors;
     }
 
     @Test
@@ -225,13 +236,31 @@ public class GroupCodeCraftTest {
     @Test
     public void bonigarciaWebForm() throws InterruptedException, IOException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        var faker = new Faker(new Locale("en"));
+
+        String fullName = faker.name().fullName();
+        String password = faker.text().text(Text.TextSymbolsBuilder.builder()
+                .len(10)
+                .with(EN_UPPERCASE, 3)
+                .with(EN_LOWERCASE, 3)
+                .with(DEFAULT_SPECIAL, 2)
+                .with(DIGITS, 2).build());
+        String text = faker.text().text(20, 30);
 
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
 
-        driver.findElement(By.id("my-text-id")).sendKeys("aS1!@%&");
-        driver.findElement(By.xpath("//input[@type='password']"))
-                .sendKeys("aS1!@%&");
-        driver.findElement(By.tagName("textarea")).sendKeys("aS1!@%&");
+        WebElement name = driver.findElement(By.id("my-text-id"));
+        name.sendKeys(fullName);
+        assertEquals(name.getDomProperty("value"), fullName);
+
+        WebElement passwordField = driver.findElement(By.xpath("//input[@type='password']"));
+        passwordField.sendKeys(password);
+        assertEquals(passwordField.getDomProperty("value"), password);
+
+        WebElement textArea = driver.findElement(By.tagName("textarea"));
+        textArea.sendKeys(text);
+        assertEquals(textArea.getDomProperty("value"), text);
 
         boolean inputDisabledCheck = driver.findElement
                 (By.xpath("//input[@name='my-disabled']")).isEnabled();
@@ -248,36 +277,31 @@ public class GroupCodeCraftTest {
         Select select = new Select(dropDownMenu);
 
         select.selectByContainsVisibleText("Open this select menu");
+        assertEquals(dropDownMenu.getDomProperty("value"), "Open this select menu");
         select.selectByValue("1");
+        assertEquals(dropDownMenu.getDomProperty("value"), "1");
         select.selectByIndex(2);
+        assertEquals(dropDownMenu.getDomProperty("value"), "2");
         select.selectByContainsVisibleText("Three");
+        assertEquals(dropDownMenu.getDomProperty("value"), "3");
 
-        assertEquals(driver.findElement
-                (By.xpath("//option[text()='Three']")).getText(), "Three");
 
         WebElement dropDownMenuDataList = wait.until
                 (ExpectedConditions.elementToBeClickable
                         (By.xpath("//input[@name='my-datalist']")));
         dropDownMenuDataList.click();
 
-        ((JavascriptExecutor) driver).executeScript
-                ("arguments[0].value = 'San Francisco';", dropDownMenuDataList);
-        dropDownMenuDataList.clear();
-        dropDownMenuDataList.click();
-        ((JavascriptExecutor) driver).executeScript
-                ("arguments[0].value = 'New York';", dropDownMenuDataList);
-        dropDownMenuDataList.clear();
-        dropDownMenuDataList.click();
-        ((JavascriptExecutor) driver).executeScript
-                ("arguments[0].value = 'Seattle';", dropDownMenuDataList);
-        dropDownMenuDataList.clear();
-        dropDownMenuDataList.click();
-        ((JavascriptExecutor) driver).executeScript
-                ("arguments[0].value = 'Los Angeles';", dropDownMenuDataList);
-        dropDownMenuDataList.clear();
-        dropDownMenuDataList.click();
-        ((JavascriptExecutor) driver).executeScript
-                ("arguments[0].value = 'Chicago';", dropDownMenuDataList);
+        String[] cities = {"San Francisco", "New York", "Seattle", "Los Angeles",
+                "Chicago", "Moscow", "Aprelevka", "Mozhaisk", "Saint-Petersburg"};
+
+        for (String city : cities) {
+            js.executeScript
+                    ("arguments[0].value = '" + city + "';", dropDownMenuDataList);
+            String valueCheck = dropDownMenuDataList.getDomProperty("value");
+            dropDownMenuDataList.clear();
+            dropDownMenuDataList.click();
+            assertEquals(city, valueCheck);
+        }
 
         WebElement fileInput = driver.findElement(By.xpath("//input[@name='my-file']"));
 
@@ -297,7 +321,7 @@ public class GroupCodeCraftTest {
         WebElement defaultRadio = wait.until
                 (ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='my-radio-2']")));
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", defaultRadio);
+        js.executeScript("arguments[0].scrollIntoView(true);", defaultRadio);
 
         Thread.sleep(100);
         checkedCheckbox.click();
@@ -316,22 +340,24 @@ public class GroupCodeCraftTest {
         assertFalse(checkedRadio.isSelected());
         assertTrue(defaultRadio.isSelected());
 
-        WebElement colorPicker = driver.findElement
-                (By.xpath("//input[@name='my-colors']"));
-
+        WebElement colorPicker = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='my-colors']")));
         colorPicker.click();
 
-        String currentColor = colorPicker.getDomAttribute("value");
-        assertEquals(currentColor, "#563d7c");
+        String[] colors = generateRandomHexColors(10);
 
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].value = '#C47A12';", colorPicker);
-        // Я так особо и не разобрался как с Color Picker работать, даже нейронки особо не помогают
+        for (String color : colors) {
+            js.executeScript
+                    ("arguments[0].value = '" + color + "';", colorPicker);
+            Thread.sleep(200);
+            String valueCheck = colorPicker.getDomProperty("value");
+            assertEquals(color, valueCheck);
+        }
 
         WebElement dateField = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='my-date']")));
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", dateField);
+        js.executeScript("arguments[0].scrollIntoView(true);", dateField);
 
         Thread.sleep(500);
 
@@ -340,8 +366,9 @@ public class GroupCodeCraftTest {
         Thread.sleep(500);
 
         WebElement previousMonth = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", previousMonth);
+                (ExpectedConditions.visibilityOfElementLocated
+                        (By.xpath("//div[@class='datepicker-days']/descendant::th[@class='prev']")));
+        js.executeScript("arguments[0].scrollIntoView(true);", previousMonth);
 
         for (int i = 0; i < 5; i++) {
             previousMonth.click();
@@ -384,10 +411,18 @@ public class GroupCodeCraftTest {
             String valueCheck = range.getDomProperty("valueAsNumber");
             assertEquals(value, valueCheck);
         }
+        for (int i = 10; i != 0; i--) {
+            String value = String.valueOf(i);
+            js.executeScript("arguments[0].value = '" + value + "';", range);
+            String valueCheck = range.getDomProperty("valueAsNumber");
+            assertEquals(value, valueCheck);
+        }
 
         WebElement submit = driver.findElement(By.tagName("button"));
         submit.click();
+        assertEquals(driver.findElement(By.xpath("//p[@class]")).getText(), "Received!");
         driver.navigate().back();
+        assertEquals(driver.findElement(By.xpath("//h1[text()='Web form']")).getText(), "Web form");
     }
 
     @Test
