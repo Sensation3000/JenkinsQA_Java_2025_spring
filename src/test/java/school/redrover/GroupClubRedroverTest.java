@@ -12,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class KuletskyTest {
+public class GroupClubRedroverTest {
     WebDriver driver;
     private static final String BASE_URL = "https://bonigarcia.dev/selenium-webdriver-java/";
 
