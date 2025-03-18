@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.Set;
@@ -102,5 +103,31 @@ public class Group_JavaQATest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testGardenplus() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.gardensplus.ca");
+
+        Thread.sleep(1000);
+
+        WebElement buttonDismiss = driver.findElement(By.className("woocommerce-store-notice__dismiss-link"));
+        buttonDismiss.click();
+
+        WebElement input = driver.findElement(By.id("woocommerce-product-search-field-0"));
+
+        input.sendKeys("Lovely Lolly");
+
+        WebElement buttonSearch = driver.findElement(By.xpath("//*[@id=\"woocommerce_product_search-2\"]/form/button"));
+
+        buttonSearch.submit();
+
+        WebElement productTitle = driver.findElement(By.xpath("//h1[@class='product_title entry-title']"));
+
+        Assert.assertTrue(productTitle.getText().contains("Lovely Lolly"));
+
+        driver.quit();
     }
 }
