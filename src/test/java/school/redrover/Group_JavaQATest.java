@@ -30,7 +30,7 @@ public class Group_JavaQATest {
     By conformationPage = By.xpath("//div[contains(text(),'Your Personal Consultant')]/ancestor::article//h2");
 
     @Test
-    public void testRequestQuote() throws InterruptedException {
+    public void testRequestQuote () throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -50,7 +50,7 @@ public class Group_JavaQATest {
         driver.findElement(voyageOfInterestSelect).click();
         driver.findElement(submitButton).click();
         Thread.sleep(5000);
-        assertTrue(driver.findElement(conformationPage).isDisplayed(), "Thank you page is displayed");
+        assertTrue(driver.findElement(conformationPage).isDisplayed(),"Thank you page is displayed");
 
         driver.quit();
     }
@@ -75,7 +75,7 @@ public class Group_JavaQATest {
 
         driver.quit();
     }
-
+    
     @Test
     public void testMarina() {
         WebDriverManager.chromedriver().setup();
@@ -103,7 +103,6 @@ public class Group_JavaQATest {
         } finally {
             driver.quit();
         }
-
     }
 
     @Test
@@ -131,5 +130,4 @@ public class Group_JavaQATest {
 
         driver.quit();
     }
-
 }
