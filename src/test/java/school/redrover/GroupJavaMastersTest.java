@@ -166,4 +166,34 @@ public class GroupJavaMastersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testRemoveItemFromCart() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        WebElement userNameTextField = driver.findElement(By.id("user-name"));
+        userNameTextField.sendKeys("standard_user");
+
+        WebElement passwordTextField = driver.findElement(By.id("password"));
+        passwordTextField.sendKeys("secret_sauce");
+
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+        loginButton.click();
+
+        WebElement addToCartBtn = driver.findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        addToCartBtn.click();
+
+        WebElement removeFromCartBtn = driver.findElement(By.id("remove-sauce-labs-backpack"));
+
+        Assert.assertEquals(removeFromCartBtn.getText(), "Remove");
+        removeFromCartBtn.click();
+
+        // Working properly only after second designation locator
+        WebElement addToCartBtn1 = driver.findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        Assert.assertEquals(addToCartBtn1.getText(), "Add to cart");
+
+        driver.quit();
+    }
 }
