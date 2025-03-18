@@ -102,5 +102,5 @@ public class Group_JavaQATest {
         } finally {
             driver.quit();
         }
-  
+    }
 }
