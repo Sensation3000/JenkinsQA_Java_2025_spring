@@ -125,8 +125,5 @@ public class GroupJavaMastersTest {
         Assert.assertEquals(cartIcon.getText(), "1");
 
         driver.quit();
-
     }
-
-
 }
