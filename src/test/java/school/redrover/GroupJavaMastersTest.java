@@ -62,4 +62,25 @@ public class GroupJavaMastersTest {
         driver.quit();
     }
 
+    @Test
+    public void testLockedUserLogin() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        WebElement userNameTextField = driver.findElement(By.xpath("//form/div[1]/input[@class='input_error form_input']"));
+        userNameTextField.sendKeys("locked_out_user");
+
+        WebElement passwordTextField = driver.findElement(By.name("password"));
+        passwordTextField.sendKeys("secret_sauce");
+
+        WebElement loginButton = driver.findElement(By.xpath("//form/input[@type='submit']"));
+        loginButton.click();
+
+        WebElement errorMessage = driver.findElement(By.tagName("h3"));
+
+        Assert.assertEquals(errorMessage.getText(), "Epic sadface: Sorry, this user has been locked out.");
+
+        driver.quit();
+    }
 }
