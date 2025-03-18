@@ -194,6 +194,31 @@ public class GroupJavaNinjasTest {
         assertEquals(headingText.getText(), "Keyboard actions");
 
     }
+    @Test
+    public void testSeleniumForm() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement textBox = driver.findElement(By.id("my-text-id"));
+        WebElement textPassword = driver.findElement ( By.xpath ( "//input[@name='my-password']" ) );
+        WebElement submitButton = driver.findElement(By.tagName("button"));
+
+        textBox.sendKeys("Selenium");
+        textPassword.sendKeys ( "555" );
+        submitButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement message = driver.findElement(By.id("message"));
+        String value = message.getText();
+
+        assertEquals(value, "Received!");
+
+        driver.quit();
+    }
 
     @AfterSuite
     public void teardown() {
