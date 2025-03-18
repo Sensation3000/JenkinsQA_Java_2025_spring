@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
 import java.util.Set;
 
@@ -283,7 +284,7 @@ public class GroupQAFokuzTest {
         driver.get("https://wonderl.ink/@fokuz.photo/");
         Thread.sleep(5000);
         WebElement pinterestButton = driver.findElement(By.linkText("Pinterest"));
-        Assert.assertTrue( pinterestButton.isDisplayed(), "Button 'Pinterest' not found on page.");
+        Assert.assertTrue(pinterestButton.isDisplayed(), "Button 'Pinterest' not found on page.");
         pinterestButton.click();
         Thread.sleep(5000);
         Set<String> windowHandles = driver.getWindowHandles(); // Pinterest открывается в новой вкладке
@@ -299,4 +300,55 @@ public class GroupQAFokuzTest {
         driver.quit();
 
     }
+
+    @Test
+    public void testAddRemoveElements() throws InterruptedException {
+// проверяет, что нажатие на кнопку Add добавляет элемент
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
+
+        Thread.sleep(1000);
+
+        WebElement addRemoveElementsLink = driver.findElement(By.xpath("//li[2]/a"));
+        addRemoveElementsLink.click();
+
+        Thread.sleep(1000);
+
+        WebElement addElementButton = driver.findElement(By.xpath("//div[@class='example']/button"));
+        addElementButton.click();
+
+        WebElement deleteButton = driver.findElement(By.xpath("//div[@id='elements']/button"));
+
+        Assert.assertTrue(deleteButton.isDisplayed(), "Элемент не добавлен!");
+
+        driver.quit();
+
+    }
+
+    @Test
+    public void testFokuzNavigation() throws InterruptedException {
+//  проверяет, что ссылка в навигационной панели хедера работает корректно
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://fokuz.photo/");
+        driver.manage().window().maximize();
+
+        Thread.sleep(1000);
+
+        WebElement daBinIchLink = driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]"));
+        daBinIchLink.click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://fokuz.photo/da-bin-ich/", "URL не соответствует ожидаемому!");
+
+        driver.quit();
+
+    }
+
+
 }
