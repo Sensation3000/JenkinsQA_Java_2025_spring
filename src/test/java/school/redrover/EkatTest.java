@@ -35,7 +35,6 @@ public class EkatTest {
         String value = message.getText();
         assertEquals(value, "Received!");
 
-
         driver.quit();
     }
 }
