@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 public class GroupJavaMastersTest {
 
     @Test
-    public void loginTest() {
+    public void testLogin() {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.saucedemo.com/");
