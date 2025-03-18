@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -134,4 +135,26 @@ public class GroupFallRisersTest {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
+
+    @Test
+    public void testSubscribe() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://i-store.by/");
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0, document.body.scrollHeight / 2);");
+
+        WebElement subButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-submit")));
+        subButton.click();
+
+        WebElement error = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".error.ng-star-inserted")));
+        wait.until(ExpectedConditions.textToBePresentInElement(error, "Поле обязательно для заполнения"));
+        String errorText = error.getText().trim();
+
+        Assert.assertEquals(errorText, "Поле обязательно для заполнения");
+        driver.quit();
+    }
+
+
 }
