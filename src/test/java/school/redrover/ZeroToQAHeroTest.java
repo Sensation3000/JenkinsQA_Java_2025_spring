@@ -214,7 +214,7 @@ public class ZeroToQAHeroTest {
     }
 
     @Test
-    public void settingFilters(){
+    public void testSettingFilters(){
         WebDriver driver = new ChromeDriver();
         Actions actions = new Actions(driver);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
