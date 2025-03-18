@@ -149,4 +149,21 @@ public class GroupJavaMastersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testInvalidUserLogin() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+
+        WebElement usernameBox = driver.findElement(By.id("username"));
+        usernameBox.sendKeys("studen");
+
+        WebElement submitBtn = driver.findElement(By.id("submit"));
+        submitBtn.click();
+
+        WebElement invalidUsernameMessage = driver.findElement(By.id("error"));
+        Assert.assertEquals(invalidUsernameMessage.getText(), "Your username is invalid!");
+
+        driver.quit();
+    }
 }
