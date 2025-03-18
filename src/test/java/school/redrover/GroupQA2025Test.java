@@ -33,7 +33,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppEmptyLoginEmptyPasswordTest__() {
+    public void uitapSampleAppEmptyLoginEmptyPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
