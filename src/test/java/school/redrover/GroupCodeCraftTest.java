@@ -3,10 +3,7 @@ package school.redrover;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.Text;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -800,5 +797,23 @@ public class GroupCodeCraftTest {
         Assert.assertEquals(value, "Something else here");
 
         driver.quit();
+    }
+
+    @Test
+    public void inputArrowUpTest() throws InterruptedException {
+        driver.get("http://the-internet.herokuapp.com/inputs");
+        WebElement inputField = driver.findElement(By.xpath("//input[@type='number']"));
+        inputField.sendKeys(Keys.ARROW_UP);
+        String fieldNumber = inputField.getAttribute("value");
+        Assert.assertEquals(fieldNumber, "1");
+    }
+
+    @Test
+    public void inputArrowDownTest() {
+        driver.get("http://the-internet.herokuapp.com/inputs");
+        WebElement inputField = driver.findElement(By.xpath("//input[@type='number']"));
+        inputField.sendKeys(Keys.ARROW_DOWN);
+        String fieldNumber = inputField.getAttribute("value");
+        Assert.assertEquals(fieldNumber, "-1");
     }
 }
