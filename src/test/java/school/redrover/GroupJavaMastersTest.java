@@ -125,5 +125,28 @@ public class GroupJavaMastersTest {
         Assert.assertEquals(cartIcon.getText(), "1");
 
         driver.quit();
+
+    }
+
+    @Test
+    public void testSuccessfulLoginPage() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+
+        WebElement usernameBox = driver.findElement(By.id("username"));
+        usernameBox.sendKeys("student");
+
+        WebElement passwordBox = driver.findElement(By.id("password"));
+        passwordBox.sendKeys("Password123");
+
+        WebElement submitBtn = driver.findElement(By.id("submit"));
+        submitBtn.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://practicetestautomation.com/logged-in-successfully/");
+
+        WebElement successfulLoginMessage = driver.findElement(By.className("post-title"));
+        Assert.assertEquals(successfulLoginMessage.getText(), "Logged In Successfully");
+
+        driver.quit();
     }
 }
