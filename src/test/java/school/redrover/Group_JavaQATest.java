@@ -8,8 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -55,6 +55,27 @@ public class Group_JavaQATest {
     }
 
     @Test
+    public void testNewTabOpen() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://goodbeautychicago.com/");
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"post-460\"]/div/div/section[1]/div[2]/div/div/section[2]/div/div/div/div[2]/div/div/a/span/span"));
+
+        Set<String> windowHandlesBefore = driver.getWindowHandles();
+        assertEquals(windowHandlesBefore.size(), 1, "Initially more than 1 tab!");
+
+        submitButton.click();
+        Thread.sleep(4000);
+        Set<String> windowHandlesAfter = driver.getWindowHandles();
+
+        assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
+
+        driver.quit();
+    }
+    
+    @Test
     public void testMarina() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
@@ -81,5 +102,5 @@ public class Group_JavaQATest {
         } finally {
             driver.quit();
         }
-    }
+  
 }
