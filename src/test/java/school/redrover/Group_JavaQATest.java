@@ -3,9 +3,13 @@ package school.redrover;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
+import java.util.Set;
+
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class Group_JavaQATest {
@@ -44,6 +48,27 @@ public class Group_JavaQATest {
         driver.findElement(submitButton).click();
         Thread.sleep(5000);
         assertTrue(driver.findElement(conformationPage).isDisplayed(),"Thank you page is displayed");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testNewTabOpen() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://goodbeautychicago.com/");
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"post-460\"]/div/div/section[1]/div[2]/div/div/section[2]/div/div/div/div[2]/div/div/a/span/span"));
+
+        Set<String> windowHandlesBefore = driver.getWindowHandles();
+        assertEquals(windowHandlesBefore.size(), 1, "Initially more than 1 tab!");
+
+        submitButton.click();
+        Thread.sleep(4000);
+        Set<String> windowHandlesAfter = driver.getWindowHandles();
+
+        assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
 
         driver.quit();
     }
