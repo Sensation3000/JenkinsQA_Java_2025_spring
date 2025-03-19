@@ -10,7 +10,9 @@ import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.stream.Stream;
 
+import static org.apache.commons.io.function.IOConsumer.forEach;
 import static org.testng.Assert.*;
 
 public class GroupRedRoverJavaUTC3Test {
@@ -56,6 +58,14 @@ public class GroupRedRoverJavaUTC3Test {
         }
     }
 
+    private boolean isDisplayed(WebElement badgeElement) {
+        try {
+            return badgeElement.isDisplayed();
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
     @Test
     public void testAuthorization() {
 
@@ -75,10 +85,10 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest() {
+    public void testRickAstley() {
 
-        String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
-        String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
+        final String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
+        final String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
 
         getDriver().get("https://www.youtube.com/watch?v=hPr-Yc92qaY");
 
@@ -141,7 +151,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void ImageFormatCheck() {
+    public void testImageFormatCheck() {
         // Открываем страницу
         getDriver().get("https://redrover.school/?lang=en");
 
@@ -154,12 +164,11 @@ public class GroupRedRoverJavaUTC3Test {
 
         // Проверяем, что ссылка заканчивается на .png
         Assert.assertTrue(safeImageUrl.toLowerCase().endsWith(".png"), "Image URL does not end with .png: " + safeImageUrl);
-        System.out.println("Изображение НЕ в формате PNG: " + safeImageUrl);
     }
 
 
     @Test
-    public void itemAddRemoveToCartTest() {
+    public void testItemAddRemoveToCart() {
         getDriver().get("https://www.saucedemo.com/");
 
         getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
@@ -193,16 +202,8 @@ public class GroupRedRoverJavaUTC3Test {
         assertEquals(searchResult.getText(), "Томат Мохнатый шмель 0.05г (Семена Алтая)");
     }
 
-    boolean isDisplayed(WebElement badgeElement) {
-        try {
-            return badgeElement.isDisplayed();
-        } catch (StaleElementReferenceException e) {
-            return false;
-        }
-    }
-
     @Test
-    public void seasonvarTest() {
+    public void testSeasonvar() {
         getDriver().get("http://seasonvar.ru/");
         WebElement field = getDriver().findElement(By.cssSelector("div .awesomplete input"));
         field.click();
@@ -214,7 +215,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void TestAuthentificationForm() {
+    public void testAuthenticationForm() {
 
         getDriver().get("https://the-internet.herokuapp.com/login");
 
@@ -227,8 +228,6 @@ public class GroupRedRoverJavaUTC3Test {
         String messageText= getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
 
         Assert.assertEquals(messageText,  "Welcome to the Secure Area. When you are done click logout below.");
-
-
     }
 
     @Test
