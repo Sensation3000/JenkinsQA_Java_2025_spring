@@ -130,4 +130,31 @@ public class GroupAQARookiesTest {
         driver.quit();
     }
 
+    @Test
+    public void testSelenium() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Web form");
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@name = 'my-textarea']"));
+        WebElement submitButton = driver.findElement(By.cssSelector("button"));
+
+        Thread.sleep(1000);
+
+        textBox.sendKeys("Привет, я автотест");
+        submitButton.click();
+
+        Thread.sleep(1500);
+
+        WebElement message = driver.findElement(By.id("message"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Received!");
+
+        driver.quit();
+    }
+
 }
