@@ -3,9 +3,16 @@ package school.redrover;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.Duration;
+import java.util.Set;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class Group_JavaQATest {
@@ -44,6 +51,82 @@ public class Group_JavaQATest {
         driver.findElement(submitButton).click();
         Thread.sleep(5000);
         assertTrue(driver.findElement(conformationPage).isDisplayed(),"Thank you page is displayed");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testNewTabOpen() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://goodbeautychicago.com/");
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"post-460\"]/div/div/section[1]/div[2]/div/div/section[2]/div/div/div/div[2]/div/div/a/span/span"));
+
+        Set<String> windowHandlesBefore = driver.getWindowHandles();
+        assertEquals(windowHandlesBefore.size(), 1, "Initially more than 1 tab!");
+
+        submitButton.click();
+        Thread.sleep(4000);
+        Set<String> windowHandlesAfter = driver.getWindowHandles();
+
+        assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
+
+        driver.quit();
+    }
+    
+    @Test
+    public void testMarina() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            WebElement textBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
+            WebElement textBox1 = driver.findElement(By.name("password"));
+            WebElement submitButton = driver.findElement(By.tagName("button"));
+
+            textBox.sendKeys("Admin");
+            textBox1.sendKeys("admin123");
+            submitButton.click();
+
+            WebElement pageName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h6")));
+            String value = pageName.getText().trim();
+
+            System.out.println("Extracted text: " + value);
+            assertEquals("Dashboard", value);
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testGardenplus() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.gardensplus.ca");
+
+        Thread.sleep(1000);
+
+        WebElement buttonDismiss = driver.findElement(By.className("woocommerce-store-notice__dismiss-link"));
+        buttonDismiss.click();
+
+        WebElement input = driver.findElement(By.id("woocommerce-product-search-field-0"));
+
+        input.sendKeys("Lovely Lolly");
+
+        WebElement buttonSearch = driver.findElement(By.xpath("//*[@id=\"woocommerce_product_search-2\"]/form/button"));
+
+        buttonSearch.submit();
+
+        WebElement productTitle = driver.findElement(By.xpath("//h1[@class='product_title entry-title']"));
+
+        Assert.assertTrue(productTitle.getText().contains("Lovely Lolly"));
 
         driver.quit();
     }

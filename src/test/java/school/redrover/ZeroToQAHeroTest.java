@@ -4,12 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -178,4 +180,77 @@ public class ZeroToQAHeroTest {
 
         driver.quit();
     }
+
+    @Test
+    public void tesGlobalsqaCom() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement submitButton = driver.findElement(By.xpath("//button[contains(@class, 'btn btn-primary ')][1]"));
+        submitButton.click();
+
+        WebElement select  = driver.findElement(By.name("userSelect"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        select.click();
+
+        WebElement choice = driver.findElement(By.xpath("//div[@class='form-group']/*/option[3]"));
+        String value = choice.getText();
+        assertEquals("Harry Potter", value);
+        choice.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement login = driver.findElement(By.xpath("//button[@type='submit']"));
+        String log = login.getText();
+        assertEquals("Login", log);
+        login.click();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement fin = driver.findElement(By.xpath("//span[contains(text(), 'Harry')]"));
+        String finish = fin.getText();
+        assertEquals("Harry Potter", finish);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSettingFilters(){
+        WebDriver driver = new ChromeDriver();
+        Actions actions = new Actions(driver);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        driver.get("https://www.parasoft.com/");
+        driver.manage().window().maximize();
+
+        WebElement buttonTryMe = driver.findElement(By.linkText("Try Parasoft"));
+        buttonTryMe.click();
+
+        WebElement filterSolutions = driver.findElement(By.xpath("//h4[contains(text(),'Solutions')]"));
+        WebElement searchButton = driver.findElement(By.cssSelector("input[name='_sf_submit']"));
+
+        filterSolutions.click();
+        WebElement filter_In_Solutions = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Reporting & Analytics')]")));
+        actions.moveToElement(filter_In_Solutions).click().perform();
+
+        WebElement filterIndustries = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h4[contains(text(),'Industries')]")));
+        filterIndustries.click();
+        WebElement filter_In_Industries = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Telecommunications')]")));
+        actions.moveToElement(filter_In_Industries);
+        actions.click(filter_In_Industries).perform();
+        actions.moveToElement(searchButton).click().perform();
+
+        List<WebElement> searchResultNames = driver.findElements(By.cssSelector("div.b-product-icon h4"));
+        ArrayList<String> searchResults = new ArrayList<>(0);
+        for(WebElement name: searchResultNames){
+            searchResults.add(name.getText());
+        }
+
+        Assert.assertEquals(searchResults.toString(),
+                "[C/C++test, C/C++test CT, Jtest, dotTEST, DTP, CTP, Selenic, SOAtest, Virtualize]",
+                "Names should be the same!");
+
+        driver.quit();
+    }
+
+
+
 }

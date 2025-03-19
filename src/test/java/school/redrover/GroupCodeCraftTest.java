@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Random;
 
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static net.datafaker.providers.base.Text.*;
 import static org.testng.Assert.*;
 
@@ -748,5 +749,56 @@ public class GroupCodeCraftTest {
         String value = selectElement.getAttribute("value");
 
         Assert.assertEquals(value, "six");
+    }
+
+    @Test
+    public void testDQARadioButton() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com");
+
+        WebElement firstBlock =
+                driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", firstBlock);
+        Thread.sleep(500);
+        firstBlock.click();
+
+        Thread.sleep(500);
+        WebElement sButton = driver.findElement(By.id("item-2"));
+        sButton.click();
+
+        Thread.sleep(500);
+        WebElement radioButton = new WebDriverWait(driver, Duration.of(10, SECONDS))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='impressiveRadio']")));
+        radioButton.click();
+
+        Thread.sleep(500);
+        WebElement message = driver.findElement(By.xpath("//div[2]/div[2]/p/span"));
+        String value = message.getText( );
+        Assert.assertEquals(value, "Impressive");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testBGDropDown() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/index.html");
+
+        WebElement dropDown =
+                driver.findElement(By.xpath("//div[1]/div/div/a[3]"));
+        dropDown.click();
+
+        Thread.sleep(500);
+        WebElement sButton = driver.findElement(By.id("my-dropdown-1"));
+        sButton.click();
+
+        Thread.sleep(500);
+        WebElement text = driver.findElement(By.xpath("//div[1]/div/ul/li[3]/a"));
+        String value = text.getText();
+        Assert.assertEquals(value, "Something else here");
+
+        driver.quit();
     }
 }
