@@ -37,4 +37,28 @@ public class EkatTest {
 
         driver.quit();
     }
+
+    @Test
+    public void firstCoffeeTest() {
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://coffee-cart.app/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Coffee cart");
+
+        WebElement menuButton = driver.findElement(By.cssSelector("a[aria-label='Menu page']"));
+        assertEquals(menuButton.getText(), "menu");
+
+        WebElement cartButton = driver.findElement(By.cssSelector("a[aria-label='Cart page']"));
+        assertEquals(cartButton.getText(), "cart (0)");
+
+        WebElement gitButton = driver.findElement((By.cssSelector("a[aria-label='GitHub page']")));
+        assertEquals(gitButton.getText(),"github");
+
+        driver.quit();
+
+    }
 }
