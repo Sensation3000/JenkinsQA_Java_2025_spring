@@ -23,7 +23,7 @@ public class EkatTest {
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
         String title = driver.getTitle();
-        assertEquals("Web form", title);
+        assertEquals(title, "Web form");
 
         WebElement textBox = driver.findElement(By.name("my-text"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
@@ -33,8 +33,7 @@ public class EkatTest {
 
         WebElement message = driver.findElement(By.id("message"));
         String value = message.getText();
-        assertEquals("Received!", value);
-
+        assertEquals(value, "Received!");
 
         driver.quit();
     }
