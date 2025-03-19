@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.awt.*;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -43,7 +45,16 @@ public class GroupRedRoverJavaUTC3Test {
     @BeforeMethod
     protected void start() {
         driver = new ChromeDriver();
-        getDriver().manage().window().maximize();
+        // Получаем разрешение экрана
+        java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        // Устанавливаем размер окна браузера (не больше разрешения экрана)
+        int browserWidth = Math.min(1920, screenWidth);
+        int browserHeight = Math.min(1080, screenHeight);
+        Dimension dimension = new Dimension(browserWidth, browserHeight);
+        driver.manage().window().setSize(dimension);
     }
 
     @AfterMethod
@@ -75,7 +86,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest() {
+    public void RickAstleyTest() throws InterruptedException {
 
         String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
@@ -96,6 +107,7 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement button = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathPlayButton)));
 
         for (int i = 0; i < 10; i++) {
+            Thread.sleep(8000);
             button.click();
             count++;
         }
