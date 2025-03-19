@@ -13,7 +13,6 @@ public class ZarinaDragDropTest {
     WebDriver driver = new ChromeDriver();
 
     @Test
-
     public void dragDropTest() throws InterruptedException {
         driver.get("https://the-internet.herokuapp.com/drag_and_drop");
         WebElement title = driver.findElement(By.xpath("//h3[text()='Drag and Drop']"));
@@ -31,6 +30,5 @@ public class ZarinaDragDropTest {
         System.out.println("Success!");
 
         driver.quit();
-
     }
 }
