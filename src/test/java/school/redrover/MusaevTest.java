@@ -1,6 +1,5 @@
 package school.redrover;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,21 +8,17 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
 
-public class EkatTest {
+public class MusaevTest {
 
     @Test
-    public void firstTest() {
-        WebDriverManager.chromedriver();
+    public void testSum() {
 
         WebDriver driver = new ChromeDriver();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-
-        String title = driver.getTitle();
-        assertEquals(title, "Web form");
 
         WebElement textBox = driver.findElement(By.name("my-text"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
@@ -33,8 +28,10 @@ public class EkatTest {
 
         WebElement message = driver.findElement(By.id("message"));
         String value = message.getText();
-        assertEquals(value, "Received!");
+
+        assertEquals("Received!", value);
 
         driver.quit();
     }
+
 }
