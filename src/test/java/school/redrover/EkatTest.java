@@ -58,6 +58,7 @@ public class EkatTest {
         WebElement gitButton = driver.findElement((By.cssSelector("a[aria-label='GitHub page']")));
         assertEquals(gitButton.getText(),"github");
 
+
         driver.quit();
 
     }
