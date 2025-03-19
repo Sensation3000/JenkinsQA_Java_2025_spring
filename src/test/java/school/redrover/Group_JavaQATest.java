@@ -130,4 +130,20 @@ public class Group_JavaQATest {
 
         driver.quit();
     }
+
+    @Test
+    public void testEliza(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+
+        driver.findElement(By.xpath("//div//ul[@class='leftmenu']//li//a[text()='About Us']")).click();
+
+        WebElement customerLoginHeader = driver.findElement(By.xpath("//h2[text()='Customer Login']"));
+        String text =  customerLoginHeader.getText();
+        assertEquals(text, "Customer Login");
+
+
+    }
+
+
 }
