@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.awt.*;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -45,7 +47,16 @@ public class GroupRedRoverJavaUTC3Test {
     @BeforeMethod
     protected void start() {
         driver = new ChromeDriver();
-        getDriver().manage().window().maximize();
+        // Получаем разрешение экрана
+        java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        // Устанавливаем размер окна браузера (не больше разрешения экрана)
+        int browserWidth = Math.min(1920, screenWidth);
+        int browserHeight = Math.min(1080, screenHeight);
+        Dimension dimension = new Dimension(browserWidth, browserHeight);
+        driver.manage().window().setSize(dimension);
     }
 
     @AfterMethod
@@ -85,7 +96,8 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void testRickAstley() {
+
+    public void RickAstleyTest() throws InterruptedException {
 
         final String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         final String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
@@ -106,6 +118,7 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement button = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathPlayButton)));
 
         for (int i = 0; i < 10; i++) {
+            Thread.sleep(8000);
             button.click();
             count++;
         }
@@ -225,9 +238,11 @@ public class GroupRedRoverJavaUTC3Test {
 
         getDriver().findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']")).click();
 
-        String messageText= getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
+        String messageText = getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
 
-        Assert.assertEquals(messageText,  "Welcome to the Secure Area. When you are done click logout below.");
+
+        Assert.assertEquals(messageText, "Welcome to the Secure Area. When you are done click logout below.");
+
     }
 
     @Test
@@ -294,4 +309,37 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement sliderValue = driver.findElement(By.xpath("//span[@id='range']"));
         Assert.assertEquals(sliderValue.getText(), "3");
     }
+
+    @Test
+
+    public void TestAlertButton() {
+        getDriver().get("https://the-internet.herokuapp.com/javascript_alerts");
+
+        getDriver().findElement(By.xpath("//button[@onclick='jsAlert()']")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        String result = getDriver().findElement(By.xpath("//p[@id='result']")).getText();
+
+        Assert.assertEquals(result, "You successfully clicked an alert");
+    }
+
+    @Test
+    public void testYearsSliderTBank() {
+        getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
+
+        getWait5().until(d -> getDriver().getTitle() != null);
+
+        WebElement slider = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']"));
+
+        Actions actions = new Actions(getDriver());
+
+        actions.dragAndDropBy(slider, 100, 0).perform();
+
+        WebElement element = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//input[@data-qa-type ='uikit/inlineInput.input' ]"));
+        String inputValue = element.getAttribute("value");
+
+        Assert.assertEquals(inputValue, "15\u00a0лет");
+    }
 }
+
