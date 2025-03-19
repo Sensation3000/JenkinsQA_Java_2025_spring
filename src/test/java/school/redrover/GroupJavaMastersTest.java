@@ -151,7 +151,7 @@ public class GroupJavaMastersTest {
     }
 
     @Test
-    public void testInvalidUserLogin() {
+    public void testInvalidUserLogin() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://practicetestautomation.com/practice-test-login/");
 
@@ -161,6 +161,7 @@ public class GroupJavaMastersTest {
         WebElement submitBtn = driver.findElement(By.id("submit"));
         submitBtn.click();
 
+        Thread.sleep(3000);
         WebElement invalidUsernameMessage = driver.findElement(By.id("error"));
         Assert.assertEquals(invalidUsernameMessage.getText(), "Your username is invalid!");
 
