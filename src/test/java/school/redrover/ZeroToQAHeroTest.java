@@ -251,7 +251,7 @@ public class ZeroToQAHeroTest {
 
         driver.quit();
     }
-
+    @Test
     public void testRadio(){
 
         WebDriver driver = new ChromeDriver();
