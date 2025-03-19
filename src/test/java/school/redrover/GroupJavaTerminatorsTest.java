@@ -38,11 +38,12 @@ public class GroupJavaTerminatorsTest {
     }
 
     @Test(description = "Check, that Sauce Labs Backpack has been added to the cart and total price is 32.39")
-    public void test() {
+    public void totalOrderPriceTest() {
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(10));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+        driver.manage().window().maximize();
 
         driver.get("https://www.saucedemo.com/");
         driver.findElement(By.id("user-name")).sendKeys("standard_user");
