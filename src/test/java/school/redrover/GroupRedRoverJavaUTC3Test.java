@@ -224,9 +224,9 @@ public class GroupRedRoverJavaUTC3Test {
 
         getDriver().findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']")).click();
 
-        String messageText= getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
+        String messageText = getDriver().findElement(By.xpath("//h4[@class='subheader']")).getText();
 
-        Assert.assertEquals(messageText,  "Welcome to the Secure Area. When you are done click logout below.");
+        Assert.assertEquals(messageText, "Welcome to the Secure Area. When you are done click logout below.");
 
 
     }
@@ -295,4 +295,37 @@ public class GroupRedRoverJavaUTC3Test {
         WebElement sliderValue = driver.findElement(By.xpath("//span[@id='range']"));
         Assert.assertEquals(sliderValue.getText(), "3");
     }
+
+    @Test
+
+    public void TestAlertButton() {
+        getDriver().get("https://the-internet.herokuapp.com/javascript_alerts");
+
+        getDriver().findElement(By.xpath("//button[@onclick='jsAlert()']")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        String result = getDriver().findElement(By.xpath("//p[@id='result']")).getText();
+
+        Assert.assertEquals(result, "You successfully clicked an alert");
+    }
+
+    @Test
+    public void testYearsSliderTBank() {
+        getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
+
+        getWait5().until(d -> getDriver().getTitle() != null);
+
+        WebElement slider = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']"));
+
+        Actions actions = new Actions(getDriver());
+
+        actions.dragAndDropBy(slider, 100, 0).perform();
+
+        WebElement element = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//input[@data-qa-type ='uikit/inlineInput.input' ]"));
+        String inputValue = element.getAttribute("value");
+
+        Assert.assertEquals(inputValue, "15\u00a0лет");
+    }
 }
+
