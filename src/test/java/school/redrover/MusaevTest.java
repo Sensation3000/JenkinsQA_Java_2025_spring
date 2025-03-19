@@ -23,7 +23,7 @@ public class MusaevTest {
         WebElement textBox = driver.findElement(By.name("my-text"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
 
-        textBox.sendKeys("Selenium123");
+        textBox.sendKeys("Selenium");
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
