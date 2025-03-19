@@ -61,7 +61,6 @@ public class GroupJavaTerminatorsTest {
 
         Assert.assertEquals(expectedRes, "Total: $32.39");
 
-        driver.close();
         driver.quit();
     }
 }
