@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -74,7 +75,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void RickAstleyTest() throws InterruptedException {
+    public void RickAstleyTest() {
 
         String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
@@ -118,7 +119,7 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void testAmazon() throws InterruptedException {
+    public void testAmazon() {
         getDriver().get("https://www.amazon.com/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%2C%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%2F-%2Fes%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%252F-%252Fes%252Fcustomer-preferences%252Fedit%253Fie%253DUTF8%2526preferencesReturnUrl%253D%25252Fs%25253Fk%25253Dball%252526language%25253Des_US%252526crid%25253DXEQUFPHXIKJE%252526sprefix%25253Dball%2525252Caps%2525252C380%252526ref%25253Dnb_sb_noss_1%2526ref_%253Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26language%3Den_US%26currency%3DUSD&ref_=topnav_lang_ais");
 
         try {
@@ -158,7 +159,7 @@ public class GroupRedRoverJavaUTC3Test {
 
 
     @Test
-    public void itemAddRemoveToCartTest() throws InterruptedException {
+    public void itemAddRemoveToCartTest() {
         getDriver().get("https://www.saucedemo.com/");
 
         getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
@@ -259,5 +260,39 @@ public class GroupRedRoverJavaUTC3Test {
         Assert.assertEquals(currentUrl, "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
 
         getDriver().quit();
+    }
+
+    @Test
+    public void testHorizontalSliderTBank() {
+
+        getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
+
+        getWait5().until(d -> getDriver().getTitle() != null); //  проверка загрузки страницы
+
+        WebElement sliderSum = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_amount_field']//div[@data-qa-type='uikit/Draggable']"));
+        WebElement sliderYears = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']"));
+
+        Actions actions = new Actions(getDriver());
+
+        actions.dragAndDropBy(sliderSum, -77, 0).perform();
+        actions.dragAndDropBy(sliderYears, -40, 0).perform();
+
+        WebElement monthlyPayment = getDriver().findElement(By.xpath("//div[@data-qa-type='uikit/titleAndSubtitle.textPrimary']/div"));
+
+        // Проверка значения
+        Assert.assertEquals(monthlyPayment.getText(), "27 600 ₽");
+    }
+
+    @Test
+    public void testHorizontalSlider() {
+        driver.get("https://the-internet.herokuapp.com/horizontal_slider");
+
+        WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+        Actions actions = new Actions(driver);
+        actions.dragAndDropBy(slider, 10, 0).perform();
+
+        WebElement sliderValue = driver.findElement(By.xpath("//span[@id='range']"));
+        Assert.assertEquals(sliderValue.getText(), "3");
     }
 }
