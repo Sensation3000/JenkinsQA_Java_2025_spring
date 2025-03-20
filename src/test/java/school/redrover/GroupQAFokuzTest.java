@@ -141,8 +141,6 @@ public class GroupQAFokuzTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//label[contains(text(),'Music')]"))).click();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='currentAddress']"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@id='currentAddress']")));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='state']/div/div[2]"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[text()='NCR']"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("city"))).click();
@@ -162,15 +160,15 @@ public class GroupQAFokuzTest {
                 By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")));
 
         Assert.assertTrue(table.isDisplayed(), "Таблица не отображается");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(),"Denis Novicov");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(),"denisnovicov@example.com");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(),"Male");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(),"7999999999");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(),"12 December,2000");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(),"English, Commerce");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(),"Sports, Reading, Music");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(),"Prague, Vodickova 123/34");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(),"NCR Delhi");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(),"Denis Novicov","Неверное имя студента");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(),"denisnovicov@example.com","Неверный email");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(),"Male","Неверный пол");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(),"7999999999","Неверный номер телефона");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(),"12 December,2000","Неверная дата рождения");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(),"English, Commerce","Неверные предметы");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(),"Sports, Reading, Music","Неверные хобби");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(),"Prague, Vodickova 123/34","Неверный адрес");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(),"NCR Delhi","Неверный штат и город");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='closeLargeModal']"))).click();
     }
