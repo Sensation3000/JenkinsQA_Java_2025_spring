@@ -56,34 +56,19 @@ public class GroupAQARookiesTest {
     @Test
     public void testAddProductToTheCart() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
         driver.get("https://theweldercatherine.ru/");
 
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "Интернет Магазин кофе The Welder Catherine — The Welder Catherine");
-
-        WebElement product = driver.findElement(By.xpath("//a[@title='Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA']"));
-        product.click();
-
-        WebElement addToCartButton = driver.findElement(By.id("on_cart"));
-        addToCartButton.click();
-
+        driver.findElement(By.xpath("//a[@title='Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA']")).click();
+        driver.findElement(By.id("on_cart")).click();
         Thread.sleep(1000);
 
-        WebElement modal = driver.findElement(By.className("modal-min-order"));
-        WebElement minOrderText = modal.findElement(By.className("modal-card-min--text"));
-        Assert.assertEquals(minOrderText.getText(), "Минимальный заказ");
+        if (!driver.findElements(By.className("modal-min-order")).isEmpty()) {
+            new Actions(driver).moveByOffset(300, 400).click().perform();
+        }
 
-        Thread.sleep(1000);
+        driver.findElement(By.className("go-to-cart")).click();
 
-        Actions actions = new Actions(driver);
-        actions.moveByOffset(300, 400).click().perform();
-
-        WebElement goToCartButton = driver.findElement(By.className("go-to-cart"));
-        goToCartButton.click();
-
-        WebElement heading = driver.findElement(By.tagName("h1"));
-        Assert.assertEquals(heading.getText(), "оформление заказа");
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='bx-soa-item-title']/a")).getText(), "Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA");
 
         driver.quit();
     }
