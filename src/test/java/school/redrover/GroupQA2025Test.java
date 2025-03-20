@@ -2,8 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.BeforeMethod;
@@ -14,7 +14,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class GroupQA2025Test {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     @BeforeTest
     static void setupAll() {
@@ -23,8 +23,9 @@ public class GroupQA2025Test {
 
     @BeforeMethod
     void setup() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        driver = new ChromeDriver(options);
     }
 
     @AfterMethod
@@ -33,89 +34,69 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppEmptyLoginEmptyPasswordTest() {
+    public void testUitapSampleAppEmptyLoginEmptyPassword() {
 
         driver.get("http://uitestingplayground.com/");
 
-        WebElement linkVerifyText = driver.findElement(By.linkText("Sample App"));
-        linkVerifyText.click();
+        driver.findElement(By.linkText("Sample App")).click();
+        driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        WebElement textWelcomeUser = driver.findElement(By.xpath("//button[@class = 'btn btn-primary']"));
-        textWelcomeUser.click();
-
-        WebElement labelTextDanger = driver.findElement(By.xpath("//label[@class = 'text-danger']"));
-        String labelTextDangerText = labelTextDanger.getText();
-
-        Assert.assertEquals(labelTextDangerText, "Invalid username/password");
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
+                "Invalid username/password"
+        );
     }
 
     @Test
-    public void uitapSampleAppCorrectLoginEmptyPasswordTest() {
+    public void testUitapSampleAppCorrectLoginEmptyPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
-        WebElement linkVerifyText = driver.findElement(By.linkText("Sample App"));
-        linkVerifyText.click();
+        driver.findElement(By.linkText("Sample App")).click();
+        driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
+        driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        WebElement inputUserName = driver.findElement(By.xpath("//input[@name = 'UserName']"));
-        inputUserName.sendKeys("UserName");
-
-        WebElement textWelcomeUser = driver.findElement(By.xpath("//button[@class = 'btn btn-primary']"));
-        textWelcomeUser.click();
-
-        WebElement labelTextDanger = driver.findElement(By.xpath("//label[@class = 'text-danger']"));
-        String labelTextDangerText = labelTextDanger.getText();
-
-        Assert.assertEquals(labelTextDangerText, "Invalid username/password");
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
+                "Invalid username/password"
+        );
     }
 
     @Test
-    public void uitapSampleAppEmptyLoginCorrectPasswordTest() {
+    public void testUitapSampleAppEmptyLoginCorrectPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
-        WebElement linkVerifyText = driver.findElement(By.linkText("Sample App"));
-        linkVerifyText.click();
+        driver.findElement(By.linkText("Sample App")).click();
+        driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
+        driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        WebElement inputPassword = driver.findElement(By.xpath("//input[@name = 'Password']"));
-        inputPassword.sendKeys("pwd");
-
-        WebElement textWelcomeUser = driver.findElement(By.xpath("//button[@class = 'btn btn-primary']"));
-        textWelcomeUser.click();
-
-        WebElement labelTextDanger = driver.findElement(By.xpath("//label[@class = 'text-danger']"));
-        String labelTextDangerText = labelTextDanger.getText();
-
-        Assert.assertEquals(labelTextDangerText, "Invalid username/password");
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
+                "Invalid username/password"
+        );
     }
 
     @Test
-    public void uitapSampleAppCorrectLoginCorrectPasswordTest() {
+    public void testUitapSampleAppCorrectLoginCorrectPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
-        WebElement linkVerifyText = driver.findElement(By.linkText("Sample App"));
-        linkVerifyText.click();
+        driver.findElement(By.linkText("Sample App")).click();
+        driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
+        driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
+        driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        WebElement inputUserName = driver.findElement(By.xpath("//input[@name = 'UserName']"));
-        inputUserName.sendKeys("UserName");
-
-        WebElement inputPassword = driver.findElement(By.xpath("//input[@name = 'Password']"));
-        inputPassword.sendKeys("pwd");
-
-        WebElement textWelcomeUser = driver.findElement(By.xpath("//button[@class = 'btn btn-primary']"));
-        textWelcomeUser.click();
-
-        WebElement labelTextSuccess = driver.findElement(By.xpath("//label[@class = 'text-success']"));
-        String labelTextSuccessText = labelTextSuccess.getText();
-
-        Assert.assertEquals(labelTextSuccessText, "Welcome, UserName!");
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//label[@class = 'text-success']")).getText(),
+                "Welcome, UserName!"
+        );
     }
-   @ Test
-    public void linkIsClickableTest(){
-       driver.get("http://uitestingplayground.com/");
-       WebElement link = driver.findElement(By.cssSelector("[href=\"/dynamicid\"]"));
 
-       Assert.assertTrue(link.isEnabled());
-   }
+    @Test
+    public void linkIsClickableTest() {
+        driver.get("http://uitestingplayground.com/");
+
+        Assert.assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+    }
 }

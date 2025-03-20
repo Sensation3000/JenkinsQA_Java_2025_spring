@@ -96,7 +96,7 @@ public class GroupAQARookiesTest {
         String heading = driver.findElement(By.xpath("//h2[contains(text(),'Thanks for getting in touch')]")).getText();
         driver.quit();
 
-        assertEquals(heading, "Thanks for getting in touch Vasiliy!");
+        Assert.assertEquals(heading, "Thanks for getting in touch Vasiliy!");
     }
 
     @Test
