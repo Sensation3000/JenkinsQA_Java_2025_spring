@@ -33,7 +33,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppEmptyLoginEmptyPasswordTest() {
+    public void testUitapSampleAppEmptyLoginEmptyPassword() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -50,7 +50,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppCorrectLoginEmptyPasswordTest() {
+    public void testUitapSampleAppCorrectLoginEmptyPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -70,7 +70,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppEmptyLoginCorrectPasswordTest() {
+    public void testUitapSampleAppEmptyLoginCorrectPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -90,7 +90,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void uitapSampleAppCorrectLoginCorrectPasswordTest() {
+    public void testUitapSampleAppCorrectLoginCorrectPasswordTest() {
 
         driver.get("http://uitestingplayground.com/");
 
