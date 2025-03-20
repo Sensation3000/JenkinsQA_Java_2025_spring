@@ -47,12 +47,10 @@ public class GroupRedRoverJavaUTC3Test {
     @BeforeMethod
     protected void start() {
         driver = new ChromeDriver();
-        // Получаем разрешение экрана
+
         java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
-
-        // Устанавливаем размер окна браузера (не больше разрешения экрана)
         int browserWidth = Math.min(1920, screenWidth);
         int browserHeight = Math.min(1080, screenHeight);
         Dimension dimension = new Dimension(browserWidth, browserHeight);
@@ -142,25 +140,23 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-    public void testAmazon() {
-        getDriver().get("https://www.amazon.com/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%2C%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%2F-%2Fes%2Fcustomer-preferences%2Fedit%3Fie%3DUTF8%26preferencesReturnUrl%3D%252F-%252Fes%252Fcustomer-preferences%252Fedit%253Fie%253DUTF8%2526preferencesReturnUrl%253D%25252Fs%25253Fk%25253Dball%252526language%25253Des_US%252526crid%25253DXEQUFPHXIKJE%252526sprefix%25253Dball%2525252Caps%2525252C380%252526ref%25253Dnb_sb_noss_1%2526ref_%253Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26ref_%3Dtopnav_lang_ais%26language%3Den_US%26currency%3DUSD&ref_=topnav_lang_ais");
+    public void testChangeLanguageAmazon() {
+        getDriver().get("https://www.amazon.com/customer-preferences/edit");
 
         try {
-            WebElement toaster = getWait5().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//*[contains(@class, 'glow-toaster-button-dismiss')]")));
-            toaster.click();
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//*[contains(@class, 'glow-toaster-button-dismiss')]"))).click();
         } catch (TimeoutException e) {
             System.out.println("No toaster appeared within 5 seconds, moving on!");
         }
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//i[@class='a-icon a-icon-radio'])[2]"))).click();
-
+        getDriver().findElement(By.xpath("(//i[@class='a-icon a-icon-radio'])[2]")).click();
         getDriver().findElement(By.id("icp-save-button")).click();
+        getWait5().until(ExpectedConditions.textToBe(
+                By.xpath("//span[@aria-label='Estados Unidos']/following-sibling::div"), "ES"));
 
-        getWait10().until(ExpectedConditions.textToBe(By.cssSelector(".nav-line-2 div"), "ES"));
-
-        WebElement languageES = getDriver().findElement(By.cssSelector(".nav-line-2 div"));
-        Assert.assertEquals(languageES.getText(), "ES");
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//span[@aria-label='Estados Unidos']/following-sibling::div")).getText(), "ES");
     }
 
     @Test
@@ -278,36 +274,35 @@ public class GroupRedRoverJavaUTC3Test {
 
     @Test
     public void testHorizontalSliderTBank() {
-
         getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
 
-        getWait5().until(d -> getDriver().getTitle() != null); //  проверка загрузки страницы
-
-        WebElement sliderSum = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_amount_field']//div[@data-qa-type='uikit/Draggable']"));
-        WebElement sliderYears = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']"));
-
         Actions actions = new Actions(getDriver());
+        actions.dragAndDropBy(getDriver().findElement(
+                        By.xpath("//div[@data-field-name='cashloan_calculator_amount_field']//div[@data-qa-type='uikit/Draggable']")),
+                -77, 0).perform();
+        actions.dragAndDropBy(getDriver().findElement(
+                        By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']")),
+                -40, 0).perform();
 
-        actions.dragAndDropBy(sliderSum, -77, 0).perform();
-        actions.dragAndDropBy(sliderYears, -40, 0).perform();
-
-        WebElement monthlyPayment = getDriver().findElement(By.xpath("//div[@data-qa-type='uikit/titleAndSubtitle.textPrimary']/div"));
-
-        // Проверка значения
-        Assert.assertEquals(monthlyPayment.getText(), "27 600 ₽");
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@data-qa-type='uikit/titleAndSubtitle.textPrimary']/div")).getText(), "27 600 ₽");
     }
 
     @Test
-    public void testHorizontalSlider() {
-        driver.get("https://the-internet.herokuapp.com/horizontal_slider");
+    public void testHorizontalSliderTestSite() {
+        getDriver().get("https://the-internet.herokuapp.com/horizontal_slider");
 
-        WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+        Actions actions = new Actions(getDriver());
+        actions.dragAndDropBy(getDriver().findElement(By.xpath("//input[@type='range']")), 10, 0).perform();
 
-        Actions actions = new Actions(driver);
-        actions.dragAndDropBy(slider, 10, 0).perform();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[@id='range']")).getText(), "3");
+    }
+    @Test
+    public void testLogIn() {
+        getDriver().get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
 
-        WebElement sliderValue = driver.findElement(By.xpath("//span[@id='range']"));
-        Assert.assertEquals(sliderValue.getText(), "3");
+        Assert.assertTrue(getDriver().findElement(
+                By.tagName("p")).getText().contains("Congratulations! You must have the proper credentials"));
     }
 
     @Test
