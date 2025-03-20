@@ -74,7 +74,7 @@ public class GroupAQARookiesTest {
 
         driver.findElement(By.className("go-to-cart")).click();
 
-        Assert.assertEquals(driver.findElement(By.tagName("h1")).getText(), "оформление заказа");
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='bx-soa-item-title']/a")).getText(), "Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA");
 
         driver.quit();
     }
