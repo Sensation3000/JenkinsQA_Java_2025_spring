@@ -216,8 +216,6 @@ public class GroupJavaMastersTest {
         driver.findElement(By.cssSelector("#login-button")).click();
         driver.findElement(By.cssSelector("#react-burger-menu-btn")).click();
 
-
-
         List<WebElement> hamburgerItems = driver.findElements(By.cssSelector(".bm-item.menu-item"));
         List<String> expectedItems = new ArrayList<>(Arrays.asList("All Items", "About", "Logout", "Reset App State"));
 
