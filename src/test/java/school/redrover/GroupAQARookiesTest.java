@@ -59,9 +59,7 @@ public class GroupAQARookiesTest {
         driver.get("https://theweldercatherine.ru/");
 
         driver.findElement(By.xpath("//a[@title='Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA']")).click();
-
         driver.findElement(By.id("on_cart")).click();
-
         Thread.sleep(1000);
 
         if (!driver.findElements(By.className("modal-min-order")).isEmpty()) {
