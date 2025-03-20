@@ -4,8 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.testng.AssertJUnit.assertEquals;
 
 public class GroupJavaMastersTest {
 
@@ -194,6 +201,32 @@ public class GroupJavaMastersTest {
         // Working properly only after second designation locator
         WebElement addToCartBtn1 = driver.findElement(By.id("add-to-cart-sauce-labs-backpack"));
         Assert.assertEquals(addToCartBtn1.getText(), "Add to cart");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckDrawerItems() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.cssSelector("#user-name")).sendKeys("standard_user");
+        driver.findElement(By.cssSelector("#password")).sendKeys("secret_sauce");
+        driver.findElement(By.cssSelector("#login-button")).click();
+        driver.findElement(By.cssSelector("#react-burger-menu-btn")).click();
+
+
+
+        List<WebElement> hamburgerItems = driver.findElements(By.cssSelector(".bm-item.menu-item"));
+        List<String> expectedItems = new ArrayList<>(Arrays.asList("All Items", "About", "Logout", "Reset App State"));
+
+        Assert.assertEquals(hamburgerItems.size(), 4);
+        Thread.sleep(100);
+
+        for (int i = 0; i < hamburgerItems.size(); i++) {
+            Assert.assertEquals(hamburgerItems.get(i).getText(), expectedItems.get(i));
+        }
 
         driver.quit();
     }
