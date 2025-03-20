@@ -18,17 +18,15 @@ public class GroupAQARookiesTest {
         WebDriver driver = new ChromeDriver();
 
         driver.manage().window().setSize(new Dimension(1920, 1080));
+
         driver.get("https://www.onliner.by/");
         Assert.assertEquals(driver.getTitle(), "Onlíner");
 
         driver.findElement(By.xpath("//*[@id='fast-search']/div/input")).sendKeys("Iphone");
-
-        WebElement iframe = driver.findElement(By.cssSelector("iframe.modal-iframe"));
-        driver.switchTo().frame(iframe);
+        driver.switchTo().frame(driver.findElement(By.cssSelector("iframe.modal-iframe")));
         Thread.sleep(2000);
 
         driver.findElement(By.xpath("//a[contains(text(), 'Телефон Apple iPhone 16e 128GB (белый)')]")).click();
-
         Assert.assertEquals(driver.getTitle(), "iPhone 16e 128GB белый (Айфон 16е) купить в Минске");
 
         driver.quit();
