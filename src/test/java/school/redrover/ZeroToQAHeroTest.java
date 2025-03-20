@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -250,7 +251,29 @@ public class ZeroToQAHeroTest {
 
         driver.quit();
     }
+    @Test
+    public void testRadio(){
 
+        WebDriver driver = new ChromeDriver();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.radiodetali.perm.ru/");
+
+        String title = driver.getTitle();
+        assertEquals("Радиодетали и электронные компоненты. Интернет-магазин.", title);
+
+        WebElement textBox = driver.findElement(By.name("search"));
+        WebElement submitButton = driver.findElement(By.cssSelector(".subm"));
+
+        textBox.sendKeys("KIT-MP700");
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.cssSelector(".itemsdata0"));
+        String value = message.getText();
+        assertEquals("94821", value);
+
+        driver.quit();
+    }
 
 
 }
