@@ -10,7 +10,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -75,7 +78,7 @@ public class Group_JavaQATest {
     }
     
     @Test
-    public void testMarina() {
+    public void testDashboardOrangePage() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
@@ -85,18 +88,28 @@ public class Group_JavaQATest {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
             WebElement textBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
-            WebElement textBox1 = driver.findElement(By.name("password"));
-            WebElement submitButton = driver.findElement(By.tagName("button"));
-
             textBox.sendKeys("Admin");
+            WebElement textBox1 = driver.findElement(By.name("password"));
             textBox1.sendKeys("admin123");
+            WebElement submitButton = driver.findElement(By.tagName("button"));
             submitButton.click();
 
             WebElement pageName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h6")));
             String value = pageName.getText().trim();
-
-            System.out.println("Extracted text: " + value);
             assertEquals("Dashboard", value);
+
+            List<WebElement> sectionTitle = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.cssSelector(".oxd-layout-container .orangehrm-dashboard-widget-header p")));
+            List<String> dashboardTitles = sectionTitle.stream()
+                            .map(WebElement::getText)
+                            .map(String::trim)
+                            .collect(Collectors.toList());
+
+            List<String> expectedTitles = Arrays.asList("Time at Work", "My Actions", "Quick Launch", "Buzz Latest Posts",
+                    "Employees on Leave Today", "Employee Distribution by Sub Unit", "Employee Distribution by Location");
+
+            assertTrue(dashboardTitles.containsAll(expectedTitles),
+                    "Dashboard titles do not match expected titles. Found: " + dashboardTitles);
 
         } finally {
             driver.quit();
