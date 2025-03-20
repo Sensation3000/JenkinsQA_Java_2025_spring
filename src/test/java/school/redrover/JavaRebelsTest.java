@@ -36,7 +36,7 @@ public class JavaRebelsTest {
     }
 
     @Test
-    public void checkTitleName() {
+    public void testTitleName() {
         assertEquals(driver.getTitle(), TITLE);
     }
 
