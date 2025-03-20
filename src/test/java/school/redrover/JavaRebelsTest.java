@@ -36,7 +36,7 @@ public class JavaRebelsTest {
     }
 
     @Test
-    public void checkTitle() {
+    public void checkTitleName() {
         assertEquals(driver.getTitle(), TITLE);
     }
 
@@ -58,7 +58,7 @@ public class JavaRebelsTest {
         String fakerName = faker.name().name();
 
         driver.findElement(By.name("name")).sendKeys(fakerName);
-        driver.findElement(By.name("price")).sendKeys("1000");
+        driver.findElement(By.name("price")).sendKeys("2000");
         driver.findElement(By.name("description")).sendKeys("Test");
         driver.findElement(By.name("imageUrl")).sendKeys("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png");
 
