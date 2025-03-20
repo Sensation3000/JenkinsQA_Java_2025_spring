@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
@@ -94,11 +93,10 @@ public class GroupQA2025Test {
         );
     }
 
-   @ Test
-    public void linkIsClickableTest(){
-       driver.get("http://uitestingplayground.com/");
-       WebElement link = driver.findElement(By.cssSelector("[href=\"/dynamicid\"]"));
+    @Test
+    public void linkIsClickableTest() {
+        driver.get("http://uitestingplayground.com/");
 
-       Assert.assertTrue(link.isEnabled());
-   }
+        Assert.assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+    }
 }
