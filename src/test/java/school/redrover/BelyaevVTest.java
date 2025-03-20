@@ -14,8 +14,7 @@ import javax.swing.*;
 public class BelyaevVTest {
 
     @Test
-    public void testMCode() {
-
+    public void testCheckResultSearch() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://thecode.media/");
 
@@ -33,11 +32,10 @@ public class BelyaevVTest {
         Assert.assertEquals("api", resultSearch);
 
         driver.quit();
-
     }
 
     @Test
-    public void testTasksArea() {
+    public void testAppearedHeader() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://thecode.media/");
 
@@ -52,6 +50,5 @@ public class BelyaevVTest {
         Assert.assertEquals("Как решить", foundSearchTitle);
 
         driver.quit();
-
     }
 }
