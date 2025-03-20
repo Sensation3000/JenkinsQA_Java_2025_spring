@@ -35,21 +35,17 @@ public class GroupAQARookiesTest {
     }
 
     @Test
-    public void duckDuckGoTest() throws InterruptedException {
+    public void testDuckDuckGo() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://duckduckgo.com/");
-
-        WebElement textBox = driver.findElement(By.id("searchbox_input"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button[aria-label='Search']"));
-
-        textBox.sendKeys("Selenium");
-        submitButton.click();
+        driver.findElement(By.id("searchbox_input")).sendKeys("Selenium");
+        driver.findElement(By.cssSelector("button[aria-label='Search']")).click();
 
         Thread.sleep(1000);
 
-        WebElement spanText = driver.findElement(By.xpath("//*[@id=\"r1-0\"]/div[2]/div/div/a/div/p/span"));
-        String value = spanText.getText();
+        String value = driver.findElement(By.xpath(
+                "//*[@id='r1-0']/div[2]/div/div/a/div/p/span")).getText();
         assertEquals("https://www.selenium.dev", value);
 
         driver.quit();
