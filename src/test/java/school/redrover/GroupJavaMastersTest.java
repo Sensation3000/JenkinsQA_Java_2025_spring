@@ -44,23 +44,12 @@ public class GroupJavaMastersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
-        WebElement userNameField = driver.findElement(By.xpath("//*[@id=\"user-name\"]"));
-        userNameField.sendKeys("standard_user");
-
-        WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"password\"]"));
-        passwordField.sendKeys("secret_sauce");
-
-        WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"login-button\"]"));
-        loginButton.click();
-
-        WebElement backpackProduct = driver.findElement(By.xpath("//*[@id=\"item_4_title_link\"]/div"));
-        backpackProduct.click();
-
-        WebElement addToCartButton = driver.findElement(By.xpath("//*[@id=\"add-to-cart\"]"));
-        addToCartButton.click();
-
-        WebElement cartLogo = driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a"));
-        cartLogo.click();
+        driver.findElement(By.xpath("//*[@id=\"user-name\"]")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//*[@id=\"login-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"item_4_title_link\"]/div")).click();
+        driver.findElement(By.xpath("//*[@id=\"add-to-cart\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a")).click();
 
         WebElement itemQuantity = driver.findElement(By.xpath("//*[@id=\"cart_contents_container\"]/div/div[1]/div[3]/div[1]"));
 
