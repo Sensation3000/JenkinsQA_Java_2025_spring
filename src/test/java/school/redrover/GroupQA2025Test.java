@@ -4,14 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import io.github.bonigarcia.wdm.WebDriverManager;
-
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class GroupQA2025Test {
@@ -99,19 +98,20 @@ public class GroupQA2025Test {
     public void linkIsClickableTest() {
         driver.get("http://uitestingplayground.com/");
 
-        Assert.assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+        assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
     }
+
     @Test
     public void getLinkName() {
         driver.get("http://uitestingplayground.com/");
 
-        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
+        assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
     }
 
     @Test
     public void getLinkNameShorter() {
         driver.get("http://uitestingplayground.com/");
 
-        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
+        assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
     }
 }
