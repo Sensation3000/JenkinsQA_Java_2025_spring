@@ -93,25 +93,17 @@ public class AGroupJavaQATest {
     }
 
     @Test
-    public void testGardenplus() throws InterruptedException {
+    public void testGardenplusSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://www.gardensplus.ca");
-
         Thread.sleep(1000);
 
-        WebElement buttonDismiss = driver.findElement(By.className("woocommerce-store-notice__dismiss-link"));
-        buttonDismiss.click();
+        driver.findElement(By.className("woocommerce-store-notice__dismiss-link")).click();
+        driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Lovely Lolly");
+        driver.findElement(By.xpath("//*[@id='woocommerce_product_search-2']/form/button")).submit();
+        Thread.sleep(1000);
 
-        WebElement input = driver.findElement(By.id("woocommerce-product-search-field-0"));
-
-        input.sendKeys("Lovely Lolly");
-
-        WebElement buttonSearch = driver.findElement(By.xpath("//*[@id=\"woocommerce_product_search-2\"]/form/button"));
-
-        buttonSearch.submit();
-
-        WebElement productTitle = driver.findElement(By.xpath("//h1[@class='product_title entry-title']"));
+        WebElement productTitle = driver.findElement(By.xpath("//h1[@class='product_title entry-title']"));    //(//h1[@"product_title entry-title"='Lovely Lolly');
 
         Assert.assertTrue(productTitle.getText().contains("Lovely Lolly"));
 
