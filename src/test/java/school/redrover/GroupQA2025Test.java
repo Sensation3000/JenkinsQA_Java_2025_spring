@@ -110,4 +110,10 @@ public class GroupQA2025Test {
         link.getText();
         assertEquals(link.getText(),"Dynamic ID");
     }
+
+    @Test
+    public void getLinkNameShorter() {
+        driver.get("http://uitestingplayground.com/");
+        assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
+    }
 }
