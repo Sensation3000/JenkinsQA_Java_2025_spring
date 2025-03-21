@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class Group_JavaQATest {
+public class AGroupJavaQATest {
     By firstName = By.id("request-pricing_firstName");
     By lastName = By.id("request-pricing_lastName");
     By countryOfResidence = By.xpath("//*[@data-id='request-pricing_country']");
