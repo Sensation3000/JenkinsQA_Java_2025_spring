@@ -297,6 +297,7 @@ public class GroupRedRoverJavaUTC3Test {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[@id='range']")).getText(), "3");
     }
+
     @Test
     public void testLogIn() {
         getDriver().get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
@@ -307,7 +308,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     @Test
 
-    public void TestAlertButton() {
+    public void testAlertButton() {
         getDriver().get("https://the-internet.herokuapp.com/javascript_alerts");
 
         getDriver().findElement(By.xpath("//button[@onclick='jsAlert()']")).click();
@@ -335,6 +336,31 @@ public class GroupRedRoverJavaUTC3Test {
         String inputValue = element.getAttribute("value");
 
         Assert.assertEquals(inputValue, "15\u00a0лет");
+    }
+
+    @Test
+    public void testGunShopEntranceForm() {
+        getDriver().get("https://dld-vip.com/");
+        getDriver().findElement(By.xpath(
+                "//button[contains (@class,'TermsDialog_agreeButton__la1Q4')][contains(@type,'button')]")).click();
+        getDriver().findElement(By.xpath(
+                "//div[@aria-controls=':r0:']")).click();
+        getDriver().findElement(By.xpath(
+                "//li[contains (@class, 'MuiButtonBase-root MuiMenuItem-root')][contains (@data-value,'05')]")).click();
+        getDriver().findElement(By.xpath(
+                "//div[@aria-controls=':r1:']")).click();
+        getDriver().findElement(By.xpath(
+                "//li[contains (@class, 'MuiButtonBase-root MuiMenuItem-root')][contains (@data-value,'05')]")).click();
+        getDriver().findElement(By.xpath(
+                "//div[@aria-controls=':r2:']")).click();
+        getDriver().findElement(By.xpath(
+                "//li[@data-value='1954']")).click();
+        getDriver().findElement(By.xpath(
+                "//button[contains (@class,'MuiButton-contained')][contains(@type,'button')]")).click();
+        String welcomeText= getDriver().findElement(By.xpath(
+                "//div[@class='FeaturedItems_heroText__ck_yf FeaturedItems_invertColor__Hk_X3']//h3")).getText();
+
+        Assert.assertEquals(welcomeText,"Come see our Knife Room");
     }
 }
 
