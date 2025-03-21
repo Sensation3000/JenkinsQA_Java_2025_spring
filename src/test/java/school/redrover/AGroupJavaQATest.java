@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
 import java.util.Set;
 
@@ -17,41 +18,28 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class AGroupJavaQATest {
-    By firstName = By.id("request-pricing_firstName");
-    By lastName = By.id("request-pricing_lastName");
-    By countryOfResidence = By.xpath("//*[@data-id='request-pricing_country']");
-    By countryOfResidenceSelect = By.xpath("//span[text()='United States']");
-    By state = By.xpath("//*[@id='request-pricing_state']/following-sibling::button");
-    By selectState = By.xpath("//*[@id='request-pricing']//select[@id='request-pricing_state']/parent::div//a[span[text()='Alaska']]");
-    By telephoneNumber = By.id("request-pricing_phone");
-    By email = By.id("request-pricing_email");
-    By voyageOfInterest = By.xpath("//*[@id='request-pricing_voyageOfInterest']/following-sibling::button");
-    By voyageOfInterestSelect = By.xpath("//span[contains(text(),'168 nights')]");
-    By submitButton = By.xpath("//*[@id='request-pricing']//button[@type='submit']");
-    By conformationPage = By.xpath("//div[contains(text(),'Your Personal Consultant')]/ancestor::article//h2");
-
     @Test
-    public void testRequestQuote () throws InterruptedException {
+    public void testRequestQuote() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://qa1-aws.rssc.com/request-quote");
 
-        driver.findElement(firstName).sendKeys("Viviana");
-        driver.findElement(lastName).sendKeys("Costa");
-        driver.findElement(countryOfResidence).click();
-        driver.findElement(countryOfResidenceSelect).click();
+        driver.findElement(By.id("request-pricing_firstName")).sendKeys("Viviana");
+        driver.findElement(By.id("request-pricing_lastName")).sendKeys("Costa");
+        driver.findElement(By.xpath("//*[@data-id='request-pricing_country']")).click();
+        driver.findElement(By.xpath("//span[text()='United States']")).click();
         Thread.sleep(3000);
-        driver.findElement(state).click();
+        driver.findElement(By.xpath("//*[@id='request-pricing_state']/following-sibling::button")).click();
         Thread.sleep(3000);
-        driver.findElement(selectState).click();
-        driver.findElement(telephoneNumber).sendKeys("7865187654");
-        driver.findElement(email).sendKeys("viviana@gmail.com");
-        driver.findElement(voyageOfInterest).click();
-        driver.findElement(voyageOfInterestSelect).click();
-        driver.findElement(submitButton).click();
+        driver.findElement(By.xpath("//*[@id='request-pricing']//select[@id='request-pricing_state']/parent::div//a[span[text()='Alaska']]")).click();
+        driver.findElement(By.id("request-pricing_phone")).sendKeys("7865187654");
+        driver.findElement(By.id("request-pricing_email")).sendKeys("viviana@gmail.com");
+        driver.findElement(By.xpath("//*[@id='request-pricing_voyageOfInterest']/following-sibling::button")).click();
+        driver.findElement(By.xpath("//span[contains(text(),'168 nights')]")).click();
+        driver.findElement(By.xpath("//*[@id='request-pricing']//button[@type='submit']")).click();
         Thread.sleep(5000);
-        assertTrue(driver.findElement(conformationPage).isDisplayed(),"Thank you page is displayed");
+        assertTrue(driver.findElement(By.xpath("//div[contains(text(),'Your Personal Consultant')]/ancestor::article//h2")).isDisplayed(), "Thank you page is displayed");
 
         driver.quit();
     }
@@ -74,7 +62,7 @@ public class AGroupJavaQATest {
         driver.quit();
         assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
     }
-    
+
     @Test
     public void testMarina() {
         WebDriverManager.chromedriver().setup();
@@ -140,7 +128,7 @@ public class AGroupJavaQATest {
         driver.findElement(By.xpath("//div//ul[@class='leftmenu']//li//a[text()='About Us']")).click();
 
         WebElement customerLoginHeader = driver.findElement(By.xpath("//h2[text()='Customer Login']"));
-        String text =  customerLoginHeader.getText();
+        String text = customerLoginHeader.getText();
         assertEquals(text, "Customer Login");
 
         WebElement title = driver.findElement(By.xpath("//h1[text()='ParaSoft Demo Website']"));
@@ -148,10 +136,50 @@ public class AGroupJavaQATest {
         assertEquals(titleText, "ParaSoft Demo Website");
 
         driver.findElement(By.xpath("//p//a[text()='www.parasoft.com']")).click();
-        WebElement textNewPage =  driver.findElement(By.xpath("//h1[contains(text(),' Testing That Keeps Pac')]"));
+        WebElement textNewPage = driver.findElement(By.xpath("//h1[contains(text(),' Testing That Keeps Pac')]"));
         String textNew = textNewPage.getText();
         assertEquals(textNew, "Testing That Keeps Pace With Real-World Innovation");
 
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAddEntitlements() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement userName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
+
+        userName.sendKeys("Admin");
+        driver.findElement(By.name("password")).sendKeys("admin123");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        WebElement leave = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Leave']")));
+        leave.click();
+        driver.findElement(By.xpath("//span[contains(text(),'Entitlements')] ")).click();
+        driver.findElement(By.xpath("//a[contains(text(),'Add')] ")).click();
+        driver.findElement(By.xpath("//input[@placeholder='Type for hints...']")).sendKeys("John Smit");
+        Thread.sleep(5000);
+        WebElement autocompleteOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Type for hints...']/parent::div/following-sibling::div")));
+        autocompleteOption.click();
+        driver.findElement(By.xpath("//div[contains(text(),'Select')]")).click();
+        Thread.sleep(3000);
+        WebElement leaveTypeOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Matternity')]")));
+        leaveTypeOption.click();
+        driver.findElement(By.xpath("//div[contains(text(),'2025-01-01')]")).click();
+        driver.findElement(By.xpath("//label[text()='Entitlement']/parent::*/following-sibling::*/input")).sendKeys("2.00");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//button[text()=' Confirm ']")).click();
+
+        WebElement recordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'table')]/*[text()='CAN - Matternity']")));
+        assertTrue(recordElement.isDisplayed(), "Record is displayed");
 
         driver.quit();
     }
