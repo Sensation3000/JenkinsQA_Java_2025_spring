@@ -4,12 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class GroupQA2025Test {
@@ -41,14 +42,14 @@ public class GroupQA2025Test {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
     }
 
     @Test
-    public void testUitapSampleAppCorrectLoginEmptyPasswordTest() {
+    public void testUitapSampleAppCorrectLoginEmptyPassword() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -56,14 +57,14 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
     }
 
     @Test
-    public void testUitapSampleAppEmptyLoginCorrectPasswordTest() {
+    public void testUitapSampleAppEmptyLoginCorrectPassword() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -71,14 +72,14 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
     }
 
     @Test
-    public void testUitapSampleAppCorrectLoginCorrectPasswordTest() {
+    public void testUitapSampleAppCorrectLoginCorrectPassword() {
 
         driver.get("http://uitestingplayground.com/");
 
@@ -87,7 +88,7 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-success']")).getText(),
                 "Welcome, UserName!"
         );
@@ -97,6 +98,20 @@ public class GroupQA2025Test {
     public void linkIsClickableTest() {
         driver.get("http://uitestingplayground.com/");
 
-        Assert.assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+        assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+    }
+
+    @Test
+    public void getLinkName() {
+        driver.get("http://uitestingplayground.com/");
+
+        assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
+    }
+
+    @Test
+    public void getLinkNameShorter() {
+        driver.get("http://uitestingplayground.com/");
+
+        assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
     }
 }

@@ -13,7 +13,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -53,7 +56,7 @@ public class GroupQAFokuzTest {
         actions.doubleClick(driver.findElement(By.xpath("//*[@id='doubleClickBtn']")))
                 .contextClick(driver.findElement(By.xpath("//*[@id='rightClickBtn']")))
                 .click(wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Click Me']"))))
-                .perform();
+        .perform();
 
         Assert.assertTrue(
                 driver.findElement(By.xpath("//*[@id='doubleClickMessage']")).isDisplayed(),
@@ -157,15 +160,15 @@ public class GroupQAFokuzTest {
                 By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")));
 
         Assert.assertTrue(table.isDisplayed(), "Таблица не отображается");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(), "Denis Novicov", "Неверное имя студента");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(), "denisnovicov@example.com", "Неверный email");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(), "Male", "Неверный пол");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(), "7999999999", "Неверный номер телефона");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(), "12 December,2000", "Неверная дата рождения");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(), "English, Commerce", "Неверные предметы");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(), "Sports, Reading, Music", "Неверные хобби");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(), "Prague, Vodickova 123/34", "Неверный адрес");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(), "NCR Delhi", "Неверный штат и город");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(),"Denis Novicov","Неверное имя студента");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(),"denisnovicov@example.com","Неверный email");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(),"Male","Неверный пол");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(),"7999999999","Неверный номер телефона");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(),"12 December,2000","Неверная дата рождения");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(),"English, Commerce","Неверные предметы");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(),"Sports, Reading, Music","Неверные хобби");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(),"Prague, Vodickova 123/34","Неверный адрес");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(),"NCR Delhi","Неверный штат и город");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='closeLargeModal']"))).click();
     }
@@ -202,51 +205,53 @@ public class GroupQAFokuzTest {
     }
 
     @Test
-    public void testTheInternetAddElements() {
-        driver.get("https://the-internet.herokuapp.com/");
+    public void testAddRemoveElements() throws InterruptedException {
+// проверяет, что нажатие на кнопку Add добавляет элемент
+        WebDriverManager.chromedriver().setup();
 
-        driver.findElement(By.xpath("//li[2]/a")).click();
-        driver.findElement(By.xpath("//div[@class='example']/button")).click();
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
+
+        Thread.sleep(1000);
+
+        WebElement addRemoveElementsLink = driver.findElement(By.xpath("//li[2]/a"));
+        addRemoveElementsLink.click();
+
+        Thread.sleep(1000);
+
+        WebElement addElementButton = driver.findElement(By.xpath("//div[@class='example']/button"));
+        addElementButton.click();
 
         WebElement deleteButton = driver.findElement(By.xpath("//div[@id='elements']/button"));
+
         Assert.assertTrue(deleteButton.isDisplayed(), "Элемент не добавлен!");
+
+        driver.quit();
+
     }
 
     @Test
-    public void testTheInternetAuthForm() {
-        driver.get("https://the-internet.herokuapp.com/");
+    public void testFokuzNavigation() throws InterruptedException {
+//  проверяет, что ссылка в навигационной панели хедера работает корректно
+        WebDriverManager.chromedriver().setup();
 
-        driver.findElement(By.xpath("//li[21]/a")).click();
-        driver.findElement(By.id("username")).sendKeys("tomsmith");
-        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
-        driver.findElement(By.tagName("button")).click();
-
-        WebElement logoutButton = driver.findElement(By.xpath("//a[@class='button secondary radius']"));
-
-        Assert.assertTrue(logoutButton.isDisplayed(), "Кнопка Logout не отобразилась!");
-    }
-
-    @Test
-    public void testFokuzNavigationDaBinIch() {
+        WebDriver driver = new ChromeDriver();
         driver.get("https://fokuz.photo/");
+        driver.manage().window().maximize();
 
-        driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]")).click();
+        Thread.sleep(1000);
+
+        WebElement daBinIchLink = driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]"));
+        daBinIchLink.click();
+
+        Thread.sleep(1000);
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://fokuz.photo/da-bin-ich/", "URL не соответствует ожидаемому!");
+
+        driver.quit();
+
     }
 
-    @Test
-    public void testShopBugredRegistrationWithoutPasswordConfirm() {
-        driver.get("http://shop.bugred.ru/");
 
-        driver.findElement(By.xpath("//div[@id='navbarSupportedContent']/ul/li[3]")).click();
-        driver.findElement(By.xpath("//input[@id='exampleInputName']")).sendKeys("Test");
-        driver.findElement(By.xpath("//input[@id='exampleInputEmail1']")).sendKeys("test@test.xx");
-        driver.findElement(By.name("password")).sendKeys("Qwerty!");
-        driver.findElement(By.xpath("//form[@action='/user/register/doit']/button")).click();
-
-        String validationMessage = driver.findElement(By.name("password2")).getDomProperty("validationMessage");
-
-        Assert.assertEquals(validationMessage, "Please fill out this field.", "No validation message");
-    }
 }

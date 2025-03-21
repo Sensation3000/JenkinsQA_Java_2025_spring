@@ -80,4 +80,11 @@ public class GroupAutoamigosTest {
         link.click();
         Assert.assertNotEquals(driver.getTitle(), "Страница не загрузилась: Slow calculator");
     }
+
+    @Test
+    public void testHeader() {
+        WebElement title = driver.findElement(By.xpath("//h1[@class='display-4']"));
+
+        Assert.assertEquals(title.getText(), "Hands-On Selenium WebDriver with Java");
+    }
 }
