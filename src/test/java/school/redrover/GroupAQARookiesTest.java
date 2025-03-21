@@ -47,10 +47,10 @@ public class GroupAQARookiesTest {
         Thread.sleep(1000);
 
         String value = driver.findElement(By.xpath(
-                "//*[@id='r1-0']/div[2]/div/div/a/div/p/span")).getText();
-        assertEquals("https://www.selenium.dev", value);
+                "//a[@href='https://www.selenium.dev/'][@data-testid='result-extras-url-link']/div/p/span")).getText();
 
         driver.quit();
+        Assert.assertEquals(value, "https://www.selenium.dev");
     }
 
     @Test
