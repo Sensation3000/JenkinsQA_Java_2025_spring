@@ -2,6 +2,7 @@ package school.redrover;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -116,22 +117,22 @@ public class Group_JavaQATest {
     }
 
     @Test
-    public void testNewTabOpen() throws InterruptedException {
+    public void testNewTabOpen() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        driver.manage().window().setSize(new Dimension(1280, 920));
         driver.get("https://goodbeautychicago.com/");
 
-        WebElement bookNowButton = driver.findElement(By.xpath("//span[contains(text(), \"Book now\")]"));
+        WebElement bookNowButton = driver.findElement(By.xpath("//span[text()=\"Book now\"]"));
         Set<String> windowHandlesBefore = driver.getWindowHandles();
         assertEquals(windowHandlesBefore.size(), 1, "Initially more than 1 tab!");
 
         bookNowButton.click();
-        Thread.sleep(4000);
+        WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(5));
+        wait.until(value -> value.getWindowHandles().size() > 1);
         Set<String> windowHandlesAfter = driver.getWindowHandles();
-        assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
-
         driver.quit();
+        assertEquals(windowHandlesAfter.size(), 2, "New tab did not open!");
     }
     
     @Test
@@ -224,6 +225,4 @@ public class Group_JavaQATest {
 
         driver.quit();
     }
-
-
 }
