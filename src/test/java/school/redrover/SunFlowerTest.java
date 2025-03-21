@@ -7,6 +7,7 @@ import org.testng.annotations.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import java.io.*;
+import java.time.Duration;
 import java.util.*;
 
 public class SunFlowerTest {
@@ -56,6 +57,35 @@ public class SunFlowerTest {
     public void testSubmitButton() { WebElement button = submitButton(); Assert.assertTrue(button.isDisplayed()); Assert.assertEquals(button.getText(), "Submit"); Assert.assertTrue(button.isEnabled()); }
     @Test
     public void testRadioButtons() { List<WebElement> radios = radioButtons(); Assert.assertEquals(radios.size(), 2); radios.forEach(radio -> { Assert.assertTrue(radio.isDisplayed()); Assert.assertTrue(radio.isEnabled()); }); }
+
+    @Test
+
+    public void firstTest () throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://ingamejob.com/en");
+        driver.getTitle();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement input = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.home-hero-section > div > div > div:nth-child(2) > div > form > div > div:nth-child(1) > div > button > div > div > div"));
+        input.click();
+        WebElement input2 = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.home-hero-section > div > div > div:nth-child(2) > div > form > div > div:nth-child(1) > div > div > div.bs-searchbox > input"));
+        input2.sendKeys("qa");
+
+        WebElement button = driver.findElement(By.xpath("//*[@id=\"bs-select-1-69\"]/span[2]"));
+        button.click();
+        WebElement button2 = driver.findElement(By.xpath("//*[@id=\"app-all\"]/div[1]/div/div[1]/div/div/div[2]/div/form/div/div[3]/button"));
+        button2.click();
+
+        Thread.sleep(1000);
+
+        WebElement site = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.container > div > div.col-md-8 > div > div:nth-child(3) > div.listing-job-info.container > div > div.col-12.p-0 > h5 > a"));
+        site.getText();
+
+        driver.quit();
+    }
 
     @Test
     public void testCheckboxesStateChange() {
