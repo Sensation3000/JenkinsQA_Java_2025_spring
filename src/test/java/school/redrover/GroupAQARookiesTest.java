@@ -6,10 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.assertEquals;
+import java.util.List;
 
 public class GroupAQARookiesTest {
 
@@ -43,10 +44,10 @@ public class GroupAQARookiesTest {
         Thread.sleep(1000);
 
         String value = driver.findElement(By.xpath(
-                "//*[@id='r1-0']/div[2]/div/div/a/div/p/span")).getText();
-        assertEquals("https://www.selenium.dev", value);
+                "//a[@href='https://www.selenium.dev/'][@data-testid='result-extras-url-link']/div/p/span")).getText();
 
         driver.quit();
+        Assert.assertEquals(value, "https://www.selenium.dev");
     }
 
     @Test
@@ -146,5 +147,41 @@ public class GroupAQARookiesTest {
 
         driver.quit();
     }
+    @Test
+    public void testBankTransactions() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
 
+        driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        Thread.sleep(2000);
+        driver.findElement(By.cssSelector("button[ng-click='customer()']")).click();
+        Thread.sleep(2000);
+
+        Select dropdownLogin = new Select(driver.findElement(By.id("userSelect")));
+        dropdownLogin.selectByValue("2");
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        Thread.sleep(2000);
+
+        Select dropdownAccount = new Select(driver.findElement(By.id("accountSelect")));
+        dropdownAccount.selectByValue("number:1005");
+        driver.findElement(By.xpath("//div[@ng-hide='noAccount']//button[contains(text(),'Deposit')]")).click();
+        Thread.sleep(1000);
+        WebElement inputElement = driver.findElement(By.cssSelector("input[placeholder='amount']"));
+        inputElement.sendKeys("1500");
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        driver.findElement(By.xpath("//button[normalize-space()='Transactions']")).click();
+        Thread.sleep(1000);
+
+        WebElement table = driver.findElement(By.xpath("//tbody"));
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+        WebElement lastRow = rows.get(rows.size() - 1);
+        List<WebElement> cells = lastRow.findElements(By.tagName("td"));
+        String amountCellText = cells.get(1).getText();
+        String transactionTypeCellText = cells.get(2).getText();
+
+        driver.quit();
+
+        Assert.assertEquals(amountCellText, "1500");
+        Assert.assertEquals(transactionTypeCellText, "Credit");
+    }
 }
