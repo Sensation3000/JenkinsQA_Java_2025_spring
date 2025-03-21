@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
@@ -106,14 +105,13 @@ public class GroupQA2025Test {
     public void getLinkName() {
         driver.get("http://uitestingplayground.com/");
 
-        WebElement link = driver.findElement(By.cssSelector("[href=\"/dynamicid\"]"));
-        link.getText();
-        assertEquals(link.getText(),"Dynamic ID");
+        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
     }
 
     @Test
     public void getLinkNameShorter() {
         driver.get("http://uitestingplayground.com/");
-        assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
     }
 }
