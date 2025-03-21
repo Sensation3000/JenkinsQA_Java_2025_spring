@@ -29,7 +29,7 @@ public class BelyaevVTest {
         WebElement foundText = driver.findElement(By.className("search__title"));
         String resultSearch = foundText.getText();
 
-        Assert.assertEquals(resultSearch, "api");
+        Assert.assertEquals(resultSearch, "apin");
 
         driver.quit();
     }
