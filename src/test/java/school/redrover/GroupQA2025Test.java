@@ -11,6 +11,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+import static org.testng.Assert.assertEquals;
+
 
 public class GroupQA2025Test {
 
@@ -41,7 +43,7 @@ public class GroupQA2025Test {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
@@ -56,7 +58,7 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
@@ -71,7 +73,7 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-danger']")).getText(),
                 "Invalid username/password"
         );
@@ -87,7 +89,7 @@ public class GroupQA2025Test {
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
-        Assert.assertEquals(
+        assertEquals(
                 driver.findElement(By.xpath("//label[@class = 'text-success']")).getText(),
                 "Welcome, UserName!"
         );
@@ -98,5 +100,18 @@ public class GroupQA2025Test {
         driver.get("http://uitestingplayground.com/");
 
         Assert.assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
+    }
+    @Test
+    public void getLinkName() {
+        driver.get("http://uitestingplayground.com/");
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
+    }
+
+    @Test
+    public void getLinkNameShorter() {
+        driver.get("http://uitestingplayground.com/");
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
     }
 }
