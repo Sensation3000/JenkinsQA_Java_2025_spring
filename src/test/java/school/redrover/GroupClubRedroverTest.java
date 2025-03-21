@@ -4,13 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.*;
 
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-//import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GroupClubRedroverTest {
     WebDriver driver;
@@ -18,9 +19,11 @@ public class GroupClubRedroverTest {
 
     @BeforeMethod
     void setUp() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--window-size=1920,1080");
+        driver = new ChromeDriver(options);
         driver.get(BASE_URL);
-        driver.manage().window().maximize();
+
     }
 
     @AfterMethod
@@ -58,32 +61,62 @@ public class GroupClubRedroverTest {
                 {"Chapter 9. Third-Party Integrations", "data-types.html", "Data types"}
         };
     }
-//    @ParameterizedTest
-    @Test(dataProvider = "pageData", description = "Home page tests")
-    void homePageTests(String chapterName, String path, String title) {
+
+    @Test(dataProvider = "pageData", description = "Verify the functionality of all links on HomePage")
+    void verifyHomePageLinks(String chapterName, String path, String title) {
         driver.findElement(By.xpath("//h5[text() = '" + chapterName + "']/../a[@href = '" + path + "']")).click();
+
         String actualUrl = driver.getCurrentUrl();
         String actualTitle = driver.findElement(By.className("display-6")).getText();
         assertEquals(BASE_URL + path, actualUrl, "The URLs don't match");
         assertEquals(title, actualTitle, "The titles don't match");
     }
 
-
-//    @Test
-    @Test(description = "Open all links")
-    void openAllLinksTests() {
+    @Test(description = "Verify the functionality of all links on HomePage another way")
+    void verifyHomePageLinksAnotherWay() {
         List<WebElement> chapters = driver.findElements(By.cssSelector(".card h5"));
-        for (WebElement chapter : chapters) {
-            System.out.println(chapter.getText());
-        }
-        assertEquals(chapters.size(),6);
+        assertEquals(chapters.size(), 6);
 
         List<WebElement> links = driver.findElements(By.cssSelector(".card a"));
         for (WebElement link : links) {
-            System.out.println(link.getText());
             link.click();
             driver.navigate().back();
         }
-        assertEquals(links.size(),27);
+        assertEquals(links.size(), 27);
+    }
+
+    @Test(description = "Verify that all selects in the form function correctly and allow valid user interactions")
+    void verifySelects() throws InterruptedException {
+        driver.findElement(By.xpath("//a[@href = 'web-form.html']")).click();
+
+        Select select = new Select(driver.findElement(By.name("my-select")));
+
+        List<WebElement> options = select.getOptions();
+        assertEquals(options.size(), 4, "Dropdown should contain exactly 4 options.");
+
+        List<WebElement> selectedOptions = select.getAllSelectedOptions();
+        assertEquals(selectedOptions.size(), 1,
+                "Only one option should be selected by default.");
+
+        assertEquals(select.getFirstSelectedOption().getText(),
+                "Open this select menu", "Default option text mismatch.");
+
+        select.selectByValue("1");
+        assertEquals(select.getFirstSelectedOption().getText(),
+                "One", "Option 'One' was not selected correctly.");
+
+        select.selectByIndex(2);
+        assertEquals(select.getFirstSelectedOption().getText(),
+                "Two", "Option 'Two' was not selected correctly.");
+
+        select.selectByValue("3");
+        assertEquals(select.getFirstSelectedOption().getText(),
+                "Three", "Option 'Three' was not selected correctly.");
+
+        select.selectByIndex(0);
+        assertEquals(select.getFirstSelectedOption().getText(),
+                "Open this select menu", "Dropdown did not reset correctly.");
+
+        select.deselectAll();
     }
 }
