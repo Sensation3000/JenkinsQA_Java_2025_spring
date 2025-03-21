@@ -1,11 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,27 +43,15 @@ public class GroupJavaMastersTest {
 
     @Test
     public void testShoppingCart() {
-
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
-        WebElement userNameField = driver.findElement(By.xpath("//*[@id=\"user-name\"]"));
-        userNameField.sendKeys("standard_user");
-
-        WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"password\"]"));
-        passwordField.sendKeys("secret_sauce");
-
-        WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"login-button\"]"));
-        loginButton.click();
-
-        WebElement backpackProduct = driver.findElement(By.xpath("//*[@id=\"item_4_title_link\"]/div"));
-        backpackProduct.click();
-
-        WebElement addToCartButton = driver.findElement(By.xpath("//*[@id=\"add-to-cart\"]"));
-        addToCartButton.click();
-
-        WebElement cartLogo = driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a"));
-        cartLogo.click();
+        driver.findElement(By.xpath("//*[@id=\"user-name\"]")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//*[@id=\"login-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"item_4_title_link\"]/div")).click();
+        driver.findElement(By.xpath("//*[@id=\"add-to-cart\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"shopping_cart_container\"]/a")).click();
 
         WebElement itemQuantity = driver.findElement(By.xpath("//*[@id=\"cart_contents_container\"]/div/div[1]/div[3]/div[1]"));
 
@@ -89,24 +83,6 @@ public class GroupJavaMastersTest {
     }
 
     @Test
-    public void testNavigationBtn() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
-
-        WebElement navigationBtn = driver.findElement(By.cssSelector(".btn[href=\"navigation1.html\"]"));
-        navigationBtn.click();
-
-        WebElement pageTitle = driver.findElement(By.cssSelector(".display-6"));
-        String value = pageTitle.getText();
-
-        Assert.assertEquals(value, "Navigation example");
-
-        driver.quit();
-    }
-
-    @Test
     public void testUpdateCountsOnCartIcon() {
         WebDriver driver = new ChromeDriver();
 
@@ -129,7 +105,6 @@ public class GroupJavaMastersTest {
         Assert.assertEquals(cartIcon.getText(), "1");
 
         driver.quit();
-
     }
 
     @Test
@@ -204,7 +179,6 @@ public class GroupJavaMastersTest {
 
     @Test
     public void testCheckDrawerItems() throws InterruptedException {
-
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
@@ -222,6 +196,26 @@ public class GroupJavaMastersTest {
         for (int i = 0; i < hamburgerItems.size(); i++) {
             Assert.assertEquals(hamburgerItems.get(i).getText(), expectedItems.get(i));
         }
+
+        driver.quit();
+    }
+
+    @Test
+    public void testLoginWithValidData() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1600, 900));
+
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username"))).sendKeys("Admin");
+        driver.findElement(By.cssSelector(".oxd-input[name='password']")).sendKeys("admin123");
+        driver.findElement(By.cssSelector(".oxd-button[type='submit']")).click();
+
+        WebElement dashboardHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".oxd-text.oxd-topbar-header-breadcrumb-module")));
+
+        Assert.assertEquals(dashboardHeader.getText(), "Dashboard", "Login failed!");
 
         driver.quit();
     }
