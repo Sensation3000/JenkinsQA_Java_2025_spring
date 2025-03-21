@@ -159,23 +159,21 @@ public class GroupAQARookiesTest {
         Select dropdownLogin = new Select(driver.findElement(By.id("userSelect")));
         dropdownLogin.selectByValue("2");
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         Select dropdownAccount = new Select(driver.findElement(By.id("accountSelect")));
         dropdownAccount.selectByValue("number:1005");
         driver.findElement(By.xpath("//div[@ng-hide='noAccount']//button[contains(text(),'Deposit')]")).click();
         Thread.sleep(1000);
-        WebElement inputElement = driver.findElement(By.cssSelector("input[placeholder='amount']"));
-        inputElement.sendKeys("1500");
+        driver.findElement(By.cssSelector("input[placeholder='amount']")).sendKeys("1500");
         Thread.sleep(1000);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//button[normalize-space()='Transactions']")).click();
         Thread.sleep(1000);
 
-        WebElement table = driver.findElement(By.xpath("//tbody"));
-        List<WebElement> rows = table.findElements(By.tagName("tr"));
-        WebElement lastRow = rows.get(rows.size() - 1);
-        List<WebElement> cells = lastRow.findElements(By.tagName("td"));
+        List<WebElement> rows = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+        List<WebElement> cells = rows.get(rows.size() - 1).findElements(By.tagName("td"));
         String amountCellText = cells.get(1).getText();
         String transactionTypeCellText = cells.get(2).getText();
 
