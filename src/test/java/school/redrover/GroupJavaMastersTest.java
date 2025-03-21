@@ -16,14 +16,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.AssertJUnit.assertEquals;
 
 public class GroupJavaMastersTest {
 
     @Test
     public void testLogin() {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://www.saucedemo.com/");
 
         WebElement userNameTextField = driver.findElement(By.id("user-name"));
@@ -64,7 +62,6 @@ public class GroupJavaMastersTest {
     @Test
     public void testLockedUserLogin() {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://www.saucedemo.com/");
 
         WebElement userNameTextField = driver.findElement(By.xpath("//form/div[1]/input[@class='input_error form_input']"));
@@ -191,9 +188,9 @@ public class GroupJavaMastersTest {
         List<WebElement> hamburgerItems = driver.findElements(By.cssSelector(".bm-item.menu-item"));
         List<String> expectedItems = new ArrayList<>(Arrays.asList("All Items", "About", "Logout", "Reset App State"));
 
-        Assert.assertEquals(hamburgerItems.size(), 4);
         Thread.sleep(100);
 
+        Assert.assertEquals(hamburgerItems.size(), 4);
         for (int i = 0; i < hamburgerItems.size(); i++) {
             Assert.assertEquals(hamburgerItems.get(i).getText(), expectedItems.get(i));
         }
@@ -220,4 +217,119 @@ public class GroupJavaMastersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testSelenuimMainPage() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        driver.findElement(By.xpath("//input[@id='my-text-id']")).sendKeys("Selenium");
+        driver.findElement(By.xpath("//label[contains(text(),'Password')]/input[@class='form-control']")).sendKeys("12345");
+        driver.findElement(By.xpath("//option[@value='3']")).click();
+        driver.findElement(By.xpath("//input[@name='my-datalist']")).sendKeys("Seattle");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        Thread.sleep(2000);
+
+        Assert.assertEquals(driver.findElement(By.xpath("//p[@id='message']")).getText(),"Received!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testBasicHtmlPage() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+
+        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("student");
+        driver.findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
+        driver.findElement(By.xpath("//input[@value='cb1']")).click();
+        driver.findElement(By.xpath("//input[@value='rd2']")).click();
+        driver.findElement(By.xpath("//option[contains(text(),'Selection Item 1')]")).click();
+        driver.findElement(By.xpath("//option[@value='dd4']")).click();
+        driver.findElement(By.xpath("//input[@value='submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valueusername']")).getText(),"student");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valuepassword']")).getText(), "123456789");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valuecheckboxes0']")).getText(),"cb1");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valueradioval']")).getText(),"rd2");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valuemultipleselect0']")).getText(),"ms1");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@id='_valuedropdown']")).getText(),"dd4");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testProductPage() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@id='user-name']")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//input[@id='password']")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//input[@id='login-button']")).click();
+
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//div[contains(text(),'Sauce Labs Backpack')]")).click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='inventory_details_name large_size']")).getText(), "Sauce Labs Backpack");
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='inventory_details_desc large_size']")).getText(), "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.");
+        Assert.assertEquals(driver.findElement(By.xpath("//img[@class='inventory_details_img']")).getDomAttribute("src"), "/static/media/sauce-backpack-1200x1500.0a0b85a3.jpg");
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='inventory_details_price']")).getText(), "$29.99");
+        Assert.assertTrue(driver.findElement(By.xpath("//button[@id='add-to-cart']")).isDisplayed());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testVisualUser() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@id='user-name']")).sendKeys("visual_user");
+        driver.findElement(By.xpath("//input[@id='password']")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//input[@id='login-button']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//img[@alt='Sauce Labs Backpack']")).getDomAttribute("src"), "/static/media/sl-404.168b1cce.jpg");
+
+        driver.quit();
+    }
+
+
+    @Test
+    public void Test2(){
+
+        WebDriver driver = new ChromeDriver();
+
+        driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com");
+        driver.getTitle();
+
+        WebElement username = driver.findElement(By.id("user-name"));
+        username.sendKeys("standard_user");
+
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("secret_sauce");
+
+        WebElement login = driver.findElement(By.id("login-button"));
+        login.click();
+
+        WebElement products = driver.findElement(By.className("title"));
+        String value = products.getText();
+        Assert.assertEquals(value, "Products");
+
+        driver.quit();
+
+
+
+    }
+
+
 }
