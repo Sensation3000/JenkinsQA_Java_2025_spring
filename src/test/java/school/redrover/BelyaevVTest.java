@@ -22,7 +22,7 @@ public class BelyaevVTest {
         searchButton.click();
 
         WebElement searchText = driver.findElement(By.className("heading-search__input"));
-        searchText.sendKeys("Api111");
+        searchText.sendKeys("Api1110");
 
         searchButton.click();
 
