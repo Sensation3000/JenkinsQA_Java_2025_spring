@@ -29,6 +29,22 @@ public class Group_JavaQATest {
     By submitButton = By.xpath("//*[@id='request-pricing']//button[@type='submit']");
     By conformationPage = By.xpath("//div[contains(text(),'Your Personal Consultant')]/ancestor::article//h2");
 
+    By username = By.name("username");
+    By password = By.name("password");
+    By loginButton = By.xpath("//button[@type='submit']");
+    By leaveTab = By.xpath("//span[text()='Leave']");
+    By entitlementsTab = By.xpath("//span[contains(text(),'Entitlements')] ");
+    By addEntitlements = By.xpath("//a[contains(text(),'Add')] ");
+    By employeeName = By.xpath("//input[@placeholder='Type for hints...']");
+    By leaveTypeSelect = By.xpath("//div[contains(text(),'Select')]");
+    By leaveType = By.xpath("//span[contains(text(),'Matternity')]");
+    By leavePeriod = By.xpath("//div[contains(text(),'2025-01-01')]");
+    By entitlement = By.xpath("//label[text()='Entitlement']/parent::*/following-sibling::*/input");
+    By saveButton = By.xpath("//button[@type='submit']");
+    By confirmButton = By.xpath("//button[text()=' Confirm ']");
+    By record = By.xpath("//div[contains(@class,'table')]/*[text()='CAN - Matternity']");
+    By autocomplete = By.xpath("//input[@placeholder='Type for hints...']/parent::div/following-sibling::div");
+
     @Test
     public void testRequestQuote () throws InterruptedException {
         WebDriverManager.chromedriver().setup();
@@ -51,6 +67,47 @@ public class Group_JavaQATest {
         driver.findElement(submitButton).click();
         Thread.sleep(5000);
         assertTrue(driver.findElement(conformationPage).isDisplayed(),"Thank you page is displayed");
+
+        driver.quit();
+
+    }
+
+    @Test
+    public void testAddEntitlements () throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement userName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
+
+        userName.sendKeys("Admin");
+        driver.findElement(password).sendKeys("admin123");
+        driver.findElement(loginButton).click();
+
+        WebElement leave = wait.until(ExpectedConditions.visibilityOfElementLocated(leaveTab));
+        leave.click();
+        driver.findElement(entitlementsTab).click();
+        driver.findElement(addEntitlements).click();
+        driver.findElement(employeeName).sendKeys("John Smit");
+        Thread.sleep(5000);
+        WebElement autocompleteOption = wait.until(ExpectedConditions.visibilityOfElementLocated(autocomplete));
+        autocompleteOption.click();
+        driver.findElement(leaveTypeSelect).click();
+        Thread.sleep(3000);
+        WebElement leaveTypeOption = wait.until(ExpectedConditions.visibilityOfElementLocated(leaveType));
+        leaveTypeOption.click();
+        driver.findElement(leavePeriod).click();
+        driver.findElement(entitlement).sendKeys("2.00");
+        driver.findElement(saveButton).click();
+        Thread.sleep(3000);
+        driver.findElement(confirmButton).click();
+
+        WebElement recordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(record));
+        assertTrue(recordElement.isDisplayed(), "Record is displayed");
 
         driver.quit();
     }
