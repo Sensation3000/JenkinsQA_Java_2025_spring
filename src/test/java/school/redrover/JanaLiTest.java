@@ -13,7 +13,6 @@ public class JanaLiTest {
 
     @Test
     public void testRegisterUser()  {
-        //WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
 
