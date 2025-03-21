@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
@@ -90,6 +91,19 @@ public class EkatTest {
         WebElement gitButton = driver.findElement(By.cssSelector("a[aria-label='GitHub page']"));
         gitButton.click();
         assertEquals(driver.getCurrentUrl(), "https://coffee-cart.app/github");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAmountOfCups() {
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://coffee-cart.app/");
+
+        List<WebElement> cups = driver.findElements(By.className("cup-body"));
+        assertEquals(cups.size(), 9);
 
         driver.quit();
     }
