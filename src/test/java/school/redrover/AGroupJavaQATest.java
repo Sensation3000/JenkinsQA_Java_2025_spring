@@ -202,7 +202,7 @@ public class AGroupJavaQATest {
     }
 
     @Test
-    public void addMultipleItemsToTheCart() {
+    public void testAddMultipleItemsToTheCart() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
