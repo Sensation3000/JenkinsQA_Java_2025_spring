@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
@@ -187,7 +188,7 @@ public class AGroupJavaQATest {
         driver.findElement(By.xpath("//form/input[@id = 'login-button']")).click();
         driver.findElement(By.xpath("//button[@id = 'add-to-cart-sauce-labs-backpack']")).click();
         driver.findElement(By.id("shopping_cart_container")).click();
-        driver.findElement(By.xpath("//button[@id = 'checkout']" )).click();
+        driver.findElement(By.xpath("//button[@id = 'checkout']")).click();
         driver.findElement(By.xpath("//input[@id = 'first-name']")).sendKeys("Anna");
         driver.findElement(By.xpath("//input[@id = 'last-name']")).sendKeys("Anina");
         driver.findElement(By.xpath("//input[@id = 'postal-code']")).sendKeys("19283");
@@ -196,6 +197,27 @@ public class AGroupJavaQATest {
         WebElement confirm = driver.findElement(By.xpath("//div/div/h2"));
         String confirmText = confirm.getText();
         assertEquals(confirmText, "Thank you for your order!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAddMultipleItemsToTheCart() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+
+        List<WebElement> addToCartButtons = driver.findElements(By.xpath("//button[text()='Add to cart']"));
+        for (WebElement addToCartButton : addToCartButtons) {
+            addToCartButton.click();
+        }
+        String cartItemsQty = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        assertEquals(addToCartButtons.size(), Integer.parseInt(cartItemsQty));
 
         driver.quit();
     }
