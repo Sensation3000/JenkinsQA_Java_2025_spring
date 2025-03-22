@@ -301,7 +301,6 @@ public class GroupJavaMastersTest {
         driver.quit();
     }
 
-  VS/test2.2
     @Test
 
     public void Test3AddRemoveCart() {
@@ -354,5 +353,5 @@ public class GroupJavaMastersTest {
 
     }
 
-main
+
 }
