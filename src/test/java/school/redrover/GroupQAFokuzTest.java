@@ -13,28 +13,57 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class GroupQAFokuzTest {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @BeforeMethod
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterMethod
     public void tearDown() {
         if (driver != null) {
             driver.quit();
+        }
+    }
+
+    @Test
+    public void testShopDatartWriteQtyTxt() {
+        try {
+            driver.get("https://www.datart.cz/");
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("c-p-bn"))).click();
+
+            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']"))).sendKeys("iPhone");
+            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='ufo-button ufo-button--secondary search-widget__input-submit']"))).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='col-md-6 col-xl-4']")));
+
+            List<WebElement> items = driver.findElements(By.xpath("//div[@class='col-md-6 col-xl-4']"));
+            if (items.size() < 2) {
+                System.out.println("Ошибка: Найдено меньше 2 товаров.");
+            } else {
+                System.out.println("Проверка пройдена: найдено " + items.size() + " упоминаний ключевого слова 'iPhone'.");
+                try (FileWriter file = new FileWriter("src/test/resources/uploadFiles/results.txt")) {
+                    file.write(String.valueOf(items.size()));
+                    System.out.println("Количество найденных товаров записано в results.txt.");
+                } catch (IOException e) {
+                    System.out.println("Ошибка при записи в файл: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Ошибка во время выполнения теста: " + e.getMessage());
+            Assert.fail("Тест завершился с ошибкой: " + e.getMessage());
         }
     }
 
@@ -49,7 +78,7 @@ public class GroupQAFokuzTest {
         driver.findElement(By.xpath("//button[@class='btn btn-login']")).click();
         Thread.sleep(1000);
         Assert.assertEquals(driver.findElement(By.xpath("//div[@class='errorMessage mb-3']"))
-                .getText(),"Zadali jste špatné údaje. Zkuste to znovu.","Вы не вошли");
+                .getText(), "Zadali jste špatné údaje. Zkuste to znovu.", "Вы не вошли");
     }
 
     @Test
@@ -77,7 +106,7 @@ public class GroupQAFokuzTest {
         actions.doubleClick(driver.findElement(By.xpath("//*[@id='doubleClickBtn']")))
                 .contextClick(driver.findElement(By.xpath("//*[@id='rightClickBtn']")))
                 .click(wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Click Me']"))))
-        .perform();
+                .perform();
 
         Assert.assertTrue(
                 driver.findElement(By.xpath("//*[@id='doubleClickMessage']")).isDisplayed(),
@@ -117,7 +146,6 @@ public class GroupQAFokuzTest {
         Assert.assertEquals(buttonImpressive.getText(), "Impressive", "Текст элемента не совпадает с 'Impressive'");
         Assert.assertEquals(buttonNo.getText(), "No", "Текст элемента не совпадает с 'No'");
     }
-
 
     @Test
     public void testFormPractice() {
@@ -181,19 +209,18 @@ public class GroupQAFokuzTest {
                 By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")));
 
         Assert.assertTrue(table.isDisplayed(), "Таблица не отображается");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(),"Denis Novicov","Неверное имя студента");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(),"denisnovicov@example.com","Неверный email");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(),"Male","Неверный пол");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(),"7999999999","Неверный номер телефона");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(),"12 December,2000","Неверная дата рождения");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(),"English, Commerce","Неверные предметы");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(),"Sports, Reading, Music","Неверные хобби");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(),"Prague, Vodickova 123/34","Неверный адрес");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(),"NCR Delhi","Неверный штат и город");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(), "Denis Novicov", "Неверное имя студента");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(), "denisnovicov@example.com", "Неверный email");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(), "Male", "Неверный пол");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(), "7999999999", "Неверный номер телефона");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(), "12 December,2000", "Неверная дата рождения");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(), "English, Commerce", "Неверные предметы");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(), "Sports, Reading, Music", "Неверные хобби");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(), "Prague, Vodickova 123/34", "Неверный адрес");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(), "NCR Delhi", "Неверный штат и город");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='closeLargeModal']"))).click();
     }
-
 
 
     @Test
@@ -268,6 +295,4 @@ public class GroupQAFokuzTest {
         driver.quit();
 
     }
-
-
 }
