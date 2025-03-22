@@ -69,4 +69,22 @@ public class GroupJavaESTTest {
         sleep(1000);
         driver.quit();
     }
+
+    @Test
+    public void testLogin() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+
+        WebElement textBox = driver.findElement(By.id("user-name"));
+        WebElement submitButton = driver.findElement(By.name("login-button"));
+        textBox.sendKeys("standard_user");
+
+        WebElement textBox2 = driver.findElement(By.id("password"));
+        textBox2.sendKeys("secret_sauce");
+        submitButton.click();
+
+        driver.quit();
+    }
 }
+
