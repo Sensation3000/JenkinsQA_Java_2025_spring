@@ -44,7 +44,6 @@ public class GroupJavaESTTest {
 
         driver.quit();
     }
-
     @Test
     public void testLockedOutUserLogin() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -88,3 +87,4 @@ public class GroupJavaESTTest {
         driver.quit();
     }
 }
+
