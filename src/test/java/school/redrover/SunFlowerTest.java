@@ -65,24 +65,28 @@ public class SunFlowerTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://ingamejob.com/en");
-        driver.getTitle();
+        String pageTitle = driver.getTitle();
+        Assert.assertTrue(pageTitle.isEmpty(), "Page title should not be empty");
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement input = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.home-hero-section > div > div > div:nth-child(2) > div > form > div > div:nth-child(1) > div > button > div > div > div"));
-        input.click();
-        WebElement input2 = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.home-hero-section > div > div > div:nth-child(2) > div > form > div > div:nth-child(1) > div > div > div.bs-searchbox > input"));
-        input2.sendKeys("qa");
+        WebElement professionInput = driver.findElement(By.xpath("//div[@class='home-hero-section']//button"));
+        professionInput.click();
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"bs-select-1-69\"]/span[2]"));
-        button.click();
-        WebElement button2 = driver.findElement(By.xpath("//*[@id=\"app-all\"]/div[1]/div/div[1]/div/div/div[2]/div/form/div/div[3]/button"));
-        button2.click();
+        WebElement searchBox = driver.findElement(By.xpath("//div[@class='bs-searchbox']/input"));
+        searchBox.sendKeys("qa");
+
+        WebElement professionOption = driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[contains(text(), 'QA')]"));
+        professionOption.click();
+
+        WebElement searchButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        searchButton.click();
 
         Thread.sleep(1000);
 
-        WebElement site = driver.findElement(By.cssSelector("#app-all > div.main-content.antialiased > div > div.container > div > div.col-md-8 > div > div:nth-child(3) > div.listing-job-info.container > div > div.col-12.p-0 > h5 > a"));
-        site.getText();
+        WebElement jobTitle = driver.findElement(By.xpath("//div[contains(@class, 'listing-job-info')]//h5/a"));
+        String jobTitleText = jobTitle.getText();
+        Assert.assertTrue(!jobTitleText.isEmpty(), "Job title should not be empty");
 
         driver.quit();
     }
