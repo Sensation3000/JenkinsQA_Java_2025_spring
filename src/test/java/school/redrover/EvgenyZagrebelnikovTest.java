@@ -48,4 +48,26 @@ public class EvgenyZagrebelnikovTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testCheckBoxElement() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        WebElement buttonElements = driver.findElement(By.xpath("//*[text()='Elements']"));
+        buttonElements.click();
+
+        WebElement selectTabCheckBox = driver.findElement(By.xpath("//*[text()='Check Box']"));
+        selectTabCheckBox.click();
+
+        WebElement searchCheckBoxAndClick = driver.findElement(By.xpath("//*[@class='rct-checkbox']"));
+        searchCheckBoxAndClick.click();
+
+        WebElement textAfterCheckboxSelect = driver.findElement(By.xpath("//*[text()='You have selected :']"));
+        String text = textAfterCheckboxSelect.getText();
+
+        Assert.assertEquals(text, "You have selected :");
+
+        driver.quit();
+    }
 }
