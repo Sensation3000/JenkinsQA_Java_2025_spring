@@ -7,6 +7,7 @@ import org.testng.annotations.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import java.io.*;
+import java.time.Duration;
 import java.util.*;
 
 public class SunFlowerTest {
@@ -56,6 +57,39 @@ public class SunFlowerTest {
     public void testSubmitButton() { WebElement button = submitButton(); Assert.assertTrue(button.isDisplayed()); Assert.assertEquals(button.getText(), "Submit"); Assert.assertTrue(button.isEnabled()); }
     @Test
     public void testRadioButtons() { List<WebElement> radios = radioButtons(); Assert.assertEquals(radios.size(), 2); radios.forEach(radio -> { Assert.assertTrue(radio.isDisplayed()); Assert.assertTrue(radio.isEnabled()); }); }
+
+    @Test
+
+    public void firstTest () throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://ingamejob.com/en");
+        String pageTitle = driver.getTitle();
+        Assert.assertTrue(pageTitle.isEmpty(), "Page title should not be empty");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement professionInput = driver.findElement(By.xpath("//div[@class='home-hero-section']//button"));
+        professionInput.click();
+
+        WebElement searchBox = driver.findElement(By.xpath("//div[@class='bs-searchbox']/input"));
+        searchBox.sendKeys("qa");
+
+        WebElement professionOption = driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[contains(text(), 'QA')]"));
+        professionOption.click();
+
+        WebElement searchButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        searchButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement jobTitle = driver.findElement(By.xpath("//div[contains(@class, 'listing-job-info')]//h5/a"));
+        String jobTitleText = jobTitle.getText();
+        Assert.assertTrue(!jobTitleText.isEmpty(), "Job title should not be empty");
+
+        driver.quit();
+    }
 
     @Test
     public void testCheckboxesStateChange() {
