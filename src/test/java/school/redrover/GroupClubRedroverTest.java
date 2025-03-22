@@ -125,7 +125,7 @@ public class GroupClubRedroverTest {
     }
 
     @Test(description = "Verify mouse moving over pictures")
-    void verifyMouseMovingOverPictures() {
+    void verifyMouseMovingOverPictures() throws InterruptedException {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/mouse-over.html");
 
         String[] expectedText = {"Compass", "Calendar", "Award", "Landscape"};
