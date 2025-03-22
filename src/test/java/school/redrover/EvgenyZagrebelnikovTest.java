@@ -10,12 +10,11 @@ import org.testng.annotations.Test;
 public class EvgenyZagrebelnikovTest {
 
     @Test
-    public void testTest() throws InterruptedException {
+    public void testGoToTheArchiveSection() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://world-weather.ru/pogoda/");
 
         WebElement archiveButton = driver.findElement(By.xpath("//*[@id=\"meny\"]/li[2]/a"));
-        Thread.sleep(2000);
         archiveButton.click();
 
         WebElement textTitle = driver.findElement(By.xpath("//*[@id=\"content-left\"]/h1"));
@@ -31,29 +30,22 @@ public class EvgenyZagrebelnikovTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://openweathermap.org/");
 
-        WebElement searchInputFieldAndEnterCityName = driver.findElement(By.xpath("//*[@id=" +
-                "\"weather-widget\"]/div[2]/div/div/div[2]/div[1]/div/input"));
+        WebElement searchInputFieldAndEnterCityName = driver.findElement(By.xpath("//input[@placeholder='Search city']"));
         searchInputFieldAndEnterCityName.sendKeys("London");
 
-        WebElement searchButtonClick = driver.findElement(By.xpath("//*[@id=\"weather-widget\"]" +
-                "/div[2]/div/div/div[2]/div[1]/button"));
+        WebElement searchButtonClick = driver.findElement(By.xpath("//button[text()='Search']"));
         searchButtonClick.click();
         Thread.sleep(2000);
 
-        WebElement selectCityFromList = driver.findElement(By.xpath("//*[@id=\"weather-widget\"]/div[2]" +
-                "/div/div/div[2]/div[1]/div/ul/li[2]"));
-        Thread.sleep(1000);
+        WebElement selectCityFromList = driver.findElement(By.xpath("//*[text()='London, CA ']"));
         selectCityFromList.click();
         Thread.sleep(2000);
 
-        WebElement checkCityTitle = driver.findElement(By.xpath("//*[@id='weather-widget']" +
-                "/div[3]/div[1]/div[1]/div[1]/h2"));
+        WebElement checkCityTitle = driver.findElement(By.xpath("//*[text()='London, CA']"));
         String text = checkCityTitle.getText();
 
         Assert.assertEquals(text, "London, CA");
-        Thread.sleep(1000);
 
         driver.quit();
-
     }
 }
