@@ -17,7 +17,7 @@ public class GroupBlohaTest {
 
 
         driver.get("https://magento.softwaretestingboard.com/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.findElement(By.id("ui-id-5")).click();
         driver.findElement(By.linkText("Tops")).click();
         driver.findElement(By.className("product-item-link")).click();
