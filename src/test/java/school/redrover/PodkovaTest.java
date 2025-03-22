@@ -70,4 +70,108 @@ public class PodkovaTest {
 
         driver.quit();
     }
+    @Test
+    public void testLoginPage() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/login");
+
+        driver.findElement(By.xpath("//input[@id='username']")).sendKeys("tomsmith");
+        driver.findElement(By.xpath("//input[@id='password']")).sendKeys("SuperSecretPassword!");
+        driver.findElement(By.cssSelector(".fa-sign-in")).click();
+
+        String expectedUrl = "https://the-internet.herokuapp.com/secure";
+        Assert.assertEquals(driver.getCurrentUrl(), expectedUrl);
+
+        WebElement successMessage = driver.findElement(By.cssSelector(".flash.success"));
+        Assert.assertTrue(successMessage.isDisplayed());
+        Assert.assertTrue(successMessage.getText().contains("You logged into a secure area!"));
+
+        driver.quit();
+    }
+
+    @Test
+    public void testDropdown() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/dropdown");
+
+        WebElement dropdown = driver.findElement(By.id("dropdown"));
+        dropdown.findElement(By.xpath("//option[text()='Option 1']")).click();
+
+        String selectedOption = dropdown.getAttribute("value");
+        Assert.assertEquals(selectedOption, "1");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAddRemoveElements() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/add_remove_elements/");
+        WebElement addButton = driver.findElement(By.xpath("//button[text()='Add Element']"));
+        addButton.click();
+
+        WebElement deleteButton = driver.findElement(By.xpath("//button[text()='Delete']"));
+        Assert.assertTrue(deleteButton.isDisplayed());
+
+        deleteButton.click();
+        Assert.assertTrue(driver.findElements(By.xpath("//button[text()='Delete']")).isEmpty());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testJavaScriptAlerts() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/javascript_alerts");
+        WebElement alertButton = driver.findElement(By.xpath("//button[text()='Click for JS Alert']"));
+        alertButton.click();
+
+        driver.switchTo().alert().accept();
+
+        String expectedMessage = "You successfully clicked an alert";
+        String actualMessage = driver.findElement(By.cssSelector("#result")).getText();
+        Assert.assertEquals(actualMessage, expectedMessage);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckBoxes() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/checkboxes");
+        WebElement checkbox1 = driver.findElement(By.xpath("//input[1]"));
+        WebElement checkbox2 = driver.findElement(By.xpath("//input[2]"));
+
+        Assert.assertFalse(checkbox1.isSelected());
+        Assert.assertTrue(checkbox2.isSelected());
+
+        checkbox1.click();
+        Assert.assertTrue(checkbox1.isSelected());
+        Assert.assertTrue(checkbox2.isSelected());
+
+        driver.quit();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
