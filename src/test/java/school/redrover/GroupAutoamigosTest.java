@@ -95,8 +95,8 @@ public class GroupAutoamigosTest {
 
         WebElement backToIndexLink = driver.findElement(By.xpath("//a[@href='index.html']"));
         backToIndexLink.click();
-        String ActualURL = driver.getCurrentUrl();
+        String actualURL = driver.getCurrentUrl();
 
-        Assert.assertEquals(ActualURL, "https://bonigarcia.dev/selenium-webdriver-java/index.html");
+        Assert.assertEquals(actualURL, "https://bonigarcia.dev/selenium-webdriver-java/index.html");
     }
 }
