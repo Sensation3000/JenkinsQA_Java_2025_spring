@@ -8,8 +8,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GroupPushAndPray {
+public class GroupPushAndPrayTest {
     @Test
+    
     public void testGoogle() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
 
