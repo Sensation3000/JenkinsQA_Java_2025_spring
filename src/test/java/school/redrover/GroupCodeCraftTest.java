@@ -863,4 +863,18 @@ public class GroupCodeCraftTest {
 
         Assert.assertEquals(productTitle, "Samsung galaxy s6");
     }
+
+    @Test
+    public void testLoginMethod() throws InterruptedException{
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+    }
 }
