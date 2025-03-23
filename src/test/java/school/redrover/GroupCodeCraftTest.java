@@ -52,6 +52,15 @@ public class GroupCodeCraftTest {
         }
     }
 
+    @DataProvider(name = "wikiArticles")
+    public Object[][] provideArticles() {
+        return new Object[][] {
+                {"Artificial Intelligence"},
+                {"Machine Learning"},
+                {"Quantum Computing"},
+        };
+    }
+
     @Test
     public void testSwagLabs() {
         driver.get("https://www.saucedemo.com");
@@ -152,11 +161,15 @@ public class GroupCodeCraftTest {
     public void testToolsQATestBox() {
         driver.get("https://demoqa.com");
 
-        driver.findElement
-                (By.xpath("//div[1][@class='card mt-4 top-card']")).click();
-        driver.findElement
-                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
-                .click();
+        WebElement card = driver.findElement
+                (By.xpath("//div[1][@class='card mt-4 top-card']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", card);
+        card.click();
+
+        WebElement textBox = driver.findElement
+                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textBox);
+        textBox.click();
 
         String fullName = "Jane Doe";
         String eMail = "janedoe@yahoo.com";
@@ -683,15 +696,6 @@ public class GroupCodeCraftTest {
         Assert.assertEquals(
                 driver.findElement(By.xpath("//p[@class='title is-4']")).getText(),
                 "Your cart is empty");
-    }
-
-    @DataProvider(name = "wikiArticles")
-    public Object[][] provideArticles() {
-        return new Object[][] {
-                {"Artificial Intelligence"},
-                {"Machine Learning"},
-                {"Quantum Computing"},
-        };
     }
 
     @Test(dataProvider = "wikiArticles")
