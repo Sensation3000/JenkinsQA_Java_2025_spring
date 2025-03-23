@@ -6,12 +6,14 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.awt.*;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static net.datafaker.providers.base.Text.*;
@@ -30,12 +33,16 @@ public class GroupCodeCraftTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    private Actions actions;
+    private Random random;
 
     @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1366, 768));
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        actions = new Actions(driver);
+        random = new Random();
     }
 
     @AfterMethod
@@ -43,6 +50,15 @@ public class GroupCodeCraftTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    @DataProvider(name = "wikiArticles")
+    public Object[][] provideArticles() {
+        return new Object[][] {
+                {"Artificial Intelligence"},
+                {"Machine Learning"},
+                {"Quantum Computing"},
+        };
     }
 
     @Test
@@ -145,11 +161,15 @@ public class GroupCodeCraftTest {
     public void testToolsQATestBox() {
         driver.get("https://demoqa.com");
 
-        driver.findElement
-                (By.xpath("//div[1][@class='card mt-4 top-card']")).click();
-        driver.findElement
-                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"))
-                .click();
+        WebElement card = driver.findElement
+                (By.xpath("//div[1][@class='card mt-4 top-card']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", card);
+        card.click();
+
+        WebElement textBox = driver.findElement
+                (By.xpath("//div[@class='element-list collapse show']/descendant::li[@id='item-0']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textBox);
+        textBox.click();
 
         String fullName = "Jane Doe";
         String eMail = "janedoe@yahoo.com";
@@ -170,19 +190,18 @@ public class GroupCodeCraftTest {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submit);
         submit.click();
 
-        WebElement fullNameWeb = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='name']")));
-        WebElement eMailWeb = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='email']")));
-        WebElement currentAddressWeb = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='currentAddress']")));
-        WebElement permAddressWeb = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='permanentAddress']")));
-
-        assertEquals(fullNameWeb.getText(), "Name:" + fullName);
-        assertEquals(eMailWeb.getText(), "Email:" + eMail);
-        assertEquals(currentAddressWeb.getText(), "Current Address :" + currentAddress);
-        assertEquals(permAddressWeb.getText(), "Permananet Address :" + permAddress);
+        assertEquals(wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='name']"))).getText(),
+                "Name:" + fullName);
+        assertEquals(wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='email']"))).getText(),
+                "Email:" + eMail);
+        assertEquals(wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='currentAddress']"))).getText(),
+                "Current Address :" + currentAddress);
+        assertEquals(wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@id='permanentAddress']"))).getText(),
+                "Permananet Address :" + permAddress);
     }
 
     @Test
@@ -289,12 +308,7 @@ public class GroupCodeCraftTest {
                 .with(DIGITS, 3).build());
 
         driver.get("https://magento.softwaretestingboard.com/");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement acceptCookies = driver.findElement(By.className("css-1n36tvh"));
-        if (acceptCookies.isDisplayed()) {
-            acceptCookies.click();
-        }
         WebElement createAccount = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
         createAccount.click();
@@ -529,16 +543,11 @@ public class GroupCodeCraftTest {
 
         Thread.sleep(1000);
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"search\"]/button"));
-        button.click();
+        driver.findElement(By.xpath("//*[@id=\"search\"]/button")).click();
 
-        WebElement cite = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1"));
-        String citeText = cite.getText();
+        String citeText = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1")).getText();
 
         Assert.assertEquals(citeText, "ПОИСК - БРАСЛЕТ");
-
-
-        driver.quit();
     }
 
     @Test
@@ -679,4 +688,193 @@ public class GroupCodeCraftTest {
                 "Your cart is empty");
     }
 
+    @Test(dataProvider = "wikiArticles")
+    public void testWikipedia(String article) {
+        driver.get("https://en.wikipedia.org/wiki/Main_Page");
+
+        driver.findElement(By.id("searchInput")).sendKeys(article);
+
+        wait.until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//form[@id='searchform']/descendant::button")))
+                .click();
+
+        assertEquals(article.toLowerCase(),
+                wait.until(ExpectedConditions.visibilityOfElementLocated
+                                (By.xpath("//h1/child::span")))
+                        .getText()
+                        .toLowerCase());
+    }
+
+    @Test
+    public void testSlowCalculator() throws InterruptedException {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html");
+
+        String[] operator = {"+", "-", "÷", "x"};
+        int operatorRandom = random.nextInt(4);
+        int firstNumber = random.nextInt(10);
+        int secondNumber = random.nextInt(1,10);
+        int delaySeconds = random.nextInt(6);
+
+        WebElement delay = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.id("delay")));
+        delay.clear();
+        delay.sendKeys(String.valueOf(delaySeconds));
+
+        wait.until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='" + firstNumber + "']")))
+                .click();
+        wait.until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='" + operator[operatorRandom] + "']")))
+                .click();
+        wait.until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='" + secondNumber + "']")))
+                .click();
+        wait.until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='=']")))
+                .click();
+
+        Thread.sleep(delaySeconds * 1000 + 500);
+
+        Number result = switch (operatorRandom) {
+            case 0 -> firstNumber + secondNumber;
+            case 1 -> firstNumber - secondNumber;
+            case 2 -> (firstNumber % secondNumber == 0)
+                    ? (Number) (firstNumber / secondNumber)
+                    : (Number) ((double) firstNumber / (double) secondNumber);
+            case 3 -> firstNumber * secondNumber;
+            default -> 0;
+        };
+
+        assertEquals(wait.until(ExpectedConditions.visibilityOfElementLocated
+                        (By.xpath("//div[@class='screen']"))).getText(),
+                String.valueOf(result));
+    }
+
+    @Test
+    public void testDropDownMenu() {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/dropdown-menu.html");
+
+        WebElement leftClickDropDown = driver.findElement(By.id("my-dropdown-1"));
+
+        actions.doubleClick(driver.findElement(By.id("my-dropdown-3"))).perform();
+        actions.contextClick(driver.findElement(By.id("my-dropdown-2"))).perform();
+        leftClickDropDown.click();
+
+        assertTrue(Boolean.parseBoolean(leftClickDropDown.getDomProperty("ariaExpanded")));
+        assertTrue(driver.findElement(By.id("context-menu-2")).isEnabled());
+        assertTrue(driver.findElement(By.id("context-menu-3")).isEnabled());
+    }
+
+    @Test
+    public void testMouseOver() {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/mouse-over.html");
+
+        WebElement elementForMouseEscape = driver.findElement(By.tagName("h5"));
+
+        actions.moveToElement(driver.findElement
+                (By.xpath("//img[@src='img/compass.png']"))).perform();
+        boolean compassCheckVisible = wait.until
+                        (ExpectedConditions.visibilityOfElementLocated
+                                (By.xpath("//img[@src='img/compass.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")))
+                .isDisplayed();
+        actions.moveToElement(elementForMouseEscape).perform();
+        boolean compassOffCheck = wait.until
+                (ExpectedConditions.invisibilityOfElementLocated
+                        (By.xpath("//img[@src='img/compass.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")));
+
+        actions.moveToElement(driver.findElement
+                (By.xpath("//img[@src='img/calendar.png']"))).perform();
+        boolean calendarCheckVisible = wait.until
+                        (ExpectedConditions.visibilityOfElementLocated
+                                (By.xpath("//img[@src='img/calendar.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")))
+                .isDisplayed();
+        actions.moveToElement(elementForMouseEscape).perform();
+        boolean calendarOffCheck = wait.until
+                (ExpectedConditions.invisibilityOfElementLocated
+                        (By.xpath("//img[@src='img/calendar.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")));
+
+        actions.moveToElement(driver.findElement
+                (By.xpath("//img[@src='img/award.png']"))).perform();
+        boolean awardCheckVisible = wait.until
+                        (ExpectedConditions.visibilityOfElementLocated
+                                (By.xpath("//img[@src='img/award.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")))
+                .isDisplayed();
+        actions.moveToElement(elementForMouseEscape).perform();
+        boolean awardOffCheck = wait.until
+                (ExpectedConditions.invisibilityOfElementLocated
+                        (By.xpath("//img[@src='img/award.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")));
+
+        actions.moveToElement(driver.findElement
+                (By.xpath("//img[@src='img/landscape.png']"))).perform();
+        boolean landscapeCheckVisible = wait.until
+                        (ExpectedConditions.visibilityOfElementLocated
+                                (By.xpath("//img[@src='img/landscape.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")))
+                .isDisplayed();
+        actions.moveToElement(elementForMouseEscape).perform();
+        boolean landscapeOffCheck = wait.until
+                (ExpectedConditions.invisibilityOfElementLocated
+                        (By.xpath("//img[@src='img/landscape.png']/ancestor::div[@class='figure text-center col-3 py-2']/descendant::p")));
+
+        assertTrue(compassCheckVisible);
+        assertTrue(compassOffCheck);
+        assertTrue(calendarCheckVisible);
+        assertTrue(calendarOffCheck);
+        assertTrue(awardCheckVisible);
+        assertTrue(awardOffCheck);
+        assertTrue(landscapeCheckVisible);
+        assertTrue(landscapeOffCheck);
+    }
+
+    @Test
+    public void testAddRemoveElements () {
+        driver.get("https://the-internet.herokuapp.com/add_remove_elements/");
+
+        int clickCount = random.nextInt(3,20);
+
+        for (int i = 0; i < clickCount; i++) {
+            wait.until(ExpectedConditions.elementToBeClickable
+                    (By.xpath("//button[text()='Add Element']"))).click();
+        }
+
+        int elementsCount = driver.findElements
+                (By.xpath("//button[@class='added-manually']")).size();
+
+        for (int i = clickCount; i > 0; i--) {
+            wait.until(ExpectedConditions.elementToBeClickable
+                            (By.xpath("//button[" + i + "][@class='added-manually']")))
+                    .click();
+        }
+
+        assertEquals(clickCount, elementsCount);
+        assertTrue(driver.findElements
+                (By.xpath("//button[@class='added-manually']")).isEmpty());
+    }
+    @Test
+    public void StoreElementTest() throws InterruptedException {
+
+        driver.get("https://demoblaze.com/");
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//*[@id='tbodyid']/div[1]/div/div/h4/a")).click();
+        Thread.sleep(1000);
+
+        WebElement productDetail = driver.findElement(By.xpath("//*[@id='tbodyid']/h2"));
+        String productTitle = productDetail.getText();
+
+        Assert.assertEquals(productTitle, "Samsung galaxy s6");
+    }
+
+    @Test
+    public void testLoginMethod() throws InterruptedException{
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+    }
 }

@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -351,6 +352,25 @@ public class GroupJavaMastersTest {
 
 
 
+    }
+
+    @Test
+     public void submitFormTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+
+        driver.findElement(By.xpath("//a[@href='web-form.html']")).click();
+        driver.findElement(By.xpath("//input[@id='my-text-id']")).sendKeys("TextInput");
+        driver.findElement(By.xpath("//input[@name='my-password']")).sendKeys("Password");
+        driver.findElement(By.xpath("//textarea[@name='my-textarea']")).sendKeys("Line1\nLine2\nLine3");
+        driver.findElement(By.className("btn-outline-primary")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("display-6")));
+
+        Assert.assertEquals(driver.findElement(By.className("display-6")).getText(),
+                "Form submitted");
+        driver.quit();
     }
 
 

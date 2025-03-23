@@ -32,7 +32,7 @@ public class GroupJavaTerminatorsTest {
 
         String pageTitle = driver.getTitle();
 
-        assertEquals(pageTitle,"Swag Labs");
+        assertEquals(pageTitle, "Swag Labs");
 
         driver.quit();
     }
@@ -62,6 +62,22 @@ public class GroupJavaTerminatorsTest {
 
         Assert.assertEquals(expectedRes, "Total: $32.39");
 
+        driver.quit();
+    }
+
+    @Test
+    public void testTextAfterClickingButton() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://practice-automation.com/");
+
+        driver.findElement(By.xpath("//div/div/a[@href='https://practice-automation.com/click-events/']")).click();
+        driver.findElement(By.xpath("//button[@onclick='dogSound()']")).click();
+
+        String actualResult = driver.findElement(By.xpath("//h2[@id='demo']")).getText();
+        String expectedResult = "Woof!";
+
+        Assert.assertEquals(actualResult, expectedResult);
         driver.quit();
     }
 }

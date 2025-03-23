@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -15,9 +16,8 @@ public class GroupBlohaTest {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
-
         driver.get("https://magento.softwaretestingboard.com/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.findElement(By.id("ui-id-5")).click();
         driver.findElement(By.linkText("Tops")).click();
         driver.findElement(By.className("product-item-link")).click();
@@ -25,7 +25,30 @@ public class GroupBlohaTest {
 
         driver.quit();
 
-
     }
 
+    @Test
+    public void magentoSearchAndAddToCartTest() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        
+        driver.get("https://magento.softwaretestingboard.com/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        
+        driver.findElement(By.id("ui-id-5")).click();
+        driver.findElement(By.linkText("Tops")).click();
+        driver.findElement(By.className("product-item-link")).click(); 
+
+        driver.findElement(By.id("option-label-color-93-item-50")).click();
+        driver.findElement(By.id("option-label-size-143-item-166")).click();
+        driver.findElement(By.xpath("//*[@id='product-addtocart-button']")).click();
+        
+        String successMessage = driver.findElement(By.cssSelector(".message-success")).getText();
+        Assert.assertTrue(successMessage.contains("You added Cassius Sparring Tank to your shopping cart."), "Товар не был добавлен в корзину");
+
+        driver.quit();
+    }
+
+  
 }
