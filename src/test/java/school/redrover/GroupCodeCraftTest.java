@@ -543,16 +543,11 @@ public class GroupCodeCraftTest {
 
         Thread.sleep(1000);
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"search\"]/button"));
-        button.click();
+        driver.findElement(By.xpath("//*[@id=\"search\"]/button")).click();
 
-        WebElement cite = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1"));
-        String citeText = cite.getText();
+        String citeText = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1")).getText();
 
         Assert.assertEquals(citeText, "ПОИСК - БРАСЛЕТ");
-
-
-        driver.quit();
     }
 
     @Test
