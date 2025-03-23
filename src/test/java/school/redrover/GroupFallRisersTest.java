@@ -32,7 +32,6 @@ public class GroupFallRisersTest {
     public void testCheck() {
 
         assertEquals(driver.getTitle(), "DEMOQA", "Title is not correct");
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         clickElement(By.xpath("//div[@id='app']//div[@class='category-cards']/div[1]"));
 
         //text box section
@@ -53,7 +52,6 @@ public class GroupFallRisersTest {
 
         //checkbox section
         clickElement(By.xpath("//span[normalize-space()='Check Box']"));
-        js.executeScript("document.getElementById('fixedban').style.display='none';");
         clickElement(By.xpath("//button[@title='Toggle']//*[name()='svg']"));
         clickElement(By.xpath("(//button[@title='Toggle'])[2]"));
         clickElement(By.xpath(".//label[@for='tree-node-home']//span[@class='rct-checkbox']//*[name()='svg']"));
@@ -169,7 +167,7 @@ public class GroupFallRisersTest {
         clickElement(By.xpath("//button[@id='newUser']"));
         fillTextInput(By.xpath("//input[@id='firstname']"), "Tester1");
         fillTextInput(By.xpath("//input[@id='lastname']"), "Testerovich");
-        fillTextInput(By.xpath("//input[@id='userName']"), "Tester123Testerovich");
+        fillTextInput(By.xpath("//input[@id='userName']"), "Tester1273Testerovich");
         fillTextInput(By.xpath("//input[@id='password']"), "Tester1$");
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
