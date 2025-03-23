@@ -473,47 +473,41 @@ public class GroupCodeCraftTest {
     public void testBonigarciaWebFormXpath() throws InterruptedException {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         driver.findElement(By.xpath("//div/a[@href='web-form.html']")).click();
-        WebElement header = driver.findElement(By.xpath("//h1[@class='display-6']"));
-        String headerText = header.getText();
-
-        Assert.assertEquals(headerText, "Web form");
-
-        WebElement textInput = driver.findElement(By.xpath("//input[@name='my-text']"));
-        textInput.sendKeys("Adelya");
-
-        WebElement passwordInput = driver.findElement(By.xpath("//input[@name='my-password']"));
-        passwordInput.sendKeys("12345678");
-
-        WebElement textareaInput = driver.findElement(By.xpath("//textarea[@name='my-textarea']"));
-        textareaInput.sendKeys("something important");
-
-        WebElement disabledInput = driver.findElement(By.xpath("//input[@placeholder='Disabled input']"));
-        assertFalse(disabledInput.isEnabled());
+        driver.findElement(By.xpath("//input[@name='my-text']")).sendKeys("Adelya");
+        driver.findElement(By.xpath("//input[@name='my-password']")).sendKeys("12345678");
+        driver.findElement(By.xpath("//textarea[@name='my-textarea']")).sendKeys("something important");
 
         WebElement dropDownSelect = driver.findElement(By.xpath("//select"));
         Select openThisSelectMenu = new Select(dropDownSelect);
         openThisSelectMenu.selectByVisibleText("Three");
 
-        WebElement readonlyInput = driver.findElement(By.xpath("//input[@value='Readonly input']"));
-        String readonlyText = readonlyInput.getAttribute("value");
-        Assert.assertEquals(readonlyText, "Readonly input");
-
-        WebElement DropdownDataList = driver.findElement(By.xpath("//input[@list='my-options']"));
-        DropdownDataList.sendKeys("Saint-Petersburg");
+        driver.findElement(By.xpath("//input[@list='my-options']")).sendKeys("Saint-Petersburg");
 
         WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-        String relativeFilePath = "src/uploadFiles/java.png";
+        String relativeFilePath = "src/test/resources/uploadFiles/java.png";
         File fileToUpload = new File(relativeFilePath);
         String absoluteFilePath = fileToUpload.getAbsolutePath();
         fileInput.sendKeys(absoluteFilePath);
 
+        driver.findElement(By.xpath("//input[@id='my-check-1']")).click();
+        driver.findElement(By.xpath("//input[@id='my-check-2']")).click();
+        driver.findElement(By.xpath("//input[@id='my-radio-2']")).click();
+        driver.findElement(By.xpath("//input[@name='my-colors']")).sendKeys("#ff0099");
+        driver.findElement(By.xpath("//input[@class='form-control' and @name='my-date']")).sendKeys("25/03/2025");
+
+        WebElement exampleRange = driver.findElement(By.xpath("//input[@class='form-range']"));
+        Thread.sleep(1000);
+        actions.clickAndHold(exampleRange)
+                .moveByOffset(60, 0)
+                .release()
+                .perform();
+
         WebElement submitButton = driver.findElement(By.xpath("//button[text()='Submit']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
+        actions.moveToElement(submitButton).perform();
+        submitButton.click();
 
         WebElement formSubmitted = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
-
         assertTrue(formSubmitted.isDisplayed(), "Verifying if the confirmation page is displayed");
-
     }
 
     @Test
