@@ -1,4 +1,4 @@
-package rover2025;
+package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
