@@ -71,14 +71,8 @@ public class GroupJavaTerminatorsTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://practice-automation.com/");
 
-        driver.findElement(
-                        By.xpath("//div[@class='wp-block-buttons mt-2 mb-3 is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-5 wp-block-buttons-is-layout-flex']"
-                        ))
-                .click();
-        driver.findElement(
-                        By.xpath("//button[@onclick='dogSound()']"
-                        ))
-                .click();
+        driver.findElement(By.xpath("//div/div/a[@href='https://practice-automation.com/click-events/']")).click();
+        driver.findElement(By.xpath("//button[@onclick='dogSound()']")).click();
 
         String actualResult = driver.findElement(By.xpath("//h2[@id='demo']")).getText();
         String expectedResult = "Woof!";
