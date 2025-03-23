@@ -859,4 +859,18 @@ public class GroupCodeCraftTest {
         assertTrue(driver.findElements
                 (By.xpath("//button[@class='added-manually']")).isEmpty());
     }
+    @Test
+    public void StoreElementTest() throws InterruptedException {
+
+        driver.get("https://demoblaze.com/");
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//*[@id='tbodyid']/div[1]/div/div/h4/a")).click();
+        Thread.sleep(1000);
+
+        WebElement productDetail = driver.findElement(By.xpath("//*[@id='tbodyid']/h2"));
+        String productTitle = productDetail.getText();
+
+        Assert.assertEquals(productTitle, "Samsung galaxy s6");
+    }
 }
