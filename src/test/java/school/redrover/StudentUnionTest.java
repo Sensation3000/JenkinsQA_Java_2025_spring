@@ -36,4 +36,75 @@ public class StudentUnionTest {
         driver.quit();
 
     }
+
+    @Test
+    public void testFitnessAnswers() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://ppbasis.tutorplace.ru");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement sex = driver.findElement(By.xpath("//label[@for=\"1\"]"));
+        sex.click();
+
+        WebElement answer1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for=\"4\"]")));
+        answer1.click();
+
+        WebElement answer2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for=\"9\"]")));
+        answer2.click();
+
+        WebElement answer3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for=\"12\"]")));
+        answer3.click();
+
+        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"quiz-item__next-button button button--main\"]")));
+        String result = button.getText();
+
+        Assert.assertEquals(result, "Продолжить");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testFitnessRegistration() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://tutorplace.ru/");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement reg = driver.findElement(By.linkText("Зарегистрироваться"));
+        reg.click();
+
+        WebElement name = driver.findElement(By.name("name"));
+        name.sendKeys("Anna");
+
+        WebElement number = driver.findElement(By.xpath("//input[@type=\"text\"]"));
+        number.sendKeys("123");
+
+        WebElement telegram = driver.findElement(By.name("telegram"));
+        telegram.sendKeys("@telegram");
+
+        WebElement buttonNext = driver.findElement(By.cssSelector("button"));
+        buttonNext.click();
+
+        WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.name("email")));
+        email.sendKeys("anna@tutorplace.ru");
+
+        WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
+        password.sendKeys("password");
+
+        WebElement repeatPassword = wait.until(ExpectedConditions.elementToBeClickable(By.name("repeatPassword")));
+        repeatPassword.sendKeys("password");
+
+        WebElement buttonRegistration = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".register-button")));
+        buttonRegistration.click();
+
+        WebElement spanError = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[2]/div/form/div[2]/div[1]/div/div/div[1]/span")));
+        String result = spanError.getText();
+
+        Assert.assertEquals(result, "E-mail уже зарегистрирован!");
+
+        driver.quit();
+    }
 }
