@@ -70,6 +70,7 @@ public class PodkovaTest {
 
         driver.quit();
     }
+
     @Test
     public void testLoginPage() {
         WebDriver driver = new ChromeDriver();
@@ -148,6 +149,20 @@ public class PodkovaTest {
         checkbox1.click();
         Assert.assertTrue(checkbox1.isSelected());
         Assert.assertTrue(checkbox2.isSelected());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testEnableTextField() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/dynamic_controls");
+        WebElement enableButton = driver.findElement(By.xpath("//button[text()='Enable']"));
+        enableButton.click();
+        WebElement textField = driver.findElement(By.xpath("//input[@type='text']"));
+
+        Assert.assertFalse(textField.isEnabled(), "Text field should be enabled.");
+        Assert.assertEquals(textField.getAttribute("value"), "", "Text field should be empty.");
 
         driver.quit();
     }
