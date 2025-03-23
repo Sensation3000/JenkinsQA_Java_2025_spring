@@ -308,12 +308,7 @@ public class GroupCodeCraftTest {
                 .with(DIGITS, 3).build());
 
         driver.get("https://magento.softwaretestingboard.com/");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement acceptCookies = driver.findElement(By.className("css-1n36tvh"));
-        if (acceptCookies.isDisplayed()) {
-            acceptCookies.click();
-        }
         WebElement createAccount = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
         createAccount.click();
