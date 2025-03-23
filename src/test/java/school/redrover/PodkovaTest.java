@@ -166,6 +166,23 @@ public class PodkovaTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testLoginAddProductToCart() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com");
+        driver.findElement(By.cssSelector("#user-name")).sendKeys("standard_user");
+        driver.findElement(By.cssSelector("#password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+        driver.findElement(By.xpath("//button[contains(text(), 'Add to cart')]")).click();
+        WebElement cartBadge = driver.findElement(By.className("shopping_cart_badge"));
+
+        String expectedUrl = "https://www.saucedemo.com/inventory.html";
+        Assert.assertEquals(driver.getCurrentUrl(), expectedUrl);
+        Assert.assertEquals(cartBadge.getText(), "1");
+
+        driver.quit();
+    }
 }
 
 
