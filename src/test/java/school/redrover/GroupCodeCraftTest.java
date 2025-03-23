@@ -308,12 +308,7 @@ public class GroupCodeCraftTest {
                 .with(DIGITS, 3).build());
 
         driver.get("https://magento.softwaretestingboard.com/");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement acceptCookies = driver.findElement(By.className("css-1n36tvh"));
-        if (acceptCookies.isDisplayed()) {
-            acceptCookies.click();
-        }
         WebElement createAccount = wait.until
                 (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
         createAccount.click();
@@ -548,16 +543,11 @@ public class GroupCodeCraftTest {
 
         Thread.sleep(1000);
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"search\"]/button"));
-        button.click();
+        driver.findElement(By.xpath("//*[@id=\"search\"]/button")).click();
 
-        WebElement cite = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1"));
-        String citeText = cite.getText();
+        String citeText = driver.findElement(By.xpath("//*[@id=\"mfilter-content-container\"]/h1")).getText();
 
         Assert.assertEquals(citeText, "ПОИСК - БРАСЛЕТ");
-
-
-        driver.quit();
     }
 
     @Test
@@ -872,5 +862,19 @@ public class GroupCodeCraftTest {
         String productTitle = productDetail.getText();
 
         Assert.assertEquals(productTitle, "Samsung galaxy s6");
+    }
+
+    @Test
+    public void testLoginMethod() throws InterruptedException{
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
     }
 }
