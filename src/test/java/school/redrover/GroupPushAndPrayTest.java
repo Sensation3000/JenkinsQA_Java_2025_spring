@@ -16,7 +16,6 @@ public class GroupPushAndPrayTest {
 
         driver.get("https://www.goodfon.ru/");
 
-
         WebElement strokaPoiska = driver.findElement(By.className("js-search"));
         strokaPoiska.sendKeys(Keys.CONTROL + "a");
         strokaPoiska.sendKeys(Keys.DELETE);
