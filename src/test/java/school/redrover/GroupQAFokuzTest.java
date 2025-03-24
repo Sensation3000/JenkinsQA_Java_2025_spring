@@ -248,51 +248,50 @@ public class GroupQAFokuzTest {
     }
 
     @Test
-    public void testAddRemoveElements() throws InterruptedException {
-// проверяет, что нажатие на кнопку Add добавляет элемент
-        WebDriverManager.chromedriver().setup();
-
-        WebDriver driver = new ChromeDriver();
+    public void testTheInternetAddElements() {
         driver.get("https://the-internet.herokuapp.com/");
-        driver.manage().window().maximize();
 
-        Thread.sleep(1000);
-
-        WebElement addRemoveElementsLink = driver.findElement(By.xpath("//li[2]/a"));
-        addRemoveElementsLink.click();
-
-        Thread.sleep(1000);
-
-        WebElement addElementButton = driver.findElement(By.xpath("//div[@class='example']/button"));
-        addElementButton.click();
+        driver.findElement(By.xpath("//li[2]/a")).click();
+        driver.findElement(By.xpath("//div[@class='example']/button")).click();
 
         WebElement deleteButton = driver.findElement(By.xpath("//div[@id='elements']/button"));
-
         Assert.assertTrue(deleteButton.isDisplayed(), "Элемент не добавлен!");
-
-        driver.quit();
-
     }
 
     @Test
-    public void testFokuzNavigation() throws InterruptedException {
-//  проверяет, что ссылка в навигационной панели хедера работает корректно
-        WebDriverManager.chromedriver().setup();
+    public void testTheInternetAuthForm() {
+        driver.get("https://the-internet.herokuapp.com/");
 
-        WebDriver driver = new ChromeDriver();
+        driver.findElement(By.xpath("//li[21]/a")).click();
+        driver.findElement(By.id("username")).sendKeys("tomsmith");
+        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+        driver.findElement(By.tagName("button")).click();
+
+        WebElement logoutButton = driver.findElement(By.xpath("//a[@class='button secondary radius']"));
+        Assert.assertTrue(logoutButton.isDisplayed(), "Кнопка Logout не отобразилась!");
+    }
+
+    @Test
+    public void testFokuzNavigationDaBinIch() {
         driver.get("https://fokuz.photo/");
-        driver.manage().window().maximize();
 
-        Thread.sleep(1000);
-
-        WebElement daBinIchLink = driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]"));
-        daBinIchLink.click();
-
-        Thread.sleep(1000);
+        driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]")).click();
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://fokuz.photo/da-bin-ich/", "URL не соответствует ожидаемому!");
+    }
 
-        driver.quit();
+    @Test
+    public void testShopBugredRegistrationWithoutPasswordConfirm() {
+        driver.get("http://shop.bugred.ru/");
 
+        driver.findElement(By.xpath("//div[@id='navbarSupportedContent']/ul/li[3]")).click();
+        driver.findElement(By.xpath("//input[@id='exampleInputName']")).sendKeys("Test");
+        driver.findElement(By.xpath("//input[@id='exampleInputEmail1']")).sendKeys("test@test.xx");
+        driver.findElement(By.name("password")).sendKeys("Qwerty!");
+        driver.findElement(By.xpath("//form[@action='/user/register/doit']/button")).click();
+
+        String validationMessage = driver.findElement(By.name("password2")).getDomProperty("validationMessage");
+
+        Assert.assertEquals(validationMessage, "Please fill out this field.", "No validation message");
     }
 }

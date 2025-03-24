@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -16,7 +15,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 
 
-public class FirstTest2 {
+public class DmKlvTest {
     private WebDriver driver;
 
     private final String HOME_PAGE_SE = "https://www.selenium.dev/selenium/web/web-form.html";
