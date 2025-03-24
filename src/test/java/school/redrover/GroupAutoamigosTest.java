@@ -6,12 +6,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 public class GroupAutoamigosTest {
     private WebDriver driver;
@@ -34,9 +37,9 @@ public class GroupAutoamigosTest {
         }
     }
 
-    @DataProvider(name="inputData")
+    @DataProvider(name = "inputData")
     public Object[][] provideInputData() {
-        return new Object[][] {
+        return new Object[][]{
                 {"A"},
                 {" "},
                 {"a 1"},
@@ -48,7 +51,7 @@ public class GroupAutoamigosTest {
 
     @DataProvider(name = "dropdownOptions")
     public Object[][] provideDropdownOptions() {
-        return new Object[][] {
+        return new Object[][]{
                 {"1", "One"},
                 {"2", "Two"},
                 {"3", "Three"}
@@ -138,7 +141,7 @@ public class GroupAutoamigosTest {
 
         String realValue = (String) js.executeScript("return arguments[0].value;", textInput);
 
-        Assert.assertEquals( realValue,inputData, "the data is not displayed");
+        Assert.assertEquals(realValue, inputData, "the data is not displayed");
     }
 
     @Test
@@ -147,7 +150,7 @@ public class GroupAutoamigosTest {
         WebElement passwordInput = driver.findElement(By.name("my-password"));
         passwordInput.sendKeys("12345");
 
-        String realValue= (String) js.executeScript("return arguments[0].value;", passwordInput);
+        String realValue = (String) js.executeScript("return arguments[0].value;", passwordInput);
         String inputType = passwordInput.getDomAttribute("type");
 
         Assert.assertEquals(realValue, "12345", "The password is not displayed");
@@ -191,5 +194,100 @@ public class GroupAutoamigosTest {
 
         Assert.assertEquals(placeholder, "Type to search...");
         Assert.assertEquals(dl.getOptions().size(), 5);
+    }
+
+    @Test
+    public void testFileInput() {
+        driver.findElement(By.linkText("Web form")).click();
+        File uploadFile = new File("src/test/resources/uploadFiles/java.png");
+
+        WebElement fileInput = driver.findElement(By.name("my-file"));
+        fileInput.sendKeys(uploadFile.getAbsolutePath());
+
+        String currentName = (String) js.executeScript("return arguments[0].value", fileInput);
+
+        Assert.assertNotNull(currentName, "File wasn't uploaded");
+        Assert.assertTrue(currentName.contains("java.png"), "Input doesn't contain name");
+    }
+
+    @Test
+    public void testCheckboxes() {
+        driver.findElement(By.linkText("Web form")).click();
+
+        boolean isCheckedCheckboxSelected = driver.findElement(By.id("my-check-1")).isSelected();
+        boolean isDefaultCheckboxSelected = driver.findElement(By.id("my-check-2")).isSelected();
+
+        Assert.assertTrue(isCheckedCheckboxSelected, "Checked Checkbox is not selected");
+        Assert.assertFalse(isDefaultCheckboxSelected, "Default Checkbox is selected");
+    }
+
+    @Test
+    public void testUnselectCheckedCheckbox() {
+        driver.findElement(By.linkText("Web form")).click();
+
+        WebElement checkedCheckbox = driver.findElement(By.id("my-check-1"));
+        checkedCheckbox.click();
+
+        Assert.assertFalse(checkedCheckbox.isSelected(), "Checked Checkbox wasn't unselected");
+    }
+
+    @Test
+    public void testSelectDefaultCheckbox() {
+        driver.findElement(By.linkText("Web form")).click();
+
+        WebElement defaultCheckbox = driver.findElement(By.id("my-check-2"));
+        defaultCheckbox.click();
+
+        Assert.assertTrue(defaultCheckbox.isSelected(), "Default Checkbox was not selected");
+    }
+
+    @Test
+    public void testDataPicker() {
+        driver.findElement(By.linkText("Web form")).click();
+        WebElement dataPicker = driver.findElement(By.name("my-date"));
+        dataPicker.click();
+
+        driver.findElement(By.xpath("//td[@data-date='1741910400000']")).click();
+        String DatePickerValue = dataPicker.getDomProperty("value");
+
+        Assert.assertEquals(DatePickerValue, "03/14/2025", "Date is not displayed");
+    }
+
+    @Test
+    public void testExampleRangeMoveForward() {
+        driver.findElement(By.linkText("Web form")).click();
+
+        WebElement exampleRange = driver.findElement(By.name("my-range"));
+        String value = exampleRange.getDomAttribute("value");
+
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(exampleRange)
+                .moveByOffset(50, 0)
+                .release()
+                .perform();
+
+        String newValue = (String) js.executeScript("return arguments[0].value", exampleRange);
+
+        Assert.assertNotNull(newValue, newValue + " is null");
+        Assert.assertNotNull(value, value + " is null");
+        Assert.assertNotEquals(value, newValue, "Slider didn't move");
+        Assert.assertTrue(Integer.parseInt(value) < Integer.parseInt(newValue));
+    }
+
+    @Test
+    public void testExampleRangeMoveBack() {
+        driver.findElement(By.linkText("Web form")).click();
+
+        WebElement exampleRange = driver.findElement(By.name("my-range"));
+        String value = exampleRange.getDomAttribute("value");
+
+        js.executeScript("arguments[0].value= 1; arguments[0].dispatchEvent(new Event('input'))", exampleRange);
+
+        String newValue = (String) js.executeScript("return arguments[0].value", exampleRange);
+
+        Assert.assertNotNull(newValue, newValue + " is null");
+        Assert.assertNotNull(value, value + " is null");
+        Assert.assertNotEquals(value, newValue, "Slider didn't move");
+        Assert.assertTrue(Integer.parseInt(newValue) < Integer.parseInt(value));
     }
 }
