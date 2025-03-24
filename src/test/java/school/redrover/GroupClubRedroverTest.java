@@ -24,14 +24,12 @@ public class GroupClubRedroverTest {
     SoftAssert softAssert;
     private static final String BASE_URL = "https://bonigarcia.dev/selenium-webdriver-java/";
 
-
     @BeforeMethod
     void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
         driver.get(BASE_URL);
-
     }
 
     @AfterMethod
@@ -40,7 +38,7 @@ public class GroupClubRedroverTest {
     }
 
     @DataProvider(name = "pageData")
-    public Object[][] providePageData() {
+    public Object[][] providePageData() throws InterruptedException {
         return new Object[][]{
                 {"Chapter 3. WebDriver Fundamentals", "web-form.html", "Web form"},
                 {"Chapter 3. WebDriver Fundamentals", "navigation1.html", "Navigation example"},
@@ -71,7 +69,7 @@ public class GroupClubRedroverTest {
     }
 
     @Test(dataProvider = "pageData", description = "Verify the functionality of all links on HomePage")
-    void verifyHomePageLinks(String chapterName, String path, String title) {
+    void verifyHomePageLinks(String chapterName, String path, String title) throws InterruptedException {
         driver.findElement(By.xpath("//h5[text() = '" + chapterName + "']/../a[@href = '" + path + "']")).click();
 
         String actualUrl = driver.getCurrentUrl();
@@ -81,7 +79,7 @@ public class GroupClubRedroverTest {
     }
 
     @Test(description = "Verify the functionality of all links on HomePage another way")
-    void verifyHomePageLinksAnotherWay() {
+    void verifyHomePageLinksAnotherWay() throws InterruptedException {
         List<WebElement> chapters = driver.findElements(By.cssSelector(".card h5"));
         assertEquals(chapters.size(), 6);
 
@@ -144,7 +142,6 @@ public class GroupClubRedroverTest {
             actions.moveToElement(element.findElement(By.cssSelector(".img-fluid"))).perform();
             WebElement textElement = element.findElement(By.cssSelector(".lead.py-3"));
 
-//            Thread.sleep(1);
             softAssert.assertTrue(textElement.isDisplayed(), "The text did not appear after hover.");
             softAssert.assertEquals(textElement.getText(), expectedText[i], "Text mismatch for element at index " + i);
         }
@@ -155,6 +152,9 @@ public class GroupClubRedroverTest {
     void verifyTextOnEachPAge() throws InterruptedException {
         softAssert = new SoftAssert();
         driver.findElement(By.xpath("//a[@href = 'navigation1.html']")).click();
+
+        List<WebElement> pages = driver.findElements(By.cssSelector(".pagination .page-link"));
+        softAssert.assertEquals(pages.size(), 5, "Expected 5 pages, the Test's got " + pages.size());
 
         String actualText = driver.findElement(By.xpath("//p[contains(text(), 'Lorem ipsum dolor sit amet')]")).getText();
         softAssert.assertTrue(actualText.contains("Lorem ipsum dolor sit amet"),
@@ -169,5 +169,22 @@ public class GroupClubRedroverTest {
         softAssert.assertTrue(actualText.contains("officia deserunt mollit anim"));
 
         softAssert.assertAll();
+    }
+
+    @Test
+    void verifyDropDown() throws InterruptedException {
+        Actions actions = new Actions(driver);
+        softAssert = new SoftAssert();
+
+        driver.findElement(By.cssSelector("a[href *= 'dropdown']")).click();
+
+        driver.findElement(By.cssSelector("#my-dropdown-1")).click();
+        softAssert.assertTrue(driver.findElement(By.cssSelector(".dropdown-menu.show")).isDisplayed());
+
+        actions.contextClick(driver.findElement(By.cssSelector("#my-dropdown-2"))).perform();
+        softAssert.assertTrue(driver.findElement(By.cssSelector("#context-menu-2")).isDisplayed());
+
+        actions.doubleClick(driver.findElement(By.cssSelector("#my-dropdown-3"))).perform();
+        softAssert.assertTrue(driver.findElement(By.cssSelector("#context-menu-3")).isDisplayed());
     }
 }
