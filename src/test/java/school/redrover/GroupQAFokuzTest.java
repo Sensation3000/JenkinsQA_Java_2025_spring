@@ -294,4 +294,19 @@ public class GroupQAFokuzTest {
 
         Assert.assertEquals(validationMessage, "Please fill out this field.", "No validation message");
     }
+
+    @Test
+    public void testFokuzButtonAnfrageFurSchootin() throws InterruptedException {
+
+        driver.get("https://fokuz.photo/");
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//a[text()='Frag mich mal']")).click();
+        driver.findElement(By.xpath("//a[contains(@class, 'button')]"));
+        driver.findElement(By.xpath("//a[@href='#g-contenttabs-item-contenttabs-3854-1']")).click();
+        driver.findElement(By.xpath("//a[@href='#g-contenttabs-item-contenttabs-3854-2']")).click();
+
+        String info = driver.getTitle();
+        Assert.assertEquals(info,"Demnächst verfügbar");
+    }
 }
