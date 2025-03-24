@@ -20,7 +20,7 @@ public class MaxMandzhievTest {
         WebElement textBox = driver.findElement(By.name("my-text"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
 
-        textBox.sendKeys("Selenium");
+        textBox.sendKeys("Selenium111");
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
