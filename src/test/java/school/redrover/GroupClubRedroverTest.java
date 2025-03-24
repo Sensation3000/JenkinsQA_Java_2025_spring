@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -186,5 +187,17 @@ public class GroupClubRedroverTest {
 
         actions.doubleClick(driver.findElement(By.cssSelector("#my-dropdown-3"))).perform();
         softAssert.assertTrue(driver.findElement(By.cssSelector("#context-menu-3")).isDisplayed());
+    }
+
+    @Test
+    void verifyDragAndDrop() throws InterruptedException {
+        Actions actions = new Actions(driver);
+        softAssert = new SoftAssert();
+
+        driver.findElement(By.cssSelector("a[href *= 'drag-and-drop']")).click();
+
+        actions.dragAndDrop(driver.findElement(By.id("draggable")), driver.findElement(By.id("target"))).perform();
+        actions.keyDown(Keys.CONTROL).sendKeys(Keys.F5).keyUp(Keys.CONTROL).perform();
+        actions.clickAndHold(driver.findElement(By.id("draggable"))).moveToElement(driver.findElement(By.id("target"))).release().build().perform();
     }
 }
