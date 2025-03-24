@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import java.util.UUID;
 public class GroupJavaESTTest {
@@ -44,6 +45,7 @@ public class GroupJavaESTTest {
 
         driver.quit();
     }
+
     @Test
     public void testLockedOutUserLogin() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -87,10 +89,39 @@ public class GroupJavaESTTest {
         driver.quit();
     }
 
+    @Test
+    public void testSuccessfulPurchase() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.name("login-button")).click();
+
+        driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
+        driver.findElement(By.className("shopping_cart_badge")).click();
+
+        driver.findElement(By.id("checkout")).click();
+
+        driver.findElement(By.id("first-name")).sendKeys("Amanda");
+        driver.findElement(By.id("last-name")).sendKeys("Smith");
+        driver.findElement(By.id("postal-code")).sendKeys("12345");
+
+        driver.findElement(By.id("continue")).click();
+        driver.findElement(By.id("finish")).click();
+
+        assertEquals(driver.findElement(By.className("complete-header")).getText(), "Thank you for your order!");
+
+        driver.quit();
+    }
+
     public static String generateUniqueEmail(String domain) {
             String uniqueId = UUID.randomUUID().toString();
             return uniqueId + "@" + domain;
         }
+
     @Test
     public void testW3schoolsSignUp() throws InterruptedException {
 
