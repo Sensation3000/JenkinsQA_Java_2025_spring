@@ -5,6 +5,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -357,10 +358,48 @@ public class GroupRedRoverJavaUTC3Test {
                 "//li[@data-value='1954']")).click();
         getDriver().findElement(By.xpath(
                 "//button[contains (@class,'MuiButton-contained')][contains(@type,'button')]")).click();
-        String welcomeText= getDriver().findElement(By.xpath(
+        String welcomeText = getDriver().findElement(By.xpath(
                 "//div[@class='FeaturedItems_heroText__ck_yf FeaturedItems_invertColor__Hk_X3']//h3")).getText();
 
-        Assert.assertEquals(welcomeText,"Come see our Knife Room");
+        Assert.assertEquals(welcomeText, "Come see our Knife Room");
+    }
+
+    @Test
+    public void testFileUpload() {
+        final String imageFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\uploadFiles\\java.png";
+
+        getDriver().get("https://the-internet.herokuapp.com/upload");
+        getDriver().findElement(By.id("file-upload")).sendKeys(imageFilePath);
+
+        getDriver().findElement(By.id("file-submit")).click();
+        getDriver().findElement(By.xpath("//div[@id='content']//h3")).getText();
+
+        Assert.assertEquals(getDriver().findElement(
+                        By.xpath("//div[@id='content']//h3")).getText(),
+                "File Uploaded!");
+    }
+
+    @Test
+    public void testOrderFormCopiruem() {
+        getDriver().get("https://copyruem.ru/online-calculator");
+
+        Select format = new Select(getDriver().findElement(
+                By.xpath("//select[@id='input_1620735450517']")));
+        format.selectByValue("А0");
+
+        Select color = new Select(getDriver().findElement(
+                By.xpath("//select[@id='input_1620735508057']")));
+        color.selectByValue("Цветная, заливка до 100%");
+
+        Select folding = new Select(getDriver().findElement(
+                By.xpath("//select[@id='input_1620735646958']")));
+        folding.selectByValue("В формат А4");
+
+        getDriver().findElement(By.xpath("//input[@id='input_1620735722133']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='input_1620735722133']")).sendKeys("100");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[@data-calc-expr='format*count']")).getText(),
+                "53000");
     }
 }
 

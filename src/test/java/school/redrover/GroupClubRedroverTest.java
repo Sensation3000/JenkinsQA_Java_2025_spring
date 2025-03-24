@@ -5,12 +5,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.*;
+import java.time.Duration;
+
 
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class GroupClubRedroverTest {
@@ -118,5 +122,26 @@ public class GroupClubRedroverTest {
                 "Open this select menu", "Dropdown did not reset correctly.");
 
         select.deselectAll();
+    }
+
+    @Test(description = "Verify mouse moving over pictures")
+    void verifyMouseMovingOverPictures() throws InterruptedException {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/mouse-over.html");
+
+        String[] expectedText = {"Compass", "Calendar", "Award", "Landscape"};
+
+        List<WebElement> hoverElements = driver.findElements(By.cssSelector(".figure.text-center.col-3.py-2"));
+
+        Actions actions = new Actions(driver);
+        for (int i = 0; i < hoverElements.size(); i++) {
+
+            WebElement element = hoverElements.get(i);
+            actions.moveToElement(element.findElement(By.cssSelector(".img-fluid"))).perform();
+            WebElement textElement = driver.findElement(By.cssSelector(".lead.py-3"));
+
+            Thread.sleep(10);
+            assertTrue(textElement.isDisplayed(), "The text did not appear after hover.");
+            assertEquals(textElement.getText(), expectedText[i], "Text mismatch for element at index " + i);
+        }
     }
 }

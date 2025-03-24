@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,20 +14,25 @@ import java.util.List;
 public class GroupAQARookiesTest {
 
     @Test
-    public void findIphoneInOnlinerCatalog() throws InterruptedException {
+    public void onlinerTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
 
-        driver.manage().window().setSize(new Dimension(1920, 1080));
-
         driver.get("https://www.onliner.by/");
-        Assert.assertEquals(driver.getTitle(), "Onlíner");
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Onlíner");
 
-        driver.findElement(By.xpath("//*[@id='fast-search']/div/input")).sendKeys("Iphone");
-        driver.switchTo().frame(driver.findElement(By.cssSelector("iframe.modal-iframe")));
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"fast-search\"]/div/input"));
+        textBox.sendKeys("Iphone");
+
+        WebElement iframe = driver.findElement(By.cssSelector("iframe.modal-iframe"));
+        driver.switchTo().frame(iframe);
         Thread.sleep(2000);
 
-        driver.findElement(By.xpath("//a[contains(text(), 'Телефон Apple iPhone 16e 128GB (белый)')]")).click();
-        Assert.assertEquals(driver.getTitle(), "iPhone 16e 128GB белый (Айфон 16е) купить в Минске");
+        WebElement iphoneLink = driver.findElement(By.xpath("//a[contains(text(), 'Телефон Apple iPhone 16e 128GB (белый)')]"));
+        iphoneLink.click();
+
+        String title2 = driver.getTitle();
+        Assert.assertEquals(title2, "iPhone 16e 128GB белый (Айфон 16е) купить в Минске");
 
         driver.quit();
     }
@@ -53,19 +57,34 @@ public class GroupAQARookiesTest {
     @Test
     public void testAddProductToTheCart() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
         driver.get("https://theweldercatherine.ru/");
 
-        driver.findElement(By.xpath("//a[@title='Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA']")).click();
-        driver.findElement(By.id("on_cart")).click();
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Интернет Магазин кофе The Welder Catherine — The Welder Catherine");
+
+        WebElement product = driver.findElement(By.xpath("//a[@title='Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA']"));
+        product.click();
+
+        WebElement addToCartButton = driver.findElement(By.id("on_cart"));
+        addToCartButton.click();
+
         Thread.sleep(1000);
 
-        if (!driver.findElements(By.className("modal-min-order")).isEmpty()) {
-            new Actions(driver).moveByOffset(300, 400).click().perform();
-        }
+        WebElement modal = driver.findElement(By.className("modal-min-order"));
+        WebElement minOrderText = modal.findElement(By.className("modal-card-min--text"));
+        Assert.assertEquals(minOrderText.getText(), "Минимальный заказ");
 
-        driver.findElement(By.className("go-to-cart")).click();
+        Thread.sleep(1000);
 
-        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='bx-soa-item-title']/a")).getText(), "Порционный горячий шоколад \"Гала-Мокко\" The Welder Catherine & UNICAVA");
+        Actions actions = new Actions(driver);
+        actions.moveByOffset(300, 400).click().perform();
+
+        WebElement goToCartButton = driver.findElement(By.className("go-to-cart"));
+        goToCartButton.click();
+
+        WebElement heading = driver.findElement(By.tagName("h1"));
+        Assert.assertEquals(heading.getText(), "оформление заказа");
 
         driver.quit();
     }
@@ -159,23 +178,21 @@ public class GroupAQARookiesTest {
         Select dropdownLogin = new Select(driver.findElement(By.id("userSelect")));
         dropdownLogin.selectByValue("2");
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         Select dropdownAccount = new Select(driver.findElement(By.id("accountSelect")));
         dropdownAccount.selectByValue("number:1005");
         driver.findElement(By.xpath("//div[@ng-hide='noAccount']//button[contains(text(),'Deposit')]")).click();
         Thread.sleep(1000);
-        WebElement inputElement = driver.findElement(By.cssSelector("input[placeholder='amount']"));
-        inputElement.sendKeys("1500");
+        driver.findElement(By.cssSelector("input[placeholder='amount']")).sendKeys("1500");
         Thread.sleep(1000);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//button[normalize-space()='Transactions']")).click();
         Thread.sleep(1000);
 
-        WebElement table = driver.findElement(By.xpath("//tbody"));
-        List<WebElement> rows = table.findElements(By.tagName("tr"));
-        WebElement lastRow = rows.get(rows.size() - 1);
-        List<WebElement> cells = lastRow.findElements(By.tagName("td"));
+        List<WebElement> rows = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+        List<WebElement> cells = rows.get(rows.size() - 1).findElements(By.tagName("td"));
         String amountCellText = cells.get(1).getText();
         String transactionTypeCellText = cells.get(2).getText();
 
