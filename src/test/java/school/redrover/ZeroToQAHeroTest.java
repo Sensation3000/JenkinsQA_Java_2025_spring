@@ -61,8 +61,8 @@ public class ZeroToQAHeroTest {
         Thread.sleep(1000);
         driver.findElement(By.id("login-button")).click();
 
-        WebElement pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span"));
-        assertEquals("Products", pageName.getText());
+        String pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span")).getText();
+        assertEquals("error: wrong page or missing text", "Products", pageName);
 
         driver.quit();
     }
