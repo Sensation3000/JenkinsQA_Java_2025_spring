@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -311,5 +313,39 @@ public class SunFlowerTest {
         } catch (IOException e) {
             System.out.println("Ошибка при сохранении CSV: " + e.getMessage());
         }
+    }
+
+    @Test
+    public void testW3School() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();    // Настройка WebDriverManager для автоматической загрузки драйвера
+
+        WebDriver driver = new ChromeDriver();      // Создаем экземпляр ChromeDriver, который будет управлять браузером
+
+        driver.manage().window().maximize();        // Разворачиваем окно браузера на весь экран
+        driver.get("https://www.w3schools.com/");          // Переход на страницу w3schools
+
+        Thread.sleep(5000);
+
+        // Нахождение элемента "XML Tutorial" по атрибуту title
+        WebElement xmlLink = driver.findElement(By.xpath("//a[text()='XML']"));
+        xmlLink.click();
+
+
+        // Явное ожидание заголовка страницы
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // вместо Thread.sleep(2000);
+        wait.until(ExpectedConditions.titleContains("XML Tutorial"));
+
+
+        // Проверка, что мы находимся на странице "XML Tutorial"
+        String pageTitle = driver.getTitle(); // Метод возвращает заголовок текущей страницы, который затем сохраняется в переменной pageTitle
+        System.out.println("Page Title: " + pageTitle);
+        assert pageTitle.contains("XML Tutorial");      // Проверка, что заголовок содержит "xml"
+
+
+        WebElement xmlXpathLink = driver.findElement(By.xpath("//a[@href='xml_xpath.asp']"));
+        xmlXpathLink.click();
+
+        driver.quit();
+
     }
 }
