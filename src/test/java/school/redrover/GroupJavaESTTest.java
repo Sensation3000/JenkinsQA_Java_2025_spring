@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
 import static org.testng.Assert.assertTrue;
-
+import java.util.UUID;
 public class GroupJavaESTTest {
 
     @Test
@@ -83,6 +83,34 @@ public class GroupJavaESTTest {
         WebElement textBox2 = driver.findElement(By.id("password"));
         textBox2.sendKeys("secret_sauce");
         submitButton.click();
+
+        driver.quit();
+    }
+
+    public static String generateUniqueEmail(String domain) {
+            String uniqueId = UUID.randomUUID().toString();
+            return uniqueId + "@" + domain;
+        }
+    @Test
+    public void testW3schoolsSignUp() throws InterruptedException {
+
+        String domain = "gmail.com";
+        String uniqueEmail = generateUniqueEmail(domain);
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.w3schools.com/");
+        driver.findElement(By.xpath("//*[@id='pagetop']/div[3]/a[2]")).click();
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[1]/input[1]")).sendKeys(uniqueEmail);
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[1]/input[2]")).sendKeys("W3schoolstest!");
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[1]/input[3]")).sendKeys("Natalya");
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[1]/input[4]")).sendKeys("Galkina");
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[3]/button")).click();
+
+        Thread.sleep(1000);
+
+        WebElement verifyEmailMessage = driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[3]/div/div/div/div[1]"));
+        Assert.assertTrue(verifyEmailMessage.isDisplayed());
 
         driver.quit();
     }
