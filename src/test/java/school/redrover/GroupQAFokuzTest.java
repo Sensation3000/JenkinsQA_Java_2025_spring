@@ -309,4 +309,20 @@ public class GroupQAFokuzTest {
         String info = driver.getTitle();
         Assert.assertEquals(info,"Demnächst verfügbar");
     }
+
+    @Test
+    public void testFokuz() {
+        driver.get("https://fokuz.photo/");
+
+        driver.findElement(By.xpath("//*[@class='button' and @target='_self']")).click();
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_1']")).sendKeys("Denis");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_2']")).sendKeys("denis@gmail.com");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_3']")).sendKeys("Это пробная запись");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_4_1']")).click();
+        driver.findElement(By.xpath("//*[@id='wpforms-submit-1008']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//*[@id='wpforms-confirmation-1008']"))
+                .getText(),"Ich freue mich darauf, dein Liebling bald auf meiner Bühne zu sehen", "not ok");
+
+    }
 }
