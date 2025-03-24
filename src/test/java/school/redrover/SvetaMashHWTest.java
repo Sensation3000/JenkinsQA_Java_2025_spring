@@ -4,48 +4,75 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import java.time.Duration;
 
 public class SvetaMashHWTest {
-    WebDriver driver;
+    private WebDriver driver;
+    private final String CURRENT_URL = "https://the-internet.herokuapp.com/";
 
-    @BeforeClass
+
+    @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
     }
 
     @Test // open page and check the text on the welcome page
-    public void OpenPageTest(){
-        driver.get("https://the-internet.herokuapp.com/");
-
+    public void OpenPageTest() {
+        driver.get(CURRENT_URL);
         WebElement welcomePage = driver.findElement(By.cssSelector(".heading"));
         Assert.assertEquals(welcomePage.getText(), "Welcome to the-internet");
-
     }
 
-    @Test // open the page and click the first link
-    public void OpenABLinkTest() throws InterruptedException {
-        driver.get("https://the-internet.herokuapp.com/");
+    @Test
+    public void OpenAD_Remove_LinkTest() {
+        driver.get(CURRENT_URL);
+        new WebDriverWait(driver, Duration.ofMillis(1000)).
+                until(el -> driver.findElement(By.cssSelector(".heading")).isDisplayed());
 
-        WebElement welcomePage = driver.findElement(By.cssSelector(".heading"));
-        Assert.assertEquals(welcomePage.getText(), "Welcome to the-internet");
-
-        Thread.sleep(1000);
-
-        WebElement openLink = driver.findElement(By.cssSelector("#content > ul:nth-child(4) > li:nth-child(1) > a:nth-child(1)"));
+        WebElement openLink = driver.findElement(By.xpath("//*[@id=\"content\"]/ul/li[2]/a"));
         openLink.click();
 
-        Thread.sleep(1000);
-
-        WebElement pageAB = driver.findElement(By.cssSelector(".example > h3:nth-child(1)"));
-        Assert.assertEquals(pageAB.getText(), "A/B Test Variation 1");
+        WebElement pageAddEl = driver.findElement(By.xpath("//*[@id=\"content\"]/h3"));
+        Assert.assertEquals(pageAddEl.getText(), "Add/Remove Elements");
     }
 
-    @AfterClass
-    public void tearDown(){
+    @Test
+    public void checkIfCheckboxClickable() {
+        driver.get(CURRENT_URL);
+        new WebDriverWait(driver, Duration.ofMillis(1000)).
+                until(el -> driver.findElement(By.cssSelector(".heading")).isDisplayed());
+
+        WebElement checkBoxLink = driver.findElement(By.xpath("//*[@id=\"content\"]/ul/li[6]/a"));
+        checkBoxLink.click();
+
+        WebElement checkbox = driver.findElement(By.xpath("//*[@id='checkboxes']/input[1]")) ;
+        if (checkbox.isEnabled()) {
+            checkbox.click();
+        }
+        Assert.assertTrue(checkbox.isSelected(), "Checkbox should be selected.");
+    }
+
+    @Test
+    public void checkPageKeyPress () throws InterruptedException {
+        driver.get(CURRENT_URL);
+        new WebDriverWait(driver, Duration.ofMillis(1000)).
+                until(el -> driver.findElement(By.cssSelector(".heading")).isDisplayed());
+
+        WebElement keyPressLink = driver.findElement(By.cssSelector("#content > ul > li:nth-child(31) > a"));
+        keyPressLink.click();
+        Thread.sleep(1000);
+
+        WebElement inputForm = driver.findElement(By.id("target"));
+        inputForm.sendKeys("A");
+        Assert.assertEquals(inputForm.getDomProperty("value"), "A", "Input value does not match expected text.");
+    }
+
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
 }
