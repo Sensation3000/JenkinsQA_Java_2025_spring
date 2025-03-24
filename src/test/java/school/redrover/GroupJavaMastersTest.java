@@ -395,7 +395,6 @@ public class GroupJavaMastersTest {
 
         Assert.assertEquals(driver.findElement(By.className("display-6")).getText(),
                 "Form submitted");
- main
         driver.quit();
     }
 
