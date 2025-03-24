@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -111,6 +112,22 @@ public class GroupJavaESTTest {
 
         WebElement verifyEmailMessage = driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[3]/div/div/div/div[1]"));
         Assert.assertTrue(verifyEmailMessage.isDisplayed());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testW3schoolsLoginWithValidCredentials() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.w3schools.com/");
+        driver.findElement(By.xpath("//*[@id=\"pagetop\"]/div[3]/a[1]")).click();
+        driver.findElement(By.name("email")).sendKeys("bullkie2@gmail.com");
+        driver.findElement(By.name("password")).sendKeys("W3schoolstest!");
+        driver.findElement(By.xpath("//*[@id=\"root\"]/div[2]/div/div[1]/div/div[2]/div/div[5]/div/form/div[3]/button[2]")).click();
+
+        Thread.sleep(1000);
+        Assert.assertTrue(driver.findElement(By.xpath("//p")).isDisplayed());
 
         driver.quit();
     }
