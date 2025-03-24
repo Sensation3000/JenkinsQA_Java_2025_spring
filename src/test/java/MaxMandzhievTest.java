@@ -8,7 +8,8 @@ import java.time.Duration;
 
 public class MaxMandzhievTest {
     @Test
-    public void testSelenium() throws InterruptedException {
+    public static void main(String[] args) {
+        
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
