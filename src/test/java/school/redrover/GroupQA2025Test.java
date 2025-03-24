@@ -27,6 +27,7 @@ public class GroupQA2025Test {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         driver = new ChromeDriver(options);
+        driver.get("http://uitestingplayground.com/");
     }
 
     @AfterMethod
@@ -36,9 +37,6 @@ public class GroupQA2025Test {
 
     @Test
     public void testUitapSampleAppEmptyLoginEmptyPassword() {
-
-        driver.get("http://uitestingplayground.com/");
-
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
@@ -50,9 +48,6 @@ public class GroupQA2025Test {
 
     @Test
     public void testUitapSampleAppCorrectLoginEmptyPassword() {
-
-        driver.get("http://uitestingplayground.com/");
-
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
@@ -65,9 +60,6 @@ public class GroupQA2025Test {
 
     @Test
     public void testUitapSampleAppEmptyLoginCorrectPassword() {
-
-        driver.get("http://uitestingplayground.com/");
-
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
@@ -80,9 +72,6 @@ public class GroupQA2025Test {
 
     @Test
     public void testUitapSampleAppCorrectLoginCorrectPassword() {
-
-        driver.get("http://uitestingplayground.com/");
-
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
@@ -96,22 +85,16 @@ public class GroupQA2025Test {
 
     @Test
     public void linkIsClickableTest() {
-        driver.get("http://uitestingplayground.com/");
-
         assertTrue(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).isEnabled());
     }
 
     @Test
     public void getLinkName() {
-        driver.get("http://uitestingplayground.com/");
-
         assertEquals(driver.findElement(By.cssSelector("[href=\"/dynamicid\"]")).getText(),"Dynamic ID");
     }
 
     @Test
     public void getLinkNameShorter() {
-        driver.get("http://uitestingplayground.com/");
-
         assertEquals(driver.findElement(By.cssSelector("[href=\"/classattr\"]")).getText(), "Class Attribute");
     }
 }
