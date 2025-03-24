@@ -61,9 +61,7 @@ public class SunFlowerTest {
     public void testRadioButtons() { List<WebElement> radios = radioButtons(); Assert.assertEquals(radios.size(), 2); radios.forEach(radio -> { Assert.assertTrue(radio.isDisplayed()); Assert.assertTrue(radio.isEnabled()); }); }
 
     @Test
-
     public void firstTest () throws InterruptedException {
-
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://ingamejob.com/en");
@@ -89,6 +87,31 @@ public class SunFlowerTest {
         WebElement jobTitle = driver.findElement(By.xpath("//div[contains(@class, 'listing-job-info')]//h5/a"));
         String jobTitleText = jobTitle.getText();
         Assert.assertTrue(!jobTitleText.isEmpty(), "Job title should not be empty");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSearchProfession (){
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://ingamejob.com/en");
+
+        WebElement navigationPage = driver.findElement(By.xpath("//*[@id=\"navbarSupportedContent\"]/ul[1]/li[1]/a"));
+        navigationPage.click();
+
+        WebElement searchKeywords = driver.findElement(By.xpath("//*[@id=\"filterCollapse\"]/input"));
+        searchKeywords.sendKeys("qa manual");
+
+        WebElement cookies = driver.findElement(By.xpath("//*[@id=\"termly-code-snippet-support\"]/div/div/div/div/div[2]/button[3]"));
+        cookies.click();
+
+        WebElement button = driver.findElement(By.xpath("//*[@id=\"app-all\"]/div[1]/div/div[2]/div/div[1]/div[1]/form/div[5]/button"));
+        button.click();
+
+        WebElement nameCompany = driver.findElement(By.xpath("//*[@id=\"app-all\"]/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div/div[2]/p[1]/strong"));
+        String nameCompanyText = nameCompany.getText();
+        Assert.assertFalse(nameCompanyText.isEmpty(), "Company should not be empty");
 
         driver.quit();
     }
@@ -348,4 +371,6 @@ public class SunFlowerTest {
         driver.quit();
 
     }
+
+
 }
