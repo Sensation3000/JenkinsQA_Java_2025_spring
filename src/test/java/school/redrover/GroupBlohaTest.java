@@ -113,31 +113,32 @@ public class GroupBlohaTest {
    @Test
     public void hpTest() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("http://195.91.225.98:81/login.php");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+       WebDriver driver = new ChromeDriver();
+       driver.get("http://195.91.225.98:81/login.php");
+       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "xigmanas.internal");
+       String title = driver.getTitle();
+       Assert.assertEquals(title, "xigmanas.internal");
 
-        driver.findElement(By.id("username")).sendKeys("guest");
-        driver.findElement(By.id("password")).sendKeys("redrover");
-        driver.findElement(By.xpath( "*//input[@value='Login']")).click();
+       driver.findElement(By.id("username")).sendKeys("guest");
+       driver.findElement(By.id("password")).sendKeys("redrover");
+       driver.findElement(By.xpath("*//input[@value='Login']")).click();
 
 
-        Assert.assertEquals(title, "xigmanas.internal");
-        driver.findElement(By.id("system"));
+       Assert.assertEquals(title, "xigmanas.internal");
+       driver.findElement(By.id("system"));
 
-        WebElement modelByxpath = driver.findElement(By.xpath("/html/body/main/div/div[2]/table/tbody/tr[6]/td[2]/span"));
-        WebElement model = driver.findElement(By.id("system"));
-        String modelByx = modelByxpath.getText();
-        String modelName = model.getText();
-        Assert.assertEquals(modelName, "HP ProLiant MicroServer");
-        Assert.assertEquals(modelByx, "HP ProLiant MicroServer");
+       WebElement modelByxpath = driver.findElement(By.xpath("/html/body/main/div/div[2]/table/tbody/tr[6]/td[2]/span"));
+       WebElement model = driver.findElement(By.id("system"));
+       String modelByx = modelByxpath.getText();
+       String modelName = model.getText();
+       Assert.assertEquals(modelName, "HP ProLiant MicroServer");
+       Assert.assertEquals(modelByx, "HP ProLiant MicroServer");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
-        driver.quit();
+       driver.quit();
+   }
   
     @AfterMethod
     public void tearDown() {

@@ -1,14 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.*;
+import org.testng.asserts.Assertion;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
@@ -16,8 +14,7 @@ import java.time.Duration;
 
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 
 public class GroupClubRedroverTest {
@@ -191,13 +188,25 @@ public class GroupClubRedroverTest {
 
     @Test
     void verifyDragAndDrop() throws InterruptedException {
-        Actions actions = new Actions(driver);
         softAssert = new SoftAssert();
 
         driver.findElement(By.cssSelector("a[href *= 'drag-and-drop']")).click();
 
-        actions.dragAndDrop(driver.findElement(By.id("draggable")), driver.findElement(By.id("target"))).perform();
-        actions.keyDown(Keys.CONTROL).sendKeys(Keys.F5).keyUp(Keys.CONTROL).perform();
-        actions.clickAndHold(driver.findElement(By.id("draggable"))).moveToElement(driver.findElement(By.id("target"))).release().build().perform();
+        WebElement draggable = driver.findElement(By.id("draggable"));
+        WebElement target = driver.findElement(By.id("target"));
+
+        Point initialPosition = draggable.getLocation();
+
+        new Actions(driver)
+                .dragAndDrop(draggable, target)
+                .perform();
+
+        Point finalPosition = draggable.getLocation();
+
+        softAssert.assertNotEquals(initialPosition, finalPosition, "The element didn't move!");
+        softAssert.assertEquals(draggable.getLocation(), target.getLocation(),
+                "The coordinates of the elements did not match!");
+
+        softAssert.assertAll();
     }
 }
