@@ -45,12 +45,26 @@ public class GroupQA2025Test {
         driver.findElement(By.linkText("Client Side Delay")).click();
         driver.findElement(By.id("ajaxButton")).click();
 
-        assertEquals(driver.findElement(By.className("bg-success")).getText(),
-                "Data calculated on the client side.");
+        assertEquals(
+                driver.findElement(By.className("bg-success")).getText(),
+                "Data calculated on the client side."
+        );
     }
 
     @Test
-    public void testUitapSampleAppEmptyLoginEmptyPassword() {
+    public void testClassAttribute() {
+        driver.findElement(By.linkText("Class Attribute")).click();
+        driver.findElement(By.className("btn-primary")).click();
+        driver.switchTo().alert().accept();
+
+        assertEquals(
+                driver.findElement(By.className("btn-primary")).getText(),
+                "Button"
+        );
+    }
+
+    @Test
+    public void testSampleAppEmptyLoginEmptyPassword() {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
 
@@ -61,7 +75,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void testUitapSampleAppCorrectLoginEmptyPassword() {
+    public void testSampleAppCorrectLoginEmptyPassword() {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
@@ -73,7 +87,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void testUitapSampleAppEmptyLoginCorrectPassword() {
+    public void testSampleAppEmptyLoginCorrectPassword() {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
         driver.findElement(By.xpath("//button[@class = 'btn btn-primary']")).click();
@@ -85,7 +99,7 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void testUitapSampleAppCorrectLoginCorrectPassword() {
+    public void testSampleAppCorrectLoginCorrectPassword() {
         driver.findElement(By.linkText("Sample App")).click();
         driver.findElement(By.xpath("//input[@name = 'UserName']")).sendKeys("UserName");
         driver.findElement(By.xpath("//input[@name = 'Password']")).sendKeys("pwd");
