@@ -353,24 +353,18 @@ public class SunFlowerTest {
         WebElement xmlLink = driver.findElement(By.xpath("//a[text()='XML']"));
         xmlLink.click();
 
-
         // Явное ожидание заголовка страницы
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // вместо Thread.sleep(2000);
         wait.until(ExpectedConditions.titleContains("XML Tutorial"));
-
 
         // Проверка, что мы находимся на странице "XML Tutorial"
         String pageTitle = driver.getTitle(); // Метод возвращает заголовок текущей страницы, который затем сохраняется в переменной pageTitle
         System.out.println("Page Title: " + pageTitle);
         assert pageTitle.contains("XML Tutorial");      // Проверка, что заголовок содержит "xml"
 
-
         WebElement xmlXpathLink = driver.findElement(By.xpath("//a[@href='xml_xpath.asp']"));
         xmlXpathLink.click();
 
         driver.quit();
-
     }
-
-
 }
