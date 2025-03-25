@@ -58,24 +58,25 @@ public class GroupBlohaTest {
         driver.get("https://magento.softwaretestingboard.com/wishlist/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
-         try {
-            while (true) {
-                List<WebElement> productItems = driver.findElements(By.xpath("//div[contains(@class, 'product-item-info')]"));
-                if (productItems.isEmpty()) {
-                    System.out.println("You have no items in your wish list");
-                    break;
-                }
+          while (true) {
+            List<WebElement> productItems = driver.findElements(By.xpath("//div[contains(@class, 'product-item-info')]"));
+            
+            if (productItems.isEmpty()) {
+                System.out.println("You have no items in your wish list");
+                break;
+            }
     
+            try {
                 WebElement productItem = productItems.get(0);
                 new Actions(driver).moveToElement(productItem).perform();
-                
+
                 productItem.findElement(By.xpath(".//a[contains(@class, 'btn-remove action delete')]")).click();
                 
                 wait.until(ExpectedConditions.invisibilityOf(productItem));
                 System.out.println("Product deleted");
+            } catch (Exception e) {
+                System.out.println("Error occurred while deleting a product.");
             }
-        } catch (Exception e) {
-             System.out.println("Error occurred while deleting products.");
         }
     
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='wishlist-view-form']/div[1]")).isDisplayed(),
