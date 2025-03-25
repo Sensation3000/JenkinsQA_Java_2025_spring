@@ -222,6 +222,23 @@ public class GroupJavaNinjasTest {
 
         driver.quit();
     }
+    @Test
+    public void CPTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://creaphoto.su");
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"root\"]/main/div/div/div/div/div[4]/button[1]"));
+        submitButton.click();
+        Thread.sleep( 1000 );
+        WebElement textBox = driver.findElement(By.tagName("input"));
+        textBox.sendKeys("Aikon");
+        submitButton = driver.findElement(By.xpath("//*[@id=\"root\"]/main/div/div/form/div/div[4]/button"));
+        submitButton.click();
+        Thread.sleep( 1000 );
+        WebElement message = driver.findElement(By.xpath("//*[@id=\"root\"]/main/div/div/form/div/div[6]/div/span[2]"));
+        String value = message.getText();
+        assertEquals("Псевдоним или пароль - не корректны", value);
+        driver.quit();
+    }
 
     @AfterSuite
     public void teardown() {
