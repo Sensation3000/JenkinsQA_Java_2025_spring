@@ -23,7 +23,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     private WebDriverWait wait5;
     private WebDriverWait wait10;
-    protected Actions actions;
+    private Actions actions;
     private SoftAssert softAssert;
 
     protected SoftAssert getSoftAssert() {
