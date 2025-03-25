@@ -13,22 +13,72 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class GroupQAFokuzTest {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @BeforeMethod
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testShopDatartWriteQtyTxt() {
+        try {
+            driver.get("https://www.datart.cz/");
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("c-p-bn"))).click();
+
+            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']"))).sendKeys("iPhone");
+            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='ufo-button ufo-button--secondary search-widget__input-submit']"))).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='col-md-6 col-xl-4']")));
+
+            List<WebElement> items = driver.findElements(By.xpath("//div[@class='col-md-6 col-xl-4']"));
+            if (items.size() < 2) {
+                System.out.println("Ошибка: Найдено меньше 2 товаров.");
+            } else {
+                System.out.println("Проверка пройдена: найдено " + items.size() + " упоминаний ключевого слова 'iPhone'.");
+                try (FileWriter file = new FileWriter("src/test/resources/uploadFiles/results.txt")) {
+                    file.write(String.valueOf(items.size()));
+                    System.out.println("Количество найденных товаров записано в results.txt.");
+                } catch (IOException e) {
+                    System.out.println("Ошибка при записи в файл: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Ошибка во время выполнения теста: " + e.getMessage());
+            Assert.fail("Тест завершился с ошибкой: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testFalseLoginDatartCz() throws InterruptedException {
+        driver.get("https://www.datart.cz/");
+        driver.findElement(By.id("c-p-bn")).click();
+
+        driver.findElement(By.xpath("//*[@id='head-login-sign-up']")).click();
+        driver.findElement(By.xpath("//*[@id='frm-login']")).sendKeys("test@example.com");
+        driver.findElement(By.xpath("//*[@id='frm-password']")).sendKeys("test123");
+        driver.findElement(By.xpath("//button[@class='btn btn-login']")).click();
+        Thread.sleep(1000);
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='errorMessage mb-3']"))
+                .getText(), "Zadali jste špatné údaje. Zkuste to znovu.", "Вы не вошли");
     }
 
     @Test
@@ -56,7 +106,7 @@ public class GroupQAFokuzTest {
         actions.doubleClick(driver.findElement(By.xpath("//*[@id='doubleClickBtn']")))
                 .contextClick(driver.findElement(By.xpath("//*[@id='rightClickBtn']")))
                 .click(wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Click Me']"))))
-        .perform();
+                .perform();
 
         Assert.assertTrue(
                 driver.findElement(By.xpath("//*[@id='doubleClickMessage']")).isDisplayed(),
@@ -96,7 +146,6 @@ public class GroupQAFokuzTest {
         Assert.assertEquals(buttonImpressive.getText(), "Impressive", "Текст элемента не совпадает с 'Impressive'");
         Assert.assertEquals(buttonNo.getText(), "No", "Текст элемента не совпадает с 'No'");
     }
-
 
     @Test
     public void testFormPractice() {
@@ -160,25 +209,19 @@ public class GroupQAFokuzTest {
                 By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")));
 
         Assert.assertTrue(table.isDisplayed(), "Таблица не отображается");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(),"Denis Novicov","Неверное имя студента");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(),"denisnovicov@example.com","Неверный email");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(),"Male","Неверный пол");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(),"7999999999","Неверный номер телефона");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(),"12 December,2000","Неверная дата рождения");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(),"English, Commerce","Неверные предметы");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(),"Sports, Reading, Music","Неверные хобби");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(),"Prague, Vodickova 123/34","Неверный адрес");
-        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(),"NCR Delhi","Неверный штат и город");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Name']/following-sibling::td")).getText(), "Denis Novicov", "Неверное имя студента");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Student Email']/following-sibling::td")).getText(), "denisnovicov@example.com", "Неверный email");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(), "Male", "Неверный пол");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile']/following-sibling::td")).getText(), "7999999999", "Неверный номер телефона");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Date of Birth']/following-sibling::td")).getText(), "12 December,2000", "Неверная дата рождения");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Subjects']/following-sibling::td")).getText(), "English, Commerce", "Неверные предметы");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Hobbies']/following-sibling::td")).getText(), "Sports, Reading, Music", "Неверные хобби");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(), "Prague, Vodickova 123/34", "Неверный адрес");
+        Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State and City']/following-sibling::td")).getText(), "NCR Delhi", "Неверный штат и город");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='closeLargeModal']"))).click();
     }
 
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 
     @Test
     public void testClickPinterest() throws InterruptedException {
@@ -205,53 +248,81 @@ public class GroupQAFokuzTest {
     }
 
     @Test
-    public void testAddRemoveElements() throws InterruptedException {
-// проверяет, что нажатие на кнопку Add добавляет элемент
-        WebDriverManager.chromedriver().setup();
-
-        WebDriver driver = new ChromeDriver();
+    public void testTheInternetAddElements() {
         driver.get("https://the-internet.herokuapp.com/");
-        driver.manage().window().maximize();
 
-        Thread.sleep(1000);
-
-        WebElement addRemoveElementsLink = driver.findElement(By.xpath("//li[2]/a"));
-        addRemoveElementsLink.click();
-
-        Thread.sleep(1000);
-
-        WebElement addElementButton = driver.findElement(By.xpath("//div[@class='example']/button"));
-        addElementButton.click();
+        driver.findElement(By.xpath("//li[2]/a")).click();
+        driver.findElement(By.xpath("//div[@class='example']/button")).click();
 
         WebElement deleteButton = driver.findElement(By.xpath("//div[@id='elements']/button"));
-
         Assert.assertTrue(deleteButton.isDisplayed(), "Элемент не добавлен!");
-
-        driver.quit();
-
     }
 
     @Test
-    public void testFokuzNavigation() throws InterruptedException {
-//  проверяет, что ссылка в навигационной панели хедера работает корректно
-        WebDriverManager.chromedriver().setup();
+    public void testTheInternetAuthForm() {
+        driver.get("https://the-internet.herokuapp.com/");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://fokuz.photo/");
-        driver.manage().window().maximize();
+        driver.findElement(By.xpath("//li[21]/a")).click();
+        driver.findElement(By.id("username")).sendKeys("tomsmith");
+        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+        driver.findElement(By.tagName("button")).click();
 
-        Thread.sleep(1000);
-
-        WebElement daBinIchLink = driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]"));
-        daBinIchLink.click();
-
-        Thread.sleep(1000);
-
-        Assert.assertEquals(driver.getCurrentUrl(), "https://fokuz.photo/da-bin-ich/", "URL не соответствует ожидаемому!");
-
-        driver.quit();
-
+        WebElement logoutButton = driver.findElement(By.xpath("//a[@class='button secondary radius']"));
+        Assert.assertTrue(logoutButton.isDisplayed(), "Кнопка Logout не отобразилась!");
     }
 
+    @Test
+    public void testFokuzNavigationDaBinIch() {
+        driver.get("https://fokuz.photo/");
 
+        driver.findElement(By.xpath("//ul[@class='g-toplevel']/li[2]")).click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://fokuz.photo/da-bin-ich/", "URL не соответствует ожидаемому!");
+    }
+
+    @Test
+    public void testShopBugredRegistrationWithoutPasswordConfirm() {
+        driver.get("http://shop.bugred.ru/");
+
+        driver.findElement(By.xpath("//div[@id='navbarSupportedContent']/ul/li[3]")).click();
+        driver.findElement(By.xpath("//input[@id='exampleInputName']")).sendKeys("Test");
+        driver.findElement(By.xpath("//input[@id='exampleInputEmail1']")).sendKeys("test@test.xx");
+        driver.findElement(By.name("password")).sendKeys("Qwerty!");
+        driver.findElement(By.xpath("//form[@action='/user/register/doit']/button")).click();
+
+        String validationMessage = driver.findElement(By.name("password2")).getDomProperty("validationMessage");
+
+        Assert.assertEquals(validationMessage, "Please fill out this field.", "No validation message");
+    }
+
+    @Test
+    public void testFokuzButtonAnfrageFurSchootin() throws InterruptedException {
+
+        driver.get("https://fokuz.photo/");
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//a[text()='Frag mich mal']")).click();
+        driver.findElement(By.xpath("//a[contains(@class, 'button')]"));
+        driver.findElement(By.xpath("//a[@href='#g-contenttabs-item-contenttabs-3854-1']")).click();
+        driver.findElement(By.xpath("//a[@href='#g-contenttabs-item-contenttabs-3854-2']")).click();
+
+        String info = driver.getTitle();
+        Assert.assertEquals(info,"Demnächst verfügbar");
+    }
+
+    @Test
+    public void testFokuz() {
+        driver.get("https://fokuz.photo/");
+
+        driver.findElement(By.xpath("//*[@class='button' and @target='_self']")).click();
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_1']")).sendKeys("Denis");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_2']")).sendKeys("denis@gmail.com");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_3']")).sendKeys("Это пробная запись");
+        driver.findElement(By.xpath("//*[@id='wpforms-1008-field_4_1']")).click();
+        driver.findElement(By.xpath("//*[@id='wpforms-submit-1008']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//*[@id='wpforms-confirmation-1008']"))
+                .getText(),"Ich freue mich darauf, dein Liebling bald auf meiner Bühne zu sehen", "not ok");
+
+    }
 }
