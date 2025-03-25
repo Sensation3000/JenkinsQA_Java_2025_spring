@@ -11,8 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 
 public class GroupQA2025Test {
@@ -29,7 +28,7 @@ public class GroupQA2025Test {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.get("http://uitestingplayground.com/");
     }
 
@@ -41,13 +40,14 @@ public class GroupQA2025Test {
     }
 
     @Test
-    public void testClientSideDelay() {
-        driver.findElement(By.linkText("Client Side Delay")).click();
-        driver.findElement(By.id("ajaxButton")).click();
+    public void testDynamicId() {
+        driver.findElement(By.linkText("Dynamic ID")).click();
+        String buttonIdFirstValue = driver.findElement(By.className("btn-primary")).getDomAttribute("id");
+        driver.navigate().refresh();
 
-        assertEquals(
-                driver.findElement(By.className("bg-success")).getText(),
-                "Data calculated on the client side."
+        assertNotEquals(
+                driver.findElement(By.className("btn-primary")).getDomAttribute("id"),
+                buttonIdFirstValue
         );
     }
 
@@ -60,6 +60,38 @@ public class GroupQA2025Test {
         assertEquals(
                 driver.findElement(By.className("btn-primary")).getText(),
                 "Button"
+        );
+    }
+
+    @Test
+    public void testLoadDelay() {
+        driver.findElement(By.linkText("Load Delay")).click();
+
+        assertEquals(
+                driver.findElement(By.className("btn-primary")).getText(),
+                "Button Appearing After Delay"
+        );
+    }
+
+    @Test
+    public void testAjaxData() {
+        driver.findElement(By.linkText("AJAX Data")).click();
+        driver.findElement(By.id("ajaxButton")).click();
+
+        assertEquals(
+                driver.findElement(By.className("bg-success")).getText(),
+                "Data loaded with AJAX get request."
+        );
+    }
+
+    @Test
+    public void testClientSideDelay() {
+        driver.findElement(By.linkText("Client Side Delay")).click();
+        driver.findElement(By.id("ajaxButton")).click();
+
+        assertEquals(
+                driver.findElement(By.className("bg-success")).getText(),
+                "Data calculated on the client side."
         );
     }
 
