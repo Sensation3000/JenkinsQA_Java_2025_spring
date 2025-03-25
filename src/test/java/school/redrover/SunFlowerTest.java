@@ -344,7 +344,9 @@ public class SunFlowerTest {
 
         WebDriver driver = new ChromeDriver();      // Создаем экземпляр ChromeDriver, который будет управлять браузером
 
-        driver.manage().window().maximize();        // Разворачиваем окно браузера на весь экран
+        // Установка конкретного размера окна
+        Dimension dimension = new Dimension(1920, 1080); // Ширина 1920px, высота 1080px
+        driver.manage().window().setSize(dimension); // Установка размера окна
         driver.get("https://www.w3schools.com/");          // Переход на страницу w3schools
 
         Thread.sleep(5000);
