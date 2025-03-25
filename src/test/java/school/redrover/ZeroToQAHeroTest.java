@@ -8,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -19,11 +21,27 @@ import static org.testng.AssertJUnit.assertEquals;
 
 public class ZeroToQAHeroTest {
 
+    private WebDriver driver;
+
+    private WebDriverWait getWait(int seconds) {
+
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    }
+
+    @BeforeMethod
+    public void initDriver() {
+        driver = new ChromeDriver();
+    }
+
+    @AfterMethod
+    public void quitDriver() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Test
     public void testProductToCart() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         driver.manage().window().maximize();
 
         driver.get("https://www.demoblaze.com/");
@@ -34,24 +52,20 @@ public class ZeroToQAHeroTest {
 
         String itemTitle = elements.get(0).getText();
         elements.get(0).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//a[@onclick='addToCart(1)']"))).click();
+        getWait(3).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//a[@onclick='addToCart(1)']"))).click();
 
-        wait.until(ExpectedConditions.alertIsPresent());
+        getWait(3).until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
 
         WebElement cart = driver.findElement(By.xpath("//div//a[@href='cart.html']"));
         cart.click();
 
-        String actualItemInCart =  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//tr[@class='success']/td[2]"))).getText();
+        String actualItemInCart =  getWait(3).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//tr[@class='success']/td[2]"))).getText();
         Assert.assertEquals(actualItemInCart,itemTitle);
-        driver.quit();
     }
 
     @Test
     public void testLogin() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-
         Thread.sleep(500);
         driver.get("https://www.saucedemo.com/");
 
@@ -63,24 +77,16 @@ public class ZeroToQAHeroTest {
 
         String pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span")).getText();
         assertEquals("error: wrong page or missing text", "Products", pageName);
-
-        driver.quit();
     }
 
     @Test
     public void testFailedLogin() {
-
-        WebDriver driver = new ChromeDriver();
-
         String randomUserName = UUID.randomUUID().toString();
         String randomUserPswd = UUID.randomUUID().toString();
-        String expectedErrorMessage = "Epic sadface: Username and password do not match any user in this service";
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         driver.get("https://www.saucedemo.com/");
 
         String title = driver.getTitle();
-        assertEquals("Swag Labs", title);
 
         WebElement userName = driver.findElement(By.id("user-name"));
         userName.sendKeys(randomUserName);
@@ -92,17 +98,15 @@ public class ZeroToQAHeroTest {
         submitButton.click();
 
         WebElement error = driver.findElement(By.xpath("//*[@data-test='error']"));
-        System.out.println(error.getText());
-        assertEquals(expectedErrorMessage, error.getText());
 
-        driver.quit();
+        assertEquals("Swag Labs", title);
+        assertEquals(
+                "Epic sadface: Username and password do not match any user in this service",
+                error.getText());
     }
 
     @Test
     public void testLogIn() {
-
-        WebDriver driver = new ChromeDriver();
-
         driver.get("https://demo.applitools.com/"); //открываем главную страницу
 
         WebElement usernameBox = driver.findElement(By.id("username"));
@@ -113,15 +117,10 @@ public class ZeroToQAHeroTest {
 
         WebElement SignIn = driver.findElement(By.id("log-in"));
         SignIn.click();
-
-        driver.quit();
     }
 
     @Test
     public void testTabletka() {
-
-        WebDriver driver = new ChromeDriver();
-
         driver.get("https://tabletka.by/"); //открываем главную страницу
 
         WebElement textBox = driver.findElement(By.className("ls-select-input"));
@@ -134,22 +133,13 @@ public class ZeroToQAHeroTest {
         String searchText = search.getText();
 
         Assert.assertEquals(searchText, "ВАЛИДОЛ");
-
-        driver.quit();
     }
 
     @Test
     public void testSortItems() {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        String expectedProductName = "Sauce Labs Onesie";
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         driver.get("https://www.saucedemo.com/");
 
         String title = driver.getTitle();
-        assertEquals("Swag Labs", title);
 
         WebElement userName = driver.findElement(By.id("user-name"));
         userName.sendKeys("standard_user");
@@ -168,15 +158,12 @@ public class ZeroToQAHeroTest {
 
         WebElement productName = driver.findElement(By.xpath("//*[@id=\"item_2_title_link\"]/div"));
 
-        assertEquals(expectedProductName, productName.getText());
-
-        driver.quit();
+        assertEquals("Swag Labs", title);
+        assertEquals("Sauce Labs Onesie", productName.getText());
     }
 
     @Test
     public void tesGlobalsqaCom() {
-        WebDriver driver = new ChromeDriver();
-
         driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
         driver.findElement(By.xpath("//button[contains(@class, 'btn btn-primary')][1]")).click();
@@ -190,15 +177,11 @@ public class ZeroToQAHeroTest {
         assertEquals(
                 "Harry Potter",
                 driver.findElement(By.xpath("//span[contains(text(), 'Harry')]")).getText());
-
-        driver.quit();
     }
 
     @Test
-    public void testSettingFilters(){
-        WebDriver driver = new ChromeDriver();
+    public void testSettingFilters() throws InterruptedException {
         Actions actions = new Actions(driver);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         driver.get("https://www.parasoft.com/");
         driver.manage().window().maximize();
 
@@ -206,17 +189,19 @@ public class ZeroToQAHeroTest {
         buttonTryMe.click();
 
         WebElement filterSolutions = driver.findElement(By.xpath("//h4[contains(text(),'Solutions')]"));
-        WebElement searchButton = driver.findElement(By.cssSelector("input[name='_sf_submit']"));
+        actions.moveToElement(filterSolutions).click().perform();
 
-        filterSolutions.click();
-        WebElement filter_In_Solutions = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Reporting & Analytics')]")));
+        WebElement filter_In_Solutions = getWait(3).until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Reporting & Analytics')]")));
         actions.moveToElement(filter_In_Solutions).click().perform();
 
-        WebElement filterIndustries = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h4[contains(text(),'Industries')]")));
-        filterIndustries.click();
-        WebElement filter_In_Industries = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Telecommunications')]")));
+        WebElement filterIndustries = getWait(3).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h4[contains(text(),'Industries')]")));
+        actions.moveToElement(filterIndustries).click().perform();
+
+        WebElement filter_In_Industries = getWait(3).until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),'Telecommunications')]")));
         actions.moveToElement(filter_In_Industries);
         actions.click(filter_In_Industries).perform();
+
+        WebElement searchButton = driver.findElement(By.cssSelector("input[name='_sf_submit']"));
         actions.moveToElement(searchButton).click().perform();
 
         List<WebElement> searchResultNames = driver.findElements(By.cssSelector("div.b-product-icon h4"));
@@ -228,14 +213,10 @@ public class ZeroToQAHeroTest {
         Assert.assertEquals(searchResults.toString(),
                 "[C/C++test, C/C++test CT, Jtest, dotTEST, DTP, CTP, Selenic, SOAtest, Virtualize]",
                 "Names should be the same!");
-
-        driver.quit();
     }
+
     @Test
     public void testRadio(){
-
-        WebDriver driver = new ChromeDriver();
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         driver.get("https://www.radiodetali.perm.ru/");
 
@@ -251,9 +232,5 @@ public class ZeroToQAHeroTest {
         WebElement message = driver.findElement(By.cssSelector(".itemsdata0"));
         String value = message.getText();
         assertEquals("94821", value);
-
-        driver.quit();
     }
-
-
 }
