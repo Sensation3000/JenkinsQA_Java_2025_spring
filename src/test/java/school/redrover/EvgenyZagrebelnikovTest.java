@@ -99,9 +99,27 @@ public class EvgenyZagrebelnikovTest {
 
         Actions actions = new Actions(driver);
         actions.doubleClick(doubleClickMeButton).perform();
-        String text = driver.findElement(By.xpath("//*[text()='You have done a double click']")).getText();
+        String resultDoubleClick = driver.findElement(By.xpath("//*[text()='You have done a double click']")).getText();
 
-        Assert.assertEquals(text, "You have done a double click");
+        Assert.assertEquals(resultDoubleClick, "You have done a double click");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testRightClickButton() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.findElement(By.xpath("//*[text()='Elements']")).click();
+        driver.findElement(By.xpath("//*[text()='Buttons']")).click();
+        WebElement rightClickButton = driver.findElement(By.xpath("//*[text()='Right Click Me']"));
+
+        Actions actions = new Actions(driver);
+        actions.contextClick(rightClickButton).perform();
+        String resultRightClick = driver.findElement(By.xpath("//*[text()='You have done a right click']")).getText();
+
+        Assert.assertEquals(resultRightClick, "You have done a right click");
 
         driver.quit();
     }
