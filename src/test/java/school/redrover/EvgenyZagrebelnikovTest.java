@@ -11,12 +11,11 @@ import org.testng.annotations.Test;
 public class EvgenyZagrebelnikovTest {
 
     @Test
-    public void testGoToTheArchiveSection() throws InterruptedException {
+    public void testGoToTheArchiveSection() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://world-weather.ru/pogoda/");
 
-        WebElement archiveButton = driver.findElement(By.xpath("//*[@id=\"meny\"]/li[2]/a"));
-        archiveButton.click();
+        driver.findElement(By.xpath("//*[@id=\"meny\"]/li[2]/a")).click();
 
         WebElement textTitle = driver.findElement(By.xpath("//*[@id=\"content-left\"]/h1"));
         String text = textTitle.getText();
@@ -55,25 +54,20 @@ public class EvgenyZagrebelnikovTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
 
-        WebElement buttonElements = driver.findElement(By.xpath("//*[text()='Elements']"));
-        buttonElements.click();
-
-        WebElement selectTabCheckBox = driver.findElement(By.xpath("//*[text()='Check Box']"));
-        selectTabCheckBox.click();
-
-        WebElement searchCheckBoxAndClick = driver.findElement(By.xpath("//*[@class='rct-checkbox']"));
-        searchCheckBoxAndClick.click();
+        driver.findElement(By.xpath("//*[text()='Elements']")).click();
+        driver.findElement(By.xpath("//*[text()='Check Box']")).click();
+        driver.findElement(By.xpath("//*[@class='rct-checkbox']")).click();
 
         WebElement textAfterCheckboxSelect = driver.findElement(By.xpath("//*[text()='You have selected :']"));
-        String text = textAfterCheckboxSelect.getText();
+        String resultAfterCheckBoxSelected = textAfterCheckboxSelect.getText();
 
-        Assert.assertEquals(text, "You have selected :");
+        Assert.assertEquals(resultAfterCheckBoxSelected, "You have selected :");
 
         driver.quit();
     }
 
     @Test
-    public void testRadioButtonElement() {
+    public void testRadioButtonYes() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
 
@@ -81,9 +75,9 @@ public class EvgenyZagrebelnikovTest {
         driver.findElement(By.xpath("//*[text()='Radio Button']")).click();
         driver.findElement(By.xpath("//*[text()='Yes']")).click();
 
-        String text = driver.findElement(By.xpath("//*[text()='You have selected ']")).getText();
+        String resultAfterRadioButtonSelected = driver.findElement(By.xpath("//*[text()='You have selected ']")).getText();
 
-        Assert.assertEquals(text, "You have selected Yes");
+        Assert.assertEquals(resultAfterRadioButtonSelected, "You have selected Yes");
 
         driver.quit();
     }
@@ -120,6 +114,22 @@ public class EvgenyZagrebelnikovTest {
         String resultRightClick = driver.findElement(By.xpath("//*[text()='You have done a right click']")).getText();
 
         Assert.assertEquals(resultRightClick, "You have done a right click");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testRadioButtonImpressive() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.findElement(By.xpath("//*[text()='Elements']")).click();
+        driver.findElement(By.xpath("//*[text()='Radio Button']")).click();
+        driver.findElement(By.xpath("//*[text()='Impressive']")).click();
+
+        String resultAfterRadioButtonSelected = driver.findElement(By.xpath("//*[text()='You have selected ']")).getText();
+
+        Assert.assertEquals(resultAfterRadioButtonSelected, "You have selected Impressive");
 
         driver.quit();
     }
