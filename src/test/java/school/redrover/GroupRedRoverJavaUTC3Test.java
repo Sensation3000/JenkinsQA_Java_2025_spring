@@ -13,9 +13,7 @@ import org.testng.annotations.*;
 import java.awt.*;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.stream.Stream;
 
-import static org.apache.commons.io.function.IOConsumer.forEach;
 import static org.testng.Assert.*;
 
 public class GroupRedRoverJavaUTC3Test {
@@ -24,6 +22,15 @@ public class GroupRedRoverJavaUTC3Test {
 
     private WebDriverWait wait5;
     private WebDriverWait wait10;
+    protected Actions actions;
+
+    protected Actions getActions() {
+        if (actions == null) {
+            actions = new Actions(getDriver());
+        }
+
+        return actions;
+    }
 
     protected WebDriverWait getWait5() {
         if (wait5 == null) {
@@ -54,6 +61,7 @@ public class GroupRedRoverJavaUTC3Test {
         int screenHeight = (int) screenSize.getHeight();
         int browserWidth = Math.min(1920, screenWidth);
         int browserHeight = Math.min(1080, screenHeight);
+
         Dimension dimension = new Dimension(browserWidth, browserHeight);
         driver.manage().window().setSize(dimension);
     }
@@ -96,7 +104,7 @@ public class GroupRedRoverJavaUTC3Test {
 
     @Test
 
-    public void RickAstleyTest() throws InterruptedException {
+    public void testRickAstley() throws InterruptedException {
 
         final String xPathPlayButton = "//button[@aria-keyshortcuts='k']";
         final String xPathReject = "//button[contains(@aria-label, 'Reject the use of cookies')]";
@@ -104,8 +112,7 @@ public class GroupRedRoverJavaUTC3Test {
         getDriver().get("https://www.youtube.com/watch?v=hPr-Yc92qaY");
 
         try {
-            WebElement rejectButton = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathReject)));
-            rejectButton.click();
+            getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(xPathReject))).click();
         } catch (TimeoutException e) {
             System.out.println("The 'Reject' button didn't appear");
         }
@@ -215,9 +222,11 @@ public class GroupRedRoverJavaUTC3Test {
     @Test
     public void testSeasonvar() {
         getDriver().get("http://seasonvar.ru/");
+
         WebElement field = getDriver().findElement(By.cssSelector("div .awesomplete input"));
         field.click();
         field.sendKeys("Severance");
+
         getDriver().findElement(By.cssSelector("button.btn.head-btn")).click();
 
         String nameText = getDriver().findElement(By.xpath("//div[@class='pgs-search-info']/a[2]")).getText();
@@ -277,11 +286,10 @@ public class GroupRedRoverJavaUTC3Test {
     public void testHorizontalSliderTBank() {
         getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
 
-        Actions actions = new Actions(getDriver());
-        actions.dragAndDropBy(getDriver().findElement(
+        getActions().dragAndDropBy(getDriver().findElement(
                         By.xpath("//div[@data-field-name='cashloan_calculator_amount_field']//div[@data-qa-type='uikit/Draggable']")),
                 -77, 0).perform();
-        actions.dragAndDropBy(getDriver().findElement(
+        getActions().dragAndDropBy(getDriver().findElement(
                         By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']")),
                 -40, 0).perform();
 
@@ -293,8 +301,7 @@ public class GroupRedRoverJavaUTC3Test {
     public void testHorizontalSliderTestSite() {
         getDriver().get("https://the-internet.herokuapp.com/horizontal_slider");
 
-        Actions actions = new Actions(getDriver());
-        actions.dragAndDropBy(getDriver().findElement(By.xpath("//input[@type='range']")), 10, 0).perform();
+        getActions().dragAndDropBy(getDriver().findElement(By.xpath("//input[@type='range']")), 10, 0).perform();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[@id='range']")).getText(), "3");
     }
@@ -329,9 +336,7 @@ public class GroupRedRoverJavaUTC3Test {
 
         WebElement slider = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//div[@data-qa-type='uikit/Draggable']"));
 
-        Actions actions = new Actions(getDriver());
-
-        actions.dragAndDropBy(slider, 100, 0).perform();
+        getActions().dragAndDropBy(slider, 100, 0).perform();
 
         WebElement element = getDriver().findElement(By.xpath("//div[@data-field-name='cashloan_calculator_term_field']//input[@data-qa-type ='uikit/inlineInput.input' ]"));
         String inputValue = element.getAttribute("value");
@@ -401,5 +406,31 @@ public class GroupRedRoverJavaUTC3Test {
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[@data-calc-expr='format*count']")).getText(),
                 "53000");
     }
-}
 
+    @Test
+    public void testMonthlyPayment() {
+        getDriver().get("https://www.tbank.ru/loans/cash-loan/realty/form/autoloan/");
+
+        getWait5().until(d -> getDriver().getTitle() != null);
+
+        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//div[@data-field-name='cashloan_calculator_amount_field']//input[@data-qa-type ='uikit/inlineInput.input' ]"))));
+
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollBy(0,250)");
+
+        getActions().dragAndDropBy(getDriver().findElement(By.xpath("//div[@aria-valuemin='200000']")), -77, 0).perform();
+        By creditSum = By.xpath("//div[2]/div/div/div/div//div[2]/div/div/div[1]/div[2]/div");
+        String actualCreditSum = getWait10().until(ExpectedConditions.visibilityOfElementLocated(creditSum)).getText();
+
+        getActions().dragAndDropBy(getDriver().findElement(By.xpath("//div[@aria-valuenow='5']")), 50, 0).perform();
+        By creditTerm = By.xpath("//div/div/div/div/div[2]/div/div/div[2]/div[2]/div");
+        String actualTerm = getWait10().until(ExpectedConditions.visibilityOfElementLocated(creditTerm)).getText();
+
+        By monthlyPayment = By.xpath("(//div[contains(text(),'15 550 ₽')])[1]");
+        String actualPayment = getWait10().until(ExpectedConditions.visibilityOfElementLocated(monthlyPayment)).getText();
+
+        Assert.assertEquals(actualCreditSum, "700 000 ₽");
+        Assert.assertEquals(actualTerm, "8 лет");
+        Assert.assertEquals(actualPayment, "15 550 ₽");
+    }
+}

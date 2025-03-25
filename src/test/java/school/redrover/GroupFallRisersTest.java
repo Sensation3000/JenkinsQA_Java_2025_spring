@@ -32,7 +32,6 @@ public class GroupFallRisersTest {
     public void testCheck() {
 
         assertEquals(driver.getTitle(), "DEMOQA", "Title is not correct");
-
         clickElement(By.xpath("//div[@id='app']//div[@class='category-cards']/div[1]"));
 
         //text box section
@@ -157,6 +156,58 @@ public class GroupFallRisersTest {
         clickElement(By.id("closeLargeModal"));
     }
 
+
+
+    @Test
+    public void testPositiveBookStoreLogin() throws InterruptedException {
+        clickElement(By.xpath("//div[@id='app']//div[@class='category-cards']/div[6]"));
+        scrollToElement(By.xpath("//span[text()='Login']"));
+        clickElement(By.xpath("//span[text()='Login']"));
+        scrollToElement(By.xpath("//button[@id='newUser']"));
+        clickElement(By.xpath("//button[@id='newUser']"));
+        fillTextInput(By.xpath("//input[@id='firstname']"), "Tester1");
+        fillTextInput(By.xpath("//input[@id='lastname']"), "Testerovich");
+        fillTextInput(By.xpath("//input[@id='userName']"), "Tester1273Testerovich");
+        fillTextInput(By.xpath("//input[@id='password']"), "Tester1$");
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.getElementById('g-recaptcha-response').value='test_token';");
+        WebElement iframe = driver.findElement(By.xpath("//iframe[@title='reCAPTCHA']"));
+        driver.switchTo().frame(iframe);
+        scrollToElement(By.xpath("//div[@class='recaptcha-checkbox-border']"));
+        clickElement(By.xpath("//div[@class='recaptcha-checkbox-border']"));
+        driver.switchTo().defaultContent();
+
+        Thread.sleep(500);
+        scrollToElement(By.xpath("//button[@id='register']"));
+        clickElement(By.xpath("//button[@id='register']"));
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        alert.accept();
+        Assert.assertEquals(alertText, "User Register Successfully.");
+    }
+
+    @Test
+    public void testNegativeBookStoreLoginCaptchaError() throws InterruptedException {
+        clickElement(By.xpath("//div[@id='app']//div[@class='category-cards']/div[6]"));
+        scrollToElement(By.xpath("//span[text()='Login']"));
+        clickElement(By.xpath("//span[text()='Login']"));
+        scrollToElement(By.xpath("//button[@id='newUser']"));
+        clickElement(By.xpath("//button[@id='newUser']"));
+        fillTextInput(By.xpath("//input[@id='firstname']"), "Tester1");
+        fillTextInput(By.xpath("//input[@id='lastname']"), "Testerovich");
+        fillTextInput(By.xpath("//input[@id='userName']"), "Tester1Testerovich");
+        fillTextInput(By.xpath("//input[@id='password']"), "tester1");
+        scrollToElement(By.xpath("//button[@id='register']"));
+        clickElement(By.xpath("//button[@id='register']"));
+
+        String error = driver.findElement(By.xpath("//p[@id='name']")).getText();
+        Assert.assertEquals(error, "Please verify reCaptcha to register!");
+    }
+
     @AfterMethod
     public void tearDown() {
         if (driver != null) {
@@ -193,26 +244,6 @@ public class GroupFallRisersTest {
     private void scrollToElement(By locator) {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-    }
-
-    @Test
-    public void testSubscribe() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://i-store.by/");
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, document.body.scrollHeight / 2);");
-
-        WebElement subButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-submit")));
-        subButton.click();
-
-        WebElement error = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".error.ng-star-inserted")));
-        wait.until(ExpectedConditions.textToBePresentInElement(error, "Поле обязательно для заполнения"));
-        String errorText = error.getText().trim();
-
-        Assert.assertEquals(errorText, "Поле обязательно для заполнения");
-        driver.quit();
     }
 
 

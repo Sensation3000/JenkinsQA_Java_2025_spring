@@ -871,4 +871,19 @@ public class GroupCodeCraftTest {
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
     }
+
+    @Test
+    public void testSwagLabsCartBadgeHasItem() {
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//input[@data-test='login-button']")).click();
+
+        driver.findElement
+                (By.xpath("//div[text()='Sauce Labs Backpack']/ancestor::div[@data-test='inventory-item-description']//button")).click();
+        String itemCountInBadge = driver.findElement(By.xpath("//span[@data-test='shopping-cart-badge']")).getText();
+
+        assertEquals(itemCountInBadge, "1");
+    }
 }
