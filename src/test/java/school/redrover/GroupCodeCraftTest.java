@@ -886,4 +886,30 @@ public class GroupCodeCraftTest {
 
         assertEquals(itemCountInBadge, "1");
     }
+
+    @Test
+    public void testUItollsQA() throws InterruptedException {
+        driver.get("https://demoqa.com/");
+
+        WebElement menuButton = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[2]"));
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView();",
+                menuButton
+        );
+        menuButton.click();
+
+        driver.findElement(By.xpath("//span[text()=\"Date Picker\"]")).click();
+        Thread.sleep(100);
+
+        WebElement seleckDate = driver.findElement(By.xpath("//input[@id=\"datePickerMonthYearInput\"]"));
+
+        seleckDate.sendKeys(Keys.CONTROL + "a");
+        seleckDate.sendKeys(Keys.DELETE);
+        seleckDate.sendKeys("01/23/2025");
+
+        String  selectDateText = seleckDate.getAttribute("value");
+
+        assertEquals(selectDateText, "01/23/2025");
+    }
 }
