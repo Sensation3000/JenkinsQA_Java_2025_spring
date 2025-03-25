@@ -70,4 +70,20 @@ public class EvgenyZagrebelnikovTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testRadioButtonElement() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.findElement(By.xpath("//*[text()='Elements']")).click();
+        driver.findElement(By.xpath("//*[text()='Radio Button']")).click();
+        driver.findElement(By.xpath("//*[text()='Yes']")).click();
+
+        String text = driver.findElement(By.xpath("//*[text()='You have selected ']")).getText();
+
+        Assert.assertEquals(text, "You have selected Yes");
+
+        driver.quit();
+    }
 }

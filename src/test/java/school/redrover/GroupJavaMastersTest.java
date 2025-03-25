@@ -302,6 +302,8 @@ public class GroupJavaMastersTest {
         driver.quit();
     }
 
+
+
     @Test
 
     public void Test3AddRemoveCart() {
@@ -324,6 +326,7 @@ public class GroupJavaMastersTest {
 
         driver.quit();
     }
+
 
     @Test
     public void Test2(){
@@ -349,6 +352,28 @@ public class GroupJavaMastersTest {
         Assert.assertEquals(value, "Products");
 
         driver.quit();
+
+
+    }
+    @Test
+
+    public void Test3AddRemovetoCart() {
+        WebDriver driver;
+
+        driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com/");
+        driver.findElement(By.xpath("//*[@id=\"user-name\"]")).sendKeys("standard_user");
+        driver.findElement(By.cssSelector("#password")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//*[@id=\"login-button\"]")).click();
+
+        driver.findElement(By.id("add-to-cart-sauce-labs-fleece-jacket")).click();
+
+        driver.findElement(By.className("shopping_cart_link")).click();
+        driver.findElement(By.xpath("//*[@id=\"remove-sauce-labs-fleece-jacket\"]")).click();
+        driver.findElement(By.cssSelector("#continue-shopping")).click();
+
+        Assert.assertEquals((driver.findElement(By.className("title")).getText()), "Products");
 
 
 

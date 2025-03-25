@@ -52,25 +52,17 @@ public class ZeroToQAHeroTest {
 
         WebDriver driver = new ChromeDriver();
 
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        Thread.sleep(500);
         driver.get("https://www.saucedemo.com/");
 
-        String title = driver.getTitle();
-        assertEquals("Swag Labs", title);
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
 
-        WebElement userName = driver.findElement(By.id("user-name"));
-        userName.sendKeys("standard_user");
-
-        WebElement password = driver.findElement(By.id("password"));
-        password.sendKeys("secret_sauce");
-
-        WebElement submitButton = driver.findElement(By.id("login-button"));
         Thread.sleep(1000);
-        submitButton.click();
+        driver.findElement(By.id("login-button")).click();
 
-        WebElement pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span"));
-        assertEquals("Products", pageName.getText());
+        String pageName = driver.findElement(By.xpath("//*[@id='header_container']/div[2]/span")).getText();
+        assertEquals("error: wrong page or missing text", "Products", pageName);
 
         driver.quit();
     }

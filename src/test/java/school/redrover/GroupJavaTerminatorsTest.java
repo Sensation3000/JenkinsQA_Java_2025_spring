@@ -4,16 +4,30 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.Random;
 
 import static org.testng.Assert.assertEquals;
 
 public class GroupJavaTerminatorsTest {
-    @Test
+    private static WebDriver driver = new ChromeDriver();
+    private static WebDriverWait wait;
+    private static WebDriverWait  getWait() {
+        return wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    }
+    @BeforeMethod
+    public void setUp() {
 
+
+    }
+
+    @Test
     public void authorizationSwagLabs() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
@@ -32,7 +46,7 @@ public class GroupJavaTerminatorsTest {
 
         String pageTitle = driver.getTitle();
 
-        assertEquals(pageTitle,"Swag Labs");
+        assertEquals(pageTitle, "Swag Labs");
 
         driver.quit();
     }
@@ -62,6 +76,55 @@ public class GroupJavaTerminatorsTest {
 
         Assert.assertEquals(expectedRes, "Total: $32.39");
 
+        driver.quit();
+    }
+
+    @Test
+    public void testValidRegistration() throws InterruptedException {
+        Random random = new Random();
+        String email = "Jacks" + random.nextInt(10) + "@gmail.com";
+
+
+        driver.manage().window().maximize();
+
+
+        driver.get("https://magento.softwaretestingboard.com/");
+
+        WebElement createAccountButton = getWait().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='panel header']/ul/li[3]")));
+        createAccountButton.click();
+
+        driver.findElement(By.cssSelector("#firstname")).sendKeys("Jack");
+        driver.findElement(By.cssSelector("#lastname")).sendKeys("Jack");
+        driver.findElement(By.cssSelector("#email_address")).sendKeys(email);
+        driver.findElement(By.cssSelector("#password")).sendKeys("12345678Ll");
+        driver.findElement(By.cssSelector("#password-confirmation")).sendKeys("12345678Ll");
+        WebElement submitButton = getWait().until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.submit")));
+
+        submitButton.click();
+
+        String successMessageText = driver.findElement(By.cssSelector("div[data-ui-id]")).getText();
+
+        assertEquals(successMessageText, "Thank you for registering with Main Website Store.");
+      
+         driver.quit();
+    }
+  
+    @Test
+    public void testTextAfterClickingButton() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://practice-automation.com/");
+
+        driver.findElement(By.xpath("//div/div/a[@href='https://practice-automation.com/click-events/']")).click();
+        driver.findElement(By.xpath("//button[@onclick='dogSound()']")).click();
+
+        String actualResult = driver.findElement(By.xpath("//h2[@id='demo']")).getText();
+        String expectedResult = "Woof!";
+
+        Assert.assertEquals(actualResult, expectedResult);
+      
         driver.quit();
     }
 }

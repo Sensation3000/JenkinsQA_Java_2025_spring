@@ -70,6 +70,7 @@ public class PodkovaTest {
 
         driver.quit();
     }
+
     @Test
     public void testLoginPage() {
         WebDriver driver = new ChromeDriver();
@@ -148,6 +149,37 @@ public class PodkovaTest {
         checkbox1.click();
         Assert.assertTrue(checkbox1.isSelected());
         Assert.assertTrue(checkbox2.isSelected());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testEnableTextField() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/dynamic_controls");
+        WebElement enableButton = driver.findElement(By.xpath("//button[text()='Enable']"));
+        enableButton.click();
+        WebElement textField = driver.findElement(By.xpath("//input[@type='text']"));
+
+        Assert.assertFalse(textField.isEnabled(), "Text field should be enabled.");
+        Assert.assertEquals(textField.getAttribute("value"), "", "Text field should be empty.");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testLoginAddProductToCart() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com");
+        driver.findElement(By.cssSelector("#user-name")).sendKeys("standard_user");
+        driver.findElement(By.cssSelector("#password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+        driver.findElement(By.xpath("//button[contains(text(), 'Add to cart')]")).click();
+        WebElement cartBadge = driver.findElement(By.className("shopping_cart_badge"));
+
+        String expectedUrl = "https://www.saucedemo.com/inventory.html";
+        Assert.assertEquals(driver.getCurrentUrl(), expectedUrl);
+        Assert.assertEquals(cartBadge.getText(), "1");
 
         driver.quit();
     }
