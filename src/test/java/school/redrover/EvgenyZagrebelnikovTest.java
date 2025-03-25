@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -83,6 +84,24 @@ public class EvgenyZagrebelnikovTest {
         String text = driver.findElement(By.xpath("//*[text()='You have selected ']")).getText();
 
         Assert.assertEquals(text, "You have selected Yes");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testDoubleClickButton() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.findElement(By.xpath("//*[text()='Elements']")).click();
+        driver.findElement(By.xpath("//*[text()='Buttons']")).click();
+        WebElement doubleClickMeButton = driver.findElement(By.xpath("//*[text()='Double Click Me']"));
+
+        Actions actions = new Actions(driver);
+        actions.doubleClick(doubleClickMeButton).perform();
+        String text = driver.findElement(By.xpath("//*[text()='You have done a double click']")).getText();
+
+        Assert.assertEquals(text, "You have done a double click");
 
         driver.quit();
     }
