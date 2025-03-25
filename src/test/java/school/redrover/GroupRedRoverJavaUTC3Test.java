@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 
 import java.awt.*;
 import java.time.Duration;
@@ -22,7 +23,16 @@ public class GroupRedRoverJavaUTC3Test {
 
     private WebDriverWait wait5;
     private WebDriverWait wait10;
-    protected Actions actions;
+    private Actions actions;
+    private SoftAssert softAssert;
+
+    protected SoftAssert getSoftAssert() {
+        if (softAssert == null) {
+            softAssert = new SoftAssert();
+        }
+
+        return softAssert;
+    }
 
     protected Actions getActions() {
         if (actions == null) {
@@ -73,6 +83,8 @@ public class GroupRedRoverJavaUTC3Test {
             driver = null;
             wait5 = null;
             wait10 = null;
+            softAssert = null;
+            actions = null;
         }
     }
 
@@ -264,22 +276,19 @@ public class GroupRedRoverJavaUTC3Test {
     }
 
     @Test
-
     public void testEbayRedirectionToLoginPage() {
 
         getDriver().get("https://www.ebay.com/");
 
-        WebElement signInLink = getDriver().findElement(By.xpath("//*[@id=\"gh\"]/nav/div[1]/span[1]/span/a"));
-
-        signInLink.click();
+        getDriver().findElement(By.xpath("//*[@id=\"gh\"]/nav/div[1]/span[1]/span/a")).click();
 
         String currentTitle = getDriver().getTitle();
         String currentUrl = getDriver().getCurrentUrl();
 
-        Assert.assertEquals(currentTitle, "Sign in or Register | eBay");
-        Assert.assertEquals(currentUrl, "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
+        getSoftAssert().assertEquals(currentTitle, "Sign in or Register | eBay");
+        getSoftAssert().assertEquals(currentUrl, "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
 
-        getDriver().quit();
+        getSoftAssert().assertAll();
     }
 
     @Test
@@ -429,8 +438,10 @@ public class GroupRedRoverJavaUTC3Test {
         By monthlyPayment = By.xpath("(//div[contains(text(),'15 550 ₽')])[1]");
         String actualPayment = getWait10().until(ExpectedConditions.visibilityOfElementLocated(monthlyPayment)).getText();
 
-        Assert.assertEquals(actualCreditSum, "700 000 ₽");
-        Assert.assertEquals(actualTerm, "8 лет");
-        Assert.assertEquals(actualPayment, "15 550 ₽");
+        getSoftAssert().assertEquals(actualCreditSum, "700 000 ₽");
+        getSoftAssert().assertEquals(actualTerm, "8 лет");
+        getSoftAssert().assertEquals(actualPayment, "15 550 ₽");
+
+        getSoftAssert().assertAll();
     }
 }
