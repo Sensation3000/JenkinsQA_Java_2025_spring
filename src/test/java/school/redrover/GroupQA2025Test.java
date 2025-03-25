@@ -1,14 +1,16 @@
 package school.redrover;
 
+import java.time.Duration;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -27,12 +29,24 @@ public class GroupQA2025Test {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.get("http://uitestingplayground.com/");
     }
 
     @AfterMethod
     void teardown() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testClientSideDelay() {
+        driver.findElement(By.linkText("Client Side Delay")).click();
+        driver.findElement(By.id("ajaxButton")).click();
+
+        assertEquals(driver.findElement(By.className("bg-success")).getText(),
+                "Data calculated on the client side.");
     }
 
     @Test
