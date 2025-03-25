@@ -183,6 +183,24 @@ public class PodkovaTest {
 
         driver.quit();
     }
+    @Test
+    public void testFlightBooking() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://blazedemo.com");
+        driver.findElement(By.name("fromPort")).sendKeys("Paris");
+        driver.findElement(By.name("toPort")).sendKeys("New York");
+        driver.findElement(By.xpath("//input[@value='Find Flights']")).click();
+
+        String expectedTitle = "Flights from Paris to New York:";
+        Assert.assertTrue(driver.getPageSource().contains(expectedTitle), "Title not found on the page!");
+
+        driver.findElement(By.xpath("//input[@value='Choose This Flight']")).click();
+
+        String expectedDetailTitle = "Your flight from Paris to London.";
+        Assert.assertFalse(driver.getPageSource().contains(expectedDetailTitle), "Flight details page not found!");
+
+        driver.quit();
+    }
 }
 
 
