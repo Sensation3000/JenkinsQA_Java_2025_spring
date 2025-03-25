@@ -13,14 +13,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.time.Duration;
+import java.util.List;
 
 public class GroupBlohaTest {
 
     private WebDriver driver;
-    private static final Logger logger = Logger.getLogger(GroupBlohaTest.class.getName());
     private static final String EMAIL = "alexx.shigaev@gmail.com";
     private static final String PASSWORD = "B2a6ig_a9Hb3cz@";
 
@@ -60,25 +58,31 @@ public class GroupBlohaTest {
         driver.get("https://magento.softwaretestingboard.com/wishlist/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
-        try {
-            while (!driver.findElements(By.xpath("//div[contains(@class, 'product-item-info')]")).isEmpty()) {
-                WebElement productItem = driver.findElement(By.xpath("//div[contains(@class, 'product-item-info')][1]"));
+         try {
+            while (true) {
+                List<WebElement> productItems = driver.findElements(By.xpath("//div[contains(@class, 'product-item-info')]"));
+                if (productItems.isEmpty()) {
+                    System.out.println("You have no items in your wish list");
+                    break;
+                }
+    
+                WebElement productItem = productItems.get(0);
                 new Actions(driver).moveToElement(productItem).perform();
-
+                
                 productItem.findElement(By.xpath(".//a[contains(@class, 'btn-remove action delete')]")).click();
+                
                 wait.until(ExpectedConditions.invisibilityOf(productItem));
-
                 System.out.println("Product deleted");
             }
-            System.out.println("You have no items in your wish list");
-
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An error occurred while deleting products: " + e.getMessage(), e);
+             System.out.println("Error occurred while deleting products.");
         }
-
+    
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='wishlist-view-form']/div[1]")).isDisplayed(),
                 "Message when wishlist is empty is not displayed");
         System.out.println("Message when wishlist is empty is displayed");
+
+        driver.quit();
     }
 
 
@@ -131,6 +135,8 @@ public class GroupBlohaTest {
         Assert.assertEquals(modelByx, "HP ProLiant MicroServer");
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+
+        driver.quit();
   
     @AfterMethod
     public void tearDown() {
