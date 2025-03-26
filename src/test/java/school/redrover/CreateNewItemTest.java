@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import static org.testng.Assert.assertEquals;
 
-public class CreateNewItem extends BaseTest {
+public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testCreateNewItem() throws InterruptedException {
