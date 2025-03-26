@@ -3,26 +3,17 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.common.BaseTest;
 
-public class FirstTest {
+public class FirstTest extends BaseTest {
 
     @Test
-    public void testProductsMenu(){
+    public void testWelcome() {
+        WebDriver driver = getDriver();
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationexercise.com/");
-
-        WebElement productsButton = driver.findElement(By.xpath("//a[@href='/products']"));
-        productsButton.click();
-
-        WebElement textTitle = driver.findElement(By.xpath("//div[@class='features_items']/h2"));
-        String text = textTitle.getText().toLowerCase();
-
-        Assert.assertEquals(text, "all products");
-
-        driver.quit();
+        WebElement titleElement = driver.findElement(By.cssSelector(".empty-state-block h1"));
+        Assert.assertEquals(titleElement.getText(), "Welcome to Jenkins!");
     }
 }
