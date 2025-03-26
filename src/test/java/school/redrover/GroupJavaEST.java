@@ -16,9 +16,13 @@ public class GroupJavaEST extends BaseTest {
         driver.findElement(By.xpath("//*[@id='name']")).sendKeys("First Pipeline");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.xpath("//*[@id='ok-button']")).click();
-        driver.findElement(By.xpath("//*[@name='Submit']")).click();
-        WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
 
+        driver.findElement(By.xpath(
+                "//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea")).sendKeys(
+                        "Pipeline Description");
+        driver.findElement(By.xpath("//*[@name='Submit']")).click();
+
+        WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
         Assert.assertEquals(pipelineName.getText(), "First Pipeline");
     }
 }
