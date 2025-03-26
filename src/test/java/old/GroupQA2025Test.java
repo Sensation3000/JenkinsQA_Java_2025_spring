@@ -16,7 +16,7 @@ public class GroupQA2025Test {
 
     private WebDriver driver;
 
-    @BeforeTest
+    @BeforeClass
     static void setupAll() {
         WebDriverManager.chromedriver().setup();
     }

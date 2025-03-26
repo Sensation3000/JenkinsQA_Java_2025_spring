@@ -18,7 +18,7 @@ import static org.testng.Assert.assertEquals;
 
 @Ignore
 public class GroupJavaTerminatorsTest {
-    private static WebDriver driver = new ChromeDriver();
+    private static WebDriver driver;// = new ChromeDriver();
     private static WebDriverWait wait;
     private static WebDriverWait  getWait() {
         return wait = new WebDriverWait(driver, Duration.ofSeconds(5));

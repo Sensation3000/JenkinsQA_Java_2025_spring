@@ -17,7 +17,7 @@ public class GroupJavaNinjasTest {
 
     WebDriver driver;
 
-    @BeforeSuite
+    @BeforeMethod
     public void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
@@ -241,7 +241,7 @@ public class GroupJavaNinjasTest {
         driver.quit();
     }
 
-    @AfterSuite
+    @AfterMethod
     public void teardown() {
         driver.quit();
     }

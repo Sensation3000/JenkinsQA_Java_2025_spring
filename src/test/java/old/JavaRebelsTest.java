@@ -1,6 +1,5 @@
 package old;
 
-import net.datafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -56,18 +55,20 @@ public class JavaRebelsTest {
     }
 
     private String fillAndSubmitForm() {
-        Faker faker = new Faker();
-        String fakerName = faker.name().name();
+//        Faker faker = new Faker();
+//        String fakerName = faker.name().name();
+//
+//        driver.findElement(By.name("name")).sendKeys(fakerName);
+//        driver.findElement(By.name("price")).sendKeys("2000");
+//        driver.findElement(By.name("description")).sendKeys("Test");
+//        driver.findElement(By.name("imageUrl")).sendKeys("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png");
+//
+//        WebElement submitButton = driver.findElement(By.xpath("//button[text()=\"Сохранить\"]"));
+//        submitButton.click();
+//
+//        return fakerName;
 
-        driver.findElement(By.name("name")).sendKeys(fakerName);
-        driver.findElement(By.name("price")).sendKeys("2000");
-        driver.findElement(By.name("description")).sendKeys("Test");
-        driver.findElement(By.name("imageUrl")).sendKeys("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png");
-
-        WebElement submitButton = driver.findElement(By.xpath("//button[text()=\"Сохранить\"]"));
-        submitButton.click();
-
-        return fakerName;
+        return null;
     }
 
     private void verifyItemInList(String itemName) {

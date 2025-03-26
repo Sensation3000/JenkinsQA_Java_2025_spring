@@ -5,10 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,7 +15,7 @@ import java.time.Duration;
 public class EPGSTest {
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
 //        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();

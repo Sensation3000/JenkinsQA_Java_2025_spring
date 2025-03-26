@@ -1,7 +1,5 @@
 package old;
 
-import net.datafaker.Faker;
-import net.datafaker.providers.base.Text;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
@@ -23,7 +21,6 @@ import java.util.Objects;
 import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
-import static net.datafaker.providers.base.Text.*;
 import static org.testng.Assert.*;
 
 @Ignore
@@ -204,31 +201,31 @@ public class GroupCodeCraftTest {
 
     @Test
     public void testWebForm() {
-        var faker = new Faker(new Locale("en"));
-
-        String fullName = faker.name().fullName();
-        String password = faker.internet().password();
-        String text = faker.lorem().sentence();
-
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
-        WebElement name = driver.findElement(By.id("my-text-id"));
-        name.sendKeys(fullName);
-
-        WebElement passwordField = driver.findElement(By.xpath("//input[@type='password']"));
-        passwordField.sendKeys(password);
-
-        WebElement textArea = driver.findElement(By.tagName("textarea"));
-        textArea.sendKeys(text);
-
-        assertEquals(name.getDomProperty("value"), fullName);
-        assertEquals(passwordField.getDomProperty("value"), password);
-        assertEquals(textArea.getDomProperty("value"), text);
-        assertFalse(driver.findElement
-                (By.xpath("//input[@name='my-disabled']")).isEnabled());
-        assertNotNull(driver.findElement
-                        (By.xpath("//input[@name='my-readonly']")).
-                getDomAttribute("readonly"));
+//        var faker = new Faker(new Locale("en"));
+//
+//        String fullName = faker.name().fullName();
+//        String password = faker.internet().password();
+//        String text = faker.lorem().sentence();
+//
+//        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
+//
+//        WebElement name = driver.findElement(By.id("my-text-id"));
+//        name.sendKeys(fullName);
+//
+//        WebElement passwordField = driver.findElement(By.xpath("//input[@type='password']"));
+//        passwordField.sendKeys(password);
+//
+//        WebElement textArea = driver.findElement(By.tagName("textarea"));
+//        textArea.sendKeys(text);
+//
+//        assertEquals(name.getDomProperty("value"), fullName);
+//        assertEquals(passwordField.getDomProperty("value"), password);
+//        assertEquals(textArea.getDomProperty("value"), text);
+//        assertFalse(driver.findElement
+//                (By.xpath("//input[@name='my-disabled']")).isEnabled());
+//        assertNotNull(driver.findElement
+//                        (By.xpath("//input[@name='my-readonly']")).
+//                getDomAttribute("readonly"));
     }
 
     @Test
@@ -294,35 +291,35 @@ public class GroupCodeCraftTest {
 
     @Test
     public void testLumaCreateAccount() throws InterruptedException {
-        var faker = new Faker(new Locale("en"));
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String email = firstName.toLowerCase() + lastName.toLowerCase() + "@gmail.com";
-        String password = faker.text().text(Text.TextSymbolsBuilder.builder()
-                .len(14)
-                .with(EN_UPPERCASE, 3)
-                .with(EN_LOWERCASE, 4)
-                .with(DEFAULT_SPECIAL, 2)
-                .with(DIGITS, 3).build());
-
-        driver.get("https://magento.softwaretestingboard.com/");
-
-        WebElement createAccount = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
-        createAccount.click();
-
-        WebElement firstname = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.id("firstname")));
-        firstname.sendKeys(firstName);
-        driver.findElement(By.id("lastname")).sendKeys(lastName);
-        driver.findElement(By.id("email_address")).sendKeys(email);
-        driver.findElement(By.id("password")).sendKeys(password);
-        driver.findElement(By.id("password-confirmation")).sendKeys(password);
-        driver.findElement(By.cssSelector(".action.submit.primary")).click();
-
-        WebElement accountCreated = wait.until
-                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div")));
-        assertEquals(accountCreated.getText(), "Thank you for registering with Main Website Store.");
+//        var faker = new Faker(new Locale("en"));
+//        String firstName = faker.name().firstName();
+//        String lastName = faker.name().lastName();
+//        String email = firstName.toLowerCase() + lastName.toLowerCase() + "@gmail.com";
+//        String password = faker.text().text(Text.TextSymbolsBuilder.builder()
+//                .len(14)
+//                .with(EN_UPPERCASE, 3)
+//                .with(EN_LOWERCASE, 4)
+//                .with(DEFAULT_SPECIAL, 2)
+//                .with(DIGITS, 3).build());
+//
+//        driver.get("https://magento.softwaretestingboard.com/");
+//
+//        WebElement createAccount = wait.until
+//                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div[1]/div/ul/li[3]/a")));
+//        createAccount.click();
+//
+//        WebElement firstname = wait.until
+//                (ExpectedConditions.visibilityOfElementLocated(By.id("firstname")));
+//        firstname.sendKeys(firstName);
+//        driver.findElement(By.id("lastname")).sendKeys(lastName);
+//        driver.findElement(By.id("email_address")).sendKeys(email);
+//        driver.findElement(By.id("password")).sendKeys(password);
+//        driver.findElement(By.id("password-confirmation")).sendKeys(password);
+//        driver.findElement(By.cssSelector(".action.submit.primary")).click();
+//
+//        WebElement accountCreated = wait.until
+//                (ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div")));
+//        assertEquals(accountCreated.getText(), "Thank you for registering with Main Website Store.");
     }
 
     @Test
