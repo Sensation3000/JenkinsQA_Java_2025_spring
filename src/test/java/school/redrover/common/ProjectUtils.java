@@ -68,16 +68,16 @@ public final class ProjectUtils {
 
     static String getUrl() {
         return String.format("http://%s:%s/",
-                properties.getProperty(PREFIX_JENKINS_PROP + "host"),
-                properties.getProperty(PREFIX_JENKINS_PROP + "port"));
+                getValue(PREFIX_JENKINS_PROP + "host"),
+                getValue(PREFIX_JENKINS_PROP + "port"));
     }
 
     static String getUserName() {
-        return properties.getProperty(PREFIX_JENKINS_PROP + "username");
+        return getValue(PREFIX_JENKINS_PROP + "username");
     }
 
     static String getPassword() {
-        return properties.getProperty(PREFIX_JENKINS_PROP + "password");
+        return getValue(PREFIX_JENKINS_PROP + "password");
     }
 
     static boolean closeIfError() {
