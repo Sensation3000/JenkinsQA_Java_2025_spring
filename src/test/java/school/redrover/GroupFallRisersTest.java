@@ -98,7 +98,8 @@ public class GroupFallRisersTest {
 
     @Test
     public void testFormsSection() throws InterruptedException {
-
+        //Scroll down
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500);");
         //Forms - Practice Form section
         clickElement(By.xpath("//div[@id='app']//div[@class='category-cards']/div[2]"));
         clickElement(By.xpath("//span[normalize-space()='Practice Form']"));
@@ -149,6 +150,7 @@ public class GroupFallRisersTest {
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Gender']]/td[2]")).getText(), "Male");
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Mobile']]/td[2]")).getText(), "1234567890");
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Date of Birth']]/td[2]")).getText(), "05 February,1987");
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500);");
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Subjects']]/td[2]")).getText(), "Maths");
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Hobbies']]/td[2]")).getText(), "Reading");
         Assert.assertEquals(driver.findElement(By.xpath("//tr[td[text()='Address']]/td[2]")).getText(), "814, Boulevard of broken dreams");
