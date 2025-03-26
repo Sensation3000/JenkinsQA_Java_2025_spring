@@ -11,5 +11,6 @@ public class WelcomPageTest extends BaseTest {
 
         String text = getDriver().findElement(By.xpath("//h1")).getText();
         Assert.assertEquals(text, "Welcome to Jenkins!");
+
     }
 }
