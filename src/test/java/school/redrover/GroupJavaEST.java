@@ -13,7 +13,6 @@ public class GroupJavaEST extends BaseTest {
     public void testCreatePipeline() {
         WebDriver driver = getDriver();
         driver.findElement(By.xpath("//a[@href ='newJob']")).click();
-        //driver.findElement(By.xpath("//*[@id='tasks']/div[1]/span/a/span[2]")).click();
         driver.findElement(By.xpath("//*[@id='name']")).sendKeys("First Pipeline");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.xpath("//*[@id='ok-button']")).click();
