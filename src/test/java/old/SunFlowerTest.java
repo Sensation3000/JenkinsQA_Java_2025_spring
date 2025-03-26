@@ -341,29 +341,29 @@ public class SunFlowerTest {
 
     @Test
     public void testW3School() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();    // Настройка WebDriverManager для автоматической загрузки драйвера
+        WebDriverManager.chromedriver().setup();
 
-        WebDriver driver = new ChromeDriver();      // Создаем экземпляр ChromeDriver, который будет управлять браузером
+        WebDriver driver = new ChromeDriver();
 
-        // Установка конкретного размера окна
-        Dimension dimension = new Dimension(1920, 1080); // Ширина 1920px, высота 1080px
-        driver.manage().window().setSize(dimension); // Установка размера окна
-        driver.get("https://www.w3schools.com/");          // Переход на страницу w3schools
+
+        Dimension dimension = new Dimension(1920, 1080);
+        driver.manage().window().setSize(dimension);
+        driver.get("https://www.w3schools.com/");
 
         Thread.sleep(5000);
 
-        // Нахождение элемента "XML Tutorial" по атрибуту title
+
         WebElement xmlLink = driver.findElement(By.xpath("//a[text()='XML']"));
         xmlLink.click();
 
-        // Явное ожидание заголовка страницы
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // вместо Thread.sleep(2000);
         wait.until(ExpectedConditions.titleContains("XML Tutorial"));
 
-        // Проверка, что мы находимся на странице "XML Tutorial"
-        String pageTitle = driver.getTitle(); // Метод возвращает заголовок текущей страницы, который затем сохраняется в переменной pageTitle
+
+        String pageTitle = driver.getTitle();
         System.out.println("Page Title: " + pageTitle);
-        assert pageTitle.contains("XML Tutorial");      // Проверка, что заголовок содержит "xml"
+        assert pageTitle.contains("XML Tutorial");
 
         WebElement xmlXpathLink = driver.findElement(By.xpath("//a[@href='xml_xpath.asp']"));
         xmlXpathLink.click();
