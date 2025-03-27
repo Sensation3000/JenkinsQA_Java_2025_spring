@@ -3,12 +3,15 @@ package school;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.util.ArrayList;
+
 import static org.testng.Assert.assertEquals;
 
 
 
 public class SunflowersPathTest extends BaseTest {
-     private static String BASEURL = "http://localhost:8080";
+
     @Test
     public void MyViewsShouldBeLinkToAllViewTest() {
        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
@@ -46,8 +49,14 @@ public class SunflowersPathTest extends BaseTest {
     }
     @Test
     public void LearnShouldBeLinkToLearn() {
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/div/section[2]/ul/li[3]/a/span[1]")).click();
-        assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/scaling/architecting-for-scale/#distributed-builds-architecture");
+        getDriver().findElement(By.xpath("//a[@target='_blank']")).click();
+        getDriver().switchTo().window(new ArrayList<>(getDriver()
+                .getWindowHandles())
+                .get((new ArrayList<>(getDriver()
+                        .getWindowHandles()).indexOf(getDriver()
+                        .getWindowHandle()) + 1) % getDriver().getWindowHandles().size()));
+        assertEquals(getDriver().getCurrentUrl(),
+                "https://www.jenkins.io/doc/book/scaling/architecting-for-scale/#distributed-builds-architecture");
     }
 
 
