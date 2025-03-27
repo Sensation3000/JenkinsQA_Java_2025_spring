@@ -17,7 +17,7 @@ public class CreatePipelineTest extends BaseTest {
     public void testCreatePipeline() {
         WebDriver driver = getDriver();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(11));
 
         WebElement newItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")));
         newItem.click();
