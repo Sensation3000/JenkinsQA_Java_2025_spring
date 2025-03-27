@@ -88,66 +88,72 @@ public class CreateNewItem2Test extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProjectItem() {
+    public void testCreateFreestyleProjectItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Freestyle project']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
     }
 
     @Test
-    public void testCreatePipelineItem() {
+    public void testCreatePipelineItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Pipeline']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
     }
 
     @Test
-    public void testCreateMultiConfigurationItem() {
+    public void testCreateMultiConfigurationItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multi-configuration project']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
     }
 
     @Test
-    public void testCreateFolderItem() {
+    public void testCreateFolderItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Folder']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
     }
 
     @Test
-    public void testCreateMultibranchPipelineItem() {
+    public void testCreateMultibranchPipelineItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
     }
 
     @Test
-    public void testCreateOrganizationFolderItem() {
+    public void testCreateOrganizationFolderItem() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(ITEM_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Organization Folder']/ancestor::li")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
+        Thread.sleep(100);
         getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/a/span")).getText(), ITEM_NAME);
