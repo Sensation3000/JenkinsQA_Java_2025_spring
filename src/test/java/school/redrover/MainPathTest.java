@@ -49,15 +49,14 @@ public class MainPathTest extends BaseTest {
                 message);
     }
     @Test
-    public void CinfugureACloudShouldBeLinkToCloudTest() {
+    public void ConfugureACloudShouldBeLinkToCloudTest() {
         getDriver().findElement(By.xpath("//a[@href='cloud/']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/cloud"),
                 message);
     }
     @Test
-    public void LearnShouldBeLinkToLearn() throws InterruptedException {
+    public void LearnShouldBeLinkToLearn()  {
         getDriver().findElement(By.xpath("//a[@target='_blank']")).click();
-        Thread.sleep(1000);
         getDriver().switchTo().window(new ArrayList<>(getDriver()
                 .getWindowHandles())
                 .get((new ArrayList<>(getDriver()
