@@ -7,8 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.awt.*;
-
 public class AddDescriptionTest extends BaseTest {
 
     @Test
@@ -22,7 +20,7 @@ public class AddDescriptionTest extends BaseTest {
         String text = "new project";
         if (inputText.isEnabled()){
             inputText.sendKeys(text);
-        } 
+        }
 
         WebElement buttonElementSave = driver.findElement(By.cssSelector("#description > form > div:nth-child(3) > button"));
         buttonElementSave.click();
