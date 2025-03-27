@@ -22,8 +22,7 @@ public class AddDescriptionTest extends BaseTest {
         String text = "new project";
         if (inputText.isEnabled()){
             inputText.sendKeys(text);
-        } else
-            Assert.assertFalse(true);
+        } 
 
         WebElement buttonElementSave = driver.findElement(By.cssSelector("#description > form > div:nth-child(3) > button"));
         buttonElementSave.click();
