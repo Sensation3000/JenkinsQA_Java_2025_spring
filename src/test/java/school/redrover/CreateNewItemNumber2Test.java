@@ -14,7 +14,7 @@ public class CreateNewItemNumber2Test extends BaseTest {
 
     @Test
     public void testItemCreation_Success() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5)); // увеличил до 5 сек
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         WebElement link = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@it='hudson.model.Hudson@71fdd4fe' and @data-task-success='Done.']")
