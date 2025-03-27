@@ -55,8 +55,9 @@ public class MainPathTest extends BaseTest {
                 message);
     }
     @Test
-    public void LearnShouldBeLinkToLearn() {
+    public void LearnShouldBeLinkToLearn() throws InterruptedException {
         getDriver().findElement(By.xpath("//a[@target='_blank']")).click();
+        Thread.sleep(1000);
         getDriver().switchTo().window(new ArrayList<>(getDriver()
                 .getWindowHandles())
                 .get((new ArrayList<>(getDriver()
