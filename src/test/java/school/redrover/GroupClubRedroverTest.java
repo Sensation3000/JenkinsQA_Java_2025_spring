@@ -13,7 +13,7 @@ public class GroupClubRedroverTest extends BaseTest {
     SoftAssert softAssert;
 
     @Test
-    public void verifySuccessfulCreationNewJob() {
+    public void verifySuccessfulCreationNewJob() throws InterruptedException {
         softAssert = new SoftAssert();
         WebDriver driver = getDriver();
         String jobName = "freestyle";
@@ -34,6 +34,7 @@ public class GroupClubRedroverTest extends BaseTest {
                 driver.findElement(By.cssSelector(".job-index-headline")).getText(), jobName);
 
         driver.findElement(By.cssSelector("a[href='/']")).click();
+        Thread.sleep(1000);
         List<WebElement> jobsOnDashbord = driver.findElements(By.cssSelector(".jenkins-table__link"));
         softAssert.assertTrue(
                 jobsOnDashbord.stream().anyMatch(job -> job.getText().contains(jobName)),
