@@ -19,7 +19,7 @@ public class FirstJenkinsTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
         Thread.sleep(200);
 
-        String resultText = getDriver().findElement(By.xpath("//div[contains(text(), \"It's my first test in Jenkins\")]")).getText();
+        String resultText = getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']/div[1]")).getText();
 
         Assert.assertEquals(previewText, "It's my first test in Jenkins");
         Assert.assertEquals(resultText, "It's my first test in Jenkins");
