@@ -21,7 +21,6 @@ public class FirstJenkinsTest extends BaseTest {
 
         String resultText = getDriver().findElement(By.xpath("//div[contains(text(), \"It's my first test in Jenkins\")]")).getText();
 
-
         Assert.assertEquals(previewText, "It's my first test in Jenkins");
         Assert.assertEquals(resultText, "It's my first test in Jenkins");
     }
