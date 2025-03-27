@@ -13,7 +13,7 @@ public class CreateNewItemNumber2Test extends BaseTest {
 
     @Test
     public void testItemCreation_Success() {
-        getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@71fdd4fe']")).click();
+        getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@71fdd4fe' and @data-task-success='Done.']")).click();
         getDriver().findElement(By.name("name")).sendKeys("TestItemBlaBla");
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.xpath("//button[contains(@class,'jenkins-button--primary')]")).click();
