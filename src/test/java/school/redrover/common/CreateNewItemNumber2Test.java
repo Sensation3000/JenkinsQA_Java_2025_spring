@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class CreateNewItemNumber1Test extends BaseTest {
+public class CreateNewItemNumber2Test extends BaseTest {
 
     @Test
     public void testItemCreation_Success() {
