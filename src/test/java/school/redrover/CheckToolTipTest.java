@@ -15,7 +15,8 @@ public class CheckToolTipTest extends BaseTest {
     public void testToolTip () throws InterruptedException {
         Actions actions = new Actions(getDriver());
         WebElement linkElement = getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"));
-        actions.moveToElement(linkElement).pause(2000).click(linkElement).perform();
+        actions.moveToElement(linkElement).pause(2000).perform();
+        linkElement.click();
         Thread.sleep(1000);
         WebElement manageTools= getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/manage']"));
 
