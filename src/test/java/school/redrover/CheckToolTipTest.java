@@ -28,13 +28,22 @@ public class CheckToolTipTest extends BaseTest {
     public void testToolTip() throws InterruptedException {
 
         Actions actions = new Actions(getDriver());
-        WebElement dashboard = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
-        actions.moveToElement(dashboard).pause(500).perform();
-        WebElement linkElement = getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"));
-        actions.moveToElement(linkElement).pause(500).click(linkElement).perform();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        //WebElement dashboard = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
+        js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//li[@class='jenkins-breadcrumbs__list-item']")
+        )));
+        //actions.moveToElement(dashboard).pause(500).perform();
+        //WebElement linkElement = getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"));
+        js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']")
+        )));
+        js.executeScript("arguments[0].click();", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"))));
+
+       // actions.moveToElement(linkElement).pause(500).click(linkElement).perform();
         Thread.sleep(1000);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[contains(@href,'manage')][contains(@class,'dropdown')]")
         )));
@@ -43,7 +52,7 @@ public class CheckToolTipTest extends BaseTest {
         )));
         js.executeScript("arguments[0].click();", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[@href='/manage/configureTools']"))));
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         WebElement pathToGit = getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Use default maven settings']"));
         actions.moveToElement(pathToGit).perform();
