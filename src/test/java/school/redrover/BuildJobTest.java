@@ -35,10 +35,9 @@ public class BuildJobTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))).click();
 
         Actions actions = new Actions(getDriver());
-        WebElement linkElement = getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']"));
-        actions.moveToElement(linkElement).pause(500).perform();
+        WebElement linkElement = getDriver().findElement(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"));
+        actions.moveToElement(linkElement).pause(500).click(linkElement).perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@href, 'build')]"))).click();
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         getDriver().navigate().refresh();
