@@ -23,25 +23,19 @@ public class CheckToolTipTest extends BaseTest {
         }
         return wait5;
     }
-
     @Test
     public void testToolTip() throws InterruptedException {
-
         Actions actions = new Actions(getDriver());
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        //WebElement dashboard = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
+
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//li[@class='jenkins-breadcrumbs__list-item']")
         )));
-        //actions.moveToElement(dashboard).pause(500).perform();
-        //WebElement linkElement = getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"));
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']")
         )));
         js.executeScript("arguments[0].click();", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"))));
-
-       // actions.moveToElement(linkElement).pause(500).click(linkElement).perform();
         Thread.sleep(1000);
 
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
