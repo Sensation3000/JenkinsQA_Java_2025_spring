@@ -18,7 +18,7 @@ public class BuildJobTest extends BaseTest {
 
     protected WebDriverWait getWait5() {
         if (wait5 == null) {
-            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         }
 
         return wait5;
@@ -41,6 +41,7 @@ public class BuildJobTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@href, 'build')]"))).click();
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
+        getDriver().navigate().refresh();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.xpath("//*[@id='out']")).getText();
