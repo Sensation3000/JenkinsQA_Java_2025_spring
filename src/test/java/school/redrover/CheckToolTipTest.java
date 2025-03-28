@@ -36,10 +36,9 @@ public class CheckToolTipTest extends BaseTest {
         Thread.sleep(1000);
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement element = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+        js.executeScript("arguments[0].click();", getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[contains(@href,'manage')][contains(@class,'dropdown')]")
-        ));
-        js.executeScript("arguments[0].click();", element);
+        )));
 
         getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
         WebElement pathToGit = getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Use default maven settings']"));
