@@ -33,7 +33,6 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).sendKeys(Keys.ENTER);
         Thread.sleep(1000);
         getDriver().findElement(By.cssSelector("a[href='/']")).click();
-        //getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/']"))).click();
 
         Actions actions = new Actions(getDriver());
         WebElement linkElement = getDriver().findElement(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"));
@@ -41,12 +40,14 @@ public class BuildJobTest extends BaseTest {
 
         //WebElement buildNow = getDriver().findElement(By.xpath("//button[contains(@href, 'build')]"));
        // actions.moveToElement(buildNow).pause(1000).click(buildNow).perform();
-        //Thread.sleep(5000);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))).click();
+        Thread.sleep(5000);
+        getDriver().findElement(By.xpath("//button[contains(@href, 'build')]")).click();
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         Thread.sleep(1000);
         getDriver().navigate().refresh();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='lastBuild/']"))).click();
+        Thread.sleep(2000);
+        //getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='lastBuild/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.xpath("//*[@id='out']")).getText();
 
