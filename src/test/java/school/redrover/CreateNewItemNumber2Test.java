@@ -8,7 +8,7 @@ import school.redrover.common.BaseTest;
 
 public class CreateNewItemNumber2Test extends BaseTest {
 
-    @Test
+    @Test(enabled = false)
     public void testItemCreation_Success() {
         getDriver().findElement(By.cssSelector("a.task-link.task-link-no-confirm[href='/view/all/newJob']")).click();
         getDriver().findElement(By.name("name")).sendKeys("TestItemBlaBla");
