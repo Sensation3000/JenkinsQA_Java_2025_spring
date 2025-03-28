@@ -18,7 +18,7 @@ public class BuildJobTest extends BaseTest {
 
     protected WebDriverWait getWait5() {
         if (wait5 == null) {
-            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         }
 
         return wait5;
