@@ -27,7 +27,7 @@ public class GroupCodeCraftTest extends BaseTest {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ol[@class='jenkins-breadcrumbs__list']/li[1]/a"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@id='jenkins-home-link']"))).click();
 
         String title = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='job_NewPipeline']/td[3]/a/span"))).getText();
 
