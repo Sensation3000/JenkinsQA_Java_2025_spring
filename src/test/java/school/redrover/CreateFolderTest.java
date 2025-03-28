@@ -38,7 +38,7 @@ public class CreateFolderTest extends BaseTest {
                 .click();
 
         String nameOfCreatedFolder = wait.until(ExpectedConditions.visibilityOfElementLocated
-                        (By.xpath("//h1[contains(text(), 'New Folder')]")))
+                        (By.xpath("//h1[contains(text(), '" + folderName + "')]")))
                 .getText();
 
         assertEquals(nameOfCreatedFolder, folderName);
