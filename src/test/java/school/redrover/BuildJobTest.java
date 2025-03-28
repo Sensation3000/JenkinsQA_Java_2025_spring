@@ -32,7 +32,9 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).sendKeys(Keys.ENTER);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/']"))).click();
+        Thread.sleep(2000);
+        getDriver().findElement(By.cssSelector("a[href='/']")).click();
+        //getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/']"))).click();
 
         Actions actions = new Actions(getDriver());
         WebElement linkElement = getDriver().findElement(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"));
