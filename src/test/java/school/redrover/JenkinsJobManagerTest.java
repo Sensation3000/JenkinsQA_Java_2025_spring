@@ -1,4 +1,4 @@
-package school;
+package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -8,7 +8,7 @@ import school.redrover.common.BaseTest;
 
 
 
-public class ZeroToQAHeroTest extends BaseTest {
+public class JenkinsJobManagerTest extends BaseTest {
     @Test
     public void testAddDescription() {
 
