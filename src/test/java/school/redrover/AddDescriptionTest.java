@@ -2,11 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.testng.annotations.Test;
+import school.redrover.common.BaseTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Test;
-import school.redrover.common.BaseTest;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class AddDescriptionTest extends BaseTest {
 
@@ -77,3 +80,4 @@ public class AddDescriptionTest extends BaseTest {
         Assert.assertEquals(name.getText(),namePipeline);
         }
     }
+}
