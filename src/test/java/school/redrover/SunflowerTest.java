@@ -1,11 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import static java.sql.DriverManager.getDriver;
 
 public class SunflowerTest extends BaseTest {
 
@@ -24,5 +27,15 @@ public class SunflowerTest extends BaseTest {
         WebElement title = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div[1]/h1"));
 
         Assert.assertEquals(title.getText(), "New Pipeline");
+    }
+
+    @Test
+    public void testManageJenkinsLinkPresence() {
+
+        WebDriver driver = getDriver();
+
+        WebElement manageJenkinsLink = driver.findElement(By.cssSelector("a[href*='manage']"));
+
+        Assert.assertEquals(manageJenkinsLink.getText(), "Manage Jenkins");
     }
 }
