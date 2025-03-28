@@ -1,10 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
@@ -35,31 +31,24 @@ public class BuildJobTest extends BaseTest {
         Thread.sleep(1000);
         getDriver().findElement(By.cssSelector("a[href='/']")).click();
 
-        Actions actions = new Actions(getDriver());
-        WebElement linkElement = getDriver().findElement(By.xpath("//a[@href='job/Test%20item/']//button[@class='jenkins-menu-dropdown-chevron']"));
-        actions.moveToElement(linkElement).pause(500).click(linkElement).perform();
-
-        //WebElement buildNow = getDriver().findElement(By.xpath("//button[contains(@href, 'build')]"));
-       // actions.moveToElement(buildNow).pause(1000).click(buildNow).perform();
-
-        //Thread.sleep(1000);
-        //getDriver().findElement(By.xpath("//button[contains(@href, 'build')]")).click();
-        //getDriver().findElement(By.cssSelector("button[href*='build']")).click();
-        //getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();",
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))));
+        selectMenuFromItemDropdown("Test item", "Build Now");
 
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         Thread.sleep(1000);
         getDriver().navigate().refresh();
         Thread.sleep(1000);
-        //getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.xpath("//*[@id='out']")).getText();
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
+    }
+    private void selectMenuFromItemDropdown(String itemName, String menuName) {
+        moveAndClickWithJS(getDriver(), getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/../button".formatted(itemName))));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted(menuName)))).click();
+    }
+    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 }
