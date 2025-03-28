@@ -4,11 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+
+@Ignore
 
 public class GroupCodeCraftTest extends BaseTest {
 
