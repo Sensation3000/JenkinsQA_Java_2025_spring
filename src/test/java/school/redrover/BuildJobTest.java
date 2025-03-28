@@ -40,8 +40,10 @@ public class BuildJobTest extends BaseTest {
 
         //WebElement buildNow = getDriver().findElement(By.xpath("//button[contains(@href, 'build')]"));
        // actions.moveToElement(buildNow).pause(1000).click(buildNow).perform();
-        Thread.sleep(5000);
-        getDriver().findElement(By.xpath("//button[contains(@href, 'build')]")).click();
+        Thread.sleep(2000);
+        //getDriver().findElement(By.xpath("//button[contains(@href, 'build')]")).click();
+
+        getDriver().findElement(By.cssSelector("button[href*='build']")).click();
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         Thread.sleep(1000);
         getDriver().navigate().refresh();
