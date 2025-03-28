@@ -21,6 +21,5 @@ public class JenkinsTest extends BaseTest{
         Thread.sleep(1500);
 
         Assert.assertEquals(driver.getCurrentUrl(), "http://localhost:8080/job/jobOne/configure");
-        //Assert.assertEquals(driver.findElement(By.xpath("//*[@id='job_jobOne']")).getText(), "jobOne");
     }
 }
