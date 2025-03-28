@@ -46,5 +46,4 @@ public class QA2025Test extends BaseTest {
                 "Version 2.492.2"
         );
     }
-
 }
