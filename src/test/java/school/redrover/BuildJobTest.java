@@ -17,7 +17,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys("Test item");
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).sendKeys(Keys.ENTER);
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).sendKeys(Keys.ENTER);
         Thread.sleep(1000);
         getDriver().findElement(By.xpath("//a[@href='/']")).click();
 
