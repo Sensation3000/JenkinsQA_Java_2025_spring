@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -44,10 +45,11 @@ public class BuildJobTest extends BaseTest {
         //Thread.sleep(1000);
         //getDriver().findElement(By.xpath("//button[contains(@href, 'build')]")).click();
         //getDriver().findElement(By.cssSelector("button[href*='build']")).click();
+        //getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))).click();
-
-
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();",
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@href, 'build')]"))));
 
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         Thread.sleep(1000);
