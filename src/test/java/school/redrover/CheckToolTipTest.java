@@ -17,8 +17,8 @@ public class CheckToolTipTest extends BaseTest {
         WebElement dashboard = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
         actions.moveToElement(dashboard).pause(500).perform();
         WebElement linkElement = getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron' and @data-href='http://localhost:8080/']"));
-        actions.moveToElement(linkElement).pause(2000).perform();
-        linkElement.click();
+        actions.moveToElement(linkElement).pause(2000).click(linkElement).perform();
+        
         Thread.sleep(1000);
         WebElement manageTools= getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/manage']"));
 
