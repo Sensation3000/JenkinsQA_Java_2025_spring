@@ -3,6 +3,7 @@ package school.redrover.common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class JenkinsTest extends BaseTest{
@@ -16,7 +17,8 @@ public class JenkinsTest extends BaseTest{
         itemName.sendKeys("jobOne");
         WebElement selectType = driver.findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]/div[2]"));
         selectType.click();
-        WebElement buttonOk = driver.findElement(By.xpath("//*[@id='ok-button']"));
-        buttonOk.click();
+        driver.findElement(By.xpath("//*[@id='ok-button']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//*[@id='job_jobOne']")).getText(), "jobOne");
     }
 }
