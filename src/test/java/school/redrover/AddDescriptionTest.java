@@ -80,4 +80,3 @@ public class AddDescriptionTest extends BaseTest {
         Assert.assertEquals(name.getText(),namePipeline);
         }
     }
-}
