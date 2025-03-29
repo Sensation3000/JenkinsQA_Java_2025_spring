@@ -33,7 +33,7 @@ public class GroupCodeCraftTest extends BaseTest {
     }
 
     @Test
-    public void testAboutJenkis(){
+    public void testAboutJenkins(){
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a/span[1]")).click();
