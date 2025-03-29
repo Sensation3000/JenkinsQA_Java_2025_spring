@@ -61,10 +61,26 @@ public class QA2025Test extends BaseTest {
     @Test
     public void testSubItemsText() {
         String[] subItems = {"Create a job", "Set up an agent", "Configure a cloud", "Learn more about distributed builds"};
-        for (int i = 0; i < subItems.length; i++) {
+        for (int i = 0; i < subItems.length; i++){
             Assert.assertEquals(
                     getDriver().findElements(By.cssSelector("a.content-block__link")).get(i).getText(),
                     subItems[i]
+            );
+        }
+    }
+
+    @Test
+    public void testTaskItemsSize() {
+        Assert.assertEquals(getDriver().findElements(By.cssSelector("#tasks > .task")).size(), 4);
+    }
+
+    @Test
+    public void testTaskItemsText() {
+        String[] taskItems = {"New Item", "Build History", "Manage Jenkins", "My Views"};
+        for (int i = 0; i < taskItems.length; i++){
+            Assert.assertEquals(
+                    getDriver().findElements(By.cssSelector("#tasks .task-link-text")).get(i).getText(),
+                    taskItems[i]
             );
         }
     }
@@ -79,8 +95,8 @@ public class QA2025Test extends BaseTest {
     public void testNewItemList () {
         getDriver().findElement(By.xpath("//a[@href=\"/view/all/newJob\"]")).click();
 
-        String[] newItem = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
-            for (int i = 0; i < newItem.length; i++) {
+        String[] newItems = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
+            for (int i = 0; i < newItems.length; i++) {
                 Assert.assertEquals(
                         getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItem[i]
                 );
