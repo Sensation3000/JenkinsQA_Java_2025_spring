@@ -31,4 +31,17 @@ public class GroupCodeCraftTest extends BaseTest {
 
         Assert.assertEquals(title, "NewPipeline", "Pipeline title is not correct");
     }
+
+    @Test
+    public void testAboutJenkins(){
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a/span[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[4]/a/dl/dt")).click();
+        String appName = driver.findElement(By.className("app-about-heading")).getText();
+        String appVersion = driver.findElement(By.className("app-about-version")).getText();
+
+        Assert.assertEquals(appName, "Jenkins");
+        Assert.assertEquals(appVersion, "Version 2.492.2");
+    }
 }

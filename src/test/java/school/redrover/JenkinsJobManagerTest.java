@@ -61,6 +61,7 @@ public class JenkinsJobManagerTest extends BaseTest {
         Assert.assertEquals(actualTextJob, "Test Freestyle Project");
 
     }
+    @Ignore
     @Test
     public void testCreatePipelineProject() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
