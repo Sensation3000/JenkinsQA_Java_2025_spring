@@ -98,7 +98,7 @@ public class QA2025Test extends BaseTest {
         String[] newItems = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
             for (int i = 0; i < newItems.length; i++) {
                 Assert.assertEquals(
-                        getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItem[i]
+                        getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
                 );
             }
     }
