@@ -26,7 +26,7 @@ public class MyViews extends BaseTest {
         public void  testAddNewItem() throws InterruptedException {
             WebDriver driver = getDriver();
             driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-            driver.findElement(By.xpath("//*[@id='name']")).sendKeys("PipeLine_1");
+            driver.findElement(By.xpath("//*[@id='name']")).sendKeys("PipeLine1");
             driver.findElement(By.xpath("/html/body/div[3]/div/div/form/div[2]/div[2]/div[1]/ul/li[1]/div[2]/div")).click();
             driver.findElement(By.xpath("//*[@id='ok-button']")).click();
             Thread.sleep(3000);
@@ -37,6 +37,6 @@ public class MyViews extends BaseTest {
             WebElement element = driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/div[2]/div[1]/table/tbody/tr[1]/td[3]/a/span[1]"));
             Thread.sleep(3000);
 
-            assertEquals(element.getText(),"PipeLine_1");
+            assertEquals(element.getText(),"PipeLine1");
         }
     }
