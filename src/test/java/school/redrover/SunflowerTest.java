@@ -24,7 +24,7 @@ public class SunflowerTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
 
-        WebElement title = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div[1]/h1"));
+        WebElement title = getDriver().findElement(By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1"));
 
         Assert.assertEquals(title.getText(), "New Pipeline");
     }
