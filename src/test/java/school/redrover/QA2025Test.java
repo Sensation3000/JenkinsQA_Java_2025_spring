@@ -84,4 +84,22 @@ public class QA2025Test extends BaseTest {
             );
         }
     }
+
+    @Test
+    public void testMyViewsText () {
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span/a[@href=\"/me/my-views\"]")).getText(), "My Views"
+        );
+    }
+
+    @Test
+    public void testNewItemList () {
+        getDriver().findElement(By.xpath("//a[@href=\"/view/all/newJob\"]")).click();
+
+        String[] newItems = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
+            for (int i = 0; i < newItems.length; i++) {
+                Assert.assertEquals(
+                        getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
+                );
+            }
+    }
 }
