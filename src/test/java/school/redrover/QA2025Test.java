@@ -68,4 +68,38 @@ public class QA2025Test extends BaseTest {
             );
         }
     }
+
+    @Test
+    public void testTaskItemsSize() {
+        Assert.assertEquals(getDriver().findElements(By.cssSelector("#tasks > .task")).size(), 4);
+    }
+
+    @Test
+    public void testTaskItemsText() {
+        String[] taskItems = {"New Item", "Build History", "Manage Jenkins", "My Views"};
+        for (int i = 0; i < taskItems.length; i++){
+            Assert.assertEquals(
+                    getDriver().findElements(By.cssSelector("#tasks .task-link-text")).get(i).getText(),
+                    taskItems[i]
+            );
+        }
+    }
+
+    @Test
+    public void testMyViewsText () {
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span/a[@href=\"/me/my-views\"]")).getText(), "My Views"
+        );
+    }
+
+    @Test
+    public void testNewItemList () {
+        getDriver().findElement(By.xpath("//a[@href=\"/view/all/newJob\"]")).click();
+
+        String[] newItems = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
+            for (int i = 0; i < newItems.length; i++) {
+                Assert.assertEquals(
+                        getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
+                );
+            }
+    }
 }
