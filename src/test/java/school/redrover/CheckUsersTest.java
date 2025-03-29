@@ -37,7 +37,6 @@ public class CheckUsersTest extends BaseTest {
                 .moveByOffset(-10, 0)  // Смещение влево (подбирайте значение)
                 .click()
                 .perform();
-        driver.findElement(By.xpath("//h1")).getText();
-        Assert.assertEquals( driver.findElement(By.xpath("//h1")).getText(), "Ирина Соколова");
+        Assert.assertEquals( driver.findElement(By.xpath("//div[contains(text(), 'Jenkins User ID: admin')]")).getText(), "Jenkins User ID: admin");
     }
 }
