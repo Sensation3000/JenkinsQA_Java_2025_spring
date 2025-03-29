@@ -11,7 +11,7 @@ import static org.testng.Assert.assertEquals;
 public class MyViews extends BaseTest {
 
     @Test
-        public void testMyViewvsPage() throws InterruptedException {
+        public void testMyView() throws InterruptedException {
             WebDriver driver = getDriver();
             driver.findElement(By.xpath("//a[@href='/me/my-views']")).click();
             driver.findElement(By.xpath("//a[@href ='editDescription']")).click();
