@@ -11,7 +11,7 @@ public class NewJenkinsTest extends BaseTest {
     @Test
     public void testElement(){
         WebDriver driver = getDriver();
-        WebElement createElement = driver.findElement(By.xpath("//a[@it='hudson.model.Hudson@3820eade']"));
+        WebElement createElement = driver.findElement(By.xpath("/html/body/div[3]/div[1]/div[1]/div[1]/span/a"));
         createElement.click();
 
         WebElement createTask = driver.findElement(By.xpath("/html/body/div[3]/div/div/form/div[2]/div[2]/div[1]/ul/li[1]"));
