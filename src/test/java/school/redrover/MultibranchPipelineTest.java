@@ -46,6 +46,7 @@ public class MultibranchPipelineTest extends BaseTest {
         js1.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
         getDriver().findElement(By.name("Submit")).click();
+        Thread.sleep(2000);
         getDriver().findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
 
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
