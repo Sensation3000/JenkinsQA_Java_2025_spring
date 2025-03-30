@@ -37,4 +37,11 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Error!");
     }
-}
+    @Test
+    public void testJenkinsVersionFooter() {
+        WebElement jenkinsVersion = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+
+        Assert.assertEquals(jenkinsVersion.getText(), "Jenkins 2.492.2");
+        }
+
+    }

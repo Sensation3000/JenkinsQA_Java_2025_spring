@@ -63,4 +63,13 @@ public class NewItemTest extends BaseTest {
                 .getText();
         Assert.assertEquals(nameOfCreatedItem, "New Item2");
     }
+
+    @Test
+    public void verifyErrorMessageForEmptyItemName() {
+        WebDriver driver = getDriver();
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        WebElement itemNameError = driver.findElement(By.id("itemname-required"));
+        Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
+    }
 }
