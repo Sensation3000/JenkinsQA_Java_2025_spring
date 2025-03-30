@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -43,5 +44,15 @@ public class GroupCodeCraftTest extends BaseTest {
 
         Assert.assertEquals(appName, "Jenkins");
         Assert.assertEquals(appVersion, "Version 2.492.2");
+    }
+
+    @Test
+    public void testNameBuildHistory() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.cssSelector("a.task-link[href='/view/all/builds']")).click();
+        String buildText = driver.findElement(By.cssSelector("h1")).getText();
+
+        Assert.assertEquals(buildText, "Build History of Jenkins");
     }
 }
