@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class CreateNewFolderTest extends BaseTest {
 
@@ -16,6 +20,9 @@ public class CreateNewFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys("Folder1");
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Folder1");
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        String actualText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText();
+
+        Assert.assertEquals(actualText, "Folder1");
     }
 }
