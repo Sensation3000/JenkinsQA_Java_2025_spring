@@ -9,7 +9,7 @@ import school.redrover.common.BaseTest;
 public class ProfileDescriptionTest extends BaseTest {
 
     @Test
-    public void testAddDescription() throws InterruptedException {
+    public void testAddDescription() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@id='description-link']")).click();
