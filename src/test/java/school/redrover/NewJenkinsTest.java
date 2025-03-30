@@ -14,7 +14,7 @@ public class NewJenkinsTest extends BaseTest {
         WebElement createElement = driver.findElement(By.xpath("//a[@class='task-link task-link-no-confirm ']"));
         createElement.click();
 
-        WebElement createTask = driver.findElement(By.xpath("/html/body/div[3]/div/div/form/div[2]/div[2]/div[1]/ul/li[1]"));
+        WebElement createTask = driver.findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
         createTask.click();
 
         WebElement element= driver.findElement(By.xpath("//input[@class='jenkins-input']"));
@@ -23,7 +23,7 @@ public class NewJenkinsTest extends BaseTest {
         WebElement confirm = driver.findElement(By.xpath("//button[@id='ok-button']"));
         confirm.click();
 
-        WebElement tune = driver.findElement(By.xpath("/html/body/div[3]/div[1]/div[1]/div[1]/h1"));
-        Assert.assertEquals(tune.getText(), "Configure");
+        WebElement tune = driver.findElement(By.xpath("//button[@class='task-link task-link--active']"));
+        Assert.assertEquals(tune.getText(), "General");
     }
 }
