@@ -14,7 +14,7 @@ public class NewJenkinsTest extends BaseTest {
         WebElement createElement = driver.findElement(By.xpath("//a[@it='hudson.model.Hudson@3820eade']"));
         createElement.click();
 
-        WebElement createTask = driver.findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
+        WebElement createTask = driver.findElement(By.xpath("/html/body/div[3]/div/div/form/div[2]/div[2]/div[1]/ul/li[1]"));
         createTask.click();
 
         WebElement element= driver.findElement(By.xpath("//input[@class='jenkins-input']"));
