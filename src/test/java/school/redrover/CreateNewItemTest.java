@@ -10,7 +10,6 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testCreateNewItem() throws InterruptedException {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test item");
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
