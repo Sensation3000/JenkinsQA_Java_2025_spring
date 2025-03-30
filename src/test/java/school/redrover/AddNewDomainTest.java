@@ -29,26 +29,8 @@ public class AddNewDomainTest extends BaseTest {
         driver.findElement(By.xpath("//a[contains(.,'Manage Jenkins')]")).click();
         driver.findElement(By.xpath("//a[@href='credentials']")).click();
         driver.findElement(By.cssSelector("a[href='/manage/credentials/store/system']")).click();
-        //   WebElement addDomain = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage/credentials/store/system/newDomain']")));
-        //   addDomain.click();
-        //    driver.findElement(By.xpath("//a[@href='newDomain']")).click();
-        //    System.out.println(driver.getCurrentUrl());
-        //    System.out.println("Current URL: " + driver.getCurrentUrl());
-
-//        List<WebElement> elements = driver.findElements(By.tagName("a"));
-//        for (WebElement element : elements) {
-//            System.out.println("Found link: " + element.getText() + " -> " + element.getAttribute("href"));
-//        }
-
         driver.navigate().to("http://localhost:8080/manage/credentials/store/system");
-//
-//        JavascriptExecutor js = (JavascriptExecutor) driver;
-//        WebElement addDomain = driver.findElement(By.xpath("//a[@href='/manage/credentials/store/system/newDomain']"));
-//        js.executeScript("arguments[0].click();", addDomain);
         driver.findElement(By.xpath("//a[@href='newDomain']")).click();
-
-        //    driver.findElement(By.xpath("//a[@href='/manage/credentials/store/system/newDomain']")).click();
-        //   System.out.println(driver.getCurrentUrl());
         driver.findElement(By.xpath("//input[@name='_.name']")).sendKeys("Test Domain");
         driver.findElement(By.xpath("//textarea[@name='description']")).sendKeys("Test domain description");
         driver.findElement(By.xpath("//button[@type='submit' and @name='Submit']")).click();
