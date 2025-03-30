@@ -8,10 +8,10 @@ import school.redrover.common.BaseTest;
 
 import static org.testng.Assert.assertEquals;
 
-public class MyViews extends BaseTest {
+public class MyViewsTest extends BaseTest{
 
     @Test
-        public void testMyView() throws InterruptedException {
+        public void testMyView(){
             WebDriver driver = getDriver();
             driver.findElement(By.xpath("//a[@href='/me/my-views']")).click();
             driver.findElement(By.xpath("//a[@href ='editDescription']")).click();
@@ -27,16 +27,22 @@ public class MyViews extends BaseTest {
             WebDriver driver = getDriver();
             driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
             driver.findElement(By.xpath("//*[@id='name']")).sendKeys("PipeLine1");
-            driver.findElement(By.xpath("/html/body/div[3]/div/div/form/div[2]/div[2]/div[1]/ul/li[1]/div[2]/div")).click();
+            driver.findElement(By.xpath("//*[@class='desc']")).click();
             driver.findElement(By.xpath("//*[@id='ok-button']")).click();
             Thread.sleep(3000);
 
             driver.findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
             Thread.sleep(3000);
 
-            WebElement element = driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/div[2]/div[1]/table/tbody/tr[1]/td[3]/a/span[1]"));
+            WebElement element = driver.findElement(By.xpath("//*[text()='PipeLine1']"));
             Thread.sleep(3000);
 
             assertEquals(element.getText(),"PipeLine1");
+        }
+        @Test
+        public void testWelcomePage(){
+                WebDriver driver = getDriver();
+                WebElement welcome = driver.findElement(By.xpath("//*[text()='Welcome to Jenkins!']"));
+                assertEquals(welcome.getText(),"Welcome to Jenkins!");
         }
     }
