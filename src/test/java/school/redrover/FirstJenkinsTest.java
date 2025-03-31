@@ -44,7 +44,6 @@ public class FirstJenkinsTest extends BaseTest {
                 By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")));
         actions.moveToElement(dropdownItem).click().perform();
 
-
         WebElement newJobLink = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("(//a[@href='/view/all/newJob'])[2]")));
         newJobLink.click();
