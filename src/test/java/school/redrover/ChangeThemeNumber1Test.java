@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,9 +23,9 @@ public class ChangeThemeNumber1Test extends BaseTest {
         new Actions(getDriver()).moveToElement(dashboardLink).perform();
         List<WebElement> dropdowns = wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(
                 By.cssSelector("button.jenkins-menu-dropdown-chevron"), 1));
-
-        WebElement dropdownButton = wait.until(ExpectedConditions.elementToBeClickable(dropdowns.get(1)));
-        dropdownButton.click();
+        WebElement dropdownButton = dropdowns.get(1);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", dropdownButton);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", dropdownButton);
         WebElement manageJenkins = wait.until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("a.jenkins-dropdown__item[href='/manage']")
         ));
@@ -46,7 +47,6 @@ public class ChangeThemeNumber1Test extends BaseTest {
         }
         int nextIndex = (selectedIndex + 1) % themes.size();
         String nextId = themes.get(nextIndex).getAttribute("id");
-
         WebElement label = getDriver().findElement(By.cssSelector("label[for='" + nextId + "']"));
         label.click();
         WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(
