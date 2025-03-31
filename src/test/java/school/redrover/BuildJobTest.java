@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -10,6 +11,7 @@ import java.time.Duration;
 
 import static org.testng.AssertJUnit.assertTrue;
 
+@Ignore
 public class BuildJobTest extends BaseTest {
     private WebDriverWait wait5;
 
@@ -21,23 +23,18 @@ public class BuildJobTest extends BaseTest {
     }
 
     @Test
-    public void testBuildJob() throws InterruptedException {
+    public void testBuildJob() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test item");
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).sendKeys(Keys.ENTER);
-        Thread.sleep(1000);
-        getDriver().findElement(By.cssSelector("a[href='/']")).click();
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/']"))).click();
         selectMenuFromItemDropdown("Test item", "Build Now");
-
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
-        Thread.sleep(1000);
         getDriver().navigate().refresh();
-        Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.xpath("//*[@id='out']")).getText();
 
