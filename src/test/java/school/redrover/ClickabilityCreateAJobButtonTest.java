@@ -13,7 +13,7 @@ public class ClickabilityCreateAJobButtonTest extends BaseTest {
         WebDriver driver = getDriver();
         driver.findElement(By.xpath("//*[text()='Create a job']")).click();
 
-        String resultCreateAJobButton = driver.findElement(By.xpath("//*[@id=\"add-item-panel\"]/h1")).getText();
+        String resultCreateAJobButton = driver.findElement(By.xpath("//*[@id='add-item-panel']/h1")).getText();
         Assert.assertEquals(resultCreateAJobButton, "New Item");
     }
 }
