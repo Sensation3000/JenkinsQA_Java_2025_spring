@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.util.List;
 
 
 public class QA2025Test extends BaseTest {
@@ -101,5 +105,22 @@ public class QA2025Test extends BaseTest {
                         getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
                 );
             }
+    }
+
+    @Test
+    public void testSubmitWhenFieldIsEmpty() {
+        Actions actions = new Actions(getDriver());
+        String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        List<WebElement> newItemTypes = getDriver().findElements(By.cssSelector("input[type=radio]"));
+
+        for (int i = 0; i < newItemTypes.size(); i++) {
+            actions.scrollByAmount(0, 300).perform();
+            getDriver().findElements(By.xpath("//li[@role='radio']")).get(i).click();
+
+            Assert.assertEquals(getDriver().findElement(By.cssSelector(".input-validation-message")).getText(), expectedErrorMessage);
+            Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+        }
     }
 }
