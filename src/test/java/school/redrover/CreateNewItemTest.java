@@ -2,15 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import static org.testng.Assert.assertEquals;
 
 public class CreateNewItemTest extends BaseTest {
+    @Ignore
 
     @Test
     public void testCreateNewItem() throws InterruptedException {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test item");
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();

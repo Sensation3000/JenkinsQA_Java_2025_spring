@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,4 +33,67 @@ public class GroupCodeCraftTest extends BaseTest {
 
         Assert.assertEquals(title, "NewPipeline", "Pipeline title is not correct");
     }
+
+    @Test
+    public void testAboutJenkins(){
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a/span[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[4]/a/dl/dt")).click();
+        String appName = driver.findElement(By.className("app-about-heading")).getText();
+        String appVersion = driver.findElement(By.className("app-about-version")).getText();
+
+        Assert.assertEquals(appName, "Jenkins");
+        Assert.assertEquals(appVersion, "Version 2.492.2");
+    }
+
+    @Test
+    public void testNameBuildHistory() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.cssSelector("a.task-link[href='/view/all/builds']")).click();
+        String buildText = driver.findElement(By.cssSelector("h1")).getText();
+
+        Assert.assertEquals(buildText, "Build History of Jenkins");
+    }
+
+    @Test
+    public void testShowProperties() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[3]/div/button[1]")).click();
+
+        WebElement vendor = driver.findElement(By.xpath("//*[.='java.specification.vendor']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", vendor);
+        String javaVendor = driver.findElement(By.xpath("//*[.='java.specification.vendor']/following-sibling::td/div[2]")).getText();
+
+        Assert.assertEquals(javaVendor, "Oracle Corporation");
+    }
+
+    @Test
+    public void newItemOrgFolderTest() throws InterruptedException {
+        String nameOrgFolder = "Folder archive 01";
+
+        getDriver().findElement(By.xpath("//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameOrgFolder);
+
+        WebElement newItemOrgFolder =
+                getDriver().findElement(By.xpath("//li[.//label/span[text()='Organization Folder']]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", newItemOrgFolder);
+        newItemOrgFolder.click();
+        getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+
+        getDriver().findElement(By.xpath("//label[@for='enable-disable-project']")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                        "//*[@id=\"main-panel\"]/h1")).getText(),nameOrgFolder);
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                        "//*[@id='disabled-message']")).getText(),
+                "This Organization Folder is currently disabled");
+    }
+
 }
