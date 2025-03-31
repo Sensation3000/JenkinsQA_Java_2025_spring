@@ -28,7 +28,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).sendKeys(Keys.ENTER);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='/']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/']"))).click();
         selectMenuFromItemDropdown("Test item", "Build Now");
         getDriver().findElement(By.xpath("//tr[@id = 'job_Test item']//a[@href='job/Test%20item/']")).click();
         getDriver().navigate().refresh();
