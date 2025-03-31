@@ -17,22 +17,22 @@ public class CreateNewItemsTest extends BaseTest {
         getDriver().findElement(By.linkText("New Item")).click();
     }
     public void selectFreestyleProject() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[text()='Freestyle project']")).click();
     }
     public void selectPipeline() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[2]")).click();
+        getDriver().findElement(By.xpath("//*[text()='Pipeline']")).click();
     }
     public void selectMultiConfigurationProject() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[3]")).click();
+        getDriver().findElement(By.xpath("//*[text()='Multi-configuration project']")).click();
     }
     public void selectFolder() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]/label/span")).click();
+        getDriver().findElement(By.xpath("//*[text()='Folder']")).click();
     }
     public void selectMultiBranchPipeline() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[2]/label/span")).click();
+        getDriver().findElement(By.xpath("//*[text()='Multibranch Pipeline']")).click();
     }
     public void selectOrganizationFolder() {
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[3]/label/span")).click();
+        getDriver().findElement(By.xpath("//*[text()='Organization Folder']")).click();
     }
     public void clickOkButton() {
         getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
