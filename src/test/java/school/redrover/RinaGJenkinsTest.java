@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class RinaGTestJen extends BaseTest {
+public class RinaGJenkinsTest extends BaseTest {
 
     @Test
     public void testWelcome() {
