@@ -2,18 +2,19 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class CreationItemsTest extends BaseTest {
     @Test
-    public void createFolderTest () throws InterruptedException {
-        WebDriver driver = getDriver();
+    public void createFolderTest () throws InterruptedException {WebDriver driver = getDriver();
         String folderName = "NewFolder";
         driver.findElement(By.linkText("Create a job")).click();
         driver.findElement(By.cssSelector("[name='name']")).sendKeys(folderName);
-        driver.findElement(By.xpath("//span[text()='Folder']")).click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(driver.findElement(By.xpath("//span[text()='Folder']"))).click().perform();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
         Thread.sleep(1000);
