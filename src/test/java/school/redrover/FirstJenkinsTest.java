@@ -1,17 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class FirstJenkinsTest extends BaseTest {
 
@@ -32,36 +27,37 @@ public class FirstJenkinsTest extends BaseTest {
         Assert.assertEquals(previewText, "It's my first test in Jenkins");
         Assert.assertEquals(resultText, "It's my first test in Jenkins");
     }
-    @Ignore
+
     @Test
-    public void testCreateNewItemPipelineProject() {
+    public void testCreateNewItemPipelineProject() throws InterruptedException {
         WebDriver driver = getDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        Actions actions = new Actions(driver);
 
-        actions.moveToElement(driver.findElement(By.xpath("//a[@href='/' and @class='model-link']"))).perform();
+        WebElement dashboardLink = driver.findElement(By.xpath("//a[@href='/' and @class='model-link']"));
+        moveAndClickWithJS(driver, dashboardLink);
 
-        WebElement dropdownItem = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")));
-        actions.moveToElement(dropdownItem).click().perform();
+        WebElement dropdownItem = driver.findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
+        moveAndClickWithJS(driver, dropdownItem);
 
-        WebElement newJobLink = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//a[@href='/view/all/newJob'])[2]")));
-        newJobLink.click();
+        driver.findElement(By.xpath("(//a[@href='/view/all/newJob'])[2]")).click();
 
         driver.findElement(By.name("name")).sendKeys("Test");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
-
         driver.findElement(By.name("description")).sendKeys("Test");
-        driver.findElement(By.xpath("//button[@formnovalidate='formNoValidate']"))
-                .click();
+        driver.findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
-        WebElement homeLinkAgain = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@href='/' and @class='model-link']")));
-        homeLinkAgain.click();
+        Thread.sleep(500);
+
+        driver.findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[text()='Test']")).getText(), "Test");
     }
 
+    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
+    }
 }
+
