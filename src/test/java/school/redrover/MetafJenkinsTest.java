@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetafJenkinsTests extends BaseTest {
+public class MetafJenkinsTest extends BaseTest {
 
     private static final String newItemTitle = "Test Pipeline";
 
