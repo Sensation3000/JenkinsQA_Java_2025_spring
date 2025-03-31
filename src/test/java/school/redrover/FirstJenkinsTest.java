@@ -12,10 +12,13 @@ public class FirstJenkinsTest extends BaseTest {
 
     @Test
     public void testDescriptionField() throws InterruptedException {
+        String DESCRIPTION_NAME = "It's my first test in Jenkins";
+
         getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.cssSelector(".jenkins-input   ")).sendKeys("It's my first test in Jenkins");
+        getDriver().findElement(By.cssSelector(".jenkins-input   ")).sendKeys(DESCRIPTION_NAME);
 
         getDriver().findElement(By.xpath("//a[@previewendpoint='/markupFormatter/previewDescription']")).click();
+        Thread.sleep(200);
         String previewText = getDriver().findElement(By.cssSelector(".textarea-preview")).getText();
 
         getDriver().findElement(By.cssSelector(".textarea-hide-preview")).click();
@@ -24,8 +27,8 @@ public class FirstJenkinsTest extends BaseTest {
 
         String resultText = getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']/div[1]")).getText();
 
-        Assert.assertEquals(previewText, "It's my first test in Jenkins");
-        Assert.assertEquals(resultText, "It's my first test in Jenkins");
+        Assert.assertEquals(previewText, DESCRIPTION_NAME);
+        Assert.assertEquals(resultText, DESCRIPTION_NAME);
     }
 
     @Test
