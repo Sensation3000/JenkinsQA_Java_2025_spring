@@ -17,7 +17,7 @@ public class RinaGJenkinsTest extends BaseTest {
         Assert.assertEquals(titleElement.getText(), "Добро пожаловать в Jenkins!");
     }
     @Test
-    public void testAssertViewsUser() {
+    public void testAssertViews() {
         WebDriver driver = getDriver();
 
         WebElement titleElement = driver.findElement(By.cssSelector(".empty-state-block h1"));
