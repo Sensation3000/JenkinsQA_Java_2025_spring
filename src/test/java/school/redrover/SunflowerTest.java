@@ -38,4 +38,15 @@ public class SunflowerTest extends BaseTest {
 
         Assert.assertEquals(manageJenkinsLink.getText(), "Manage Jenkins");
     }
+
+    @Test
+    public void testCheckJenkinsUrl(){
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        getDriver().findElement(By.cssSelector("#main-panel > section:nth-child(5) > div > div:nth-child(1) > a")).click();
+
+        WebElement jenkinsLocation = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[2]/div[2]/input"));
+        String actualValue = jenkinsLocation.getAttribute("value");
+
+        Assert.assertEquals(actualValue, "http://localhost:8080/");
+    }
 }
