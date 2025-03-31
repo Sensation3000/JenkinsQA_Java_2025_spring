@@ -71,4 +71,29 @@ public class GroupCodeCraftTest extends BaseTest {
 
         Assert.assertEquals(javaVendor, "Oracle Corporation");
     }
+
+    @Test
+    public void newItemOrgFolderTest() throws InterruptedException {
+        String nameOrgFolder = "Folder archive 01";
+
+        getDriver().findElement(By.xpath("//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameOrgFolder);
+
+        WebElement newItemOrgFolder =
+                getDriver().findElement(By.xpath("//li[.//label/span[text()='Organization Folder']]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", newItemOrgFolder);
+        newItemOrgFolder.click();
+        getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+
+        getDriver().findElement(By.xpath("//label[@for='enable-disable-project']")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                        "//*[@id=\"main-panel\"]/h1")).getText(),nameOrgFolder);
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                        "//*[@id='disabled-message']")).getText(),
+                "This Organization Folder is currently disabled");
+    }
+
 }
