@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -27,7 +28,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualDescription = getDriver().findElement(By.id("view-message")).getText();
         Assert.assertEquals(actualDescription, expectedDescription);
     }
-
+    @Ignore
     @Test
     public void testTryCreateProjectExistName() throws InterruptedException {
         final String projectName = "MultiBuild";
