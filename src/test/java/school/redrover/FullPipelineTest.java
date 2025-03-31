@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -27,9 +28,8 @@ public class FullPipelineTest extends BaseTest {
 
         WebElement pipelineTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
         Assert.assertEquals(pipelineTitle.getText(), "Test Pipeline");
-
     }
-    @Ignore
+
     @Test
     public void testCreatedPipelineIsDisplayedOnTheDashboard() {
         WebDriver driver = getDriver();
@@ -42,12 +42,12 @@ public class FullPipelineTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/' and @class='model-link']")));
-        driver.findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
+        ((JavascriptExecutor)driver).executeScript("window.location.href='/';");
 
         WebElement pipelineTitle = driver.findElement(By.xpath("//a[contains(@class, 'jenkins-table__link')]//span"));
         Assert.assertEquals(pipelineTitle.getText(), "Test Pipeline");
     }
+
     @Test
     public void testDeletePipeline() {
         WebDriver driver = getDriver();
