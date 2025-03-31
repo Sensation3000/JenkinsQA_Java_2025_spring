@@ -4,10 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class FirstJenkinsTest extends BaseTest {
 
@@ -28,19 +31,23 @@ public class FirstJenkinsTest extends BaseTest {
         Assert.assertEquals(previewText, "It's my first test in Jenkins");
         Assert.assertEquals(resultText, "It's my first test in Jenkins");
     }
-    @Ignore
+
     @Test
     public void testCreateNewItemPipelineProject() {
         WebDriver driver = getDriver();
-
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Actions actions = new Actions(driver);
+
         actions.moveToElement(driver.findElement(By.xpath("//a[@href='/' and @class='model-link']"))).perform();
 
-        WebElement dropdownItem = driver.findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
+        WebElement dropdownItem = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")));
         actions.moveToElement(dropdownItem).click().perform();
 
-        driver.findElement(By.xpath("(//a[@href='/view/all/newJob'])[2]"))
-                .click();
+
+        WebElement newJobLink = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//a[@href='/view/all/newJob'])[2]")));
+        newJobLink.click();
 
         driver.findElement(By.name("name")).sendKeys("Test");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
@@ -50,9 +57,11 @@ public class FirstJenkinsTest extends BaseTest {
         driver.findElement(By.xpath("//button[@formnovalidate='formNoValidate']"))
                 .click();
 
-        driver.findElement(By.xpath("//a[@href='/' and @class='model-link']"))
-                .click();
+        WebElement homeLinkAgain = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='/' and @class='model-link']")));
+        homeLinkAgain.click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[text()='Test']")).getText(), "Test");
     }
+
 }
