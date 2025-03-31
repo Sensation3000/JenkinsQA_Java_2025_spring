@@ -52,6 +52,25 @@ public class QA2025Test extends BaseTest {
     }
 
     @Test
+    public void testNewMultibranchPipelineOnDashboard() throws InterruptedException {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test multibranch pipeline");
+        getDriver().findElement(By.xpath("//li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("Super cool pipeline name");
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys("Super cool pipeline description.");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Thread.sleep(1000);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_Test multibranch pipeline']/td[3]/a/span")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("h1")).getText(),
+                "Super cool pipeline name"
+        );
+    }
+
+    @Test
     public  void testSubHeadingsText(){
         String[] subheadings = {"Start building your software project", "Set up a distributed build"};
         for (int i = 0; i < subheadings.length; i++){
