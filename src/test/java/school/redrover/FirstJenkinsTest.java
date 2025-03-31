@@ -60,4 +60,3 @@ public class FirstJenkinsTest extends BaseTest {
                 .executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 }
-
