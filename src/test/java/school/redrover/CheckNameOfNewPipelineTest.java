@@ -12,7 +12,7 @@ import java.time.Duration;
 
 public class CheckNameOfNewPipelineTest extends BaseTest {
     @Test
-    public void testCheckNameOfNewPipeline() throws InterruptedException {
+    public void testCheckNameOfNewPipeline() {
         WebDriver driver = getDriver();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']")))
