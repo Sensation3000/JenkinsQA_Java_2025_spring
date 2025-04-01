@@ -174,13 +174,14 @@ public final class JenkinsUtils {
                         getCrumbFromPage(mainPage)));
     }
 
-    private static void deleteCredentials() {
-        String mainPage = getPage("");
-        postHttp(ProjectUtils.getUrl() + "manage/credentials/store/system/domain/_/doDelete",
-                String.format("Jenkins-Crumb=%s", getCrumbFromPage(mainPage)));
+    private static void deleteDomains() {
+        String systemPage = getPage("manage/credentials/store/system/");
+        deleteByLink("manage/credentials/store/system/domain/%s/doDelete",
+                getSubstringsFromPage(systemPage, "<a href=\"domain/", "\" class"),
+                getCrumbFromPage(systemPage));
 
-        postHttp(ProjectUtils.getUrl() + "user/admin/credentials/store/user/domain/_/doDelete",
-                String.format("Jenkins-Crumb=%s", getCrumbFromPage(mainPage)));
+//        postHttp(ProjectUtils.getUrl() + "user/admin/credentials/store/user/domain/_/doDelete",
+//                String.format("Jenkins-Crumb=%s", getCrumbFromPage(systemPage)));
     }
 
     static void clearData() {
@@ -189,7 +190,7 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteUsers();
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteDescription();
-        JenkinsUtils.deleteCredentials();
+        JenkinsUtils.deleteDomains();
     }
 
     static void login(WebDriver driver) {
