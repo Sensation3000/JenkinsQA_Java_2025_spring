@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class MultiConfigurationProjectTest extends BaseTest {
+
     @Test
     public void testCreateProjectWithoutName() {
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
