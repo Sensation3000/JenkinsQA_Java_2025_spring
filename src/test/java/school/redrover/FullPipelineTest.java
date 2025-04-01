@@ -13,7 +13,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 
-@Ignore
+
 public class FullPipelineTest extends BaseTest {
     @Test
     public void testCreateNewPipeline() {
@@ -27,7 +27,7 @@ public class FullPipelineTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
-        WebElement pipelineTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
+        WebElement pipelineTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(@class, 'job-index-headline')]")));
         Assert.assertEquals(pipelineTitle.getText(), "Test Pipeline");
     }
 
