@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class OrganisationFolderTest extends BaseTest {
+
     @Test
     public void testCreateOrganizationFolderWithDefaultIcon() {
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
@@ -18,6 +19,9 @@ public class OrganisationFolderTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
+        JavascriptExecutor js2 = (JavascriptExecutor) getDriver();
+        js2.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
         new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
                 .selectByVisibleText("Default Icon");
