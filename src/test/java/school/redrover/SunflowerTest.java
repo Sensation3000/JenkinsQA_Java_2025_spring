@@ -49,4 +49,21 @@ public class SunflowerTest extends BaseTest {
 
         Assert.assertEquals(actualValue, "http://localhost:8080/");
     }
+
+    @Test
+    public void testCreateDescription(){
+        getDriver().findElement(By.xpath("//*[@href='editDescription' and @class='jenkins-button']")).click();
+
+        WebElement inputField = getDriver().findElement(By.xpath(
+                "//*[@id='description']/form/div[1]/div[1]/textarea"));
+        inputField.sendKeys("Create description for testing");
+
+        getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button")).click();
+
+        WebElement descriptionElement = getDriver().findElement(By.xpath("//*[@id='description']/div[1]"));
+
+        String actualText = descriptionElement.getText();
+
+        Assert.assertEquals(actualText, "Create description for testing");
+    }
 }
