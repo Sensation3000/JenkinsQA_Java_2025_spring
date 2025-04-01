@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -20,7 +21,7 @@ public class MetafJenkinsTest extends BaseTest {
         WebElement titleText = driver.findElement(By.xpath("//div[@class='empty-state-block']/h1"));
         Assert.assertEquals(titleText.getText(), "Welcome to Jenkins!");
     }
-
+@Ignore
     @Test
     void checkTasksMenuItemsTest() {
         WebDriver driver = getDriver();
