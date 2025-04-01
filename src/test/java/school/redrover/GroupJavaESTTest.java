@@ -3,16 +3,11 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.sql.Time;
-import java.time.Duration;
-
-public class GroupJavaEST extends BaseTest {
+public class GroupJavaESTTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
@@ -29,6 +24,14 @@ public class GroupJavaEST extends BaseTest {
 
         WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
         Assert.assertEquals(pipelineName.getText(), "First Pipeline");
+    }
+
+    @Test
+    public void testGreetingsIsPresented() {
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".empty-state-block h1")).getText(),
+                "Welcome to Jenkins!"
+        );
     }
 
     @Test
@@ -61,5 +64,24 @@ public class GroupJavaEST extends BaseTest {
       Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@href, 'about')]")).getText(),
               "About Jenkins"
         );
+    }
+
+    @Test
+    public void testSubHeaders() {
+        String[] subheaders = {"Start building your software project", "Set up a distributed build"};
+        for (int i = 0; i < subheaders.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//h2[@class='h4']")).get(i).getText(),
+                    subheaders[i]
+            );
+        }
+    }
+
+    @Test
+    public void testListOfLinks() {
+        String[] listLinks = {"Create a job", "Set up an agent", "Configure a cloud", "Learn more about distributed builds"};
+        for (int i = 0; i < listLinks.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//a[@class='content-block__link']")).get(i).getText(),
+                    listLinks[i]);
+        }
     }
 }
