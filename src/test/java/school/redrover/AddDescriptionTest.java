@@ -37,6 +37,24 @@ public class AddDescriptionTest extends BaseTest {
     }
 
     @Test
+    public void testAddDescription() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("FirstJob");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Thread.sleep(1000);
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("New description");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        assertEquals(getDriver().findElement(By.xpath(
+                        "//div[@id='description']/div")).getText(),
+                "New description"
+        );
+    }
+
+    @Test
     public void testEditDescriptionButton() {
 
         WebDriver driver = getDriver();
@@ -54,7 +72,7 @@ public class AddDescriptionTest extends BaseTest {
         buttonElementSave.click();
 
         Assert.assertEquals(driver.findElement(By.cssSelector("#description > div:nth-child(1)")).getText(), oldText + newtext);
-        }
+    }
 
     @Test
     public void testNewPipelIneCreation() {
@@ -78,5 +96,5 @@ public class AddDescriptionTest extends BaseTest {
 
         WebElement name = driver.findElement(By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1"));
         Assert.assertEquals(name.getText(),namePipeline);
-        }
     }
+}
