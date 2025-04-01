@@ -84,4 +84,10 @@ public class GroupJavaESTTest extends BaseTest {
                     listLinks[i]);
         }
     }
+
+    @Test
+    public void testCreateAjob(){
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href ='newJob']")).getText(),
+                "Create a job");
+    }
 }
