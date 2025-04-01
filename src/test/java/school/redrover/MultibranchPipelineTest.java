@@ -28,9 +28,10 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualDescription = getDriver().findElement(By.id("view-message")).getText();
         Assert.assertEquals(actualDescription, expectedDescription);
     }
-    @Ignore
+
     @Test
     public void testTryCreateProjectExistName() throws InterruptedException {
+
         final String projectName = "MultiBuild";
         final String errorMessage = "» A job already exists with the name " + "‘" + projectName + "’";
 
