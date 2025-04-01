@@ -24,7 +24,7 @@ public class SunflowerTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
 
-        WebElement title = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div[1]/h1"));
+        WebElement title = getDriver().findElement(By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1"));
 
         Assert.assertEquals(title.getText(), "New Pipeline");
     }
@@ -37,5 +37,16 @@ public class SunflowerTest extends BaseTest {
         WebElement manageJenkinsLink = driver.findElement(By.cssSelector("a[href*='manage']"));
 
         Assert.assertEquals(manageJenkinsLink.getText(), "Manage Jenkins");
+    }
+
+    @Test
+    public void testCheckJenkinsUrl(){
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        getDriver().findElement(By.cssSelector("#main-panel > section:nth-child(5) > div > div:nth-child(1) > a")).click();
+
+        WebElement jenkinsLocation = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[2]/div[2]/input"));
+        String actualValue = jenkinsLocation.getAttribute("value");
+
+        Assert.assertEquals(actualValue, "http://localhost:8080/");
     }
 }

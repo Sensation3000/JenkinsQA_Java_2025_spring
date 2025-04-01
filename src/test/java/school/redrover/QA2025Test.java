@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.util.List;
 
 
 public class QA2025Test extends BaseTest {
@@ -48,6 +52,25 @@ public class QA2025Test extends BaseTest {
     }
 
     @Test
+    public void testNewMultibranchPipelineOnDashboard() throws InterruptedException {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test multibranch pipeline");
+        getDriver().findElement(By.xpath("//li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("Super cool pipeline name");
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys("Super cool pipeline description.");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Thread.sleep(1000);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_Test multibranch pipeline']/td[3]/a/span")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("h1")).getText(),
+                "Super cool pipeline name"
+        );
+    }
+
+    @Test
     public  void testSubHeadingsText(){
         String[] subheadings = {"Start building your software project", "Set up a distributed build"};
         for (int i = 0; i < subheadings.length; i++){
@@ -82,6 +105,41 @@ public class QA2025Test extends BaseTest {
                     getDriver().findElements(By.cssSelector("#tasks .task-link-text")).get(i).getText(),
                     taskItems[i]
             );
+        }
+    }
+
+    @Test
+    public void testMyViewsText () {
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span/a[@href=\"/me/my-views\"]")).getText(), "My Views"
+        );
+    }
+
+    @Test
+    public void testNewItemList () {
+        getDriver().findElement(By.xpath("//a[@href=\"/view/all/newJob\"]")).click();
+
+        String[] newItems = {"Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder"};
+            for (int i = 0; i < newItems.length; i++) {
+                Assert.assertEquals(
+                        getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
+                );
+            }
+    }
+
+    @Test
+    public void testSubmitWhenFieldIsEmpty() {
+        Actions actions = new Actions(getDriver());
+        String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        List<WebElement> newItemTypes = getDriver().findElements(By.cssSelector("input[type=radio]"));
+
+        for (int i = 0; i < newItemTypes.size(); i++) {
+            actions.scrollByAmount(0, 300).perform();
+            getDriver().findElements(By.xpath("//li[@role='radio']")).get(i).click();
+
+            Assert.assertEquals(getDriver().findElement(By.cssSelector(".input-validation-message")).getText(), expectedErrorMessage);
+            Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
         }
     }
 }

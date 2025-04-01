@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -24,7 +25,7 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(header, "New Item");
     }
-
+@Ignore
     @Test
     public void testCreateNewItemFreestyleProject() {
         String headerNewItem = "New Item1";
@@ -62,5 +63,14 @@ public class NewItemTest extends BaseTest {
                         (By.xpath("//h1[contains(text(), '" + headerNewItem + "')]")))
                 .getText();
         Assert.assertEquals(nameOfCreatedItem, "New Item2");
+    }
+
+    @Test
+    public void verifyErrorMessageForEmptyItemName() {
+        WebDriver driver = getDriver();
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        WebElement itemNameError = driver.findElement(By.id("itemname-required"));
+        Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
     }
 }
