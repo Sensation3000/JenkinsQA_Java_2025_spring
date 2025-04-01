@@ -3,16 +3,11 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.sql.Time;
-import java.time.Duration;
-
-public class GroupJavaEST extends BaseTest {
+public class GroupJavaESTtest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
@@ -24,7 +19,7 @@ public class GroupJavaEST extends BaseTest {
 
         driver.findElement(By.xpath(
                 "//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea")).sendKeys(
-                        "Pipeline Description");
+                "Pipeline Description");
         driver.findElement(By.xpath("//*[@name='Submit']")).click();
 
         WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
@@ -32,7 +27,7 @@ public class GroupJavaEST extends BaseTest {
     }
 
     @Test
-    public void testAddDescription(){
+    public void testAddDescription() {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//a[@id='description-link']")).getText(),
                 "Add description"
@@ -48,18 +43,37 @@ public class GroupJavaEST extends BaseTest {
     }
 
     @Test
-    public void testJenkinsVersionButton(){
+    public void testJenkinsVersionButton() {
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).getText(),
-               "Jenkins 2.492.2"
-     );
+                "Jenkins 2.492.2"
+        );
     }
 
     @Test
     public void testMenuOnTheVersionButton() throws InterruptedException {
-      getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).click();
+        getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).click();
         Thread.sleep(3000);
-      Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@href, 'about')]")).getText(),
-              "About Jenkins"
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@href, 'about')]")).getText(),
+                "About Jenkins"
         );
+    }
+
+    @Test
+    public void testSubHeaders() {
+        String[] subheaders = {"Start building your software project", "Set up a distributed build"};
+        for (int i = 0; i < subheaders.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//h2[@class='h4']")).get(i).getText(),
+                    subheaders[i]
+            );
+        }
+    }
+
+    @Test
+    public void testListOfLinks() {
+        String[] listLinks = {"Create a job", "Set up an agent", "Configure a cloud", "Learn more about distributed builds"};
+        for (int i = 0; i < listLinks.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//a[@class='content-block__link']")).get(i).getText(),
+                    listLinks[i]);
+        }
     }
 }
