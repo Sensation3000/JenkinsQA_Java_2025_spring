@@ -3,16 +3,11 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.sql.Time;
-import java.time.Duration;
-
-public class GroupJavaEST extends BaseTest {
+public class GroupJavaESTTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
@@ -29,6 +24,14 @@ public class GroupJavaEST extends BaseTest {
 
         WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
         Assert.assertEquals(pipelineName.getText(), "First Pipeline");
+    }
+
+    @Test
+    public void testGreetingsIsPresented() {
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".empty-state-block h1")).getText(),
+                "Welcome to Jenkins!"
+        );
     }
 
     @Test
