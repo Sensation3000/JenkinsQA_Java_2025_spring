@@ -65,4 +65,23 @@ public class GroupJavaESTTest extends BaseTest {
               "About Jenkins"
         );
     }
+
+    @Test
+    public void testSubHeaders() {
+        String[] subheaders = {"Start building your software project", "Set up a distributed build"};
+        for (int i = 0; i < subheaders.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//h2[@class='h4']")).get(i).getText(),
+                    subheaders[i]
+            );
+        }
+    }
+
+    @Test
+    public void testListOfLinks() {
+        String[] listLinks = {"Create a job", "Set up an agent", "Configure a cloud", "Learn more about distributed builds"};
+        for (int i = 0; i < listLinks.length; i++) {
+            Assert.assertEquals(getDriver().findElements(By.xpath("//a[@class='content-block__link']")).get(i).getText(),
+                    listLinks[i]);
+        }
+    }
 }
