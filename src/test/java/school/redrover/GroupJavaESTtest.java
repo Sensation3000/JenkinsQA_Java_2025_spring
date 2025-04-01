@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class GroupJavaESTtest extends BaseTest {
+public class GroupJavaESTTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
@@ -19,7 +19,7 @@ public class GroupJavaESTtest extends BaseTest {
 
         driver.findElement(By.xpath(
                 "//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea")).sendKeys(
-                "Pipeline Description");
+                        "Pipeline Description");
         driver.findElement(By.xpath("//*[@name='Submit']")).click();
 
         WebElement pipelineName = driver.findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
@@ -27,7 +27,15 @@ public class GroupJavaESTtest extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() {
+    public void testGreetingsIsPresented() {
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".empty-state-block h1")).getText(),
+                "Welcome to Jenkins!"
+        );
+    }
+
+    @Test
+    public void testAddDescription(){
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//a[@id='description-link']")).getText(),
                 "Add description"
@@ -43,18 +51,18 @@ public class GroupJavaESTtest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsVersionButton() {
+    public void testJenkinsVersionButton(){
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).getText(),
-                "Jenkins 2.492.2"
-        );
+               "Jenkins 2.492.2"
+     );
     }
 
     @Test
     public void testMenuOnTheVersionButton() throws InterruptedException {
-        getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).click();
+      getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--tertiary')]")).click();
         Thread.sleep(3000);
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@href, 'about')]")).getText(),
-                "About Jenkins"
+      Assert.assertEquals(getDriver().findElement(By.xpath("//a[contains(@href, 'about')]")).getText(),
+              "About Jenkins"
         );
     }
 
