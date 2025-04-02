@@ -13,8 +13,6 @@ import static org.testng.AssertJUnit.assertTrue;
 
 public class StudentUnionTest extends BaseTest {
 
-
-
     @Test
     public void openDescriptionForm(){
 
