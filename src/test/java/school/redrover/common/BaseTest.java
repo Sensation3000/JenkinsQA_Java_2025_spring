@@ -55,7 +55,7 @@ public abstract class BaseTest {
 
                 String className = testResult.getTestClass().getRealClass().getSimpleName();
                 String testName = testResult.getTestName();
-                String fileName = className + "_" + testName + ".png";
+                String fileName = className + "." + testName + ".png";
 
                 File destination = new File(screenshotDir, fileName);
                 Files.copy(screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
