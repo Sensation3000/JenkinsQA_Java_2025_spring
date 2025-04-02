@@ -38,16 +38,9 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
-            JenkinsUtils.logout(driver);
-            driver.quit();
-            wait5 = null;
-            wait10 = null;
-        }
-
         if (!testResult.isSuccess()) {
             try {
-                File screenshotDir = new File(System.getProperty("user.dir") + "/screenshots");
+                File screenshotDir = new File("screenshots");
                 if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
                     throw new RuntimeException("Failed to create a folder for screenshots");
                 }
@@ -60,11 +53,16 @@ public abstract class BaseTest {
                 File destination = new File(screenshotDir, fileName);
                 Files.copy(screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                ProjectUtils.logf("Screenshot was added to " + destination.getAbsolutePath());
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
+            JenkinsUtils.logout(driver);
+            driver.quit();
+            wait5 = null;
+            wait10 = null;
         }
 
         ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
