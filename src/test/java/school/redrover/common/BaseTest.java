@@ -60,6 +60,8 @@ public abstract class BaseTest {
                 File destination = new File(screenshotDir, fileName);
                 Files.copy(screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+                ProjectUtils.logf("Screenshot was added to " + destination.getAbsolutePath());
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
