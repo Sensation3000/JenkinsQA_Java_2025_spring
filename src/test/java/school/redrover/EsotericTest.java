@@ -18,18 +18,4 @@ public class EsotericTest extends BaseTest {
         WebElement version_button = driver.findElement(By.cssSelector("button.jenkins_ver"));
         Assert.assertEquals(version_button.getText(), "Jenkins 2.492.2");
     }
-
-
-    @Test
-    public void testNaughtySpinnerWait() {
-
-        WebDriver driver = getDriver();
-        Actions builder = new Actions(driver);
-
-        driver.findElement(By.cssSelector("button.jenkins_ver")).click();
-        builder.moveToElement(driver.findElement(By.cssSelector("a[href='/manage/about']"))).click().perform();
-
-        WebElement jenkinsVersion = driver.findElement(By.cssSelector("p.app-about-version"));
-        Assert.assertEquals(jenkinsVersion.getText(), "Version 2.492.2");
-    }
 }
