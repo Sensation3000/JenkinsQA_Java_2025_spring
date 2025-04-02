@@ -1,6 +1,5 @@
 package school.redrover.common;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +9,8 @@ import org.testng.annotations.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public abstract class BaseTest {
 
@@ -36,14 +37,17 @@ public abstract class BaseTest {
         if (!testResult.isSuccess()) {
             try {
                 File screenshotDir = new File("screenshots");
-                if (!screenshotDir.exists()) {
-                    screenshotDir.mkdirs();
+                if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
+                    throw new RuntimeException("Failed to create a folder for screenshots");
                 }
-
                 File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                String fileName = testResult.getTestName() + ".png";
+
+                String className = testResult.getTestClass().getRealClass().getSimpleName();
+                String testName = testResult.getTestName();
+                String fileName = className + "_" + testName + ".png";
+
                 File destination = new File(screenshotDir, fileName);
-                FileUtils.copyFile(screenshot, destination);
+                Files.copy(screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
