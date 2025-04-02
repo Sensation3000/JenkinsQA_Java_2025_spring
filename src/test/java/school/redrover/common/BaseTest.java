@@ -47,7 +47,7 @@ public abstract class BaseTest {
                 File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
                 String className = testResult.getTestClass().getRealClass().getSimpleName();
-                String testName = testResult.getTestName();
+                String testName = testResult.getMethod().getMethodName();
                 String fileName = className + "." + testName + ".png";
 
                 File destination = new File(screenshotDir, fileName);
