@@ -84,4 +84,8 @@ public class GroupJavaESTTest extends BaseTest {
                     listLinks[i]);
         }
     }
+    @Test
+    public void testNotifications(){
+        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@id='visible-am-button']")).isDisplayed());
+    }
 }
