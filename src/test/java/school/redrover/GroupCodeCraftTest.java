@@ -108,7 +108,7 @@ public class GroupCodeCraftTest extends BaseTest {
         driver.findElement(By.cssSelector("a.task-link[href='/view/all/builds']")).click();
         driver.findElement(By.xpath("//button[@tooltip='More actions']")).click();
 
-        String buttonIcon = driver.findElement(By.id("button-icon-legend")).getText();
+        String buttonIcon = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("button-icon-legend"))).getText();
         String buttonAtom = driver.findElement(By.xpath("//*[@id='tippy-1']/div/div/div/button[2]")).getText();
 
         Assert.assertEquals(buttonIcon, "Icon legend");
