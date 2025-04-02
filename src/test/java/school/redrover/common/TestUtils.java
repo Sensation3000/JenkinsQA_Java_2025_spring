@@ -7,7 +7,7 @@ public class TestUtils {
 
     public static void gotoHomePage(BaseTest baseTest) {
         baseTest.getWait10()
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("jenkins-name-icon")))
+                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-name-icon")))
                 .click();
     }
 }
