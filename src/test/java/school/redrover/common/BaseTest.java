@@ -47,7 +47,7 @@ public abstract class BaseTest {
 
         if (!testResult.isSuccess()) {
             try {
-                File screenshotDir = new File("screenshots");
+                File screenshotDir = new File(System.getProperty("user.dir") + "/screenshots");
                 if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
                     throw new RuntimeException("Failed to create a folder for screenshots");
                 }
