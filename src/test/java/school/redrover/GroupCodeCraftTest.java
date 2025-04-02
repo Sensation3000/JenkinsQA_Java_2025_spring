@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,6 +12,9 @@ import school.redrover.common.BaseTest;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 
 public class GroupCodeCraftTest extends BaseTest {
@@ -139,5 +143,27 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath(
                         "//*[@id='main-panel']/div[3]/div/section/h2")).getText(),
                 "This folder is empty");
+    }
+
+    @Test
+    public void testMoreActionsVisible() {
+        Actions actions = new Actions(getDriver());
+
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='Build History']/parent::a")))
+                .click();
+
+        WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//button[@tooltip='More actions']")));
+        actions.moveToElement(tooltip).perform();
+        String moveToElement = tooltip.getDomAttribute("aria-describedby");
+
+        WebElement sortHeader = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.className("sortheader")));
+        actions.moveToElement(sortHeader).perform();
+        String moveOutElement = tooltip.getDomAttribute("aria-describedby");
+
+        assertNotNull(moveToElement);
+        assertNull(moveOutElement);
     }
 }
