@@ -1,12 +1,19 @@
 package school.redrover.common;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 
 public abstract class BaseTest {
+
+    private WebDriverWait wait5;
+    private WebDriverWait wait10;
 
     private WebDriver driver;
 
@@ -19,6 +26,8 @@ public abstract class BaseTest {
         driver = ProjectUtils.createDriver();
         ProjectUtils.get(driver);
         JenkinsUtils.login(driver);
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block h1")));
     }
 
     @AfterMethod
@@ -26,6 +35,8 @@ public abstract class BaseTest {
         if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
             JenkinsUtils.logout(driver);
             driver.quit();
+            wait5 = null;
+            wait10 = null;
         }
 
         ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
@@ -33,5 +44,21 @@ public abstract class BaseTest {
 
     protected WebDriver getDriver() {
         return driver;
+    }
+
+    protected WebDriverWait getWait5() {
+        if (wait5 == null) {
+            wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
+        }
+
+        return wait5;
+    }
+
+    protected WebDriverWait getWait10() {
+        if (wait10 == null) {
+            wait10 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        }
+
+        return wait10;
     }
 }
