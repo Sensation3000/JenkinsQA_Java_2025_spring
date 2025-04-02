@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class FreestyleProjectTest extends BaseTest {
 
@@ -19,7 +20,7 @@ public class FreestyleProjectTest extends BaseTest {
         driver.findElement(By.className("hudson_model_FreeStyleProject")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        driver.findElement(By.id("jenkins-name-icon")).click();
+        TestUtils.gotoHomePage(this);
 
         Assert.assertEquals(
                 driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
