@@ -25,7 +25,7 @@ public class EsotericTest extends BaseTest {
 
 
     @Test
-    public void testNaughtyDoubleClick() {
+    public void testNaughtySpinnerWait() {
 
         WebDriver driver = getDriver();
         Actions builder = new Actions(driver);
