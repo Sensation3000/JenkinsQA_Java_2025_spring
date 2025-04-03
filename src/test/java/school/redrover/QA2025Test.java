@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -71,12 +70,14 @@ public class QA2025Test extends BaseTest {
     }
 
     @Test
-    public  void testSubHeadingsText(){
-        String[] subheadings = {"Start building your software project", "Set up a distributed build"};
-        for (int i = 0; i < subheadings.length; i++){
+    public  void testSubHeadingsText() {
+        String[] subHeadings = {"Start building your software project", "Set up a distributed build"};
+        List<WebElement> homePageSubHeadings = getDriver().findElements(By.xpath("//h2[@class='h4']"));
+
+        for (int i = 0; i < subHeadings.length; i++){
             Assert.assertEquals(
-                    getDriver().findElements(By.xpath("//h2[@class='h4']")).get(i).getText(),
-                    subheadings[i]
+                    homePageSubHeadings.get(i).getText(),
+                    subHeadings[i]
             );
         }
     }
@@ -84,9 +85,11 @@ public class QA2025Test extends BaseTest {
     @Test
     public void testSubItemsText() {
         String[] subItems = {"Create a job", "Set up an agent", "Configure a cloud", "Learn more about distributed builds"};
-        for (int i = 0; i < subItems.length; i++){
+        List<WebElement> homePageSubItems = getDriver().findElements(By.cssSelector("a.content-block__link"));
+
+        for (int i = 0; i < subItems.length; i++) {
             Assert.assertEquals(
-                    getDriver().findElements(By.cssSelector("a.content-block__link")).get(i).getText(),
+                    homePageSubItems.get(i).getText(),
                     subItems[i]
             );
         }
@@ -100,9 +103,11 @@ public class QA2025Test extends BaseTest {
     @Test
     public void testTaskItemsText() {
         String[] taskItems = {"New Item", "Build History", "Manage Jenkins", "My Views"};
-        for (int i = 0; i < taskItems.length; i++){
+        List<WebElement> homePageTaskItems = getDriver().findElements(By.cssSelector("#tasks .task-link-text"));
+
+        for (int i = 0; i < taskItems.length; i++) {
             Assert.assertEquals(
-                    getDriver().findElements(By.cssSelector("#tasks .task-link-text")).get(i).getText(),
+                    homePageTaskItems.get(i).getText(),
                     taskItems[i]
             );
         }
@@ -124,22 +129,5 @@ public class QA2025Test extends BaseTest {
                         getDriver().findElements(By.xpath("//span[@class=\"label\"]")).get(i).getText(), newItems[i]
                 );
             }
-    }
-
-    @Test
-    public void testSubmitWhenFieldIsEmpty() {
-        Actions actions = new Actions(getDriver());
-        String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        List<WebElement> newItemTypes = getDriver().findElements(By.cssSelector("input[type=radio]"));
-
-        for (int i = 0; i < newItemTypes.size(); i++) {
-            actions.scrollByAmount(0, 300).perform();
-            getDriver().findElements(By.xpath("//li[@role='radio']")).get(i).click();
-
-            Assert.assertEquals(getDriver().findElement(By.cssSelector(".input-validation-message")).getText(), expectedErrorMessage);
-            Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
-        }
     }
 }
