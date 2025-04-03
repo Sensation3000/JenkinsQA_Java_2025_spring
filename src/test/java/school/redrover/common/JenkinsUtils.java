@@ -195,13 +195,13 @@ public final class JenkinsUtils {
     }
 
     static void clearData() {
-        JenkinsUtils.resetTheme();
         JenkinsUtils.deleteViews();
         JenkinsUtils.deleteJobs();
         JenkinsUtils.deleteUsers();
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteDescription();
         JenkinsUtils.deleteDomains();
+        JenkinsUtils.resetTheme();
     }
 
     static void login(WebDriver driver) {
