@@ -27,7 +27,7 @@ public class EditDescriptionMainPageTest extends BaseTest {
             String newDescription = driver.findElement(By.cssSelector("#description > div:nth-child(1)")).getText();
             Assert.assertEquals(newDescription,"New description text");
         } else {
-            System.out.println("Description is not displayed correctly.");
+            System.out.println("Description is not displayed correctly");
         }
     }
 }
