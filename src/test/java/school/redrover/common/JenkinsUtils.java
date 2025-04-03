@@ -130,6 +130,28 @@ public final class JenkinsUtils {
         }
     }
 
+    private static void resetTheme() {
+        String crumb = getCrumbFromPage(getPage(""));
+        String url = ProjectUtils.getUrl() + "user/admin/appearance/configSubmit";
+        String body = String.format("Jenkins-Crumb:\"%s\"\njson:\"{\"userProperty0\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}},\"Submit\":\"\",\"core:apply\":\"\",\"Jenkins-Crumb\":\"%s\"}\"", crumb, crumb);
+        System.out.println(body);
+        //HttpResponse<String> response = postHttp(url, body);
+        //System.out.println(response.body());
+        try {
+            HttpResponse<String> response = client.send(
+                    HttpRequest.newBuilder()
+                            .uri(URI.create(url))
+                            .headers(getHeader())
+                            .POST(HttpRequest.BodyPublishers.ofString(body))
+                            .build(),
+                    HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     private static void deleteJobs() {
         String mainPage = getPage("");
         deleteByLink("job/%s/doDelete",
@@ -191,6 +213,7 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteDescription();
         JenkinsUtils.deleteDomains();
+        JenkinsUtils.resetTheme();
     }
 
     static void login(WebDriver driver) {
