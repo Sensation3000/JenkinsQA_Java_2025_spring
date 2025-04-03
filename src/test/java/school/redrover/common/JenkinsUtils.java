@@ -131,25 +131,13 @@ public final class JenkinsUtils {
     }
 
     private static void resetTheme() {
-        String crumb = getCrumbFromPage(getPage(""));
-        String url = ProjectUtils.getUrl() + "user/admin/appearance/configSubmit";
-        String body = String.format("Jenkins-Crumb:\"%s\"\njson:\"{\"userProperty0\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}},\"Submit\":\"\",\"core:apply\":\"\",\"Jenkins-Crumb\":\"%s\"}\"", crumb, crumb);
-        System.out.println(body);
-        //HttpResponse<String> response = postHttp(url, body);
-        //System.out.println(response.body());
-        try {
-            HttpResponse<String> response = client.send(
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .headers(getHeader())
-                            .POST(HttpRequest.BodyPublishers.ofString(body))
-                            .build(),
-                    HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        String url = ProjectUtils.getUrl() + "user/" + ProjectUtils.getUserName() + "/appearance/configSubmit";
+        String jsonPayload = "{\"userProperty0\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}}}";
+        String encodedJson = URLEncoder.encode(jsonPayload, StandardCharsets.UTF_8);
+        String body = String.format("Jenkins-Crumb=%s&json=%s&Submit=Submit&core:apply=true",
+                getCrumbFromPage(getPage("")),
+                encodedJson);
+        postHttp(url, body);
     }
 
     private static void deleteJobs() {
@@ -207,13 +195,13 @@ public final class JenkinsUtils {
     }
 
     static void clearData() {
+        JenkinsUtils.resetTheme();
         JenkinsUtils.deleteViews();
         JenkinsUtils.deleteJobs();
         JenkinsUtils.deleteUsers();
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteDescription();
         JenkinsUtils.deleteDomains();
-        JenkinsUtils.resetTheme();
     }
 
     static void login(WebDriver driver) {
