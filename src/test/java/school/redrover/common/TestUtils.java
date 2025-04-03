@@ -10,7 +10,6 @@ public class TestUtils {
     public static void gotoHomePage(BaseTest baseTest) {
         WebDriverWait wait10 = baseTest.getWait10();
         wait10.until(ExpectedConditions.presenceOfElementLocated(By.id("jenkins-home-link")));
-        WebElement homeLink = wait10.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
-        homeLink.click();
+        wait10.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
     }
 }
