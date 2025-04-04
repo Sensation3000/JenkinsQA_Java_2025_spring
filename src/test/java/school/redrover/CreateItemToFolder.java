@@ -8,6 +8,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class CreateItemToFolder extends BaseTest {
+
     private final String item1 = "MyItem";
 
     @Test
@@ -17,7 +18,8 @@ public class CreateItemToFolder extends BaseTest {
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("New Folder");
-        driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        driver.findElement(By.xpath(
+                "//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
 
