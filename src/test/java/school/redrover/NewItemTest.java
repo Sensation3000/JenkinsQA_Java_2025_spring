@@ -10,8 +10,10 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.time.Duration;
+import java.util.List;
 
 
 public class NewItemTest extends BaseTest {
@@ -73,5 +75,22 @@ public class NewItemTest extends BaseTest {
         driver.findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
         WebElement itemNameError = driver.findElement(By.id("itemname-required"));
         Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void  testCreateFolder() {
+        final String folderName = "NewFolder1";
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        List<WebElement> jobs = getDriver().findElements(By.xpath("//tr[contains(@id, 'job')]//a"));
+
+        Assert.assertEquals(jobs.size(), 1);
+        Assert.assertEquals(jobs.get(0).getText(), folderName);
     }
 }
