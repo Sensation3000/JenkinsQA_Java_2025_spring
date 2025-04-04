@@ -11,7 +11,6 @@ import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
@@ -29,7 +28,7 @@ public class BuildJobTest extends BaseTest {
                         .formatted("Build Now")))).click();
         getDriver().findElement(By.linkText(jobName)).click();
         getDriver().navigate().refresh();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.id("out")).getText();
