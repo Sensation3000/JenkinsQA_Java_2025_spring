@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
+
 public class CreateItemToFolderTest extends BaseTest {
 
     @Test
@@ -29,5 +30,29 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@class, 'inside')]")).click();
         String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
         Assert.assertEquals(actualItemName, item1);
+    }
+
+    @Test
+    public void testCreateFolderToFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        getDriver().findElement(By.xpath(
+                "//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        String folder1 = "Myfolder";
+        getDriver().findElement(By.id("name")).sendKeys(folder1);
+        getDriver().findElement(By.xpath(
+                "//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        TestUtils.gotoHomePage(this);
+
+        getDriver().findElement(By.xpath("//a[contains(@class, 'inside')]")).click();
+        String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
+        Assert.assertEquals(actualItemName, folder1);
     }
 }
