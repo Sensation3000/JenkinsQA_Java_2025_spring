@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -77,20 +78,16 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test
-    public void  testCreateFolder() {
-        final String folderName = "NewFolder1";
-
+    @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
+    public void testNameWithInvalidCharactersError(String invalidCharacter) {
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.id("name")).sendKeys("ItemName".concat(invalidCharacter));
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
 
-        TestUtils.gotoHomePage(this);
+        String errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+        boolean isSubmitButtonClickable = getDriver().findElement(By.id("ok-button")).isEnabled();
 
-        List<WebElement> jobs = getDriver().findElements(By.xpath("//tr[contains(@id, 'job')]//a"));
-
-        Assert.assertEquals(jobs.size(), 1);
-        Assert.assertEquals(jobs.get(0).getText(), folderName);
+        Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidCharacter));
+        Assert.assertFalse(isSubmitButtonClickable);
     }
 }
