@@ -8,7 +8,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class CreateItemToFolder extends BaseTest {
-
     private final String item1 = "MyItem";
 
     @Test
@@ -29,7 +28,6 @@ public class CreateItemToFolder extends BaseTest {
         TestUtils.gotoHomePage(this);
 
         driver.findElement(By.xpath("//a[contains(@class, 'inside')]")).click();
-
         String actualItemName = driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
         Assert.assertEquals(actualItemName, item1);
     }
