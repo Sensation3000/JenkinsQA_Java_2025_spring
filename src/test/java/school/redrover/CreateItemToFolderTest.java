@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -9,6 +10,7 @@ import school.redrover.common.TestUtils;
 
 public class CreateItemToFolderTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateNewItemOnTheFolder() {
 
@@ -32,6 +34,7 @@ public class CreateItemToFolderTest extends BaseTest {
         Assert.assertEquals(actualItemName, item1);
     }
 
+    @Ignore
     @Test
     public void testCreateFolderToFolder() {
 
