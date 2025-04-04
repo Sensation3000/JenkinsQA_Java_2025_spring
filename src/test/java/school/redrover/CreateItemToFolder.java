@@ -12,6 +12,7 @@ public class CreateItemToFolder extends BaseTest {
 
     @Test
     public void testCreateNewItemOnTheFolder() {
+
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
