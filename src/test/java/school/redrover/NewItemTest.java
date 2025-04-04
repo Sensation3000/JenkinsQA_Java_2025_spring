@@ -86,7 +86,7 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        TestUtils.gotoHomePage(this);
 
         List<WebElement> jobs = getDriver().findElements(By.xpath("//tr[contains(@id, 'job')]//a"));
 
