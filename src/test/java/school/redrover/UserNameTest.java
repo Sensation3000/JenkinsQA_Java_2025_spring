@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
+import static org.testng.Assert.assertEquals;
 
 public class UserNameTest extends BaseTest {
 
@@ -23,5 +26,29 @@ public class UserNameTest extends BaseTest {
         String userButtonTextStored = userButtonText.getText();
 
         Assert.assertEquals(userButtonTextStored, fullNameText);
+    }
+
+    public static class FolderTest extends BaseTest {
+
+        @Test
+        public void testCreateFolder () {
+            final String folderName = "ProjectFolder";
+
+            WebDriver driver = getDriver();
+
+            driver.findElement(By.linkText("New Item")).click();
+            driver.findElement(By.id("name")).sendKeys(folderName);
+            driver.findElement(By.xpath("//span[text() = 'Folder']")).click();
+            driver.findElement(By.id("ok-button")).click();
+            driver.findElement(By.name("Submit")).click();
+
+            assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), folderName);
+
+            TestUtils.gotoHomePage(this);
+
+            Assert.assertEquals(
+                    driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
+                    folderName);
+        }
     }
 }
