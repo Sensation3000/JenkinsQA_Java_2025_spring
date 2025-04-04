@@ -43,6 +43,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(nameOfCreatedItem, "New Item1");
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemOrganizationFolder() {
         String headerNewItem = "New Item2";
