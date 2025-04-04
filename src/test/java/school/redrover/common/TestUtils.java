@@ -2,6 +2,9 @@ package school.redrover.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.UUID;
@@ -23,5 +26,10 @@ public class TestUtils {
     public static String generateRandomAlphanumeric() {
 
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 }

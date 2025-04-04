@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -11,7 +10,6 @@ import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
@@ -22,22 +20,18 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).sendKeys(Keys.ENTER);
         TestUtils.gotoHomePage(this);
-        selectMenuFromItemDropdown(jobName, "Build Now");
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(
+                By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName))));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]"
+                        .formatted("Build Now")))).click();
         getDriver().findElement(By.linkText(jobName)).click();
         getDriver().navigate().refresh();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
         String out = getDriver().findElement(By.id("out")).getText();
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
-    }
-    private void selectMenuFromItemDropdown(String itemName, String menuName) {
-        moveAndClickWithJS(getDriver(), getDriver().findElement(By.xpath("//td/a/span[text() = '%s']/../button".formatted(itemName))));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted(menuName)))).click();
-    }
-    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 }
