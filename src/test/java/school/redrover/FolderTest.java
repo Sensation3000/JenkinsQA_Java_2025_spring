@@ -12,13 +12,12 @@ import java.util.List;
 
 public class FolderTest extends BaseTest {
 
-    @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
-    public void  testCreateFolderWithValidName(String folderName) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+    private static final String FOLDER_NAME = "Folder1";
 
+    @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
+    public void  testCreateWithValidName(String folderName) {
+
+        TestUtils.createFolder(getDriver(), folderName);
         TestUtils.gotoHomePage(this);
 
         List<WebElement> jobs = getDriver().findElements(By.xpath("//tr[contains(@id, 'job')]//a"));
