@@ -12,33 +12,28 @@ import school.redrover.common.ProjectUtils;
 import school.redrover.common.TestUtils;
 
 public class  AccessProjectTest extends BaseTest {
-    private final String nameProject = "first project";
-    private final String locatorProject = "//*[@id='job_first project']/td[3]/a/span";
-
-    @BeforeMethod
-    protected void createJob () {
-
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div/section[1]/ul/li/a")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameProject);
-        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/button")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
-    }
+    private static final String NAMEPROJECT = "first project";
+    private static final String LOCATORPROJECT = "//*[@id='job_" + NAMEPROJECT + "']/td[3]/a/span";
 
     @Test
     public void testVisibleProject () {
+        TestUtils.createFolder(getDriver(), NAMEPROJECT);
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/button")).click();
+        TestUtils.gotoHomePage(this);
 
-        WebElement title = getDriver().findElement(By.xpath(locatorProject));
-        Assert.assertEquals(title.getText(),nameProject);
+        WebElement title = getDriver().findElement(By.xpath(LOCATORPROJECT));
+        Assert.assertEquals(title.getText(),NAMEPROJECT);
     }
 
     @Test
     public void testLinkProject () {
-        getDriver().findElement(By.xpath(locatorProject)).click();
+        TestUtils.createFolder(getDriver(), NAMEPROJECT);
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[3]/span/button")).click();
+        TestUtils.gotoHomePage(this);
+
+        getDriver().findElement(By.xpath(LOCATORPROJECT)).click();
 
         WebElement title = getDriver().findElement(By.cssSelector("h1"));
-        Assert.assertEquals(title.getText(),nameProject);
+        Assert.assertEquals(title.getText(),NAMEPROJECT);
     }
 }
