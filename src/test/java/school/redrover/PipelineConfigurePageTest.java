@@ -2,7 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -50,11 +52,15 @@ public class PipelineConfigurePageTest extends BaseTest {
         driver.findElement(By.id("name")).sendKeys("Test item");
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
+
         new Actions(driver)
                 .moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label")))
                 .perform();
 
-        Assert.assertTrue(driver.findElement(By.className("tippy-content")).isDisplayed());
-        Assert.assertEquals(driver.findElement(By.className("tippy-content")).getText(), "Enable or disable the current project");
+        WebElement tooltip = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")));
+
+        Assert.assertTrue(tooltip.isDisplayed());
+        Assert.assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 }
