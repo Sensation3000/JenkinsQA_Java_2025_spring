@@ -1,8 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -10,9 +12,10 @@ import school.redrover.common.BaseTest;
 
 import java.util.List;
 
-public class CreateNewItem3Test extends BaseTest {
+public class NewItemPage2Test extends BaseTest {
 
-    Actions actions;
+    private Actions actions;
+    private final By newJobsLocator = By.xpath("//a[@href='/view/all/newJob']");
 
     @BeforeMethod
     void setUp() {
@@ -27,14 +30,35 @@ public class CreateNewItem3Test extends BaseTest {
         return getDriver().findElements(By.xpath("//li[@role='radio']"));
     }
 
+    private int getScrollValue() {
+        List<WebElement> newItemTypes = getDriver().findElements(By.xpath("//li[@role='radio']"));
+        Dimension size = newItemTypes.get(0).getSize();
+
+        return (size.getHeight() - 12 * 2) * (newItemTypes.size() - 1);
+    }
+
+    @Test
+    public void testIfPageIsAccessibleFromHomePage() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
+                .click();
+
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/view/all/newJob"));
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#add-item-panel > h1")).getText(),
+                "New Item");
+    }
+
     @Test
     public void testOkButtonWhenFieldIsEmpty() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
+                .click();
+
         List<WebElement> newItemTypes = getNewItemTypes();
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        int expectedScrollValue = getScrollValue();
 
         for (int i = 0; i < newItemTypes.size(); i++) {
-            actions.scrollByAmount(0, 300).perform();
             newItemTypes.get(i).click();
+            actions.scrollByAmount(0, expectedScrollValue).perform();
 
             Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
         }
@@ -42,12 +66,15 @@ public class CreateNewItem3Test extends BaseTest {
 
     @Test
     public void testIfErrorMessageIsDisplayedWhenFieldIsEmpty() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
+                .click();
+
         List<WebElement> newItemTypes = getNewItemTypes();
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        int expectedScrollValue = getScrollValue();
 
         for (int i = 0; i < newItemTypes.size(); i++) {
-            actions.scrollByAmount(0, 300).perform();
             newItemTypes.get(i).click();
+            actions.scrollByAmount(0, expectedScrollValue).perform();
 
             Assert.assertEquals(
                     getDriver().findElement(By.cssSelector(".input-validation-message")).getText(),

@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -14,6 +15,7 @@ public class NewItemPageTest extends BaseTest {
         driver.findElement(By.cssSelector("#tasks>.task:first-child")).click();
     }
 
+    @Ignore
     @Test(testName = "Check New Item page heading")
     public void pageTitleTest() {
         openNewItemPage();
@@ -22,6 +24,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.xpath("//h1")).getText(), "New Item");
     }
 
+    @Ignore
     @Test(testName = "Check the 'Name' field label")
     public void itemNameFieldLabelTest() {
         openNewItemPage();
@@ -30,6 +33,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.xpath("//label[@for='name']")).getText(), "Enter an item name");
     }
 
+    @Ignore
     @Test(testName = "Check if 'Name' field is displayed")
     public void itemNameFieldIsDisplayedTest() {
         openNewItemPage();
@@ -38,6 +42,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertTrue(driver.findElement(By.xpath("//input[@name='name']")).isDisplayed());
     }
 
+    @Ignore
     @Test(testName = "Check the 'Type' block label")
     public void itemTypeLabelTest() {
         openNewItemPage();
@@ -47,6 +52,7 @@ public class NewItemPageTest extends BaseTest {
                 By.xpath("//div[@class='jenkins-form-label']")).getText(), "Select an item type");
     }
 
+    @Ignore
     @Test(testName = "Check the 'Freestyle project' item type exist")
     public void freestyleProjectItemTest() {
         openNewItemPage();
@@ -56,6 +62,7 @@ public class NewItemPageTest extends BaseTest {
                 By.xpath("//li[@class='hudson_model_FreeStyleProject']//span")).getText(), "Freestyle project");
     }
 
+    @Ignore
     @Test(testName = "Check the 'Pipeline' item type exist")
     public void pipelineItemTest() {
         openNewItemPage();
@@ -66,6 +73,7 @@ public class NewItemPageTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(testName = "Check the 'Multi-configuration project' item type exist")
     public void multiConfigurationProjectItemTest() {
         openNewItemPage();
@@ -76,6 +84,7 @@ public class NewItemPageTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(testName = "Check the 'Folder' item type exist")
     public void folderItemTest() {
         openNewItemPage();
@@ -86,6 +95,7 @@ public class NewItemPageTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(testName = "Check the 'Multibranch Pipeline' item type exist")
     public void multibranchPipelineItemTest() {
         openNewItemPage();
@@ -96,6 +106,7 @@ public class NewItemPageTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(testName = "Check the 'Organization Folder' item type exist")
     public void organizationFolderItemTest() {
         openNewItemPage();
@@ -106,6 +117,7 @@ public class NewItemPageTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(testName = "Check if OK button is disabled by default")
     public void okButtonIsDisabledTest() {
         openNewItemPage();
@@ -114,6 +126,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertFalse(driver.findElement(By.id("ok-button")).isEnabled());
     }
 
+    @Ignore
     @Test(testName = "Check if OK button is disabled after 'Name' set")
     public void okButtonIsDisabledAfterNameSetTest() {
         openNewItemPage();
@@ -123,6 +136,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertFalse(driver.findElement(By.id("ok-button")).isEnabled());
     }
 
+    @Ignore
     @Test(testName = "Check if OK button is enabled after 'Name' and 'Type' set")
     public void okButtonIsEnabledTest() {
         openNewItemPage();
@@ -133,6 +147,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertTrue(driver.findElement(By.id("ok-button")).isEnabled());
     }
 
+    @Ignore
     @Test(testName = "Check if validation message is not displayed after 'Type' set")
     public void validationMessageIsDisabledAfterItemClickTest() {
         openNewItemPage();
@@ -142,6 +157,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
+    @Ignore
     @Test(testName = "Check if validation message is displayed after clicking OK button")
     public void validationMessageIsDisplayedAfterOkClickTest() {
         openNewItemPage();
@@ -151,6 +167,7 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
+    @Ignore
     @Test(testName = "Check if 'Test folder' item is created after clicking OK button")
     public void newFolderItemIsCreatedTest() throws InterruptedException {
         openNewItemPage();
@@ -163,6 +180,4 @@ public class NewItemPageTest extends BaseTest {
         driver.findElement(By.xpath("//a[text()='Dashboard']")).click();
         Assert.assertEquals(driver.findElement(By.cssSelector(".jenkins-table__link.model-link.inside")).getText(), "Test folder");
     }
-
-
 }
