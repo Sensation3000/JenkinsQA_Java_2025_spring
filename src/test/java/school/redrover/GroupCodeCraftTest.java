@@ -4,38 +4,40 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
-import java.time.Duration;
 
 public class GroupCodeCraftTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
+        final String pipelineName = "NewPipeline";
+
         WebDriver driver = getDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys("NewPipeline");
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(pipelineName);
 
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
-        String title = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
+        String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
 
-        Assert.assertEquals(title, "NewPipeline", "Pipeline title is not correct");
+        Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
     }
 
     @Test
-    public void testAboutJenkins(){
+    public void testAboutJenkins() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a/span[1]")).click();
@@ -90,10 +92,74 @@ public class GroupCodeCraftTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath(
-                        "//*[@id=\"main-panel\"]/h1")).getText(),nameOrgFolder);
+                "//*[@id=\"main-panel\"]/h1")).getText(), nameOrgFolder);
         Assert.assertEquals(getDriver().findElement(By.xpath(
                         "//*[@id='disabled-message']")).getText(),
                 "This Organization Folder is currently disabled");
     }
 
+    @Test
+    public void testBuildHistoryMoreActionsButton() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.cssSelector("a.task-link[href='/view/all/builds']")).click();
+        driver.findElement(By.xpath("//button[@tooltip='More actions']")).click();
+
+        String buttonIcon = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("button-icon-legend"))).getText();
+        String buttonAtom = driver.findElement(By.xpath("//*[@id='tippy-1']/div/div/div/button[2]")).getText();
+
+        Assert.assertEquals(buttonIcon, "Icon legend");
+        Assert.assertEquals(buttonAtom, "Atom feed");
+    }
+
+    @Test
+    public void testCreateMultibranch() throws InterruptedException {
+        final String nameOfDisplay = "Name of test";
+
+        getDriver().findElement(By.cssSelector(" a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test");
+
+        WebElement buttonMultibranchPipe =
+                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", buttonMultibranchPipe);
+        buttonMultibranchPipe.click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        WebElement sendText = getDriver().findElement(By.cssSelector("input[name='_.displayNameOrNull']"));
+        sendText.sendKeys(nameOfDisplay);
+
+        WebElement buttonSave =
+                getDriver().findElement(By.cssSelector(" button[name='Submit']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", buttonSave);
+        buttonSave.click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                "//*[@id='main-panel']/h1")).getText(), nameOfDisplay);
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                        "//*[@id='main-panel']/div[3]/div/section/h2")).getText(),
+                "This folder is empty");
+    }
+
+    @Test
+    public void testMoreActionsVisible() {
+        Actions actions = new Actions(getDriver());
+
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//span[text()='Build History']/parent::a")))
+                .click();
+
+        WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//button[@tooltip='More actions']")));
+        actions.moveToElement(tooltip).perform();
+        String moveToElement = tooltip.getDomAttribute("aria-describedby");
+
+        WebElement sortHeader = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.className("sortheader")));
+        actions.moveToElement(sortHeader).perform();
+        String moveOutElement = tooltip.getDomAttribute("aria-describedby");
+
+        assertNotNull(moveToElement);
+        assertNull(moveOutElement);
+    }
 }
