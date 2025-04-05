@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import school.redrover.common.BaseTest;
 import org.testng.annotations.Test;
+import school.redrover.common.JenkinsUtils;
+import school.redrover.common.ProjectUtils;
 import school.redrover.common.TestUtils;
 
 public class  AccessProjectTest extends BaseTest {
@@ -23,8 +25,7 @@ public class  AccessProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/button")).click();
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='breadcrumbs']/li[1]"))).click();
+        TestUtils.gotoHomePage(this);
     }
 
     @Test
