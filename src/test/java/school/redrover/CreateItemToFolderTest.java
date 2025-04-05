@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class CreateItemToFolderTest extends BaseTest {
 
@@ -29,13 +30,15 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        //TestUtils.gotoHomePage(this);
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        TestUtils.gotoHomePage(this);
+
         Actions actions = new Actions(getDriver());
-        WebElement folder = getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@class, 'inside')]/span[text()='" + FOLDER_NAME + "']")));
-        actions.moveToElement(folder).click().perform();
-        String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
+        WebElement folderLink = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, 'job/Folder1') and contains(@class, 'inside')]")));
+        actions.moveToElement(folderLink).click().perform();
+        String actualItemName = getDriver()
+                .findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)"))
+                .getText();
 
         Assert.assertEquals(actualItemName, ITEM_NAME);
     }
@@ -43,8 +46,7 @@ public class CreateItemToFolderTest extends BaseTest {
     @Test
     public void testCreateFolderToFolder() {
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -55,13 +57,15 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        //TestUtils.gotoHomePage(this);
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        TestUtils.gotoHomePage(this);
+
         Actions actions = new Actions(getDriver());
-        WebElement folder = getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']")));
-        actions.moveToElement(folder).click().perform();
-        String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
+        WebElement folderLink = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href, 'job/Folder1') and contains(@class, 'inside')]")));
+        actions.moveToElement(folderLink).click().perform();
+        String actualItemName = getDriver()
+                .findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)"))
+                .getText();
 
         Assert.assertEquals(actualItemName, FOLDER_NAME_2);
     }
