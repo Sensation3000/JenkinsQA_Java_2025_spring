@@ -112,4 +112,10 @@ public class TestUtils {
         }
     }
 
+    public static void createFolder(WebDriver driver, String folderName) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(folderName);
+        driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        driver.findElement(By.id("ok-button")).click();
+    }
 }
