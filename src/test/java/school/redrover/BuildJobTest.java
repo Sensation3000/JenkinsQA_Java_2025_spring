@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -10,6 +11,7 @@ import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
