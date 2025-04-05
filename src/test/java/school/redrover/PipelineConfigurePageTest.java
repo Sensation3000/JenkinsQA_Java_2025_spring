@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -18,8 +17,8 @@ public class PipelineConfigurePageTest extends BaseTest {
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.className("jenkins-toggle-switch__label")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__unchecked-title")));
+        driver.findElement(By.name("Submit")).click();
+        driver.findElement(By.xpath("//span[text()='Configure']/..")).click();
 
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label__unchecked-title")).isDisplayed());
     }
