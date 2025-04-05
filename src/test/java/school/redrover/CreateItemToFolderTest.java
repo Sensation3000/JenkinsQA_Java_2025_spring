@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
+
 
 public class CreateItemToFolderTest extends BaseTest {
 
@@ -30,7 +30,8 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        TestUtils.gotoHomePage(this);
+        //TestUtils.gotoHomePage(this);
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
         Actions actions = new Actions(getDriver());
         WebElement folder = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']"))
@@ -56,7 +57,8 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        TestUtils.gotoHomePage(this);
+        //TestUtils.gotoHomePage(this);
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
         Actions actions = new Actions(getDriver());
         WebElement folder = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']"))
