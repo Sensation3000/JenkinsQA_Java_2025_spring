@@ -11,10 +11,7 @@ import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
-
 import java.time.Duration;
-import java.util.List;
 
 
 public class NewItemTest extends BaseTest {
@@ -28,7 +25,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(header, "New Item");
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testCreateNewItemFreestyleProject() {
         String headerNewItem = "New Item1";
@@ -89,5 +87,23 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidCharacter));
         Assert.assertFalse(isSubmitButtonClickable);
+    }
+
+    @Test()
+    public void testCheckErrorMessageForSpecialCharacters() {
+        String[] specialCharacters = {"!","@","#","$","%","^","&","*","/","\\","|","[","]",";",":","?","<",">"};
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        for(String ch: specialCharacters) {
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(ch);
+            String alertMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(alertMessage,  String.format("» ‘%s’ is an unsafe character", ch));
+
+            driver.findElement(By.className("jenkins-input")).sendKeys("\b");
+        }
     }
 }
