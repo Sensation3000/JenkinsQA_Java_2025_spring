@@ -31,7 +31,6 @@ public class CreateItemToFolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         TestUtils.gotoHomePage(this);
-
         Actions actions = new Actions(getDriver());
         WebElement folderLink = getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[contains(@href, 'job/Folder1') and contains(@class, 'inside')]")));
