@@ -32,9 +32,8 @@ public class CreateItemToFolderTest extends BaseTest {
         //TestUtils.gotoHomePage(this);
         getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
         Actions actions = new Actions(getDriver());
-        WebElement folder = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']"))
-        );
+        WebElement folder = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@class, 'inside')]/span[text()='" + FOLDER_NAME + "']")));
         actions.moveToElement(folder).click().perform();
         String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
 
@@ -59,9 +58,8 @@ public class CreateItemToFolderTest extends BaseTest {
         //TestUtils.gotoHomePage(this);
         getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
         Actions actions = new Actions(getDriver());
-        WebElement folder = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']"))
-        );
+        WebElement folder = getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@class, 'inside')]/span[text()='Folder1']")));
         actions.moveToElement(folder).click().perform();
         String actualItemName = getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText();
 
