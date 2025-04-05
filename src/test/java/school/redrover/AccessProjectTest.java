@@ -24,7 +24,7 @@ public class  AccessProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='breadcrumbs']/li[1]/a"))).click();
+                (By.xpath("//*[@id='breadcrumbs']/li[1]"))).click();
     }
 
     @Test
