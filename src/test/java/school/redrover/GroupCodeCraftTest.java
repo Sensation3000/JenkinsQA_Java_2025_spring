@@ -114,24 +114,23 @@ public class GroupCodeCraftTest extends BaseTest {
 
     @Test
     public void testCreateMultibranch() throws InterruptedException {
-        String nameOfMultibranch = "Test";
-        String nameOfDisplay = "Name of test";
+        final String nameOfDisplay = "Name of test";
 
-        getDriver().findElement(By.xpath("//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameOfMultibranch);
+        getDriver().findElement(By.cssSelector(" a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test");
 
         WebElement buttonMultibranchPipe =
-                getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[2]"));
+                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", buttonMultibranchPipe);
         buttonMultibranchPipe.click();
 
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
 
-        WebElement sendText = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/input"));
+        WebElement sendText = getDriver().findElement(By.cssSelector("input[name='_.displayNameOrNull']"));
         sendText.sendKeys(nameOfDisplay);
 
         WebElement buttonSave =
-                getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]"));
+                getDriver().findElement(By.cssSelector(" button[name='Submit']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", buttonSave);
         buttonSave.click();
 

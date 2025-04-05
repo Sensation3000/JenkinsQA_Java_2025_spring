@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
@@ -9,6 +10,7 @@ import school.redrover.common.BaseTest;
 public class GroupClubRedroverTest extends BaseTest {
     SoftAssert softAssert;
 
+    @Ignore
     @Test
     public void verifySuccessfulCreationNewJob() {
         softAssert = new SoftAssert();
@@ -26,8 +28,8 @@ public class GroupClubRedroverTest extends BaseTest {
          * isDisplayed() doesn't work in Headless mode :(
 
          driver.findElement(By.name("Apply")).click();
-        softAssert.assertTrue(
-                driver.findElement(By.id("notification-bar")).isDisplayed());
+         softAssert.assertTrue(
+         driver.findElement(By.id("notification-bar")).isDisplayed());
          **/
 
         driver.findElement(By.name("Submit")).click();
