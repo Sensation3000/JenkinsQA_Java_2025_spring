@@ -22,12 +22,13 @@ public class  AccessProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/button")).click();
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//*[@id='breadcrumbs']/li[1]/a"))).click();
     }
 
     @Test
     public void testVisibleProject () {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//*[@id='breadcrumbs']/li[1]/a"))).click();
 
         WebElement title = getDriver().findElement(By.xpath(locatorProject));
         Assert.assertEquals(title.getText(),nameProject);
@@ -35,8 +36,6 @@ public class  AccessProjectTest extends BaseTest {
 
     @Test
     public void testLinkProject () {
-        TestUtils.gotoHomePage(this);
-
         getDriver().findElement(By.xpath(locatorProject)).click();
 
         WebElement title = getDriver().findElement(By.cssSelector("h1"));
