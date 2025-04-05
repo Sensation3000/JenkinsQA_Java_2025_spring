@@ -24,8 +24,7 @@ public class  AccessProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/button")).click();
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-
-        TestUtils.gotoHomePage(this);
+        getDriver().findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
     }
 
     @Test
