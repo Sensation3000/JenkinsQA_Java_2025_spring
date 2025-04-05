@@ -8,7 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-
 public class CreateItemToFolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "Folder1";
