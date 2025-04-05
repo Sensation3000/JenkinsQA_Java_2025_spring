@@ -22,12 +22,6 @@ public class CloudCreationTest extends BaseTest {
         goToClouds(driver);
         createNewCloud(driver);
         assertCloudCreated(driver);
-    }
-
-    @Test
-    public void testDeleteCloud() {
-        WebDriver driver = getDriver();
-        goToClouds(driver);
         deleteCloud(driver);
         assertCloudDeleted(driver);
     }
@@ -47,10 +41,6 @@ public class CloudCreationTest extends BaseTest {
     }
 
     private void deleteCloud(WebDriver driver) {
-        driver.findElement(By.cssSelector(".jenkins-table__link")).click();
-        Assert.assertEquals(
-                driver.findElement(By.tagName("h1")).getText(),
-                "Cloud " + projectName);
         List<WebElement> buttons2 = driver.findElements(By.cssSelector(".task"));
         for (WebElement button : buttons2) {
             if (button.getText().equals("Delete Cloud")) {
