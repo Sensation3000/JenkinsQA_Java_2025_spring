@@ -117,5 +117,14 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(folderName);
         driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
+    }
+
+    public static void createFreestyleProject(WebDriver driver, String projectName) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
     }
 }
