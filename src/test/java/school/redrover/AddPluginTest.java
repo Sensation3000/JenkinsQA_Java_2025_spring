@@ -86,7 +86,6 @@ Acceptance Criteria:
         Assert.assertNull(update.getAttribute("disabled"),
                 "У активной кнопки не должно быть атрибута disabled");
         }
-
     }
 
 
