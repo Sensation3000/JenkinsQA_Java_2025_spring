@@ -130,6 +130,16 @@ public final class JenkinsUtils {
         }
     }
 
+    private static void resetTheme() {
+        String url = ProjectUtils.getUrl() + "user/" + ProjectUtils.getUserName() + "/appearance/configSubmit";
+        String jsonPayload = "{\"userProperty0\":{\"theme\":{\"value\":\"0\",\"stapler-class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\",\"$class\":\"io.jenkins.plugins.thememanager.none.NoOpThemeManagerFactory\"}}}";
+        String encodedJson = URLEncoder.encode(jsonPayload, StandardCharsets.UTF_8);
+        String body = String.format("Jenkins-Crumb=%s&json=%s&Submit=Submit&core:apply=true",
+                getCrumbFromPage(getPage("")),
+                encodedJson);
+        postHttp(url, body);
+    }
+
     private static void deleteJobs() {
         String mainPage = getPage("");
         deleteByLink("job/%s/doDelete",
@@ -166,12 +176,20 @@ public final class JenkinsUtils {
                 getCrumbFromPage(mainPage));
     }
 
-    private static void deleteDescription() {
+    private static void deleteDescription(String uri) {
         String mainPage = getPage("");
-        postHttp(ProjectUtils.getUrl() + "submitDescription",
+        postHttp(ProjectUtils.getUrl() + uri,
                 String.format(
                         "description=&Submit=&Jenkins-Crumb=%1$s&json=%%7B%%22description%%22%%3A+%%22%%22%%2C+%%22Submit%%22%%3A+%%22%%22%%2C+%%22Jenkins-Crumb%%22%%3A+%%22%1$s%%22%%7D",
                         getCrumbFromPage(mainPage)));
+    }
+
+    private static void deleteMainDescription() {
+        JenkinsUtils.deleteDescription( "submitDescription");
+    }
+
+    private static void deleteViewDescription() {
+        JenkinsUtils.deleteDescription("me/my-views/view/all/submitDescription");
     }
 
     private static void deleteDomains() {
@@ -189,8 +207,10 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteJobs();
         JenkinsUtils.deleteUsers();
         JenkinsUtils.deleteNodes();
-        JenkinsUtils.deleteDescription();
+        JenkinsUtils.deleteMainDescription();
+        JenkinsUtils.deleteViewDescription();
         JenkinsUtils.deleteDomains();
+        JenkinsUtils.resetTheme();
     }
 
     static void login(WebDriver driver) {
