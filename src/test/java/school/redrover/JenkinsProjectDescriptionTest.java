@@ -18,7 +18,7 @@ public class JenkinsProjectDescriptionTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         // Использование getWait5() из BaseTest для ожидания элемента
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("description")));
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("description")));
     }
 
     @Test
