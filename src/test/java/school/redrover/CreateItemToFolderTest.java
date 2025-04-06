@@ -19,6 +19,8 @@ public class CreateItemToFolderTest extends BaseTest {
     public void testCreateNewItemOnTheFolder() {
 
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
+        TestUtils.gotoHomePage(this);
+        TestUtils.openJobByName(getDriver(), FOLDER_NAME);
         TestUtils.createFreestyleProject(getDriver(), ITEM_NAME);
         TestUtils.gotoHomePage(this);
 
@@ -36,6 +38,8 @@ public class CreateItemToFolderTest extends BaseTest {
     public void testCreateFolderToFolder() {
 
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
+        TestUtils.gotoHomePage(this);
+        TestUtils.openJobByName(getDriver(), FOLDER_NAME);
         TestUtils.createFolder(getDriver(), FOLDER_NAME_2);
         TestUtils.gotoHomePage(this);
 
