@@ -63,4 +63,19 @@ public class PipelineConfigurePageTest extends BaseTest {
         Assert.assertTrue(tooltip.isDisplayed());
         Assert.assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
+
+    @Test(testName = "TC_03.001.04 > The warning message is shown on the Project page")
+    public void checkWarningMessageAppears() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//span[text()='New Item']/..")).click();
+        driver.findElement(By.id("name")).sendKeys("Test item");
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.className("jenkins-toggle-switch__label")).click();
+        driver.findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(driver.findElement(By.id("enable-project")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.id("enable-project")).getText().contains("This project is currently disabled"));
+    }
 }
