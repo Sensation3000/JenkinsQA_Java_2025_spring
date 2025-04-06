@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
@@ -117,5 +118,17 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(folderName);
         driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void createFreestyleProject(WebDriver driver, String projectName) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void openJobByName(WebDriver driver, String jobName) {
+        new Actions(driver).moveToElement(driver.findElement(By.xpath(String.format("//a[@href='job/%s/']/span", jobName))))
+                .click().perform();
     }
 }
