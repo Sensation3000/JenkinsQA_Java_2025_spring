@@ -10,13 +10,12 @@ import school.redrover.common.BaseTest;
 import static org.testng.AssertJUnit.assertTrue;
 
 
-
 public class StudentUnionTest extends BaseTest {
 
     @Test
-    public void openDescriptionForm(){
+    public void openDescriptionForm() {
 
-       WebDriver driver = getDriver();
+        WebDriver driver = getDriver();
 
         // Поиск кнопки по ID
         WebElement descriptionLink = driver.findElement(By.xpath("//*[@id=\"description-link\"]"));
@@ -35,7 +34,7 @@ public class StudentUnionTest extends BaseTest {
     }
 
     @Test
-    public void addDescription(){
+    public void addDescription() {
         // Ввод текстового описания в поле описание
         String textDescription = "Text description";
         getDriver().findElement(By.xpath("//a[text()='Add description']")).click();
@@ -46,4 +45,33 @@ public class StudentUnionTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[text()='" + textDescription + "']")).isDisplayed());
 
     }
+
+    @Test
+    public void createDescription() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.id("description-link")).click();
+        driver.findElement(By.xpath("//textarea[@name='description']")).sendKeys("My new description");
+        driver.findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@id='description']/div")).getText(), "My new description");
+    }
+
+    @Test
+    public void createNewProject() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
+        driver.findElement(By.xpath("//input[@name='name']")).sendKeys("My new project");
+        driver.findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+
+        driver.findElement(By.cssSelector(".jenkins-button")).click();
+
+        driver.findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("Name");
+        driver.findElement(By.xpath("//textarea[@name='_.description']")).sendKeys("Description");
+        driver.findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("h1")).getText(), "Name");
+    }
+
 }
