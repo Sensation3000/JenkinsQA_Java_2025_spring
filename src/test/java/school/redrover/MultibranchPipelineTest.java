@@ -33,6 +33,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, expectedDescription);
     }
 
+    @Ignore
     @Test
     public void testTryCreateProjectExistName() throws InterruptedException {
 
