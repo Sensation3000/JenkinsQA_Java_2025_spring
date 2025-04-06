@@ -58,7 +58,7 @@ public class StudentUnionTest extends BaseTest {
     }
 
     @Test
-    public void createNewProject() {
+    public void createNewProject() throws InterruptedException {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
@@ -70,6 +70,8 @@ public class StudentUnionTest extends BaseTest {
         driver.findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("Name");
         driver.findElement(By.xpath("//textarea[@name='_.description']")).sendKeys("Description");
         driver.findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Thread.sleep(2000);
 
         Assert.assertEquals(driver.findElement(By.cssSelector("h1")).getText(), "Name");
     }
