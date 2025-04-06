@@ -40,13 +40,13 @@ public class PipelineDisableEnableTest  extends BaseTest {
         createPipeline();
         getDriver().findElement(By.xpath("//span[@title=\"Enable or disable the current project\"]"))
                 .click();
-        getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"))
+        getDriver().findElement(By.xpath("//button[@name='Submit']"))
                 .click();
 
         WebElement enableButton;
         for (int attempts = 0; attempts < 3; attempts++) {
             try {
-                enableButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
+                enableButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
                 enableButton.click();
                 break;
             } catch (StaleElementReferenceException e) {
