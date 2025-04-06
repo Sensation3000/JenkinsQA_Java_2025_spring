@@ -7,10 +7,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.time.Duration;
 
 
@@ -25,7 +25,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(header, "New Item");
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testCreateNewItemFreestyleProject() {
         String headerNewItem = "New Item1";
@@ -43,6 +44,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(nameOfCreatedItem, "New Item1");
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemOrganizationFolder() {
         String headerNewItem = "New Item2";
@@ -72,5 +74,36 @@ public class NewItemTest extends BaseTest {
         driver.findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
         WebElement itemNameError = driver.findElement(By.id("itemname-required"));
         Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
+    public void testNameWithInvalidCharactersError(String invalidCharacter) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("ItemName".concat(invalidCharacter));
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+
+        String errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+        boolean isSubmitButtonClickable = getDriver().findElement(By.id("ok-button")).isEnabled();
+
+        Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidCharacter));
+        Assert.assertFalse(isSubmitButtonClickable);
+    }
+
+    @Test()
+    public void testCheckErrorMessageForSpecialCharacters() {
+        String[] specialCharacters = {"!","@","#","$","%","^","&","*","/","\\","|","[","]",";",":","?","<",">"};
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        for(String ch: specialCharacters) {
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(ch);
+            String alertMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(alertMessage,  String.format("» ‘%s’ is an unsafe character", ch));
+
+            driver.findElement(By.className("jenkins-input")).sendKeys("\b");
+        }
     }
 }
