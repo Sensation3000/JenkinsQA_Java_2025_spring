@@ -88,4 +88,10 @@ public class GroupJavaESTTest extends BaseTest {
     public void testNotifications(){
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@id='visible-am-button']")).isDisplayed());
     }
+
+    @Test
+    public void testCreateAjob(){
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href ='newJob']")).getText(),
+                "Create a job");
+    }
 }
