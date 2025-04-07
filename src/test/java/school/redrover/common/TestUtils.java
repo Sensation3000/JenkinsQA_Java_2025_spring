@@ -131,4 +131,27 @@ public class TestUtils {
         new Actions(driver).moveToElement(driver.findElement(By.xpath(String.format("//a[@href='job/%s/']/span", jobName))))
                 .click().perform();
     }
+
+    public static void logout(BaseTest baseTest) {
+        WebElement logoutLink = waitForHomePageLoad(baseTest);
+        logoutLink.click();
+    }
+
+    public static void createNewUser(BaseTest baseTest, String userName, String password, String fullName, String email) {
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("Manage Jenkins"))).click();
+        baseTest.getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='securityRealm/']")))
+                .click();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Create User"))).click();
+        baseTest.getDriver().findElement(By.name("username")).sendKeys(userName);
+        baseTest.getDriver().findElement(By.name("password1")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("password2")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("fullname")).sendKeys(fullName);
+        baseTest.getDriver().findElement(By.name("email")).sendKeys(email);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
+
+        final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
+        baseTest.getWait5()
+                .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
 }
