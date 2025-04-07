@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -105,5 +103,28 @@ public class NewItemTest extends BaseTest {
 
             driver.findElement(By.className("jenkins-input")).sendKeys("\b");
         }
+    }
+
+    @Test
+    public void testCreatePipeline() {
+        final String pipelineName = "NewPipeline";
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(pipelineName);
+
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.documentElement.scrollHeight);");
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+
+        String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
+
+        Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
     }
 }
