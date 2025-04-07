@@ -59,8 +59,6 @@ public class TestUtils {
      * @example newItemCreate(this, " MyPipeline ", 2); // Creates a Pipeline
      */
     public static void newItemCreate(BaseTest baseTest, String itemName, int itemTypeId) {
-        String itemTypeName = getItemTypeName(itemTypeId);
-
         if (itemName.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
@@ -76,7 +74,7 @@ public class TestUtils {
 
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]")))));
+                (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
                 (By.id("ok-button"))));
@@ -98,10 +96,10 @@ public class TestUtils {
 
     private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
-            List<WebElement> existingNameOfItems = driver.findElements
+            List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
             List<String> itemsNames = new ArrayList<>();
-            for (WebElement element : existingNameOfItems) {
+            for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
             for (String str : itemsNames) {
