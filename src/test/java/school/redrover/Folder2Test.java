@@ -36,4 +36,40 @@ public class Folder2Test extends BaseTest {
                         (By.className("h4"))).getText(),
                 "This folder is empty");
     }
+
+    @Test
+    public void testCannotCreateItemsWithSameNameInFolder() {
+        final String folderName = "New Folder";
+        final String jobName = "New Job";
+
+        TestUtils.newItemCreate(this, folderName, 4);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
+                .sendKeys(jobName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='Freestyle project']"))).click();
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))));
+        TestUtils.gotoHomePage(this);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
+                .sendKeys(jobName);
+
+        WebElement invalidItemName = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("itemname-invalid")));
+
+        Assert.assertTrue(invalidItemName.isDisplayed());
+        Assert.assertEquals(invalidItemName.getText(),
+                "» A job already exists with the name ‘" + jobName + "’");
+    }
 }
