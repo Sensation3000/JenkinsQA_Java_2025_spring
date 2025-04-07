@@ -115,7 +115,7 @@ public class PlugInTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
         Thread.sleep(1000);
         getDriver().navigate().refresh();
-        Thread.sleep(10000);
+        Thread.sleep(15000);
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-sign-in-register__content-inner")));
         loginToJenkins();
 
