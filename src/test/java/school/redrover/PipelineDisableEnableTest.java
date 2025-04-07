@@ -46,7 +46,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
         WebElement enableButton;
         for (int attempts = 0; attempts < 6; attempts++) {
             try {
-                enableButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+                enableButton = getDriver().findElement(By.xpath("//*[@id=\"enable-project\"]/button"));
                 enableButton.click();
                 break;
             } catch (StaleElementReferenceException e) {
@@ -57,7 +57,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
 
         for (int attempts = 0; attempts < 6; attempts++) {
             try {
-                disableButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
+                disableButton = getDriver().findElement(By.xpath("//*[@id=\"disable-project\"]/button"));
                 break;
             } catch (StaleElementReferenceException e) {
 
