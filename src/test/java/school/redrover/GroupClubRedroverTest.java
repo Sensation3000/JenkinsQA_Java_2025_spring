@@ -2,43 +2,42 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class GroupClubRedroverTest extends BaseTest {
     SoftAssert softAssert;
 
-    @Ignore
     @Test
     public void verifySuccessfulCreationNewJob() {
         softAssert = new SoftAssert();
         WebDriver driver = getDriver();
         String jobName = "freestyle";
 
-        driver.findElement(By.cssSelector("a[href='newJob']")).click();
-        driver.findElement(By.id("name")).sendKeys(jobName);
-        driver.findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        driver.findElement(By.id("ok-button")).click();
+        TestUtils.waitUntilVisible5(this, By.cssSelector("a[href='newJob']")).click();
+        TestUtils.waitUntilVisible5(this, By.id("name")).sendKeys(jobName);
+        TestUtils.waitUntilVisible5(this, By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        TestUtils.waitUntilVisible5(this, By.id("ok-button")).click();
+
         softAssert.assertEquals(
-                driver.findElement(By.id("general")).getText(), "General");
+                TestUtils.waitUntilVisible10(this, By.id("general")).getText(),
+                "General");
 
-        /**
-         * isDisplayed() doesn't work in Headless mode :(
+        TestUtils.waitUntilVisible5(this, By.name("Apply")).click();
+        softAssert.assertTrue(
+                driver.findElement(By.id("notification-bar")).isEnabled());
 
-         driver.findElement(By.name("Apply")).click();
-         softAssert.assertTrue(
-         driver.findElement(By.id("notification-bar")).isDisplayed());
-         **/
-
-        driver.findElement(By.name("Submit")).click();
+        TestUtils.waitUntilVisible5(this, By.name("Submit")).click();
         softAssert.assertEquals(
-                driver.findElement(By.cssSelector(".job-index-headline")).getText(), jobName);
+                TestUtils.waitUntilVisible5(this, By.cssSelector(".job-index-headline")).getText(),
+                jobName);
 
-        driver.findElement(By.cssSelector("a[href='/']")).click();
+        TestUtils.waitUntilVisible5(this, By.cssSelector("a[href='/']")).click();
         softAssert.assertEquals(
-                driver.findElement(By.cssSelector(".jenkins-table__link")).getText(), jobName);
+                TestUtils.waitUntilVisible10(this, By.cssSelector(".jenkins-table__link")).getText(),
+                jobName);
 
         softAssert.assertAll();
     }
