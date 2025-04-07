@@ -1,8 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -21,6 +21,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']"))
                 .click();
     }
+
     @Test
     public void disablePipelineTest() {
 
@@ -35,6 +36,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
                 .getText();
         Assert.assertEquals(actualText, expectedText);
     }
+
     @Test
     public void enablePipelineTest() {
         createPipeline();
@@ -43,27 +45,13 @@ public class PipelineDisableEnableTest  extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']"))
                 .click();
 
-        WebElement enableButton;
-        for (int attempts = 0; attempts < 6; attempts++) {
-            try {
-                enableButton = getDriver().findElement(By.xpath("//*[@id=\"enable-project\"]/button"));
-                enableButton.click();
-                break;
-            } catch (StaleElementReferenceException e) {
+        WebElement enableButton = getWait5()
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"enable-project\"]/button")));
+        enableButton.click();
 
-            }
-        }
-        WebElement disableButton = null;
 
-        for (int attempts = 0; attempts < 6; attempts++) {
-            try {
-                disableButton = getDriver().findElement(By.cssSelector("#disable-project > button"));
-                break;
-            } catch (StaleElementReferenceException e) {
-
-            }
-
-        }
+        WebElement disableButton = getWait5().
+                until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"disable-project\"]/button")));
         Assert.assertTrue(disableButton.isDisplayed());
     }
 }
