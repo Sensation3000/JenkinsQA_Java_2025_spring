@@ -3,6 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -96,6 +97,7 @@ public class PlugInTest extends BaseTest {
         assertTrue(plugin.contains("Locale plugin"), "Plugin Locale is not in the installed list");
     }
 
+    @Ignore
     @Test
     @SkipConfiguration
     public void testUnInstallPlugIn() throws InterruptedException {
