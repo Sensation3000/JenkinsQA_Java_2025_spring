@@ -66,7 +66,6 @@ public class TestUtils {
         }
 
         TestUtils.gotoHomePage(baseTest);
-
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -75,13 +74,13 @@ public class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
                 .sendKeys(itemName);
 
-        WebElement itemBox = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]"))));
-        scrollAndClickWithJS(baseTest.getDriver(), itemBox);
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
+                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]")))));
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.id("ok-button"))));
 
-        WebElement okButton = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button")));
-        scrollAndClickWithJS(baseTest.getDriver(), okButton);
         TestUtils.gotoHomePage(baseTest);
     }
 
@@ -97,7 +96,7 @@ public class TestUtils {
         };
     }
 
-    public static void uniqueItemNameCheck(WebDriver driver, String itemName) {
+    private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
             List<WebElement> existingNameOfItems = driver.findElements
                     (By.xpath("//td/a/span"));
