@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.List;
+
 
 public class ManageJenkinsTabTest extends BaseTest {
 
@@ -73,12 +75,45 @@ public class ManageJenkinsTabTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[normalize-space()='\"Java Concurrency in Practice\" book annotations']"));
 
-        WebElement mediaElement = getDriver().findElement(By.xpath("//a[normalize-space()='args4j']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", mediaElement);
+        WebElement middleElement = getDriver().findElement(By.xpath("//a[normalize-space()='args4j']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", middleElement);
 
         WebElement lastElement = getDriver().findElement(By.xpath("//a[normalize-space()='XStream Core']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", lastElement);
 
         Assert.assertTrue(lastElement.isDisplayed(), "Last element is not displayed");
+    }
+
+@Test
+public void testDisplayDependencyJenkinsLinks() {
+
+    getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
+    WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
+    ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", aboutLink);
+    aboutLink.click();
+
+    List<WebElement> rows = getDriver().findElements(By.xpath("//tr"));
+
+    for (WebElement row : rows) {
+        try {
+            WebElement link = row.findElement(By.tagName("a"));
+
+            String linkText = link.getText();
+            String href = link.getDomAttribute("href");
+
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", link);
+            link.click();
+
+            String title = getDriver().getTitle();
+
+            Assert.assertNotEquals("Страница не загрузилась: " + linkText + " (" + href + ")", "Error", title);
+
+            getDriver().navigate().back();
+
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+    }
     }
 }
