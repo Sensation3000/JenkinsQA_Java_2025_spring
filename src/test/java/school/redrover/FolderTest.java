@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -24,5 +25,26 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(jobs.size(), 1);
         Assert.assertEquals(jobs.get(0).getText(), folderName);
+    }
+
+    @Test
+    public void testCreateFolderWithBlankConfiguration () {
+        final String folderName = "ProjectFolder";
+
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(folderName);
+        driver.findElement(By.xpath("//span[text() = 'Folder']")).click();
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), folderName);
+
+        TestUtils.gotoHomePage(this);
+
+        Assert.assertEquals(
+                driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
+                folderName);
     }
 }
