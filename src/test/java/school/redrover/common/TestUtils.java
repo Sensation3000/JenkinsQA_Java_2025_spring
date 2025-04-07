@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TestUtils {
@@ -59,13 +60,11 @@ public class TestUtils {
      * @example newItemCreate(this, " MyPipeline ", 2); // Creates a Pipeline
      */
     public static void newItemCreate(BaseTest baseTest, String itemName, int itemTypeId) {
-        String itemTypeName = getItemTypeName(itemTypeId);
-
         if (itemName.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -76,12 +75,12 @@ public class TestUtils {
 
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]")))));
+                        (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button"))));
+                        (By.id("ok-button"))));
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
     }
 
     private static String getItemTypeName(int typeId) {
@@ -98,10 +97,10 @@ public class TestUtils {
 
     private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
-            List<WebElement> existingNameOfItems = driver.findElements
+            List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
             List<String> itemsNames = new ArrayList<>();
-            for (WebElement element : existingNameOfItems) {
+            for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
             for (String str : itemsNames) {
@@ -152,5 +151,23 @@ public class TestUtils {
         final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
         baseTest.getWait5()
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
+
+    public static void createItemWithinFolder(BaseTest baseTest, String itemName, String folderName, int itemTypeId) {
+        gotoHomePage(baseTest);
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
+                .sendKeys(itemName);
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + getItemTypeName(itemTypeId) + "']"))).click();
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))));
+
+        gotoHomePage(baseTest);
     }
 }
