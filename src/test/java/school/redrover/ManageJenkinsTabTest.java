@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+
 public class ManageJenkinsTabTest extends BaseTest {
 
     @Test
@@ -22,12 +23,15 @@ public class ManageJenkinsTabTest extends BaseTest {
     }
 
     @Test
-    public void testAccessAboutJenkinsOption () {
+    public void testAccessAboutJenkinsOption() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
 
-        Assert.assertTrue(element.isDisplayed(),"Элемент 'About Jenkins' не отображается на странице");
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        element.click();
+
+        String currentUrl = getDriver().getCurrentUrl();
+        Assert.assertEquals(currentUrl, "http://localhost:8080/manage/about/", "About Jenkins' page did not open");
     }
 }
