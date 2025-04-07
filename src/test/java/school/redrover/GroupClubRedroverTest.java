@@ -11,7 +11,6 @@ import school.redrover.common.BaseTest;
 public class GroupClubRedroverTest extends BaseTest {
     SoftAssert softAssert;
 
-//    @Ignore
     @Test
     public void verifySuccessfulCreationNewJob() {
         softAssert = new SoftAssert();
