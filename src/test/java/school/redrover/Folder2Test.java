@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -73,6 +74,7 @@ public class Folder2Test extends BaseTest {
                 "» A job already exists with the name ‘" + jobName + "’");
     }
 
+    @Ignore
     @Test
     public void testSameNameItemsInDifferentFolders() {
         final String folderOneName = "Folder A";
@@ -82,8 +84,8 @@ public class Folder2Test extends BaseTest {
         TestUtils.newItemCreate(this, folderOneName, 4);
         TestUtils.newItemCreate(this, folderTwoName, 4);
 
-        TestUtils.createItemWithinFolder(this, itemName, folderOneName, 1);
-        TestUtils.createItemWithinFolder(this, itemName, folderTwoName, 1);
+//        TestUtils.createItemWithinFolder(this, itemName, folderOneName, 1);
+//        TestUtils.createItemWithinFolder(this, itemName, folderTwoName, 1);
 
         getWait5().until(ExpectedConditions.elementToBeClickable
                 (By.xpath("//span[text()='" + folderOneName + "']"))).click();

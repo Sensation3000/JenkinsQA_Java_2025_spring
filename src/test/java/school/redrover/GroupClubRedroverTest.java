@@ -2,10 +2,10 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class GroupClubRedroverTest extends BaseTest {
     SoftAssert softAssert;
@@ -16,26 +16,28 @@ public class GroupClubRedroverTest extends BaseTest {
         WebDriver driver = getDriver();
         String jobName = "freestyle";
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='newJob']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(jobName);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".hudson_model_FreeStyleProject"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+        TestUtils.waitUntilVisible5(this, By.cssSelector("a[href='newJob']")).click();
+        TestUtils.waitUntilVisible5(this, By.id("name")).sendKeys(jobName);
+        TestUtils.waitUntilVisible5(this, By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        TestUtils.waitUntilVisible5(this, By.id("ok-button")).click();
+
         softAssert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general"))).getText(),
+                TestUtils.waitUntilVisible10(this, By.id("general")).getText(),
                 "General");
 
-         driver.findElement(By.name("Apply")).click();
-         softAssert.assertTrue(
-                 driver.findElement(By.id("notification-bar")).isEnabled());
+        TestUtils.waitUntilVisible5(this, By.name("Apply")).click();
+        softAssert.assertTrue(
+                driver.findElement(By.id("notification-bar")).isEnabled());
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+        TestUtils.waitUntilVisible5(this, By.name("Submit")).click();
         softAssert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".job-index-headline"))).getText(),
+                TestUtils.waitUntilVisible5(this, By.cssSelector(".job-index-headline")).getText(),
                 jobName);
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='/']"))).click();
+        TestUtils.waitUntilVisible5(this, By.cssSelector("a[href='/']")).click();
         softAssert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-table__link"))).getText(), jobName);
+                TestUtils.waitUntilVisible10(this, By.cssSelector(".jenkins-table__link")).getText(),
+                jobName);
 
         softAssert.assertAll();
     }
