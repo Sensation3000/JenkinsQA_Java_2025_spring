@@ -17,7 +17,7 @@ public class CreateNewItem3Test extends BaseTest {
     @Test
     public void VerifyItemList() {
         WebDriver driver = getDriver();
-        List<String> expectedItemTypes = List.of("Freestyle project", "Pipeline", "Folder", "Multibranch Pipeline", "Organization Folder"); // excluding "Multi-configuration Project" until ambiguity is resolved
+        List<String> expectedItemTypes = List.of("Freestyle project", "Multi-configuration Project", "Pipeline", "Folder", "Multibranch Pipeline", "Organization Folder"); // excluding  until ambiguity is resolved
 
         //US_01.001.01 - New Item Page Accessibility
 
