@@ -57,7 +57,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
 
         for (int attempts = 0; attempts < 6; attempts++) {
             try {
-                disableButton = getDriver().findElement(By.xpath("//*[@id=\"disable-project\"]/button"));
+                disableButton = getDriver().findElement(By.cssSelector("#disable-project > button"));
                 break;
             } catch (StaleElementReferenceException e) {
 
