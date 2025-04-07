@@ -107,7 +107,7 @@ public class PipelineNumberTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipelineBasedOnExistingItemViaCopyFrom() throws InterruptedException {
+    public void testCreatePipelineBasedOnExistingItemViaCopyFrom() {
         final String existingProjectName = "ExistingPipeline";
         final String newProjectName = "NewPipeline";
 
