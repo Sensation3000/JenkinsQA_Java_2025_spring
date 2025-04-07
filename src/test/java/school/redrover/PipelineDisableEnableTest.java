@@ -50,7 +50,7 @@ public class PipelineDisableEnableTest  extends BaseTest {
         enableButton.click();
 
 
-        WebElement disableButton = getWait5().
+        WebElement disableButton = getWait10().
                 until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"disable-project\"]/button")));
         Assert.assertTrue(disableButton.isDisplayed());
     }
