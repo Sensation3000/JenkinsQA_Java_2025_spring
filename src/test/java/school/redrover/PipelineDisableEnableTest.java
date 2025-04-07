@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -49,9 +50,17 @@ public class PipelineDisableEnableTest  extends BaseTest {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"enable-project\"]/button")));
         enableButton.click();
 
+        WebElement disableButton = null;
 
-        WebElement disableButton = getWait10().
-                until(ExpectedConditions.presenceOfElementLocated(By.xpath("//form[@id=\"disable-project\"]")));
+        for (int attempts = 0; attempts < 10; attempts++) {
+            try {
+                disableButton = getDriver().findElement(By.cssSelector("#disable-project > button"));
+                break;
+            } catch (StaleElementReferenceException e) {
+
+            }
+
+        }
         Assert.assertTrue(disableButton.isDisplayed());
     }
 }
