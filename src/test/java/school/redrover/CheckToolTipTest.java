@@ -5,24 +5,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
-
 import static org.testng.Assert.assertEquals;
 
 public class CheckToolTipTest extends BaseTest {
-    private WebDriverWait wait5;
 
-    protected WebDriverWait getWait5() {
-        if (wait5 == null) {
-            wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        }
-        return wait5;
-    }
     @Test
     public void testToolTip() throws InterruptedException {
         Actions actions = new Actions(getDriver());
