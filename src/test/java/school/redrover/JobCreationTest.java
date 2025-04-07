@@ -40,7 +40,6 @@ public class JobCreationTest extends BaseTest {
             WebElement errorMessage = getWait5().until(ExpectedConditions
                     .visibilityOfElementLocated(By.id("itemname-invalid")));
             Assert.assertTrue(errorMessage.isDisplayed(), "Ошибка не отображается для имени: " + invalidName);
-
             TestUtils.gotoHomePage(this);
         }
     }
