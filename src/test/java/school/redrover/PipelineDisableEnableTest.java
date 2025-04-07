@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -40,11 +41,11 @@ public class PipelineDisableEnableTest  extends BaseTest {
         createPipeline();
         getDriver().findElement(By.xpath("//span[@title=\"Enable or disable the current project\"]"))
                 .click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']"))
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@name='Submit']")))
                 .click();
 
         WebElement enableButton;
-        for (int attempts = 0; attempts < 3; attempts++) {
+        for (int attempts = 0; attempts < 6; attempts++) {
             try {
                 enableButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
                 enableButton.click();
