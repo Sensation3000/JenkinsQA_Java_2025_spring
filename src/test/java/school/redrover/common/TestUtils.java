@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
@@ -117,5 +118,40 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(folderName);
         driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void createFreestyleProject(WebDriver driver, String projectName) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void openJobByName(WebDriver driver, String jobName) {
+        new Actions(driver).moveToElement(driver.findElement(By.xpath(String.format("//a[@href='job/%s/']/span", jobName))))
+                .click().perform();
+    }
+
+    public static void logout(BaseTest baseTest) {
+        WebElement logoutLink = waitForHomePageLoad(baseTest);
+        logoutLink.click();
+    }
+
+    public static void createNewUser(BaseTest baseTest, String userName, String password, String fullName, String email) {
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("Manage Jenkins"))).click();
+        baseTest.getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='securityRealm/']")))
+                .click();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Create User"))).click();
+        baseTest.getDriver().findElement(By.name("username")).sendKeys(userName);
+        baseTest.getDriver().findElement(By.name("password1")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("password2")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("fullname")).sendKeys(fullName);
+        baseTest.getDriver().findElement(By.name("email")).sendKeys(email);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
+
+        final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
+        baseTest.getWait5()
+                .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
     }
 }
