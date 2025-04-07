@@ -45,6 +45,7 @@ public class ManageJenkinsTabTest extends BaseTest {
         element.click();
 
         WebElement logoElement = getDriver().findElement(By.xpath("//img[@alt='logo']"));
+
         Assert.assertTrue(logoElement.isDisplayed(), "logo with alt='logo' is not displayed");
     }
 
@@ -58,6 +59,7 @@ public class ManageJenkinsTabTest extends BaseTest {
         element.click();
 
         WebElement versionElement = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
+
         Assert.assertTrue(versionElement.isDisplayed() , "About Jenkins' version  is not displayed");
     }
 }
