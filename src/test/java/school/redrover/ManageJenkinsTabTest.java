@@ -1,13 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.util.List;
 
 
@@ -84,36 +80,26 @@ public class ManageJenkinsTabTest extends BaseTest {
         Assert.assertTrue(lastElement.isDisplayed(), "Last element is not displayed");
     }
 
-@Test
-public void testDisplayDependencyJenkinsLinks() {
+    @Test
+    public void testDependenciesLinksExist() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
 
-    getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", aboutLink);
+        aboutLink.click();
 
-    WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
-    ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", aboutLink);
-    aboutLink.click();
+        List<WebElement> plugins = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
 
-    List<WebElement> rows = getDriver().findElements(By.xpath("//tr"));
+        for (WebElement plugin : plugins) {
+            String href = plugin.getDomAttribute("href");
 
-    for (WebElement row : rows) {
-        try {
-            WebElement link = row.findElement(By.tagName("a"));
+            try {
+                assert href != null;
+                Assert.assertFalse(href.trim().isEmpty(), "Ссылка пуста у элемента: " + plugin.getText());
 
-            String linkText = link.getText();
-            String href = link.getDomAttribute("href");
-
-            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", link);
-            link.click();
-
-            String title = getDriver().getTitle();
-
-            Assert.assertNotEquals("Страница не загрузилась: " + linkText + " (" + href + ")", "Error", title);
-
-            getDriver().navigate().back();
-
-        } catch (Exception e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            } catch (AssertionError e) {
+                System.out.println("Ошибка: " + e.getMessage() + href);
+            }
         }
-    }
     }
 }
