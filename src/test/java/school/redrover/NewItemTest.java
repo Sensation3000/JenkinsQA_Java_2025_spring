@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -11,10 +9,7 @@ import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
-
 import java.time.Duration;
-import java.util.List;
 
 
 public class NewItemTest extends BaseTest {
@@ -28,7 +23,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(header, "New Item");
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testCreateNewItemFreestyleProject() {
         String headerNewItem = "New Item1";
@@ -89,5 +85,46 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidCharacter));
         Assert.assertFalse(isSubmitButtonClickable);
+    }
+
+    @Test()
+    public void testCheckErrorMessageForSpecialCharacters() {
+        String[] specialCharacters = {"!","@","#","$","%","^","&","*","/","\\","|","[","]",";",":","?","<",">"};
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        for(String ch: specialCharacters) {
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(ch);
+            String alertMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(alertMessage,  String.format("» ‘%s’ is an unsafe character", ch));
+
+            driver.findElement(By.className("jenkins-input")).sendKeys("\b");
+        }
+    }
+
+    @Test
+    public void testCreatePipeline() {
+        final String pipelineName = "NewPipeline";
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(pipelineName);
+
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.documentElement.scrollHeight);");
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+
+        String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
+
+        Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
     }
 }
