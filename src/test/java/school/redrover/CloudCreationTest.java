@@ -22,7 +22,7 @@ public class CloudCreationTest extends BaseTest {
     final String pluginName = "Windows cloud";
 
     @Test
-    public void testCreateNewCloud() throws InterruptedException {
+    public void testCreateNewCloud() {
         WebDriver driver = getDriver();
         goToClouds(driver);
         installCloudPlugin(driver);
@@ -31,6 +31,7 @@ public class CloudCreationTest extends BaseTest {
         deleteCloud(driver);
         assertCloudDeleted(driver);
         uninstallCloudPlugin(driver);
+        goToClouds(driver);
     }
 
     private void goToClouds(WebDriver driver) {
@@ -52,7 +53,7 @@ public class CloudCreationTest extends BaseTest {
         this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Clouds"));
     }
 
-    private void installCloudPlugin(WebDriver driver) throws InterruptedException {
+    private void installCloudPlugin(WebDriver driver) {
         List<WebElement> buttons1 = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
         for (WebElement button : buttons1) {
             if (button.getText().equals("Install a plugin")) {
@@ -196,7 +197,7 @@ public class CloudCreationTest extends BaseTest {
         Assert.assertEquals(actualTexts, expectedTexts);
     }
 
-    private void uninstallCloudPlugin(WebDriver driver) throws InterruptedException {
+    private void uninstallCloudPlugin(WebDriver driver) {
         List<WebElement> buttons4 = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
         for (WebElement button : buttons4) {
             if (button.getText().equals("Install a plugin")) {
