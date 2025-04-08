@@ -67,6 +67,7 @@ public class ManageJenkinsTabTest extends BaseTest {
     public void testReviewListOfDependenciesAboutJenkinsPage() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
         WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
         TestUtils.scrollAndClickWithJS(getDriver(),element);
 
