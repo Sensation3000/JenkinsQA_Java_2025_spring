@@ -7,7 +7,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import java.util.List;
 
-
 public class ManageJenkinsTabTest extends BaseTest {
 
     @Test
