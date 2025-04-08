@@ -19,7 +19,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).sendKeys(Keys.ENTER);
         getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.className("jenkins-breadcrumbs__list-item"))).click();
+                By.id("jenkins-home-link"))).click();
 
         By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
         WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
