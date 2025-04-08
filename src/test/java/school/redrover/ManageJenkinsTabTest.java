@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
 import java.util.List;
 
 
@@ -66,16 +68,15 @@ public class ManageJenkinsTabTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
+        TestUtils.scrollAndClickWithJS(getDriver(),element);
 
         getDriver().findElement(By.xpath("//a[normalize-space()='\"Java Concurrency in Practice\" book annotations']"));
 
         WebElement middleElement = getDriver().findElement(By.xpath("//a[normalize-space()='args4j']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", middleElement);
+        TestUtils.scrollAndClickWithJS(getDriver(),middleElement);
 
         WebElement lastElement = getDriver().findElement(By.xpath("//a[normalize-space()='XStream Core']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", lastElement);
+        TestUtils.scrollAndClickWithJS(getDriver(),lastElement);
 
         Assert.assertTrue(lastElement.isDisplayed(), "Last element is not displayed");
     }
