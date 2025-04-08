@@ -5,10 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TestUtils {
@@ -58,14 +60,11 @@ public class TestUtils {
      * @example newItemCreate(this, " MyPipeline ", 2); // Creates a Pipeline
      */
     public static void newItemCreate(BaseTest baseTest, String itemName, int itemTypeId) {
-        String itemTypeName = getItemTypeName(itemTypeId);
-
         if (itemName.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
 
-        TestUtils.gotoHomePage(baseTest);
-
+        gotoHomePage(baseTest);
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -74,14 +73,14 @@ public class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
                 .sendKeys(itemName);
 
-        WebElement itemBox = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]"))));
-        scrollAndClickWithJS(baseTest.getDriver(), itemBox);
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
+                        (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
+                        (By.id("ok-button"))));
 
-        WebElement okButton = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button")));
-        scrollAndClickWithJS(baseTest.getDriver(), okButton);
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
     }
 
     private static String getItemTypeName(int typeId) {
@@ -96,12 +95,12 @@ public class TestUtils {
         };
     }
 
-    public static void uniqueItemNameCheck(WebDriver driver, String itemName) {
+    private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
-            List<WebElement> existingNameOfItems = driver.findElements
+            List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
             List<String> itemsNames = new ArrayList<>();
-            for (WebElement element : existingNameOfItems) {
+            for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
             for (String str : itemsNames) {
@@ -117,5 +116,74 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(folderName);
         driver.findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void createFreestyleProject(WebDriver driver, String projectName) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        driver.findElement(By.id("ok-button")).click();
+    }
+
+    public static void openJobByName(WebDriver driver, String jobName) {
+        new Actions(driver).moveToElement(driver.findElement(By.xpath(String.format("//a[@href='job/%s/']/span", jobName))))
+                .click().perform();
+    }
+
+    public static void logout(BaseTest baseTest) {
+        WebElement logoutLink = waitForHomePageLoad(baseTest);
+        logoutLink.click();
+    }
+
+    public static void createNewUser(BaseTest baseTest, String userName, String password, String fullName, String email) {
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("Manage Jenkins"))).click();
+        baseTest.getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='securityRealm/']")))
+                .click();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Create User"))).click();
+        baseTest.getDriver().findElement(By.name("username")).sendKeys(userName);
+        baseTest.getDriver().findElement(By.name("password1")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("password2")).sendKeys(password);
+        baseTest.getDriver().findElement(By.name("fullname")).sendKeys(fullName);
+        baseTest.getDriver().findElement(By.name("email")).sendKeys(email);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
+
+        final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
+        baseTest.getWait5()
+                .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
+
+    public static void createItemWithinFolder(BaseTest baseTest, String itemName, String folderName, int itemTypeId) {
+        gotoHomePage(baseTest);
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
+                .sendKeys(itemName);
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + getItemTypeName(itemTypeId) + "']"))).click();
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))));
+
+        gotoHomePage(baseTest);
+    }
+
+    public static WebElement waitUntilVisible5(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 5 seconds: " + element, e);
+        }
+    }
+
+    public static WebElement waitUntilVisible10(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 10 seconds: " + element, e);
+        }
     }
 }

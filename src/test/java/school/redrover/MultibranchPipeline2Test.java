@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 
 
 public class MultibranchPipeline2Test extends BaseTest {
-    @Ignore
+@Ignore
     @Test
     public void testCreate() {
         final String projectName = "First Multibranch Pipeline";
@@ -20,7 +20,7 @@ public class MultibranchPipeline2Test extends BaseTest {
         driver.findElement(By.id("name")).sendKeys(projectName);
         driver.findElement(By.xpath("//span[(.='Multibranch Pipeline')]")).click();
         driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.cssSelector("[name*='Submit']")).click();
+        driver.findElement(By.name("Submit")).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
 
         Assert.assertEquals(driver.findElement(By.cssSelector("a[class='jenkins-table__link model-link inside'] span")).getText(), projectName);
