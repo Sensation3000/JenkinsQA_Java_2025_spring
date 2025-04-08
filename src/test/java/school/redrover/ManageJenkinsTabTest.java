@@ -60,6 +60,25 @@ public class ManageJenkinsTabTest extends BaseTest {
 
         WebElement versionElement = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
 
-        Assert.assertTrue(versionElement.isDisplayed() , "About Jenkins' version  is not displayed");
+        Assert.assertTrue(versionElement.isDisplayed(), "About Jenkins' version  is not displayed");
+    }
+
+    @Test
+    public void testReviewListOfDependenciesAboutJenkinsPage() {
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        element.click();
+
+        getDriver().findElement(By.xpath("//a[normalize-space()='\"Java Concurrency in Practice\" book annotations']"));
+
+        WebElement mediaElement = getDriver().findElement(By.xpath("//a[normalize-space()='args4j']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", mediaElement);
+
+        WebElement lastElement = getDriver().findElement(By.xpath("//a[normalize-space()='XStream Core']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", lastElement);
+
+        Assert.assertTrue(lastElement.isDisplayed(), "Last element is not displayed");
     }
 }

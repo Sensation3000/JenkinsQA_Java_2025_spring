@@ -63,7 +63,7 @@ public class TestUtils {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -74,12 +74,12 @@ public class TestUtils {
 
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
+                        (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button"))));
+                        (By.id("ok-button"))));
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
     }
 
     private static String getItemTypeName(int typeId) {
@@ -150,5 +150,21 @@ public class TestUtils {
         final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
         baseTest.getWait5()
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
+
+    public static WebElement waitUntilVisible5(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 5 seconds: " + element, e);
+        }
+    }
+
+    public static WebElement waitUntilVisible10(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 10 seconds: " + element, e);
+        }
     }
 }
