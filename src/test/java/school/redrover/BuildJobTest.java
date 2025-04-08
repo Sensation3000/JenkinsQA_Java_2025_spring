@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -11,7 +12,6 @@ import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
@@ -35,5 +35,17 @@ public class BuildJobTest extends BaseTest {
         String out = getDriver().findElement(By.id("out")).getText();
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
+    }
+
+    @Test
+    public void testDeleteBuild () {
+        testBuildJob();
+        getDriver().findElement(By.xpath("//a[@href='/job/Test%20item/lastBuild/confirmDelete']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/Test%20item/changes']")).click();
+
+        String infoBuilds = getDriver().findElement(By.id("main-panel")).getText();
+
+        assertTrue("Build was not deleted successfully", infoBuilds.contains("No builds"));
     }
 }
