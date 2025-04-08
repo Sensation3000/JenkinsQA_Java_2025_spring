@@ -32,7 +32,7 @@ public class BuildJobTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
-        String out = getDriver().findElement(By.id("out")).getText();
+        String out = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
     }
@@ -44,7 +44,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/Test%20item/changes']")).click();
 
-        String infoBuilds = getDriver().findElement(By.id("main-panel")).getText();
+        String infoBuilds = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel"))).getText();
 
         assertTrue("Build was not deleted successfully", infoBuilds.contains("No builds"));
     }
