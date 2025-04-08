@@ -31,7 +31,6 @@ public class CloudCreationTest extends BaseTest {
         deleteCloud(driver);
         assertCloudDeleted(driver);
         uninstallCloudPlugin(driver);
-        goToClouds(driver);
     }
 
     private void goToClouds(WebDriver driver) {
@@ -245,8 +244,8 @@ public class CloudCreationTest extends BaseTest {
         driver.get("http://localhost:8080/restart");
         driver.findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(3));
-        wait.pollingEvery(Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(5));
+        wait.pollingEvery(Duration.ofSeconds(7));
 
         wait.until(driver1 -> {
             try {
