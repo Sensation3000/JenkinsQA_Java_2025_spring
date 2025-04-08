@@ -12,7 +12,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("name"))).sendKeys(projectName);
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
     }
 
     @Test
