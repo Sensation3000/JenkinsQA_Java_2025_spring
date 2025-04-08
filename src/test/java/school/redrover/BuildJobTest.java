@@ -1,9 +1,6 @@
 package school.redrover;
-
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -22,8 +19,11 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).sendKeys(Keys.ENTER);
         TestUtils.gotoHomePage(this);
-        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(
-                By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName))));
+
+        By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
+        WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
+        TestUtils.moveAndClickWithJS(getDriver(), button);
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]"
                         .formatted("Build Now")))).click();
@@ -32,7 +32,7 @@ public class BuildJobTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
-        String out = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
+        String out = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
     }
