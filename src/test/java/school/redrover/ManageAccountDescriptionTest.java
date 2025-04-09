@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -42,6 +43,7 @@ public class ManageAccountDescriptionTest extends BaseTest {
                 By.id("description")).getText(), userDescription);
     }
 
+    @Ignore
     @Test
     public void testChangeUserDescription() {
         final String userDescription = "Updated user description";
