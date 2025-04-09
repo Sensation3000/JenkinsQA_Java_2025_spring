@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.UUID;
 
-public class Folder2Test extends BaseTest {
+public class ATNewItemFolder extends BaseTest {
 
     @Test
     public void testCreate() {
