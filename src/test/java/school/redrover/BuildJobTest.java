@@ -33,15 +33,14 @@ public class BuildJobTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
-         String expectedText = "Finished: SUCCESS";
-        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("out"), expectedText));
 
+        String expectedText = "Finished: SUCCESS";
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("out"), expectedText));
         String actualText = getDriver().findElement(By.id("out")).getText();
         assertTrue("В Console Output отсутствует запись об успешной сборке", actualText.contains(expectedText));
-
     }
 
-    @Test (invocationCount = 50)
+    @Test
     public void testDeleteBuild () {
         testBuildJob();
         getDriver().findElement(By.xpath("//a[@href='/job/Test%20item/lastBuild/confirmDelete']")).click();
