@@ -81,7 +81,6 @@ public class MultibranchPipelineTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='jenkins-name-icon']"))).click();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
-
         JavascriptExecutor js2 = (JavascriptExecutor) getDriver();
         js2.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
