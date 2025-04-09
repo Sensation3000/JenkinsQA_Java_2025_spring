@@ -123,4 +123,31 @@ public class Folder2Test extends BaseTest {
         Assert.assertEquals(firstItemName, itemName);
         Assert.assertEquals(secondItemName, itemName);
     }
+
+    @Test
+    public void testAddItem() {
+        final String folderName = "TestFolder";
+        final String itemName = "ProjectX";
+
+        TestUtils.newItemCreate(this, folderName, 4);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
+                .sendKeys(itemName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='Freestyle project']"))).click();
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))));
+        TestUtils.gotoHomePage(this);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//span[text()='" + folderName + "']"))).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//td/a/span"))).getText(), itemName);
+    }
 }
