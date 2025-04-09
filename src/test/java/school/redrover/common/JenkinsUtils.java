@@ -213,7 +213,7 @@ public final class JenkinsUtils {
         JenkinsUtils.resetTheme();
     }
 
-    public static void login(WebDriver driver) {
+    static void login(WebDriver driver) {
         driver.findElement(By.name("j_username")).sendKeys(ProjectUtils.getUserName());
         driver.findElement(By.name("j_password")).sendKeys(ProjectUtils.getPassword());
         driver.findElement(By.name("Submit")).click();
