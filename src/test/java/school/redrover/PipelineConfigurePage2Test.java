@@ -59,7 +59,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isDisplayed());
 
     }
-    @Ignore
+
     @Test(testName = "TC_03.001.04.2 > Verify 'Build Now' button state when project is disabled")
     public void testVerifyPipelineBuildNowButtonDisabled() {
         WebDriver driver = getDriver();
