@@ -1,12 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 
 public class CheckNewItemCopyFromTest extends BaseTest {
 
@@ -21,9 +22,10 @@ public class CheckNewItemCopyFromTest extends BaseTest {
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        getWait10();
-        TestUtils.gotoHomePage(this);
-        getWait5();
+
+        WebElement homePage = getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", homePage);
 
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
         driver.findElement(By.id("name")).sendKeys(input2);
@@ -51,9 +53,10 @@ public class CheckNewItemCopyFromTest extends BaseTest {
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        getWait5();
-        TestUtils.gotoHomePage(this);
-        getWait5();
+
+        WebElement homePage = getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", homePage);
 
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
         driver.findElement(By.id("name")).sendKeys(input2);
