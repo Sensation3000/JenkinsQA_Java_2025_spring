@@ -43,7 +43,7 @@ public class ManageAccountDescriptionTest extends BaseTest {
                 By.id("description")).getText(), userDescription);
     }
 
-    @Ignore
+    @Ignore //Error:    ManageAccountDescriptionTest.testChangeUserDescription:58 » StaleElementReference stale element reference: stale element not found
     @Test
     public void testChangeUserDescription() {
         final String userDescription = "Updated user description";
