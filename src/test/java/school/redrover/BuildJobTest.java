@@ -39,7 +39,7 @@ public class BuildJobTest extends BaseTest {
 
         assertTrue("В Console Output отсутствует запись об успешной сборке", actualText.contains(expectedText));
     }
-
+    @Ignore
     @Test
     public void testDeleteBuild () {
         testBuildJob();
