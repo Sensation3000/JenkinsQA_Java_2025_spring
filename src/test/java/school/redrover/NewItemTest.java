@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -126,5 +127,28 @@ public class NewItemTest extends BaseTest {
         String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
 
         Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
+    }
+
+    @DataProvider(name = "projectTypes")
+    public Object[][] projectTypes() {
+        return new Object[][]{
+                {"Freestyle project"},
+                {"Pipeline"},
+                {"Multi-configuration project"},
+                {"Folder"},
+                {"Multibranch Pipeline"},
+                {"Organization Folder"}
+        };
+    }
+
+    @Test(dataProvider = "projectTypes")
+    public void testOKButtonIsDisabledIfCreatingProjectWithEmptyName(String projectType) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='" + projectType + "']"))).click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertFalse(okButton.isEnabled(), "Expected OK button to be disabled.");
     }
 }
