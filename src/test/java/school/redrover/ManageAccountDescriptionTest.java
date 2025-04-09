@@ -42,6 +42,7 @@ public class ManageAccountDescriptionTest extends BaseTest {
         Assert.assertEquals(driver.findElement(
                 By.id("description")).getText(), userDescription);
     }
+
     @Ignore //Error:    ManageAccountDescriptionTest.testChangeUserDescription:58 » StaleElementReference stale element reference: stale element not found
     @Test
     public void testChangeUserDescription() {
