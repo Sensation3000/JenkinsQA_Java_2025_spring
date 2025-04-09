@@ -24,16 +24,12 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
     }
     
     @Test
-    public void testAvailableBuildNowOnProjectPage() {
+       public void testAvailableBuildNowOnProjectPage() {
         WebDriver driver = getDriver();
-        
+
         createNewItemFrestyle(driver);
-        
-        TestUtils.gotoHomePage(this);
-        
-        driver.findElement(By.xpath("//span[text()='" + name_Freestyle_Project + "']")).click();
+
         driver.findElement(By.xpath(  "//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]")).click();
-       
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
