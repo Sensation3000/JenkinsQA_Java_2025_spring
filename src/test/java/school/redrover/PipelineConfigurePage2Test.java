@@ -114,7 +114,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         moveAndClickWithSelenium(driver,dropdownMenu);
 
         WebElement buildNowOption = getWait5().until(ExpectedConditions.presenceOfElementLocated(By
-                .xpath("//button[contains(., 'Build Now')]")));
+                .xpath("//button[normalize-space()='Build Now']")));
 
         Assert.assertTrue(buildNowOption.isDisplayed());
     }
