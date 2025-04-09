@@ -140,7 +140,7 @@ public class GroupCodeCraftTest extends BaseTest {
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//div[@class='input-validation-message']")));
         getDriver().findElement(By.id("name")).sendKeys(nameItem);
-
+        Thread.sleep(3000);
         WebElement okButton = getDriver().findElement(By.xpath(
                 "//button[text()='OK']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
@@ -218,5 +218,43 @@ public class GroupCodeCraftTest extends BaseTest {
 
         assertNotNull(moveToElement);
         assertNull(moveOutElement);
+    }
+
+    @Test
+    public void testNewItemFreestyleProject() throws InterruptedException {
+        final String nameItem1 = "New test ssN ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
+        final String nameItem2 = "New Freestyle Project ssV ~()_+}{`-=.' 110.01.9";
+        final String description = "New test Description ssV ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
+
+        getDriver().findElement(By.xpath(
+                "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+
+        getDriver().findElement(By.xpath(
+                "//li[@class='hudson_model_FreeStyleProject' and @aria-checked='false']")).click();
+
+        WebElement fieldItem = getDriver().findElement(By.id("name"));
+        fieldItem.sendKeys(nameItem1);
+        getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@id='itemname-invalid']")));
+        fieldItem.clear();
+        fieldItem.sendKeys(nameItem2);
+
+        WebElement okButton = getDriver().findElement(By.xpath(
+                "//button[text()='OK']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
+        okButton.click();
+
+        getWait10().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//textarea[@name='description']"))).sendKeys(description);
+
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[@name='Submit']"))));
+
+        Assert.assertEquals(getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@class='jenkins-app-bar__content jenkins-build-caption']"))).getText(), nameItem2);
     }
 }
