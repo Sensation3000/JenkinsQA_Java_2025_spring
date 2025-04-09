@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class TestUtils {
@@ -99,14 +98,15 @@ public class TestUtils {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
             List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
+
             List<String> itemsNames = new ArrayList<>();
+
             for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
-            for (String str : itemsNames) {
-                if (str.equals(itemName)) {
-                    throw new IllegalArgumentException("Name '" + itemName + "' already exists");
-                }
+
+            if (itemsNames.contains(itemName)) {
+                throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
     }
@@ -151,24 +151,6 @@ public class TestUtils {
         final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
         baseTest.getWait5()
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
-    }
-
-    public static void createItemWithinFolder(BaseTest baseTest, String itemName, String folderName, int itemTypeId) {
-        gotoHomePage(baseTest);
-
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//span[text()='" + folderName + "']/parent::a"))).click();
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
-
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
-                .sendKeys(itemName);
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//span[text()='" + getItemTypeName(itemTypeId) + "']"))).click();
-        scrollAndClickWithJS(baseTest.getDriver(),
-                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))));
-
-        gotoHomePage(baseTest);
     }
 
     public static WebElement waitUntilVisible5(BaseTest baseTest, By element) {
