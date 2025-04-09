@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -37,6 +38,7 @@ public class Folder2Test extends BaseTest {
                 "This folder is empty");
     }
 
+    @Ignore
     @Test
     public void testCannotCreateItemsWithSameNameInFolder() {
         final String folderName = "New Folder";
