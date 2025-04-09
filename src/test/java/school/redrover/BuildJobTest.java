@@ -1,25 +1,13 @@
 package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-
-import java.time.Duration;
-
 import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
-    private WebDriverWait wait20;
-    private WebDriverWait getWait20() {
-        if (wait20 == null) {
-            wait20 = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
-        }
-        return wait20;
-    }
-    @Ignore
+
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
@@ -29,8 +17,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@href='/']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))).click();
 
         By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
         WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
@@ -44,11 +31,14 @@ public class BuildJobTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
-        String out = getWait20().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
 
-        assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
+        String expectedText = "Finished: SUCCESS";
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("out"), expectedText));
+        String actualText = getDriver().findElement(By.id("out")).getText();
+
+        assertTrue("В Console Output отсутствует запись об успешной сборке", actualText.contains(expectedText));
     }
-    @Ignore
+
     @Test
     public void testDeleteBuild () {
         testBuildJob();
