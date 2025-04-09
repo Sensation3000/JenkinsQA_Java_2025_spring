@@ -97,6 +97,7 @@ public class CheckErrorsForNewItemTest extends BaseTest {
         Assert.assertFalse(
                 driver.findElement(By.id("ok-button")).isEnabled());
     }
+
     @Ignore//CheckErrorsForNewItemTest.doubleError:118 » Timeout Expected condition failed: waiting for visibility of element located by By.id: itemname-invalid (tried for 5 second(s) with 500 milliseconds interval)
     @Test
     public void doubleError() {
