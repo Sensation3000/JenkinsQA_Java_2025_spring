@@ -5,13 +5,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.JenkinsUtils;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +23,11 @@ public class CloudCreationTest extends BaseTest {
         WebDriver driver = getDriver();
         goToClouds(driver);
         installCloudPlugin(driver);
+        goToClouds(driver);
         createNewCloud(driver);
         assertCloudCreated(driver);
         deleteCloud(driver);
         assertCloudDeleted(driver);
-        uninstallCloudPlugin(driver);
     }
 
     private void goToClouds(WebDriver driver) {
@@ -109,25 +106,14 @@ public class CloudCreationTest extends BaseTest {
                 By.cssSelector("[id^='status']"), "Success"
         ));
 
-        driver.get("http://localhost:8080/restart");
-        driver.findElement(By.name("Submit")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(3));
-        wait.pollingEvery(Duration.ofSeconds(5));
-
-        wait.until(driver1 -> {
-            try {
-                driver1.navigate().to("http://localhost:8080");
-
-                if (driver1.getCurrentUrl().contains("login")) {
-                    JenkinsUtils.login(driver1);
-                }
-
-                return driver1.getPageSource().contains("Dashboard");
-            } catch (Exception e) {
-                return false;
+        List<WebElement> buttons = driver.findElements(By.cssSelector(".jenkins-breadcrumbs__list-item a"));
+        for (WebElement button : buttons) {
+            if (button.getText().equals("Dashboard")) {
+                button.click();
+                break;
             }
-        });
+        }
+        this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Welcome to Jenkins!"));
     }
 
     private void createNewCloud(WebDriver driver) {
@@ -161,9 +147,9 @@ public class CloudCreationTest extends BaseTest {
     }
 
     private void assertCloudCreated(WebDriver driver) {
-        this.getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href=\"/cloud/CloudCreationTestName/\"]")));
+        this.getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href=\"/manage/cloud/CloudCreationTestName/\"]")));
         Assert.assertEquals(
-                driver.findElement(By.xpath("//a[@href=\"/cloud/CloudCreationTestName/\"]")).getText(),
+                driver.findElement(By.xpath("//a[@href=\"/manage/cloud/CloudCreationTestName/\"]")).getText(),
                 projectName);
 
         driver.findElement(By.cssSelector(".jenkins-table__link")).click();
@@ -194,71 +180,5 @@ public class CloudCreationTest extends BaseTest {
         List<String> expectedTexts = Arrays.asList("New cloud", "Install a plugin", "Learn more about distributed builds");
 
         Assert.assertEquals(actualTexts, expectedTexts);
-    }
-
-    private void uninstallCloudPlugin(WebDriver driver) {
-        List<WebElement> buttons4 = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
-        for (WebElement button : buttons4) {
-            if (button.getText().equals("Install a plugin")) {
-                button.click();
-                break;
-            }
-        }
-        this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Plugins"));
-        List<WebElement> buttons1 = driver.findElements(By.cssSelector(".task .task-link-wrapper a"));
-        for (WebElement button : buttons1) {
-            if (button.getText().equals("Installed plugins")) {
-                button.click();
-                break;
-            }
-        }
-        this.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-search--app-bar input")));
-        WebElement searchInput = driver.findElement(By.cssSelector(".jenkins-search--app-bar input"));
-        searchInput.clear();
-        searchInput.sendKeys(pluginName);
-        searchInput.sendKeys(Keys.ENTER);
-        driver.navigate().refresh();
-
-        int timesTried = 0;
-        boolean uninstallBtnFound = false;
-        while (!uninstallBtnFound && timesTried < 10) {
-            this.getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//a[@href='https://plugins.jenkins.io/windows-cloud']")
-            ));
-
-            List<WebElement> uninstallBtns = driver.findElements(By.xpath("//button[@title=\"Uninstall " + pluginName + " plugin\"]"));
-
-            for (WebElement uninstallBtn : uninstallBtns) {
-                this.getWait10().until(ExpectedConditions.elementToBeClickable(uninstallBtn));
-                uninstallBtn.click();
-                uninstallBtnFound = true;
-                break;
-            }
-            timesTried++;
-        }
-        if (!uninstallBtnFound) {
-            Assert.fail("Wasn't able to find the uninstall button");
-        }
-        driver.findElement(By.xpath("//button[@data-id=\"ok\"]")).click();
-
-        driver.get("http://localhost:8080/restart");
-        driver.findElement(By.name("Submit")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(5));
-        wait.pollingEvery(Duration.ofSeconds(7));
-
-        wait.until(driver1 -> {
-            try {
-                driver1.navigate().to("http://localhost:8080");
-
-                if (driver1.getCurrentUrl().contains("login")) {
-                    JenkinsUtils.login(driver1);
-                }
-
-                return driver1.getPageSource().contains("Dashboard");
-            } catch (Exception e) {
-                return false;
-            }
-        });
     }
 }
