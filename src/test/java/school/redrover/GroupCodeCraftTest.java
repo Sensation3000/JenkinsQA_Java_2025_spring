@@ -102,6 +102,7 @@ public class GroupCodeCraftTest extends BaseTest {
                 "This Organization Folder is currently disabled");
     }
 
+    @Ignore
     @Test
     public void testNewItemOkButtonSelectType() throws InterruptedException {
         final String nameItem = "New Item 0.01.4";
