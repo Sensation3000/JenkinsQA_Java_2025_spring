@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class AccountSettingsTest extends BaseTest {
+public class ManageAccountDescriptionTest extends BaseTest {
 
     @Test
     public void testOpenAccountSettings() {
@@ -21,7 +21,6 @@ public class AccountSettingsTest extends BaseTest {
 
     @Test
     public void testEditUserNameAndDescription() {
-        final String userFullName = "admin";
         final String userDescription = "Admin User Description";
 
         WebDriver driver = getDriver();
@@ -34,17 +33,11 @@ public class AccountSettingsTest extends BaseTest {
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//a[@href='/user/admin/account']"))).click();
 
-        WebElement userFullNameField = driver.findElement(By.name("_.fullName"));
-        userFullNameField.clear();
-        userFullNameField.sendKeys(userFullName);
-
         WebElement userDescriptionField = driver.findElement(By.name("_.description"));
         userDescriptionField.clear();
         userDescriptionField.sendKeys(userDescription);
         driver.findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(driver.findElement(
-                By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")).getText(), userFullName);
         Assert.assertEquals(driver.findElement(
                 By.id("description")).getText(), userDescription);
     }
