@@ -43,8 +43,6 @@ public class AccountSettingsTest extends BaseTest {
         userDescriptionField.sendKeys(userDescription);
         driver.findElement(By.name("Submit")).click();
 
-        //*[@id="main-panel"]/div[1]/div[1]/h1
-
         Assert.assertEquals(driver.findElement(
                 By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")).getText(), userFullName);
         Assert.assertEquals(driver.findElement(
