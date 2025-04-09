@@ -1,22 +1,13 @@
 package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import java.time.Duration;
 import static org.testng.AssertJUnit.assertTrue;
 
 public class BuildJobTest extends BaseTest {
-    private WebDriverWait wait20;
-    private WebDriverWait getWait20() {
-        if (wait20 == null) {
-            wait20 = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
-        }
-        return wait20;
-    }
-    
+
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
@@ -42,12 +33,18 @@ public class BuildJobTest extends BaseTest {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
-        String out = getWait20().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
+       // String out = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText();
 
-        assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
+      //  assertTrue("В Console Output отсутствует запись об успешной сборке", out.contains("Finished: SUCCESS"));
+        String expectedText = "Finished: SUCCESS";
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("out"), expectedText));
+
+        String actualText = getDriver().findElement(By.id("out")).getText();
+        assertTrue("В Console Output отсутствует запись об успешной сборке", actualText.contains(expectedText));
+
     }
 
-    @Test
+    @Test (invocationCount = 50)
     public void testDeleteBuild () {
         testBuildJob();
         getDriver().findElement(By.xpath("//a[@href='/job/Test%20item/lastBuild/confirmDelete']")).click();
