@@ -86,7 +86,11 @@ public class SunflowerTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).click();
+
         getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
         getDriver().findElement(By.name("name")).sendKeys("Equal name");
 
@@ -95,6 +99,5 @@ public class SunflowerTest extends BaseTest {
         Assert.assertEquals(
                 errorMessage.getText(),
                 "» A job already exists with the name ‘Equal name’");
-
     }
 }
