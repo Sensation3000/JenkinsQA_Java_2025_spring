@@ -59,14 +59,11 @@ public class TestUtils {
      * @example newItemCreate(this, " MyPipeline ", 2); // Creates a Pipeline
      */
     public static void newItemCreate(BaseTest baseTest, String itemName, int itemTypeId) {
-        String itemTypeName = getItemTypeName(itemTypeId);
-
         if (itemName.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
 
-        TestUtils.gotoHomePage(baseTest);
-
+        gotoHomePage(baseTest);
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -75,14 +72,14 @@ public class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
                 .sendKeys(itemName);
 
-        WebElement itemBox = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + itemTypeName + "')]"))));
-        scrollAndClickWithJS(baseTest.getDriver(), itemBox);
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
+                        (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
+        scrollAndClickWithJS(baseTest.getDriver(),
+                baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
+                        (By.id("ok-button"))));
 
-        WebElement okButton = baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button")));
-        scrollAndClickWithJS(baseTest.getDriver(), okButton);
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
     }
 
     private static String getItemTypeName(int typeId) {
@@ -97,18 +94,19 @@ public class TestUtils {
         };
     }
 
-    public static void uniqueItemNameCheck(WebDriver driver, String itemName) {
+    private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
-            List<WebElement> existingNameOfItems = driver.findElements
+            List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
+
             List<String> itemsNames = new ArrayList<>();
-            for (WebElement element : existingNameOfItems) {
+
+            for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
-            for (String str : itemsNames) {
-                if (str.equals(itemName)) {
-                    throw new IllegalArgumentException("Name '" + itemName + "' already exists");
-                }
+
+            if (itemsNames.contains(itemName)) {
+                throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
     }
@@ -153,5 +151,21 @@ public class TestUtils {
         final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
         baseTest.getWait5()
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
+
+    public static WebElement waitUntilVisible5(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 5 seconds: " + element, e);
+        }
+    }
+
+    public static WebElement waitUntilVisible10(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 10 seconds: " + element, e);
+        }
     }
 }
