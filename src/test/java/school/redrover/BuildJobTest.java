@@ -17,9 +17,11 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(jobName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).sendKeys(Keys.ENTER);
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.id("jenkins-home-link"))).click();
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement homeLink = getWait10().until(
+                ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")))
+        );
+        homeLink.click();
 
         By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
         WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
