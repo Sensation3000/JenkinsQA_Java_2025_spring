@@ -2,13 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 
-public class CheckErrorsForNewFreestyleProjectTest extends BaseTest {
+public class CheckErrorsForNewItemTest extends BaseTest {
 
     final String red = "rgba(230, 0, 31, 1)";
 
@@ -26,6 +29,8 @@ public class CheckErrorsForNewFreestyleProjectTest extends BaseTest {
                 driver.findElement(By.id("itemname-required")).getText(), errorText);
         Assert.assertEquals(
                 driver.findElement(By.cssSelector("#itemname-required")).getCssValue("color"), red);
+        Assert.assertFalse(
+                driver.findElement(By.id("ok-button")).isEnabled());
     }
 
     @Test
@@ -42,6 +47,8 @@ public class CheckErrorsForNewFreestyleProjectTest extends BaseTest {
                 driver.findElement(By.id("itemname-invalid")).getText(), errorText);
         Assert.assertEquals(
                 driver.findElement(By.cssSelector("#itemname-invalid")).getCssValue("color"), red);
+        Assert.assertFalse(
+                driver.findElement(By.id("ok-button")).isEnabled());
     }
 
     @Test
@@ -60,6 +67,52 @@ public class CheckErrorsForNewFreestyleProjectTest extends BaseTest {
         }
 
         final String errorText = "» ‘" + ch  + "’ is an unsafe character";
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        driver.findElement(By.id("name")).sendKeys(input);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+
+        Assert.assertEquals(
+                driver.findElement(By.id("itemname-invalid")).getText(), errorText);
+        Assert.assertEquals(
+                driver.findElement(By.cssSelector("#itemname-invalid")).getCssValue("color"), red);
+        Assert.assertFalse(
+                driver.findElement(By.id("ok-button")).isEnabled());
+    }
+
+    @Test
+    public void dotEndError() {
+        WebDriver driver = getDriver();
+        final String errorText = "» A name cannot end with ‘.’";
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        driver.findElement(By.id("name")).sendKeys("gfrth546546.");
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+
+        Assert.assertEquals(
+                driver.findElement(By.id("itemname-invalid")).getText(), errorText);
+        Assert.assertEquals(
+                driver.findElement(By.cssSelector("#itemname-invalid")).getCssValue("color"), red);
+        Assert.assertFalse(
+                driver.findElement(By.id("ok-button")).isEnabled());
+    }
+
+    @Test
+    public void doubleError() {
+        WebDriver driver = getDriver();
+        final String input = "gfrth666вапвп(9)";
+        final String errorText = "» A job already exists with the name ‘" + input +"’";
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        driver.findElement(By.id("name")).sendKeys(input);
+        driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
+        getWait5();
+        TestUtils.gotoHomePage(this);
+        getWait5();
 
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
         driver.findElement(By.id("name")).sendKeys(input);
