@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
@@ -31,6 +32,30 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String actualDescription = getDriver().findElement(By.id("view-message")).getText();
         Assert.assertEquals(actualDescription, expectedDescription);
+    }
+
+    @Test
+    public void testCreateWithSpecialSymbols() {
+        String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+
+        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
+
+        for (String specChar : specialCharacters) {
+            nameField.clear();
+            nameField.sendKeys("Mult" + specChar + "branch");
+
+            WebElement actualMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
+                    xpath("//div[@id='itemname-invalid']")));
+
+            String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
+            Assert.assertEquals(actualMessage.getText(), expectMessage, "Message is not displayed");
+        }
     }
 
     @Ignore
