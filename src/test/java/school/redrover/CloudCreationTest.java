@@ -99,6 +99,7 @@ public class CloudCreationTest extends BaseTest {
         }
 
         driver.findElement(By.id("button-install")).click();
+        driver.navigate().refresh();
         this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(
                 By.cssSelector("#main-panel > h1"), "Download progress"
         ));
