@@ -47,8 +47,10 @@ public class ManageAccountDescriptionTest extends BaseTest {
         final String userDescription = "Updated user description";
 
         getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).clear();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.id("description-link")))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.name("description")))).clear();
         getDriver().findElement(By.name("description")).sendKeys(userDescription);
         getDriver().findElement(By.name("Submit")).click();
 
