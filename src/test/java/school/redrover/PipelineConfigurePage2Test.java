@@ -102,7 +102,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.name("Submit")).click();
 
         WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[normalize-space()='Dashboard']")));
+                .xpath("//a[@href='/' and @class='model-link']")));
         moveAndClickWithJS(driver, dashboardLink);
 
         WebElement pipelineItem = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
@@ -111,9 +111,9 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         WebElement dropdownMenu = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//tr[@id='job_Test Pipeline item']//button[contains(@class, 'jenkins-menu-dropdown-chevron')]")));
-        moveAndClickWithSelenium(driver,dropdownMenu);
+        moveAndClickWithJS(driver,dropdownMenu);
 
-        WebElement buildNowOption = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement buildNowOption = getWait5().until(ExpectedConditions.presenceOfElementLocated(By
                 .xpath("//button[normalize-space()='Build Now']")));
 
         Assert.assertTrue(buildNowOption.isDisplayed());
