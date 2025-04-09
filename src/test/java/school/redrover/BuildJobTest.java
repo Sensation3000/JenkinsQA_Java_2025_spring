@@ -16,7 +16,7 @@ public class BuildJobTest extends BaseTest {
         }
         return wait20;
     }
-
+    
     @Test
     public void testBuildJob() {
         final String jobName = "Test item";
