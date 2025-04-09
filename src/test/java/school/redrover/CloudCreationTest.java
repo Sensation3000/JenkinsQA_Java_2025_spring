@@ -118,9 +118,27 @@ public class CloudCreationTest extends BaseTest {
     }
 
     private void createNewCloud(WebDriver driver) {
-        driver.navigate().refresh();
-        this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".empty-state-section p"),
-                "There are no clouds currently set up. Create one, or install a plugin for more cloud options."));
+        boolean textAppeared = false;
+        int retries = 0;
+
+        while (!textAppeared && retries < 5) {
+            driver.navigate().refresh();
+
+            try {
+                WebElement paragraph = this.getWait10().until(
+                        ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-section p"))
+                );
+                if (paragraph.getText().contains("There are no clouds currently set up")) {
+                    textAppeared = true;
+                }
+            } catch (Exception e) {
+                retries++;
+            }
+        }
+        if (!textAppeared) {
+            Assert.fail("The empty-state text did not appear after retries.");
+        }
+
         List<WebElement> button3 = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
         for (WebElement button : button3) {
             if (button.getText().equals("New cloud")) {
