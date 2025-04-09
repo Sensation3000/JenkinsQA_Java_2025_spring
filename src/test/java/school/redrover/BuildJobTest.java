@@ -17,9 +17,7 @@ public class BuildJobTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-        WebElement homeLink = getWait10().until(
-                ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))));
-        homeLink.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))).click();
 
         By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
         WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
@@ -37,6 +35,7 @@ public class BuildJobTest extends BaseTest {
         String expectedText = "Finished: SUCCESS";
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.id("out"), expectedText));
         String actualText = getDriver().findElement(By.id("out")).getText();
+
         assertTrue("В Console Output отсутствует запись об успешной сборке", actualText.contains(expectedText));
     }
 
