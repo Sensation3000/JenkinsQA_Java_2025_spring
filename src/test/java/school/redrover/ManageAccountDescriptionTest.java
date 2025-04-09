@@ -42,7 +42,7 @@ public class ManageAccountDescriptionTest extends BaseTest {
         Assert.assertEquals(driver.findElement(
                 By.id("description")).getText(), userDescription);
     }
-    @Ignore //Error:    ManageAccountDescriptionTest.testChangeUserDescription:58 » StaleElementReference stale element reference: stale element not found
+
     @Test
     public void testChangeUserDescription() {
         final String userDescription = "Updated user description";
@@ -55,9 +55,12 @@ public class ManageAccountDescriptionTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(userDescription);
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 getDriver().findElement(By.name("Submit")))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")));
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(
                 getDriver().findElement(By.id("description")))).getText(), userDescription);
+        Assert.assertEquals(
+                getDriver().findElement(By.id("description")).getText(), userDescription);
     }
 
     @Test
