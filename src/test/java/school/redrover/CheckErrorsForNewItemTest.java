@@ -108,7 +108,7 @@ public class CheckErrorsForNewItemTest extends BaseTest {
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        getWait5();
+        getWait10();
         TestUtils.gotoHomePage(this);
         getWait5();
 
