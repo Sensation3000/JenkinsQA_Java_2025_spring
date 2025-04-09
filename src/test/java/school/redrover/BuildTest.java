@@ -54,6 +54,6 @@ public class BuildTest extends BaseTest {
         Assert.assertEquals(builds.size(), 1);
         Assert.assertTrue(buildOneText.contains("Today"));
         Assert.assertTrue(buildOneText.contains("#1"));
-        Assert.assertTrue(startTime - endTime <= 60_000);
+        Assert.assertTrue(endTime - startTime <= 60_000);
     }
 }
