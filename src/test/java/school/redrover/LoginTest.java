@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -27,13 +26,6 @@ public class LoginTest extends BaseTest {
     private String userName;
     private String password;
 
-
-    @BeforeMethod(alwaysRun = true)
-    private void beforeMethod() {
-        WebElement logoutLink = TestUtils.waitForHomePageLoad(this);
-        logoutLink.click();
-    }
-
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
     @Target({METHOD, TYPE})
     private @interface SkipConfiguration {
@@ -46,7 +38,8 @@ public class LoginTest extends BaseTest {
             ProjectUtils.log("Skipping AfterMethod for " + method.getName());
             ProjectUtils.log("Logging into Jenkins.");
             setCredentials();
-            loginToJenkins();
+            loginToJenkins(this.userName, this.password);
+            TestUtils.waitForHomePageLoad(this);
         }
     }
 
@@ -75,14 +68,8 @@ public class LoginTest extends BaseTest {
         }
     }
 
-    private void loginToJenkins() {
-            getDriver().findElement(By.name("j_username")).sendKeys(this.userName);
-            getDriver().findElement(By.name("j_password")).sendKeys(this.password);
-            getDriver().findElement(By.name("Submit")).click();
-            TestUtils.waitForHomePageLoad(this);
-    }
-
     private void loginToJenkins(String userName, String password) {
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name("login")));
         getDriver().findElement(By.name("j_username")).sendKeys(userName);
         getDriver().findElement(By.name("j_password")).sendKeys(password);
         getDriver().findElement(By.name("Submit")).click();
@@ -92,19 +79,20 @@ public class LoginTest extends BaseTest {
     private Object[][] getData() {
         setCredentials();
 
-        return new Object[][] {
+        return new Object[][]{
                 {TestUtils.generateRandomAlphanumeric(), this.password},
                 {this.userName, TestUtils.generateRandomAlphanumeric()},
                 {"", this.password},
-                {this.userName, ""},
+                {this.userName, "" },
                 {TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomAlphanumeric()},
-                {"", ""}
+                {"", "" }
         };
     }
 
     @Test
     @SkipConfiguration
     public void testLogoutSuccessfully() {
+        TestUtils.logout(this);
         List<WebElement> logoutList = getDriver().findElements(By.xpath("//a[@href='/logout']"));
 
         Assert.assertTrue(logoutList.isEmpty());
@@ -113,11 +101,30 @@ public class LoginTest extends BaseTest {
     @Test(dataProvider = "invalidCredentials")
     @SkipConfiguration
     public void testInvalidCredentialsError(String testUserName, String testPassword) {
+        TestUtils.logout(this);
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name("login")));
         loginToJenkins(testUserName, testPassword);
 
         final String actualErrorText = getDriver().findElement(By.className("app-sign-in-register__error")).getText();
 
         Assert.assertEquals(actualErrorText, "Invalid username or password");
+    }
+
+    @Test
+    public void testLoginAsANewUser() {
+        final String userName = "UserName";
+        final String password = "P@ssword";
+        final String newUserFullName = "User";
+        final String email = "user@test.com";
+
+        TestUtils.createNewUser(this, userName, password, newUserFullName, email);
+        TestUtils.logout(this);
+
+        loginToJenkins(userName, password);
+        TestUtils.waitForHomePageLoad(this);
+
+        final String actualUserName = getDriver().findElement(By.cssSelector("#page-header a.model-link")).getText();
+
+        Assert.assertEquals(actualUserName, newUserFullName);
     }
 }

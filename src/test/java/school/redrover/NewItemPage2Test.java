@@ -49,6 +49,21 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test
+    public void testIfAvailableJobsAreDisplayedOnThePage() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
+                .click();
+
+        List<WebElement> jobsLabels = getDriver().findElements(By.className("label"));
+        List<String> expectedLabels = List.of(
+                "Freestyle project", "Pipeline", "Multi-configuration project",
+                "Folder", "Multibranch Pipeline", "Organization Folder");
+
+        for (int i = 0; i < expectedLabels.size(); i++) {
+            Assert.assertEquals(jobsLabels.get(i).getText(), expectedLabels.get(i));
+        }
+    }
+
+    @Test
     public void testOkButtonWhenFieldIsEmpty() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
                 .click();
