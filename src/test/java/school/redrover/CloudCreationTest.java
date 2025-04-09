@@ -117,18 +117,11 @@ public class CloudCreationTest extends BaseTest {
     }
 
     private void createNewCloud(WebDriver driver) {
-        List<WebElement> button3 = driver.findElements(By.cssSelector(".content-block a"));
-        for (WebElement button : button3) {
-            if (button.getText().equals("Configure a cloud")) {
-                this.getWait5().until(ExpectedConditions.elementToBeClickable(button));
-                button.click();
-                break;
-            }
-        }
+        driver.navigate().refresh();
         this.getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(".empty-state-section p"),
                 "There are no clouds currently set up. Create one, or install a plugin for more cloud options."));
-        List<WebElement> buttons = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
-        for (WebElement button : buttons) {
+        List<WebElement> button3 = driver.findElements(By.cssSelector(".empty-state-section-list li a"));
+        for (WebElement button : button3) {
             if (button.getText().equals("New cloud")) {
                 this.getWait5().until(ExpectedConditions.elementToBeClickable(button));
                 button.click();
