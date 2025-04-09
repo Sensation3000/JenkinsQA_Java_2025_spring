@@ -76,4 +76,13 @@ public class StudentUnionTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.cssSelector("h1")).getText(), "Name");
     }
 
+    @Test
+    public void navigateToSettingPage() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("(//*[@class='icon-md'])[3]")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//span[text()='Account']")).getText(), "Account");
+    }
+
 }
