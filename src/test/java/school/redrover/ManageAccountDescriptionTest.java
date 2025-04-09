@@ -52,8 +52,10 @@ public class ManageAccountDescriptionTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOf(
                 getDriver().findElement(By.name("description")))).clear();
         getDriver().findElement(By.name("description")).sendKeys(userDescription);
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.name("Submit")))).click();
 
-        Assert.assertEquals(getDriver().findElement(By.id("description")).getText(), userDescription);
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.id("description")))).getText(), userDescription);
     }
 }
