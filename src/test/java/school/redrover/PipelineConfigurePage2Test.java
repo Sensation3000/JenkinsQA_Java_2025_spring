@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -100,7 +101,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='/' and @class='model-link']")));
-        moveAndClickWithSelenium(driver, dashboardLink);
+        moveAndClickWithJS(driver, dashboardLink);
 
         WebElement pipelineItem = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(), 'Test Pipeline item')]")));
@@ -114,6 +115,12 @@ public class PipelineConfigurePage2Test extends BaseTest {
                 .xpath("//button[contains(., 'Build Now')]")));
 
         Assert.assertTrue(buildNowOption.isDisplayed());
+    }
+
+    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        js.executeScript("arguments[0].click();", element);
     }
 
     public static void moveAndClickWithSelenium(WebDriver driver, WebElement element) {
