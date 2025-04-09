@@ -102,7 +102,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.name("Submit")).click();
 
         WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[@href='/' and @class='model-link']")));
+                .xpath("//a[normalize-space()='Dashboard']")));
         moveAndClickWithJS(driver, dashboardLink);
 
         WebElement pipelineItem = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
