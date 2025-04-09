@@ -147,7 +147,7 @@ public class GroupCodeCraftTest extends BaseTest {
         okButton.click();
 
         TestUtils.scrollAndClickWithJS(getDriver(),
-                                getWait5().until(ExpectedConditions.elementToBeClickable
+                                getWait10().until(ExpectedConditions.elementToBeClickable
                                         (By.xpath("//button[@name='Submit']"))));
 
         Assert.assertEquals(getWait5().
