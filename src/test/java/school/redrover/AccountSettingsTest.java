@@ -48,4 +48,17 @@ public class AccountSettingsTest extends BaseTest {
         Assert.assertEquals(driver.findElement(
                 By.id("description")).getText(), userDescription);
     }
+
+    @Test
+    public void testChangeUserDescription() {
+        final String userDescription = "Updated user description";
+
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("description")).sendKeys(userDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("description")).getText(), userDescription);
+    }
 }
