@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
@@ -59,9 +58,9 @@ public class PipelineConfigurePage2Test extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isDisplayed());
 
     }
-@Ignore
+
     @Test(testName = "TC_03.001.04.2 > Verify 'Build Now' button state when project is disabled")
-    public void testVerifyPipelineBuildNowButtonDisabled() throws InterruptedException {
+    public void testVerifyPipelineBuildNowButtonDisabled() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
@@ -69,9 +68,8 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By
-                .className("jenkins-toggle-switch__label"))).click();
-
+        WebElement switchButton = driver.findElement(By.cssSelector("label.jenkins-toggle-switch__label"));
+        moveAndClickWithSelenium(driver, switchButton);
         driver.findElement(By.name("Submit")).click();
 
         WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
@@ -92,7 +90,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         Assert.assertTrue(buildNowButtons.isEmpty());
 
     }
-@Ignore
+
     @Test (testName = "TC_03.001.05.2 > Verify 'Build Now' Button State When Project is Enabled")
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
