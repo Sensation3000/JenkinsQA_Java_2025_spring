@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
@@ -101,7 +102,6 @@ public class GroupCodeCraftTest extends BaseTest {
                 "This Organization Folder is currently disabled");
     }
 
-    @Ignore
     @Test
     public void testNewItemOkButtonSelectType() throws InterruptedException {
         final String nameItem = "New Item 0.01.4";
@@ -136,7 +136,6 @@ public class GroupCodeCraftTest extends BaseTest {
         getWait5().
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//button[contains(@class, 'disabled')]")));
-
         getWait5().
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//div[@class='input-validation-message']")));
@@ -147,9 +146,9 @@ public class GroupCodeCraftTest extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
         okButton.click();
 
-        getWait10().
-                until(ExpectedConditions.elementToBeClickable(By.xpath(
-                        "//button[@name='Submit']"))).click();
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                                getWait5().until(ExpectedConditions.elementToBeClickable
+                                        (By.xpath("//button[@name='Submit']"))));
 
         Assert.assertEquals(getWait5().
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
