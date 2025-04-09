@@ -56,7 +56,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.xpath("//span[text()='Configure']/..")).click();
         driver.findElement(By.className("jenkins-toggle-switch__label")).click();
 
-        Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label__checked-title")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isDisplayed());
 
     }
     @Ignore
