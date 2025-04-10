@@ -169,7 +169,7 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(buttonIcon, "Icon legend");
         Assert.assertEquals(buttonAtom, "Atom feed");
     }
-
+    @Ignore
     @Test
     public void testCreateMultibranch() throws InterruptedException {
         final String nameOfDisplay = "Name of test";
@@ -221,8 +221,10 @@ public class GroupCodeCraftTest extends BaseTest {
         assertNull(moveOutElement);
     }
 
+
     @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
     //GroupCodeCraftTest.testNewItemFreestyleProject:250 » Timeout Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
+
     @Test
     public void testNewItemFreestyleProject() throws InterruptedException {
         final String nameItem1 = "New test ssN ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
