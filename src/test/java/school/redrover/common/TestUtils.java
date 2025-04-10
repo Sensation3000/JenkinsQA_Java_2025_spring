@@ -176,9 +176,7 @@ public class TestUtils {
         WebElement homeLink = driver.findElement(By.id("jenkins-home-link"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", homeLink);
-        //есть необходимость в JavascriptExecutor, т.к. при создании любого из project и нажатии в конце кнопки save
-        // метод gotoHomePage срабатывает через раз или совсем не срабатывает, всегда пишет ошибку
-        // невозможно найти jenkins-home-link. Во всех других случаях все работает.
+        //есть необходимость в JavascriptExecutor, т.к. метод gotoHomePage не всегда работает.
     }
     public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
         driver.findElement(By.linkText("New Item")).click();
