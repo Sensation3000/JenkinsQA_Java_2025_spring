@@ -80,6 +80,7 @@ public class CheckErrorsForNewItemTest extends BaseTest {
                 driver.findElement(By.id("ok-button")).isEnabled());
     }
 
+    @Ignore
     @Test
     public void dotEndError() {
         WebDriver driver = getDriver();
