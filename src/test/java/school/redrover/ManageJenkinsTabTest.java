@@ -85,21 +85,13 @@ public class ManageJenkinsTabTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
 
         WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", aboutLink);
-        aboutLink.click();
+        TestUtils.scrollAndClickWithJS(getDriver(),aboutLink);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
+        for (int i = 0; i < plugins.size(); i++) {
+       WebElement dependenciesLinks = plugins.get(i);
 
-        for (WebElement plugin : plugins) {
-            String href = plugin.getDomAttribute("href");
-
-            try {
-                assert href != null;
-                Assert.assertFalse(href.trim().isEmpty(), "Ссылка пуста у элемента: " + plugin.getText());
-
-            } catch (AssertionError e) {
-                System.out.println("Ошибка: " + e.getMessage() + href);
-            }
+            Assert.assertTrue(dependenciesLinks.isEnabled(), "Links №" + (i + 1) + " not clickable");
         }
     }
-}
+    }
