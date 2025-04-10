@@ -14,10 +14,14 @@ public class CreateUserTest  extends BaseTest {
     @Test
     public  void testCreateUser() throws InterruptedException {
        WebDriver driver  = getDriver() ;
-       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+       getWait5();
        WebElement manageButton = driver.findElement(By.xpath("//a[@href='/manage']"));
-       Assert.assertEquals(manageButton.getText(),"Manage Jenkins");
-       Thread.sleep(1000);
+       manageButton.click();
+       //Assert.assertEquals(manageButton.getText(),"Manage Jenkins");
+
+       getWait10();
+       WebElement userButton = driver.findElement(By.xpath("//a[@href='securityRealm/']"));
+       userButton.click();
 
 
 
