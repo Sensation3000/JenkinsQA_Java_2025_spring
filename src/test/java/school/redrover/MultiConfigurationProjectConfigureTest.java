@@ -11,9 +11,10 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class MultiConfigurationProjectConfigureTest extends BaseTest {
+    private static final String projectName = "MultiConfigurationProject";
+
     @Test
     public void testToolTipEnableDisable() {
-        final String projectName = "MultiConfigurationProject";
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
 
@@ -28,12 +29,9 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
 
         assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
-
     @Test
     public void testCheckWarningDisableProject() {
-        final String projectName = "MultiConfigurationProject";
         WebDriver driver = getDriver();
-
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys(projectName);
         driver.findElement(By.className("hudson_matrix_MatrixProject")).click();
