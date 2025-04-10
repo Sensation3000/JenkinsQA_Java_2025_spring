@@ -176,7 +176,6 @@ public class TestUtils {
         WebElement homeLink = driver.findElement(By.id("jenkins-home-link"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", homeLink);
-        js.executeScript("arguments[0].click();", homeLink);
         //есть необходимость в JavascriptExecutor, т.к. метод gotoHomePage не всегда работает.
     }
 
