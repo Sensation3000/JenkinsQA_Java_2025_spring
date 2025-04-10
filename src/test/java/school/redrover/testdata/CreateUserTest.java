@@ -23,17 +23,19 @@ public class CreateUserTest  extends BaseTest {
        WebElement userButton = driver.findElement(By.xpath("//a[@href='securityRealm/']"));
        userButton.click();
         getWait10();
+
         WebElement createUserButton = driver.findElement(By.xpath("//a[@href='addUser']"));
         createUserButton.click();
+
         driver.findElement(By.xpath("//input[@name='username']")).sendKeys("TestUSer123");
         driver.findElement(By.xpath("//input[@name='password1']")).sendKeys("Passw0rd_123");
         driver.findElement(By.xpath("//input[@name='password2']")).sendKeys("Passw0rd_123");
         driver.findElement(By.xpath("//input[@name='fullname']")).sendKeys("Full Name");
         driver.findElement(By.xpath("//input[@name='email']")).sendKeys("mymail@mail.ru");
         driver.findElement(By.xpath("//button[@name='Submit']")).click();
-        WebElement success = driver.findElement(By.xpath(""));
-        //Assert.assertEquals();
-        Thread.sleep(3333);
+        WebElement success = driver.findElement(By.xpath("//a[@href='user/testuser123/'][1]"));
+        Assert.assertEquals(success.getText(),"TestUSer123");
+        Thread.sleep(1333);
 
 
 
