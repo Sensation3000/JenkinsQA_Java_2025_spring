@@ -32,7 +32,7 @@ public class CreateUserTest  extends BaseTest {
         driver.findElement(By.xpath("//input[@name='email']")).sendKeys("mymail@mail.ru");
         driver.findElement(By.xpath("//button[@name='Submit']")).click();
         WebElement success = driver.findElement(By.xpath(""));
-        Assert.assertEquals();
+        //Assert.assertEquals();
         Thread.sleep(3333);
 
 
