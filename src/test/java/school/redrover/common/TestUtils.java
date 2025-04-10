@@ -98,14 +98,15 @@ public class TestUtils {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
             List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
+
             List<String> itemsNames = new ArrayList<>();
+
             for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
-            for (String str : itemsNames) {
-                if (str.equals(itemName)) {
-                    throw new IllegalArgumentException("Name '" + itemName + "' already exists");
-                }
+
+            if (itemsNames.contains(itemName)) {
+                throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
     }
