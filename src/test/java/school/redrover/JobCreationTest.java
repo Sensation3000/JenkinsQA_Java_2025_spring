@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -45,7 +44,6 @@ public class JobCreationTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         getDriver().findElement(By.xpath(NEW_JOB)).click();
@@ -57,7 +55,7 @@ public class JobCreationTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        TestUtils.gotoHomePage(this);
+        TestUtils.clickJenkinsHomeLink(getDriver());
         WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='job/new_project_1/']")));
 
@@ -90,5 +88,18 @@ public class JobCreationTest extends BaseTest {
             String actualText = actualTitles.get(i).getText();
             Assert.assertEquals(actualText, expectedText);
         }
+    }
+
+    @Test(description = "TC_01.003.20")
+    public void testNewItemCreation() {
+        String projectName = TestUtils.getItemTypeName(1);
+
+        TestUtils.createProjectWithName(getDriver(), projectName, 1);
+        TestUtils.clickJenkinsHomeLink(getDriver());
+
+        TestUtils.createProject(this);
+        WebElement actualTextCopyForm = getDriver().findElement(By
+                .xpath("//div[@class='add-item-copy']"));
+        Assert.assertEquals(actualTextCopyForm.getText().trim(), "Copy from");
     }
 }
