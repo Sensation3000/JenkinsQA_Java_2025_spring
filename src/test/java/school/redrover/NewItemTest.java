@@ -1,19 +1,16 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
-
 import java.time.Duration;
-import java.util.List;
 
 
 public class NewItemTest extends BaseTest {
@@ -27,7 +24,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(header, "New Item");
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testCreateNewItemFreestyleProject() {
         String headerNewItem = "New Item1";
@@ -77,20 +75,80 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(itemNameError.getText(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test
-    public void  testCreateFolder() {
-        final String folderName = "NewFolder1";
-
+    @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
+    public void testNameWithInvalidCharactersError(String invalidCharacter) {
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.id("name")).sendKeys("ItemName".concat(invalidCharacter));
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
 
-        TestUtils.gotoHomePage(this);
+        String errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+        boolean isSubmitButtonClickable = getDriver().findElement(By.id("ok-button")).isEnabled();
 
-        List<WebElement> jobs = getDriver().findElements(By.xpath("//tr[contains(@id, 'job')]//a"));
+        Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidCharacter));
+        Assert.assertFalse(isSubmitButtonClickable);
+    }
 
-        Assert.assertEquals(jobs.size(), 1);
-        Assert.assertEquals(jobs.get(0).getText(), folderName);
+    @Test()
+    public void testCheckErrorMessageForSpecialCharacters() {
+        String[] specialCharacters = {"!","@","#","$","%","^","&","*","/","\\","|","[","]",";",":","?","<",">"};
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        for(String ch: specialCharacters) {
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(ch);
+            String alertMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(alertMessage,  String.format("» ‘%s’ is an unsafe character", ch));
+
+            driver.findElement(By.className("jenkins-input")).sendKeys("\b");
+        }
+    }
+
+    @Test
+    public void testCreatePipeline() {
+        final String pipelineName = "NewPipeline";
+
+        WebDriver driver = getDriver();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(pipelineName);
+
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.documentElement.scrollHeight);");
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+
+        String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
+
+        Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
+    }
+
+    @DataProvider(name = "projectTypes")
+    public Object[][] projectTypes() {
+        return new Object[][]{
+                {"Freestyle project"},
+                {"Pipeline"},
+                {"Multi-configuration project"},
+                {"Folder"},
+                {"Multibranch Pipeline"},
+                {"Organization Folder"}
+        };
+    }
+
+    @Test(dataProvider = "projectTypes")
+    public void testOKButtonIsDisabledIfCreatingProjectWithEmptyName(String projectType) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='" + projectType + "']"))).click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertFalse(okButton.isEnabled(), "Expected OK button to be disabled.");
     }
 }

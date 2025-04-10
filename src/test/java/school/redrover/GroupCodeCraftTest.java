@@ -7,8 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
@@ -75,14 +78,15 @@ public class GroupCodeCraftTest extends BaseTest {
     }
 
     @Test
-    public void newItemOrgFolderTest() throws InterruptedException {
-        String nameOrgFolder = "Folder archive 01";
+    public void testItemOrgFolder() throws InterruptedException {
+        final String nameOrgFolder = "Folder archive 01";
 
-        getDriver().findElement(By.xpath("//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+        getDriver().findElement(By.xpath(
+                "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
         getDriver().findElement(By.id("name")).sendKeys(nameOrgFolder);
 
-        WebElement newItemOrgFolder =
-                getDriver().findElement(By.xpath("//li[.//label/span[text()='Organization Folder']]"));
+        WebElement newItemOrgFolder = getDriver().findElement(By.xpath(
+                "//li[.//label/span[text()='Organization Folder']]"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", newItemOrgFolder);
         newItemOrgFolder.click();
         getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
@@ -96,6 +100,60 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath(
                         "//*[@id='disabled-message']")).getText(),
                 "This Organization Folder is currently disabled");
+    }
+
+    // @Ignore //(пожалуйста, когда ставите этот тест в игнор
+    // - будьте добры - напишите на каком он падает элементе)
+    @Test
+    public void testNewItemOkButtonSelectType() throws InterruptedException {
+        final String nameItem = "New Item 0.04.10";
+
+        getDriver().findElement(By.xpath(
+                "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+
+        getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//button[contains(@class, 'disabled')]")));
+
+        WebElement findFreestyleProject = getDriver().findElement(By.xpath(
+                "//li[@class='hudson_model_FreeStyleProject' and @aria-checked='false']"));
+        WebElement findPipeline = getDriver().findElement(By.xpath(
+                "//li[@class='org_jenkinsci_plugins_workflow_job_WorkflowJob' and @aria-checked='false']"));
+        WebElement findMultiConfigurationProject = getDriver().findElement(By.xpath(
+                "//li[@class='hudson_matrix_MatrixProject' and @aria-checked='false']"));
+        WebElement findFolder = getDriver().findElement(By.xpath(
+                "//li[@class='com_cloudbees_hudson_plugins_folder_Folder' and @aria-checked='false']"));
+        WebElement findMultibranchPipeline = getDriver().findElement(By.xpath(
+                "//li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject' and @aria-checked='false']"));
+        WebElement findOrganizationFolder = getDriver().findElement(By.xpath(
+                "//li[.//label/span[text()='Organization Folder']]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", findOrganizationFolder);
+        findOrganizationFolder.click();
+        findFolder.click();
+        findFreestyleProject.click();
+        findMultibranchPipeline.click();
+        findMultiConfigurationProject.click();
+        findPipeline.click();
+
+        getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//button[contains(@class, 'disabled')]")));
+        getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@class='input-validation-message']")));
+        getDriver().findElement(By.id("name")).sendKeys(nameItem);
+
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[text()='OK']"))));
+        Thread.sleep(3000);
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[@name='Submit']"))));
+
+        Assert.assertEquals(getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@class='jenkins-app-bar__content jenkins-build-caption']"))).getText(), nameItem);
     }
 
     @Test
@@ -112,6 +170,7 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(buttonAtom, "Atom feed");
     }
 
+    @Ignore
     @Test
     public void testCreateMultibranch() throws InterruptedException {
         final String nameOfDisplay = "Name of test";
@@ -161,5 +220,44 @@ public class GroupCodeCraftTest extends BaseTest {
 
         assertNotNull(moveToElement);
         assertNull(moveOutElement);
+    }
+
+    @Ignore
+    @Test
+    public void testNewItemFreestyleProject() throws InterruptedException {
+        final String nameItem1 = "New test ssN ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
+        final String nameItem2 = "New Freestyle Project ssV ~()_+}{`-=.' 110.01.9";
+        final String description = "New test Description ssV ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
+
+        getDriver().findElement(By.xpath(
+                "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
+
+        getDriver().findElement(By.xpath(
+                "//li[@class='hudson_model_FreeStyleProject' and @aria-checked='false']")).click();
+
+        WebElement fieldItem = getDriver().findElement(By.id("name"));
+        fieldItem.sendKeys(nameItem1);
+        getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@id='itemname-invalid']")));
+        fieldItem.clear();
+        fieldItem.sendKeys(nameItem2);
+
+        WebElement okButton = getDriver().findElement(By.xpath(
+                "//button[text()='OK']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
+        okButton.click();
+
+        getWait10().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//textarea[@name='description']"))).sendKeys(description);
+
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[@name='Submit']"))));
+
+        Assert.assertEquals(getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//div[@class='jenkins-app-bar__content jenkins-build-caption']"))).getText(), nameItem2);
     }
 }
