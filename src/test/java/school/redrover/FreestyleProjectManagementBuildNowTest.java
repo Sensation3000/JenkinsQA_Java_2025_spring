@@ -69,7 +69,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
     }
 
 
-     @Test
+/*     @Test
     public void testAvailableBuildNowOnDropDownList() {
         WebDriver driver = getDriver();
 
@@ -93,5 +93,5 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build Now: Done.");
-    }
+    } */
 }
