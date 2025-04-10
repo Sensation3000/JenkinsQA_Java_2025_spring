@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -23,16 +24,46 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
     }
-    @Ignore //Error:    FreestyleProjectManagementBuildNowTest.testAvailableBuildNowOnProjectPage:32 » NoSuchElement no such element: Unable to locate element: {"method":"xpath","selector":"//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]"}
+
     @Test
-       public void testAvailableBuildNowOnProjectPage() {
+    public void testAvailableBuildNowOnProjectPage() {
         WebDriver driver = getDriver();
 
         createNewItemFrestyle(driver);
 
-        driver.findElement(By.xpath(  "//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]")).click();
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath(  "//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]")))
+                .click();
+
         Assert.assertEquals(
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
+    }
+
+    @Test
+    public void testAvailableBuildNowOnDropDownList() {
+        WebDriver driver = getDriver();
+
+        createNewItemFrestyle(driver);
+
+        TestUtils.gotoHomePage(this);
+
+        new Actions(driver)
+                .moveToElement(driver.findElement(By.xpath("//a[contains(@class,'jenkins-table__link model-link inside')]")))
+                .perform();
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath("//button[contains(@data-href,'job') and @class='jenkins-menu-dropdown-chevron'][1]")))
+                .click();
+
+        driver.findElement(By.xpath("//button[contains(@class,'jenkins-dropdown__item ')][1]")).click();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build Now: Done.");
     }
 }
