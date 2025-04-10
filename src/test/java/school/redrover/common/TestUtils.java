@@ -177,7 +177,7 @@ public class TestUtils {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", homeLink);
         //есть необходимость в JavascriptExecutor, т.к. при создании любого из project и нажатии в конце кнопки save
-        // мотод gotoHomePage срабатывает через раз или совсем не срабатывает, всегда пишет ошибку
+        // метод gotoHomePage срабатывает через раз или совсем не срабатывает, всегда пишет ошибку
         // невозможно найти jenkins-home-link. Во всех других случаях все работает.
     }
     public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
