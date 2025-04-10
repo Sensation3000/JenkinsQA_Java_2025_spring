@@ -175,19 +175,21 @@ public class TestUtils {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
             WebElement homeLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
+            ProjectUtils.log("Элемент 'jenkins-home-link' найден.");
 
-            if (homeLink != null) {
+            if (homeLink != null && homeLink.isDisplayed() && homeLink.isEnabled()) {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 js.executeScript("arguments[0].click();", homeLink);
+                ProjectUtils.log("Клик по 'jenkins-home-link' выполнен успешно.");
             } else {
-                ProjectUtils.log("Элемент 'jenkins-home-link' не найден.");
+                ProjectUtils.log("Элемент 'jenkins-home-link' найден, но не доступен для клика.");
             }
         } catch (TimeoutException e) {
             ProjectUtils.log("Время ожидания для элемента 'jenkins-home-link' истекло.");
         } catch (Exception e) {
             ProjectUtils.log("Произошла ошибка при клике на 'jenkins-home-link': " + e.getMessage());
-        } // JavascriptExecutor необходим, т.к. метод gotoHomePage работает не стабильно
-    }
+        }
+    } // JavascriptExecutor необходим, т.к. метод gotoHomePage работает не стабильно
 
     public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
         driver.findElement(By.linkText("New Item")).click();
