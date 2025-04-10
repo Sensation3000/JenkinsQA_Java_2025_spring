@@ -67,31 +67,4 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
-
-
-/*     @Test
-    public void testAvailableBuildNowOnDropDownList() {
-        WebDriver driver = getDriver();
-
-        createNewItemFrestyle(driver);
-
-        TestUtils.gotoHomePage(this);
-
-        new Actions(driver)
-                .moveToElement(driver.findElement(By.xpath("//a[contains(@class,'jenkins-table__link model-link inside')]")))
-                .pause(Duration.ofMillis(500))
-                .perform();
-
-        getWait10()
-                .until(ExpectedConditions
-                        .elementToBeClickable (
-                                By.xpath("//button[contains(@data-href,'job') and @class='jenkins-menu-dropdown-chevron'][1]")))
-                .click();
-
-        driver.findElement(By.xpath("//button[contains(@class,'jenkins-dropdown__item ')][1]")).click();
-
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
-                "Build Now: Done.");
-    } */
 }
