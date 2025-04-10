@@ -1,12 +1,18 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import javax.swing.*;
+import java.time.Duration;
 
 import static java.sql.DriverManager.getDriver;
 
@@ -65,5 +71,32 @@ public class SunflowerTest extends BaseTest {
         String actualText = descriptionElement.getText();
 
         Assert.assertEquals(actualText, "Create description for testing");
+    }
+
+    @Test
+    public void testDuplicateNameItemsInOneFolder(){
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.name("name")).sendKeys("Common folder");
+        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        getDriver().findElement(By.name("name")).sendKeys("Equal name");
+        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        getDriver().findElement(By.name("name")).sendKeys("Equal name");
+
+        WebElement errorMessage = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"itemname-invalid\"]"))
+        );
+
+        Assert.assertEquals(
+                errorMessage.getText(),
+                "» A job already exists with the name ‘Equal name’");
     }
 }
