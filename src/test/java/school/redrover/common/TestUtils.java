@@ -171,6 +171,7 @@ public class TestUtils {
     public static void createProject(BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();
     }
+
     public static void clickJenkinsHomeLink(WebDriver driver) {
         WebElement homeLink = driver.findElement(By.id("jenkins-home-link"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
