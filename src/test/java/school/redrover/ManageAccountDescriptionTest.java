@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -54,8 +55,23 @@ public class ManageAccountDescriptionTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(userDescription);
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 getDriver().findElement(By.name("Submit")))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")));
 
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.id("description")))).getText(), userDescription);
+        Assert.assertEquals(
+                getDriver().findElement(By.id("description")).getText(), userDescription);
+    }
+
+    @Test
+    public void testCancelChangeDescription() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+        String oldDescription = getDriver().findElement(By.id("description")).getText();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.id("description-link")))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.name("description")))).sendKeys("Updated description");
+        getDriver().navigate().back();
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("description")).getText(), oldDescription);
     }
 }

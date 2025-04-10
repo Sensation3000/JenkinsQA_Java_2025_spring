@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 
+@Listeners(FilterForTests.class)
 public abstract class BaseTest {
 
     private WebDriverWait wait5;

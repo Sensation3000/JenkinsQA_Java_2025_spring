@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.List;
 
@@ -37,10 +38,14 @@ public class NewItemPage2Test extends BaseTest {
         return (size.getHeight() - 12 * 2) * (newItemTypes.size() - 1);
     }
 
-    @Test
-    public void testIfPageIsAccessibleFromHomePage() {
+    private void clickOnNewItemLink() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
                 .click();
+    }
+
+    @Test
+    public void testIfPageIsAccessibleFromHomePage() {
+        clickOnNewItemLink();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/view/all/newJob"));
         Assert.assertEquals(
@@ -49,9 +54,21 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test
+    public void testInputPositiveValidation() {
+        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric() + "_";
+        clickOnNewItemLink();
+
+        WebElement inputField = getDriver().findElement(By.id("name"));
+        inputField.sendKeys(randomAlphaNumericValue);
+        WebElement divEl = inputField.getShadowRoot().findElement(By.cssSelector("div"));
+
+        Assert.assertTrue(getDriver().findElement(By.id("itemname-invalid")).getText().isEmpty());
+        Assert.assertEquals(randomAlphaNumericValue, divEl.getText());
+    }
+
+    @Test
     public void testIfAvailableJobsAreDisplayedOnThePage() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
-                .click();
+        clickOnNewItemLink();
 
         List<WebElement> jobsLabels = getDriver().findElements(By.className("label"));
         List<String> expectedLabels = List.of(
@@ -65,8 +82,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testOkButtonWhenFieldIsEmpty() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
-                .click();
+        clickOnNewItemLink();
 
         List<WebElement> newItemTypes = getNewItemTypes();
         int expectedScrollValue = getScrollValue();
@@ -81,8 +97,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfErrorMessageIsDisplayedWhenFieldIsEmpty() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
-                .click();
+        clickOnNewItemLink();
 
         List<WebElement> newItemTypes = getNewItemTypes();
         int expectedScrollValue = getScrollValue();
