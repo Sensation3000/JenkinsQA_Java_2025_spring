@@ -91,7 +91,8 @@ public class PipelineConfigurePage2Test extends BaseTest {
         Assert.assertTrue(buildNowButtons.isEmpty());
 
     }
-@Ignore
+
+    @Ignore
     @Test (testName = "TC_03.001.05.2 > Verify 'Build Now' Button State When Project is Enabled")
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
