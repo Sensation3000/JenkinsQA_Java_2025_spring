@@ -189,7 +189,6 @@ public class TestUtils {
         } // JavascriptExecutor необходим, т.к. метод gotoHomePage работает не стабильно
     }
 
-
     public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
         driver.findElement(By.linkText("New Item")).click();
         driver.findElement(By.id("name")).sendKeys(projectName);
