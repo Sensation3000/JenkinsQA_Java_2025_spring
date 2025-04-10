@@ -15,8 +15,6 @@ public class ThemeChangingTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@data-theme='dark']/ancestor::div[@class='app-theme-picker__item']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Thread.sleep(150);
-
         WebElement backgroundColor = getDriver().findElement(By.tagName("body"));
         WebElement textColor = getDriver().findElement(By.xpath("html[@data-theme='dark']"));
         Assert.assertEquals(backgroundColor.getCssValue("background-color"), "rgba(31, 31, 35, 1)");
