@@ -23,7 +23,6 @@ public class BuildJobTest extends BaseTest {
                 By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]"
                         .formatted("Build Now")))).click();
         getDriver().findElement(By.linkText(jobName)).click();
-        getDriver().navigate().refresh();
         getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[@href='lastBuild/']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
