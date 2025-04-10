@@ -1,13 +1,12 @@
 package school.redrover.common;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -63,7 +62,7 @@ public class TestUtils {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
         }
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
         uniqueItemNameCheck(baseTest.getDriver(), itemName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
@@ -74,15 +73,15 @@ public class TestUtils {
 
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(
-                (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
+                        (By.xpath("//span[contains(text(), '" + getItemTypeName(itemTypeId) + "')]")))));
         scrollAndClickWithJS(baseTest.getDriver(),
                 baseTest.getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.id("ok-button"))));
+                        (By.id("ok-button"))));
 
-        TestUtils.gotoHomePage(baseTest);
+        gotoHomePage(baseTest);
     }
 
-    private static String getItemTypeName(int typeId) {
+    public static String getItemTypeName(int typeId) {
         return switch (typeId) {
             case 1 -> "Freestyle project";
             case 2 -> "Pipeline";
@@ -98,14 +97,15 @@ public class TestUtils {
         if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
             List<WebElement> existingItems = driver.findElements
                     (By.xpath("//td/a/span"));
+
             List<String> itemsNames = new ArrayList<>();
+
             for (WebElement element : existingItems) {
                 itemsNames.add(element.getText());
             }
-            for (String str : itemsNames) {
-                if (str.equals(itemName)) {
-                    throw new IllegalArgumentException("Name '" + itemName + "' already exists");
-                }
+
+            if (itemsNames.contains(itemName)) {
+                throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
     }
@@ -150,5 +150,80 @@ public class TestUtils {
         final String newUserLink = String.format("a[href='user/%s/']", userName).toLowerCase();
         baseTest.getWait5()
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(newUserLink), userName));
+    }
+
+    public static WebElement waitUntilVisible5(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 5 seconds: " + element, e);
+        }
+    }
+
+    public static WebElement waitUntilVisible10(BaseTest baseTest, By element) {
+        try {
+            return baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
+        } catch (Exception e) {
+            throw new RuntimeException("Element DIDN'T APPEAR during 10 seconds: " + element, e);
+        }
+    }
+    public static void createProject(BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.linkText("New Item")).click();
+    }
+
+    public static void clickJenkinsHomeLink(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        try {
+
+            WebElement homeLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
+            ProjectUtils.log("Элемент 'jenkins-home-link' найден.");
+
+            if (homeLink != null && homeLink.isDisplayed() && homeLink.isEnabled()) {
+
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].click();", homeLink);
+                ProjectUtils.log("Клик по 'jenkins-home-link' выполнен успешно.");
+            } else {
+                ProjectUtils.log("Элемент 'jenkins-home-link' найден, но не доступен для клика.");
+            }
+        } catch (TimeoutException e) {
+            ProjectUtils.log("Время ожидания для элемента 'jenkins-home-link' истекло.");
+        } catch (StaleElementReferenceException e) {
+            ProjectUtils.log("Элемент 'jenkins-home-link' устарел (Stale Element Reference).");
+        } catch (NoSuchElementException e) {
+            ProjectUtils.log("Элемент 'jenkins-home-link' не найден на странице.");
+        } catch (Exception e) {
+            ProjectUtils.log("Произошла ошибка при клике на 'jenkins-home-link': " + e.getMessage());
+        }
+    }
+
+    public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+
+        switch (projectTypeId) {
+            case 1:
+                driver.findElement(By.xpath("//span[text()='Freestyle project']")).click();
+                break;
+            case 2:
+                driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
+                break;
+            case 3:
+                driver.findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+                break;
+            case 4:
+                driver.findElement(By.xpath("//span[text()='Folder']")).click();
+                break;
+            case 5:
+                driver.findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+                break;
+            case 6:
+                driver.findElement(By.xpath("//span[text()='Organization Folder']")).click();
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid project type ID: " + projectTypeId);
+        }
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
     }
 }

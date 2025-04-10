@@ -5,24 +5,33 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
 
-    private void createFreestyleProject(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("name"))).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+    @Test
+    public void testDisableProject() {
+        TestUtils.createFreestyleProject(getDriver(), "Freestyle");
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
+        getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(By.name("Submit")))).click();
+        String projectIsDisabledText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))).getText();
+
+        Assert.assertTrue(projectIsDisabledText.contains("This project is currently disabled"));
     }
 
     @Test
-    public void testDisableProject() {
-       createFreestyleProject("Freestyle");
+    public void testEnableProject() {
+        TestUtils.createFreestyleProject(getDriver(), "Freestyle");
 
-       getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-       getDriver().findElement(By.name("Submit")).click();
-       String projectIsDisabledText = getDriver().findElement(By.id("enable-project")).getText();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Enable')]")).click();
+        getWait5().until(ExpectedConditions.refreshed(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='configure']")))).click();
 
-       Assert.assertTrue(projectIsDisabledText.contains("This project is currently disabled"));
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//span[text()='Enabled']")).getText(),
+                "Enabled");
     }
 }

@@ -1,13 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
+import school.redrover.common.TestUtils;
+import java.util.List;
 
 public class ManageJenkinsTabTest extends BaseTest {
 
@@ -60,6 +58,48 @@ public class ManageJenkinsTabTest extends BaseTest {
 
         WebElement versionElement = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
 
-        Assert.assertTrue(versionElement.isDisplayed() , "About Jenkins' version  is not displayed");
+        Assert.assertTrue(versionElement.isDisplayed(), "About Jenkins' version  is not displayed");
+    }
+
+    @Test
+    public void testReviewListOfDependenciesAboutJenkinsPage() {
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
+        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
+        TestUtils.scrollAndClickWithJS(getDriver(),element);
+
+        getDriver().findElement(By.xpath("//a[normalize-space()='\"Java Concurrency in Practice\" book annotations']"));
+
+        WebElement middleElement = getDriver().findElement(By.xpath("//a[normalize-space()='args4j']"));
+        TestUtils.scrollAndClickWithJS(getDriver(),middleElement);
+
+        WebElement lastElement = getDriver().findElement(By.xpath("//a[normalize-space()='XStream Core']"));
+        TestUtils.scrollAndClickWithJS(getDriver(),lastElement);
+
+        Assert.assertTrue(lastElement.isDisplayed(), "Last element is not displayed");
+    }
+
+    @Test
+    public void testDependenciesLinksExist() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
+        WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", aboutLink);
+        aboutLink.click();
+
+        List<WebElement> plugins = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
+
+        for (WebElement plugin : plugins) {
+            String href = plugin.getDomAttribute("href");
+
+            try {
+                assert href != null;
+                Assert.assertFalse(href.trim().isEmpty(), "Ссылка пуста у элемента: " + plugin.getText());
+
+            } catch (AssertionError e) {
+                System.out.println("Ошибка: " + e.getMessage() + href);
+            }
+        }
     }
 }
