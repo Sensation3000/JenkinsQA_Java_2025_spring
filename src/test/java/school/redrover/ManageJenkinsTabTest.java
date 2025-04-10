@@ -91,7 +91,7 @@ public class ManageJenkinsTabTest extends BaseTest {
         for (int i = 0; i < plugins.size(); i++) {
        WebElement dependenciesLinks = plugins.get(i);
 
-            Assert.assertTrue(dependenciesLinks.isEnabled(), "Links №" + (i + 1) + " not clickable");
+       Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
         }
     }
     }
