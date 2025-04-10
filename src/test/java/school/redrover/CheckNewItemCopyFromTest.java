@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -21,6 +22,17 @@ public class CheckNewItemCopyFromTest extends BaseTest {
         driver.findElement(By.id("name")).sendKeys(input);
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.id("ok-button")).click();
+
+        WebElement description = getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("description"))));
+        description.sendKeys("test");
+        driver.findElement(By.cssSelector(".config-table > section:nth-child(4) > div:nth-child(6) > " +
+                "div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > label:nth-child(2)")).click();
+        WebElement timePeriod = driver.findElement(By.name("_.durationName"));
+        timePeriod.click();
+
+        Select select = new Select(timePeriod);
+        select.selectByValue("minute");
+
         driver.findElement(By.name("Submit")).click();
 
         WebElement homePage = getWait10()
@@ -33,10 +45,23 @@ public class CheckNewItemCopyFromTest extends BaseTest {
         WebElement from = driver.findElement(By.id("from"));
         from.sendKeys(input);
         driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(
-                driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div[1]/h1")).getText(), input2);
+        WebElement description2 = getWait10().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("description"))));
+        WebElement timePeriod2 = driver.findElement(By.name("_.durationName"));
+        Select select2 = new Select(timePeriod2);
+        String selectValue = select2.getFirstSelectedOption().getText();
+
+        //Проверка того, что скопированы параметры
+        Assert.assertEquals(description2.getText(), "test");
+        Assert.assertTrue(driver.findElement(By.name("_.throttle")).isSelected());
+        Assert.assertEquals(selectValue, "Minute");
+
+        driver.findElement(By.name("Submit")).click();
+        WebElement resultName = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div[1]/h1"));
+        getWait5().until(ExpectedConditions.visibilityOf(resultName));
+
+        //Проверка сохранения
+        Assert.assertEquals(resultName.getText(), input2);
     }
 
     @Test
