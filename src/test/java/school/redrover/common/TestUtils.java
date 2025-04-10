@@ -41,6 +41,10 @@ public class TestUtils {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 
+    public static void scrollToItemWithJS(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
     /**
      * Creates a new item in Jenkins with specified name and type.
      *
