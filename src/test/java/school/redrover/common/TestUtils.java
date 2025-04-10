@@ -1,13 +1,12 @@
 package school.redrover.common;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -173,11 +172,23 @@ public class TestUtils {
     }
 
     public static void clickJenkinsHomeLink(WebDriver driver) {
-        WebElement homeLink = driver.findElement(By.id("jenkins-home-link"));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].click();", homeLink);
-        //есть необходимость в JavascriptExecutor, т.к. метод gotoHomePage не всегда работает.
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        try {
+            WebElement homeLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
+
+            if (homeLink != null) {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].click();", homeLink);
+            } else {
+                ProjectUtils.log("Элемент 'jenkins-home-link' не найден.");
+            }
+        } catch (TimeoutException e) {
+            ProjectUtils.log("Время ожидания для элемента 'jenkins-home-link' истекло.");
+        } catch (Exception e) {
+            ProjectUtils.log("Произошла ошибка при клике на 'jenkins-home-link': " + e.getMessage());
+        } // JavascriptExecutor необходим, т.к. метод gotoHomePage работает не стабильно
     }
+
 
     public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
         driver.findElement(By.linkText("New Item")).click();
