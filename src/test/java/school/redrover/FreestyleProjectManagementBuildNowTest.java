@@ -41,8 +41,8 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
         getWait5()
                 .until(ExpectedConditions
-                        .visibilityOfElementLocated(
-                                By.xpath(  "//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]")))
+                        .elementToBeClickable(
+                                By.xpath("//*[@class='task-link task-link-no-confirm ' and contains(@href,'build')]")))
                 .click();
 
         Assert.assertEquals(
