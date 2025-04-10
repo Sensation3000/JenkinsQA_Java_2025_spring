@@ -29,8 +29,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                         .visibilityOfElementLocated(
                                 By.id("ok-button")))
                 .click();
-
-        driver.findElement(By.id("ok-button")).click();
+        
         driver.findElement(By.name("Submit")).click();
     }
 
