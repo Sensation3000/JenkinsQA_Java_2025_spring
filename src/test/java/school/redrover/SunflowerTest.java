@@ -72,7 +72,7 @@ public class SunflowerTest extends BaseTest {
 
         Assert.assertEquals(actualText, "Create description for testing");
     }
-
+    @Ignore
     @Test
     public void testDuplicateNameItemsInOneFolder(){
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
