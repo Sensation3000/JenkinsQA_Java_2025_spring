@@ -23,6 +23,13 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
         driver.findElement(By.id("name")).sendKeys(name_Freestyle_Project);
         driver.findElement(By.className("hudson_model_FreeStyleProject")).click();
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.id("ok-button")))
+                .click();
+
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
     }
@@ -43,8 +50,27 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
-
     @Test
+    public void testAvailableBuildNowOnbreadcrumbs() {
+        WebDriver driver = getDriver();
+
+        createNewItemFrestyle(driver);
+
+        TestUtils.gotoHomePage(this);
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath("//*[contains(@href,'build') and contains(@class,'build')]")))
+                .click();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build scheduled");
+    }
+
+
+     @Test
     public void testAvailableBuildNowOnDropDownList() {
         WebDriver driver = getDriver();
 
@@ -59,7 +85,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
         getWait10()
                 .until(ExpectedConditions
-                        .visibilityOfElementLocated(
+                        .elementToBeClickable (
                                 By.xpath("//button[contains(@data-href,'job') and @class='jenkins-menu-dropdown-chevron'][1]")))
                 .click();
 
