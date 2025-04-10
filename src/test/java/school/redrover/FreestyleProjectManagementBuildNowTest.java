@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
+import java.time.Duration;
+
 
 public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
@@ -52,6 +54,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
         new Actions(driver)
                 .moveToElement(driver.findElement(By.xpath("//a[contains(@class,'jenkins-table__link model-link inside')]")))
+                .pause(Duration.ofMillis(500))
                 .perform();
 
         getWait10()
