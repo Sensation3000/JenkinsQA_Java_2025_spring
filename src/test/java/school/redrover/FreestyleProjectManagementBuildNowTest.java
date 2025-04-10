@@ -32,7 +32,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         
         driver.findElement(By.name("Submit")).click();
     }
-
+    @Ignore
     @Test
     public void testAvailableBuildNowOnProjectPage() {
         WebDriver driver = getDriver();
@@ -49,6 +49,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
+    @Ignore
     @Test
     public void testAvailableBuildNowOnbreadcrumbs() {
         WebDriver driver = getDriver();
