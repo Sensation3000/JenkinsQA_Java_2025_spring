@@ -15,6 +15,5 @@ public class Dashboard2Test extends BaseTest {
         Assert.assertTrue(
                 getWait5().until(ExpectedConditions.visibilityOf(
                         getDriver().findElement(By.id("add-item-panel")))).isDisplayed());
-
     }
 }
