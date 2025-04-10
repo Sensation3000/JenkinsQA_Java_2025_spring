@@ -87,11 +87,12 @@ public class ManageJenkinsTabTest extends BaseTest {
         WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
         TestUtils.scrollAndClickWithJS(getDriver(),aboutLink);
 
-        List<WebElement> plugins = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
-        for (int i = 0; i < plugins.size(); i++) {
-       WebElement dependenciesLinks = plugins.get(i);
+        List<WebElement> dependencies = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
+        Assert.assertFalse(dependencies.isEmpty(), "No plugins found");
+        for (int i = 0; i < dependencies.size(); i++) {
+        WebElement dependenciesLinks = dependencies.get(i);
 
-       Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
+        Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
         }
     }
     }
