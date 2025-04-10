@@ -54,7 +54,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 .moveToElement(driver.findElement(By.xpath("//a[contains(@class,'jenkins-table__link model-link inside')]")))
                 .perform();
 
-        getWait5()
+        getWait10()
                 .until(ExpectedConditions
                         .visibilityOfElementLocated(
                                 By.xpath("//button[contains(@data-href,'job') and @class='jenkins-menu-dropdown-chevron'][1]")))
