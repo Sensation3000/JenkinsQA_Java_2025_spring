@@ -168,4 +168,7 @@ public class TestUtils {
             throw new RuntimeException("Element DIDN'T APPEAR during 10 seconds: " + element, e);
         }
     }
+    public static void createProject(BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.linkText("New Item")).click();
+    }
 }
