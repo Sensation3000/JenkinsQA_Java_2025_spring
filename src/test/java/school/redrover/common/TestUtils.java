@@ -82,7 +82,7 @@ public class TestUtils {
         gotoHomePage(baseTest);
     }
 
-    private static String getItemTypeName(int typeId) {
+    public static String getItemTypeName(int typeId) {
         return switch (typeId) {
             case 1 -> "Freestyle project";
             case 2 -> "Pipeline";
@@ -123,6 +123,7 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(projectName);
         driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
         driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
     }
 
     public static void openJobByName(WebDriver driver, String jobName) {
@@ -170,5 +171,13 @@ public class TestUtils {
     }
     public static void createProject(BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();
+    }
+    public static void clickJenkinsHomeLink(WebDriver driver) {
+        WebElement homeLink = driver.findElement(By.id("jenkins-home-link"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", homeLink);
+        //есть необходимость в JavascriptExecutor, т.к. при создании любого из project и нажатии в конце кнопки save
+        // мотод gotoHomePage срабатывает через раз или совсем не срабатывает, всегда пишет ошибку
+        // невозможно найти jenkins-home-link. Во всех других случаях все работает.
     }
 }
