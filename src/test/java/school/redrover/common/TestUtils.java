@@ -123,7 +123,6 @@ public class TestUtils {
         driver.findElement(By.id("name")).sendKeys(projectName);
         driver.findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
         driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.name("Submit")).click();
     }
 
     public static void openJobByName(WebDriver driver, String jobName) {
@@ -179,5 +178,34 @@ public class TestUtils {
         //есть необходимость в JavascriptExecutor, т.к. при создании любого из project и нажатии в конце кнопки save
         // мотод gotoHomePage срабатывает через раз или совсем не срабатывает, всегда пишет ошибку
         // невозможно найти jenkins-home-link. Во всех других случаях все работает.
+    }
+    public static void createProjectWithName(WebDriver driver, String projectName, int projectTypeId) {
+        driver.findElement(By.linkText("New Item")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+
+        switch (projectTypeId) {
+            case 1:
+                driver.findElement(By.xpath("//span[text()='Freestyle project']")).click();
+                break;
+            case 2:
+                driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
+                break;
+            case 3:
+                driver.findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+                break;
+            case 4:
+                driver.findElement(By.xpath("//span[text()='Folder']")).click();
+                break;
+            case 5:
+                driver.findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+                break;
+            case 6:
+                driver.findElement(By.xpath("//span[text()='Organization Folder']")).click();
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid project type ID: " + projectTypeId);
+        }
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("Submit")).click();
     }
 }

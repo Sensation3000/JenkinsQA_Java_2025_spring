@@ -97,7 +97,7 @@ public class JobCreationTest extends BaseTest {
     public void testNewItemCreation() {
         String projectName = TestUtils.getItemTypeName(1);
 
-        TestUtils.createFreestyleProject(getDriver(), projectName);
+        TestUtils.createProjectWithName(getDriver(), projectName, 1);
         TestUtils.clickJenkinsHomeLink(getDriver());
 
         TestUtils.createProject(this);
