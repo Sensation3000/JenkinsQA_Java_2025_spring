@@ -102,10 +102,11 @@ public class GroupCodeCraftTest extends BaseTest {
                 "This Organization Folder is currently disabled");
     }
 
-    @Ignore
+    // @Ignore //(пожалуйста, когда ставите этот тест в игнор
+    // - будьте добры - напишите на каком он падает элементе)
     @Test
     public void testNewItemOkButtonSelectType() throws InterruptedException {
-        final String nameItem = "New Item 0.01.4";
+        final String nameItem = "New Item 0.04.10";
 
         getDriver().findElement(By.xpath(
                 "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
@@ -141,15 +142,14 @@ public class GroupCodeCraftTest extends BaseTest {
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//div[@class='input-validation-message']")));
         getDriver().findElement(By.id("name")).sendKeys(nameItem);
-        Thread.sleep(3000);
-        WebElement okButton = getDriver().findElement(By.xpath(
-                "//button[text()='OK']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
-        okButton.click();
 
         TestUtils.scrollAndClickWithJS(getDriver(),
-                                getWait10().until(ExpectedConditions.elementToBeClickable
-                                        (By.xpath("//button[@name='Submit']"))));
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[text()='OK']"))));
+        Thread.sleep(3000);
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getWait10().until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//button[@name='Submit']"))));
 
         Assert.assertEquals(getWait5().
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -169,6 +169,7 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(buttonIcon, "Icon legend");
         Assert.assertEquals(buttonAtom, "Atom feed");
     }
+
     @Ignore
     @Test
     public void testCreateMultibranch() throws InterruptedException {
@@ -220,6 +221,7 @@ public class GroupCodeCraftTest extends BaseTest {
         assertNotNull(moveToElement);
         assertNull(moveOutElement);
     }
+
     @Ignore
     @Test
     public void testNewItemFreestyleProject() throws InterruptedException {
