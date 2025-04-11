@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -37,5 +38,34 @@ public class FreestyleProject4Test extends BaseTest {
         String warning = driver.findElement(By.id("enable-project")).getText();
 
         assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
+    }
+
+    @Ignore //WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
+    @Test
+    public void testTriggerBuildAfterOtherProjects(){
+        final String projectNameFP1 = "FreeStyleProject1";
+        final String projectNameFP2 = "FreeStyleProject2";
+
+        TestUtils.createFreestyleProject(getDriver(), projectNameFP1);
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
+        TestUtils.createFreestyleProject(getDriver(), projectNameFP2);
+        TestUtils.scrollAndClickWithJS(getDriver(), getWait10().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(projectNameFP1);
+        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
+
+
+        TestUtils.moveAndClickWithJS(getDriver(),
+                getWait5().until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//td/a/span[text() = '%s']/../button".formatted(projectNameFP1)))));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted("Build Now")))).click();
+        getDriver().findElement(By.linkText(projectNameFP2)).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-build-history")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-href='/job/" + projectNameFP2 + "/1/']"))).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
+
+        assertTrue(getDriver().findElement((By.id("out"))).getText().contains("Finished: SUCCESS"));
     }
 }
