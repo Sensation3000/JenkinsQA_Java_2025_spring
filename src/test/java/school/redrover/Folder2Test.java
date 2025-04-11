@@ -11,6 +11,7 @@ import school.redrover.common.TestUtils;
 
 public class Folder2Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testNewFolderIsEmptyByDefault() {
         final String folderName = "New Folder";

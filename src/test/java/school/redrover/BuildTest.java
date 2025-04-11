@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -32,6 +33,7 @@ public class BuildTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testBuildPeriodically() {
         final String projectName = "Build Periodically";

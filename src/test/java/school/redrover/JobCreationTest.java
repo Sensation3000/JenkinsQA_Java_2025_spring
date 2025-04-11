@@ -12,7 +12,6 @@ import school.redrover.common.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
-@Ignore
 public class JobCreationTest extends BaseTest {
 
     final String NEW_JOB = "//a[@href='newJob']";
@@ -46,6 +45,7 @@ public class JobCreationTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         getDriver().findElement(By.xpath(NEW_JOB)).click();
@@ -57,10 +57,52 @@ public class JobCreationTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        TestUtils.gotoHomePage(this);
+        TestUtils.clickJenkinsHomeLink(getDriver());
         WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='job/new_project_1/']")));
 
         Assert.assertEquals(projectName.getText(), "new_project_1");
+    }
+
+    @Test
+    public void testAllItemTypesArePresent() {
+        TestUtils.createProject(this);
+
+        List<String> expectedTitles = Arrays.asList(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder");
+
+        List<WebElement> actualTitles = Arrays.asList(
+                getDriver().findElement(By.xpath("//span[@class][text()='Freestyle project']")),
+                getDriver().findElement(By.xpath("//span[@class][text()='Pipeline']")),
+                getDriver().findElement(By.xpath("//span[@class][text()='Multi-configuration project']")),
+                getDriver().findElement(By.xpath("//span[@class][text()='Folder']")),
+                getDriver().findElement(By.xpath("//span[@class][text()='Multibranch Pipeline']")),
+                getDriver().findElement(By.xpath("//span[@class][text()='Organization Folder']"))
+        );
+
+        for (int i = 0; i < expectedTitles.size(); i++) {
+            String expectedText = expectedTitles.get(i);
+            String actualText = actualTitles.get(i).getText();
+            Assert.assertEquals(actualText, expectedText);
+        }
+    }
+
+    @Ignore
+    @Test(description = "TC_01.003.20")
+    public void testNewItemCreation() {
+        String projectName = TestUtils.getItemTypeName(1);
+
+        TestUtils.createProjectWithName(getDriver(), projectName, 1);
+        TestUtils.clickJenkinsHomeLink(getDriver());
+
+        TestUtils.createProject(this);
+        WebElement actualTextCopyForm = getDriver().findElement(By
+                .xpath("//div[@class='add-item-copy']"));
+        Assert.assertEquals(actualTextCopyForm.getText().trim(), "Copy from");
     }
 }
