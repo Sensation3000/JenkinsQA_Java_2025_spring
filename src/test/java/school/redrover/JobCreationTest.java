@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -29,14 +30,14 @@ public class JobCreationTest extends BaseTest {
 
     @Test
     public void testInvalidCharactersInItemName() {
-        List<String> invalidNames = Arrays.asList("My Job!@#", "Test Job$", "Job#123", "My@Job", "Job%Test");
+        List<String> invalidNames = Arrays.asList("My $#Job!@#", "Test Job#@$", "Job#12$#@3", "My@Job#$", "Job%Test$#");
 
         for (String invalidName : invalidNames) {
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NEW_JOB))).click();
             WebElement itemNameInput = getDriver().findElement(By
                     .xpath(ITEM_NAME_INPUT));
             itemNameInput.clear();
-            itemNameInput.sendKeys(invalidName);
+            itemNameInput.sendKeys(invalidName + Keys.ENTER);
 
             WebElement errorMessage = getWait5().until(ExpectedConditions
                     .visibilityOfElementLocated(By.id("itemname-invalid")));
@@ -120,6 +121,21 @@ public class JobCreationTest extends BaseTest {
         WebElement autocompleteSuggestion = getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
         Assert.assertNotNull(autocompleteSuggestion, "Autocomplete suggestion not found.");
+    }
+    @Test(description = "TC_01.003.22")
+    public void testCopyFromNonExistingItem() {
+        String projectName = TestUtils.getItemTypeName(2);
+
+        TestUtils.createProjectWithName(getDriver(), projectName, 2);
+        TestUtils.gotoHomePage(this);
+
+        TestUtils.createProject(this);
+        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("from")));
+        actualTextCopyForm.sendKeys("NonExistingItem");
+        WebElement autocompleteSuggestion = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
+        Assert.assertEquals(autocompleteSuggestion.getText(),"No items");
     }
 }
 
