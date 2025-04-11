@@ -95,4 +95,20 @@ public class ManageJenkinsTabTest extends BaseTest {
         Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
         }
     }
+    @Test
+    public void testDependenciesStaticResourcesLinksExist() {    getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        WebElement aboutLink = getDriver().findElement(By.xpath("//a[@href='about']"));
+        TestUtils.scrollAndClickWithJS(getDriver(),aboutLink);
+        getDriver().findElement(By.xpath("//a[normalize-space()='Static resources']")).click();
+
+        getWait5();
+        List<WebElement> dependency = getDriver().findElements(By.xpath("(//table)[2]//tr//td/a"));
+        Assert.assertNotEquals(dependency.size(),0);
+
+        for (int i = 0; i < dependency.size(); i++) {
+            WebElement dependenciesStatic  = dependency.get(i);
+
+            Assert.assertTrue(dependenciesStatic.isEnabled(), "Links №" + (i + 1) + " not clickable");
+        }
+    }
     }

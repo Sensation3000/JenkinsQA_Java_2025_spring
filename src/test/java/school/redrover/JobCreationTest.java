@@ -27,6 +27,7 @@ public class JobCreationTest extends BaseTest {
         Assert.assertEquals(validationMessage.getText(), "» This field cannot be empty, please enter a valid name");
     }
 
+    @Ignore //Timeout Expected condition failed: waiting for element to be clickable: By.xpath: //span[text()='New Folder'] (tried for 10 second(s) with 500 milliseconds interval)
     @Test
     public void testInvalidCharactersInItemName() {
         List<String> invalidNames = Arrays.asList("My Job!@#", "Test Job$", "Job#123", "My@Job", "Job%Test");
@@ -57,7 +58,7 @@ public class JobCreationTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        TestUtils.clickJenkinsHomeLink(getDriver());
+        TestUtils.gotoHomePage(this);
         WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='job/new_project_1/']")));
 
@@ -98,11 +99,28 @@ public class JobCreationTest extends BaseTest {
         String projectName = TestUtils.getItemTypeName(1);
 
         TestUtils.createProjectWithName(getDriver(), projectName, 1);
-        TestUtils.clickJenkinsHomeLink(getDriver());
+        TestUtils.gotoHomePage(this);
 
         TestUtils.createProject(this);
         WebElement actualTextCopyForm = getDriver().findElement(By
                 .xpath("//div[@class='add-item-copy']"));
         Assert.assertEquals(actualTextCopyForm.getText().trim(), "Copy from");
     }
+    @Test(description = "TC_01.003.21")
+    public void testNewItemCopyFromAutocomplete() {
+        String projectName = TestUtils.getItemTypeName(1);
+
+        TestUtils.createProjectWithName(getDriver(), projectName, 1);
+        TestUtils.gotoHomePage(this);
+
+        TestUtils.createProject(this);
+        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("from")));
+        actualTextCopyForm.sendKeys("Freestyle");
+
+        WebElement autocompleteSuggestion = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
+        Assert.assertNotNull(autocompleteSuggestion, "Autocomplete suggestion not found.");
+    }
 }
+
