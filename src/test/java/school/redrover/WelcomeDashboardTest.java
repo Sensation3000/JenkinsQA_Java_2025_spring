@@ -26,4 +26,13 @@ public class WelcomeDashboardTest extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOf(
                         getDriver().findElement(By.xpath("//li/a[@href='newJob']")))).isDisplayed());
     }
+
+    @Test
+    public void testOpenManageJenkinsFromDashboard() {
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+
+        Assert.assertTrue(
+                getWait5().until(ExpectedConditions.visibilityOf(
+                        getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")))).isDisplayed());
+    }
 }
