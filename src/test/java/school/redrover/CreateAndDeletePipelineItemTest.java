@@ -2,10 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 
 public class CreateAndDeletePipelineItemTest extends BaseTest {
@@ -77,6 +75,11 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
         driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"jenkins\"]/dialog[2]")).isDisplayed());
     }
