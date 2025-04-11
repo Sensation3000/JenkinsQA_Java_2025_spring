@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class TestUtils {
@@ -14,6 +16,7 @@ public class TestUtils {
     public static void gotoHomePage(BaseTest baseTest) {
         gotoHomePage(baseTest.getDriver());
     }
+
 
     public static void gotoHomePage(WebDriver driver) {
         ProjectUtils.get(driver);
@@ -61,6 +64,7 @@ public class TestUtils {
      *                                  <p>itemName is empty or already exists<p/>
      * @example newItemCreate(this, " MyPipeline ", 2); // Creates a Pipeline
      */
+
     public static void newItemCreate(BaseTest baseTest, String itemName, int itemTypeId) {
         if (itemName.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be empty or whitespace");
@@ -209,5 +213,22 @@ public class TestUtils {
         }
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
+    }
+
+    private static void uniqueItemNameCheck(WebDriver driver, String itemName) {
+        if (!driver.findElements(By.xpath("//td/a/span")).isEmpty()) {
+            List<WebElement> existingItems = driver.findElements
+                    (By.xpath("//td/a/span"));
+
+            List<String> itemsNames = new ArrayList<>();
+
+            for (WebElement element : existingItems) {
+                itemsNames.add(element.getText());
+            }
+
+            if (itemsNames.contains(itemName)) {
+                throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
+            }
+        }
     }
 }
