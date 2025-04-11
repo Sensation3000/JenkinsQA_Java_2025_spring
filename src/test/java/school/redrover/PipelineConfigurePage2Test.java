@@ -75,7 +75,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='/' and @class='model-link']")));
-        moveAndClickWithJS(driver, dashboardLink);
+        moveAndClickWithSelenium(driver, dashboardLink);
 
         WebElement pipelineItem = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(), 'Test Pipeline item')]")));
