@@ -133,9 +133,9 @@ public class JobCreationTest extends BaseTest {
         WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("from")));
         actualTextCopyForm.sendKeys("NonExistingItem");
-        WebElement autocompleteSuggestion = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
-        Assert.assertEquals(autocompleteSuggestion.getText(),"No items");
+        WebElement actualText = getWait5()
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("tippy-7")));
+        Assert.assertEquals(actualText.getText(),"No items");
     }
 }
 
