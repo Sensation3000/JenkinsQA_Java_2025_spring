@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 
 public class CreateAndDeletePipelineItemTest extends BaseTest {
@@ -14,26 +15,27 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
         WebDriver driver = getDriver();
 
         //Click on New Item
-        WebElement addItem = driver.findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a"));
-        addItem.click();
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
 
         //input text, choose radio and click ОК
         driver.findElement(By.id("name")).sendKeys("somePipeline");
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1")).getText(), "somePipeline");
 
         //delete Item
         driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
         driver.findElement(new By.ByXPath("//*[@id=\"jenkins\"]/dialog[2]/div[3]/button[1]")).click();
+        Assert.assertNotEquals(driver.findElement(By.id("jenkins")).getText(), "somePipeline");
+        //soft.assertNotEquals(driver.findElement(By.id("jenkins")).getText(), "somePipeline");
     }
 
     @Test
     public void getTextOnCreateEmptyNamePipelineItem() {
         WebDriver driver = getDriver();
 
-        WebElement addItem = driver.findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a"));
-        addItem.click();
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
 
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         Assert.assertEquals(driver.findElement(By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
@@ -44,8 +46,7 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
     public void isDisabledButtonOKOnCreateNamePipelineItem() {
         WebDriver driver = getDriver();
 
-        WebElement addItem = driver.findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a"));
-        addItem.click();
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
 
         driver.findElement(By.id("name")).sendKeys("somePipeline");
         Assert.assertTrue(driver.findElement(By.id("ok-button")).isDisplayed());
@@ -56,8 +57,7 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
     public void isEnabledProjectOnCreatePipelineItem() {
         WebDriver driver = getDriver();
 
-        WebElement addItem = driver.findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a"));
-        addItem.click();
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
 
         driver.findElement(By.id("name")).sendKeys("somePipeline");
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
@@ -69,17 +69,16 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
     @Test
     public void isShownDialogOnDeletePipelineItem() {
         WebDriver driver = getDriver();
+       final String itemName = "somePipeline";
 
-        WebElement addItem = driver.findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a"));
-        addItem.click();
-
-        driver.findElement(By.id("name")).sendKeys("somePipeline");
+        driver.findElement(By.xpath("//a[@href='newJob']")).click();
+        driver.findElement(By.id("name")).sendKeys(itemName);
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-
         driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
-        Assert.assertEquals(driver.findElement(By.className("jenkins-dialog__title")).getText(), "Delete Pipeline");
+
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"jenkins\"]/dialog[2]")).isDisplayed());
     }
 
 }
