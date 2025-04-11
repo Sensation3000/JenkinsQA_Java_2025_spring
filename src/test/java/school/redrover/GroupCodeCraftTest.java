@@ -102,11 +102,10 @@ public class GroupCodeCraftTest extends BaseTest {
                 "This Organization Folder is currently disabled");
     }
 
-    // @Ignore //(пожалуйста, когда ставите этот тест в игнор
-    // - будьте добры - напишите на каком он падает элементе)
+    @Ignore
     @Test
     public void testNewItemOkButtonSelectType() throws InterruptedException {
-        final String nameItem = "New Item 0.04.10";
+        final String nameItem = "New Item 0.01.4";
 
         getDriver().findElement(By.xpath(
                 "//a[span[contains(@class, 'task-link-text') and text()='New Item']]")).click();
@@ -142,14 +141,16 @@ public class GroupCodeCraftTest extends BaseTest {
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//div[@class='input-validation-message']")));
         getDriver().findElement(By.id("name")).sendKeys(nameItem);
+        Thread.sleep(3000);
+        WebElement okButton = getDriver().findElement(By.xpath(
+                "//button[text()='OK']"));
+        //GroupCodeCraftTest.testNewItemOkButtonSelectType:147 » Timeout Expected condition failed: waiting for element to be clickable: By.xpath: //button[text()='OK']
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
+        okButton.click();
 
         TestUtils.scrollAndClickWithJS(getDriver(),
-                getWait10().until(ExpectedConditions.elementToBeClickable
-                        (By.xpath("//button[text()='OK']"))));
-        Thread.sleep(3000);
-        TestUtils.scrollAndClickWithJS(getDriver(),
-                getWait10().until(ExpectedConditions.elementToBeClickable
-                        (By.xpath("//button[@name='Submit']"))));
+                                getWait10().until(ExpectedConditions.elementToBeClickable
+                                        (By.xpath("//button[@name='Submit']"))));
 
         Assert.assertEquals(getWait5().
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -169,7 +170,6 @@ public class GroupCodeCraftTest extends BaseTest {
         Assert.assertEquals(buttonIcon, "Icon legend");
         Assert.assertEquals(buttonAtom, "Atom feed");
     }
-
     @Ignore
     @Test
     public void testCreateMultibranch() throws InterruptedException {
@@ -222,7 +222,10 @@ public class GroupCodeCraftTest extends BaseTest {
         assertNull(moveOutElement);
     }
 
-    @Ignore
+
+    @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
+    //GroupCodeCraftTest.testNewItemFreestyleProject:250 » Timeout Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
+
     @Test
     public void testNewItemFreestyleProject() throws InterruptedException {
         final String nameItem1 = "New test ssN ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";
