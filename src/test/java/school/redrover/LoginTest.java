@@ -2,11 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.ProjectUtils;
+import school.redrover.common.TestUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,11 +23,8 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 
 public class LoginTest extends BaseTest {
-
-    @BeforeMethod
-    private void beforeMethod() {
-        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
-    }
+    private String userName;
+    private String password;
 
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
     @Target({METHOD, TYPE})
@@ -35,40 +35,96 @@ public class LoginTest extends BaseTest {
     private void tearDown(Method method) {
         SkipConfiguration skip = method.getAnnotation(SkipConfiguration.class);
         if (skip != null) {
-            System.err.println("Skipping AfterMethod for " + method.getName());
-            System.err.println("Login to the Jenkins.");
-            try {
-                final Properties properties = new Properties();
-                String userName = "";
-                String password = "";
-
-                if (System.getenv("RUN_CI") == null) {
-                    FileInputStream fileInputStream = new FileInputStream("src/test/resources/.properties");
-                    properties.load(fileInputStream);
-                    userName = properties.getProperty("jenkins.username");
-                    password = properties.getProperty("jenkins.password");
-                } else {
-                    userName = System.getenv("JENKINS_USERNAME");
-                    password = System.getenv("JENKINS_PASSWORD");
-                }
-                getDriver().findElement(By.name("j_username")).sendKeys(userName);
-                getDriver().findElement(By.name("j_password")).sendKeys(password);
-                getDriver().findElement(By.name("Submit")).click();
-                Thread.sleep(2000);
-
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            ProjectUtils.log("Skipping AfterMethod for " + method.getName());
+            ProjectUtils.log("Logging into Jenkins.");
+            setCredentials();
+            loginToJenkins(this.userName, this.password);
+            TestUtils.waitForHomePageLoad(this);
         }
-        System.err.println("Login succeed.");
-        System.err.println("Running AfterMethod for " + method.getName());
+    }
+
+    private void setLocalCredentials() throws IOException {
+        final Properties properties = new Properties();
+        FileInputStream fileInputStream = new FileInputStream("src/test/resources/.properties");
+        properties.load(fileInputStream);
+        this.userName = properties.getProperty("jenkins.username");
+        this.password = properties.getProperty("jenkins.password");
+    }
+
+    private void setCICredentials() {
+        this.userName = System.getenv("JENKINS_USERNAME");
+        this.password = System.getenv("JENKINS_PASSWORD");
+    }
+
+    private void setCredentials() {
+        try {
+            if (System.getenv("RUN_CI") == null) {
+                setLocalCredentials();
+            } else {
+                setCICredentials();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void loginToJenkins(String userName, String password) {
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name("login")));
+        getDriver().findElement(By.name("j_username")).sendKeys(userName);
+        getDriver().findElement(By.name("j_password")).sendKeys(password);
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    @DataProvider(name = "invalidCredentials")
+    private Object[][] getData() {
+        setCredentials();
+
+        return new Object[][]{
+                {TestUtils.generateRandomAlphanumeric(), this.password},
+                {this.userName, TestUtils.generateRandomAlphanumeric()},
+                {"", this.password},
+                {this.userName, "" },
+                {TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomAlphanumeric()},
+                {"", "" }
+        };
     }
 
     @Test
     @SkipConfiguration
     public void testLogoutSuccessfully() {
+        TestUtils.logout(this);
         List<WebElement> logoutList = getDriver().findElements(By.xpath("//a[@href='/logout']"));
 
         Assert.assertTrue(logoutList.isEmpty());
+    }
+
+    @Test(dataProvider = "invalidCredentials")
+    @SkipConfiguration
+    public void testInvalidCredentialsError(String testUserName, String testPassword) {
+        TestUtils.logout(this);
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name("login")));
+        loginToJenkins(testUserName, testPassword);
+
+        final String actualErrorText = getDriver().findElement(By.className("app-sign-in-register__error")).getText();
+
+        Assert.assertEquals(actualErrorText, "Invalid username or password");
+    }
+
+    @Test
+    public void testLoginAsANewUser() {
+        final String userName = "UserName";
+        final String password = "P@ssword";
+        final String newUserFullName = "User";
+        final String email = "user@test.com";
+
+        TestUtils.createNewUser(this, userName, password, newUserFullName, email);
+        TestUtils.logout(this);
+
+        loginToJenkins(userName, password);
+        TestUtils.waitForHomePageLoad(this);
+
+        final String actualUserName = getDriver().findElement(By.cssSelector("#page-header a.model-link")).getText();
+
+        Assert.assertEquals(actualUserName, newUserFullName);
     }
 }

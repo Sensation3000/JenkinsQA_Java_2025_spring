@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
+import static org.testng.Assert.assertEquals;
 
 public class UserNameTest extends BaseTest {
 

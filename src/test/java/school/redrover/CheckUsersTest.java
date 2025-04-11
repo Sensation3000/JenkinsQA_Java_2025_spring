@@ -39,4 +39,32 @@ public class CheckUsersTest extends BaseTest {
                 .perform();
         Assert.assertEquals( driver.findElement(By.xpath("//div[contains(text(), 'Jenkins User ID: admin')]")).getText(), "Jenkins User ID: admin");
     }
+
+    @Test
+    public void testCreateUser() {
+        WebDriver driver = getDriver();
+
+        final String userName = "TestName";
+        final String password = "123456";
+        final String confirmPassword = "123456";
+        final String fullName = "TestFullName";
+        final String email = "1@tut.by";
+
+        driver.findElement(By.cssSelector("a.task-link[href='/manage']")).click();
+        driver.findElement(By.xpath("//dt[text()='Users']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#main-panel a[href*='addUser']"))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#username"))).sendKeys(userName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='password1']"))).sendKeys(password);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='password2']"))).sendKeys(confirmPassword);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='fullname']"))).sendKeys(fullName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='email']"))).sendKeys(email);
+
+        driver.findElement(By.cssSelector("button.jenkins-submit-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("a[href*='user/testname']")).getText(),
+                userName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td[text()='TestFullName']")).getText(),
+                fullName);
+    }
 }

@@ -1,5 +1,7 @@
 package school.redrover.common;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -7,9 +9,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 
+@Listeners(FilterForTests.class)
 public abstract class BaseTest {
 
     private WebDriverWait wait5;
@@ -32,6 +39,26 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
+        if (!testResult.isSuccess()) {
+            try {
+                File screenshotDir = new File("screenshots");
+                if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
+                    throw new RuntimeException("Failed to create a folder for screenshots");
+                }
+                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+                String className = testResult.getTestClass().getRealClass().getSimpleName();
+                String testName = testResult.getMethod().getMethodName();
+                String fileName = className + "." + testName + ".png";
+
+                File destination = new File(screenshotDir, fileName);
+                Files.copy(screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
             JenkinsUtils.logout(driver);
             driver.quit();

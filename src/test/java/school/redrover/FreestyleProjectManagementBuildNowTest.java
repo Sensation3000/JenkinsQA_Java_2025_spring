@@ -1,0 +1,74 @@
+package school.redrover;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Test;
+import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
+import java.time.Duration;
+
+
+public class FreestyleProjectManagementBuildNowTest extends BaseTest {
+
+    final String name_Freestyle_Project = "new Freestyle Project";
+
+    void createNewItemFrestyle(WebDriver driver) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        driver.findElement(By.id("name")).sendKeys(name_Freestyle_Project);
+        driver.findElement(By.className("hudson_model_FreeStyleProject")).click();
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.id("ok-button")))
+                .click();
+        
+        driver.findElement(By.name("Submit")).click();
+    }
+  
+    @Ignore
+    @Test
+    public void testAvailableBuildNowOnProjectPage() {
+        WebDriver driver = getDriver();
+
+        createNewItemFrestyle(driver);
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath("//a[contains(@href,'build')][1]")))
+                .click();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build scheduled");
+    }
+
+    @Ignore //Error:    FreestyleProjectManagementBuildNowTest.testAvailableBuildNowOnbreadcrumbs:58 » WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
+
+    @Test
+    public void testAvailableBuildNowOnbreadcrumbs() {
+        WebDriver driver = getDriver();
+
+        createNewItemFrestyle(driver);
+
+        TestUtils.gotoHomePage(this);
+
+        getWait5()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath("//*[contains(@href,'build') and contains(@class,'build')]")))
+                .click();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build scheduled");
+    }
+}
