@@ -73,7 +73,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         moveAndClickWithSelenium(driver, switchButton);
         driver.findElement(By.name("Submit")).click();
 
-        WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement dashboardLink = getWait5().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//a[@href='/' and @class='model-link']")));
         moveAndClickWithSelenium(driver, dashboardLink);
 
