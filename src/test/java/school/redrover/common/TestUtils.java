@@ -14,9 +14,11 @@ import java.util.UUID;
 public class TestUtils {
 
     public static void gotoHomePage(BaseTest baseTest) {
-        baseTest.getWait10()
-                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")))
-                .click();
+        gotoHomePage(baseTest.getDriver());
+    }
+
+    public static void gotoHomePage(WebDriver driver) {
+        ProjectUtils.get(driver);
     }
 
     public static WebElement waitForHomePageLoad(BaseTest baseTest) {
@@ -38,6 +40,10 @@ public class TestUtils {
     public static void scrollAndClickWithJS(WebDriver driver, WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+    }
+
+    public static void scrollToItemWithJS(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     /**

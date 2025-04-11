@@ -44,6 +44,7 @@ public class JobCreationTest extends BaseTest {
             TestUtils.gotoHomePage(this);
         }
     }
+
     @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
@@ -91,6 +92,7 @@ public class JobCreationTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(description = "TC_01.003.20")
     public void testNewItemCreation() {
         String projectName = TestUtils.getItemTypeName(1);

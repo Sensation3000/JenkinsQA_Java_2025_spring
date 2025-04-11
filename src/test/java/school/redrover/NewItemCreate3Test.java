@@ -44,4 +44,16 @@ public class NewItemCreate3Test extends BaseTest {
             getDriver().findElement(By.id("name")).clear();
         }
     }
+
+    @Test
+    public void testCreateItemNameWithAppropriateCharacters() {
+        goToNewItemPage();
+
+        List<String> names = new ArrayList<>(List.of("ABCH", "avbcj", "пренш", "НЫГШ", "125487", "_"));
+        for (String element : names) {
+            getDriver().findElement(By.id("name")).sendKeys(element);
+            Assert.assertFalse(getDriver().findElement(By.id("itemname-required")).isDisplayed());
+            getDriver().findElement(By.id("name")).clear();
+        }
+    }
 }
