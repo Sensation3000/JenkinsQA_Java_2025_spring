@@ -35,4 +35,13 @@ public class WelcomeDashboardTest extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOf(
                         getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")))).isDisplayed());
     }
+
+    @Test
+    public void testEmptyBuildQueue() {
+        Assert.assertTrue(
+                getDriver().findElement(By.id("buildQueue")).isDisplayed());
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td[@class='pane']")).getText(), "No builds in the queue.");
+    }
+
 }
