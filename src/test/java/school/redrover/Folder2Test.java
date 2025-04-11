@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -30,7 +29,7 @@ public class Folder2Test extends BaseTest {
         TestUtils.gotoHomePage(this);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                        (By.cssSelector(".jenkins-table__link > span:nth-child(1)"))))
+                        (By.xpath("//span[text()='" + folderName + "']"))))
                 .click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
@@ -38,7 +37,6 @@ public class Folder2Test extends BaseTest {
                 "This folder is empty");
     }
 
-    @Ignore
     @Test
     public void testCannotCreateItemsWithSameNameInFolder() {
         final String folderName = "New Folder";
@@ -65,7 +63,7 @@ public class Folder2Test extends BaseTest {
                 (By.xpath("//span[text()='New Item']/ancestor::a"))).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")))
-                .sendKeys(jobName + " ");
+                .sendKeys(jobName);
 
         WebElement invalidItemName = getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("itemname-invalid")));
@@ -120,7 +118,6 @@ public class Folder2Test extends BaseTest {
                 (By.xpath("//span[text()='" + folderTwoName + "']"))).click();
         String secondItemName = getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//td/a/span"))).getText();
-        TestUtils.gotoHomePage(this);
 
         Assert.assertEquals(firstItemName, itemName);
         Assert.assertEquals(secondItemName, itemName);
