@@ -144,6 +144,7 @@ public class GroupCodeCraftTest extends BaseTest {
         Thread.sleep(3000);
         WebElement okButton = getDriver().findElement(By.xpath(
                 "//button[text()='OK']"));
+        //GroupCodeCraftTest.testNewItemOkButtonSelectType:147 » Timeout Expected condition failed: waiting for element to be clickable: By.xpath: //button[text()='OK']
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
         okButton.click();
 
