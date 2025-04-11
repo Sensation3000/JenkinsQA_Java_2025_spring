@@ -25,9 +25,8 @@ public class CheckNewItemCopyFromTest extends BaseTest {
 
         WebElement description = getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("description"))));
         description.sendKeys("test");
-        driver.findElement(By.cssSelector(".config-table > section:nth-child(4) > div:nth-child(6) > " +
-                "div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > label:nth-child(2)")).click();
-        WebElement timePeriod = getWait10().until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("_.durationName"))));
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[12]/div[1]/div/span/label")).click();
+        WebElement timePeriod = getWait5().until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("_.durationName"))));
         timePeriod.click();
 
         Select select = new Select(timePeriod);
