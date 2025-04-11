@@ -68,4 +68,40 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[6]/div[1]/div/a")).getDomAttribute("title"), "Help for feature: GitHub hook trigger for GITScm polling", "Help icon title is incorrect");
     }
 
+
+
+    @Test
+    public void testRemoteTriggerOptionDisplaysTokenField() {
+        WebDriver driver = getDriver();
+        final String projectName = "New project";
+        TestUtils.createFreestyleProject(getDriver(), projectName);
+
+        getWait5();
+
+        TestUtils.scrollToItemWithJS(driver,
+                driver.findElement(By.id("source-code-management")));
+
+        //Click on the checkbox
+        driver.findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).click();
+
+        //Wait for the token field to be displayed and enter the token
+        driver.findElement(By.xpath("//input[@name='authToken']")).sendKeys("Authentication Token");
+        driver.findElement(By.xpath("//button[@name='Submit']")).click();
+
+        //Configure
+        getWait5();
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        TestUtils.scrollToItemWithJS(driver,
+                driver.findElement(By.id("source-code-management")));
+
+        //Assertions
+        Assert.assertEquals(driver.findElement(By.xpath("//div[text()='Authentication Token']")).getText(),"Authentication Token");
+        Assert.assertEquals(driver.findElement(By.xpath("//input[@name='authToken']")).getDomAttribute("value"),"Authentication Token");
+        Assert.assertEquals(driver.findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]")).getText().trim(),
+                """
+            Use the following URL to trigger build remotely: JENKINS_URL/job/New%20project/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
+            Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
+            """.trim(), "Текст не совпадает с ожидаемым!");
+    }
+
 }
