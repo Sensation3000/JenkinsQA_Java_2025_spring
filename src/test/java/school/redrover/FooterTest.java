@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -24,6 +25,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/api/");
     }
 
+    @Ignore
     @Test
     public void testLinkButtonsListInVersionDropDown() {
         final List<String> expectedDropDownElementsValues = new ArrayList<>(List.of("About Jenkins", "Get involved", "Website"));

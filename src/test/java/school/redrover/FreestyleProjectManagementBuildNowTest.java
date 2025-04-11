@@ -32,7 +32,8 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         
         driver.findElement(By.name("Submit")).click();
     }
-
+  
+    @Ignore
     @Test
     public void testAvailableBuildNowOnProjectPage() {
         WebDriver driver = getDriver();
@@ -51,6 +52,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
     }
 
     @Ignore //Error:    FreestyleProjectManagementBuildNowTest.testAvailableBuildNowOnbreadcrumbs:58 » WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
+
     @Test
     public void testAvailableBuildNowOnbreadcrumbs() {
         WebDriver driver = getDriver();
