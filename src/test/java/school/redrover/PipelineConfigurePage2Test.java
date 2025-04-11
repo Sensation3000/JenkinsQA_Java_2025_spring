@@ -18,7 +18,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
     public void testEnableDisableSwitchVisibility() {
         WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
@@ -31,7 +31,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
     public void testDisableItem() {
         WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
@@ -47,7 +47,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
     public void testEnableItem() {
         WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
@@ -56,7 +56,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.xpath("//span[text()='Configure']/..")).click();
         driver.findElement(By.className("jenkins-toggle-switch__label")).click();
 
-        Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isEnabled());
 
     }
 
@@ -64,7 +64,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
     public void testVerifyPipelineBuildNowButtonDisabled() {
         WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
@@ -97,7 +97,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("(//span[@class='task-icon-link'])[1]")).click();
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
@@ -139,5 +139,4 @@ public class PipelineConfigurePage2Test extends BaseTest {
           action.moveToElement(element)
                 .perform();
     }
-
 }
