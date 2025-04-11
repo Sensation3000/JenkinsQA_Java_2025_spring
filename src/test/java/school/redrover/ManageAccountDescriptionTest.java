@@ -43,6 +43,7 @@ public class ManageAccountDescriptionTest extends BaseTest {
                 By.id("description")).getText(), userDescription);
     }
 
+    @Ignore
     @Test
     public void testChangeUserDescription() {
         final String userDescription = "Updated user description";

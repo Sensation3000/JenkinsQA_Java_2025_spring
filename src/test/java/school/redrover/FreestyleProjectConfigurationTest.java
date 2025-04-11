@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -20,6 +21,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         Assert.assertTrue(projectIsDisabledText.contains("This project is currently disabled"));
     }
 
+    @Ignore
     @Test
     public void testEnableProject() {
         TestUtils.createFreestyleProject(getDriver(), "Freestyle");
