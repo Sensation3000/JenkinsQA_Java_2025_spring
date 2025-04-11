@@ -70,13 +70,11 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test
     public void testCheckDescriptionIsSaved() {
-        final String description = "Job description";
-        WebDriver driver = getDriver();
-
         TestUtils.createFreestyleProject(driver, jobName);
-        driver.findElement(By.name("description")).sendKeys(description);
-        driver.findElement(By.name("Submit")).click();
+        
+        getDriver().findElement(By.name("description")).sendKeys("Job description");
+        getDriver().findElement(By.name("Submit")).click();
 
-        assertEquals(driver.findElement(By.id("description")).getText(), description);
+        assertEquals(getDriver().findElement(By.id("description")).getText(), description);
     }
 }
