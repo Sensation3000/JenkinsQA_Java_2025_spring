@@ -193,6 +193,27 @@ public class Pipeline3Test extends BaseTest {
                 By.cssSelector(".empty-state-block h1")).getText(), "Welcome to Jenkins!");
     }
 
+    @Test
+    public void testCreatePipelineWithDescription() {
+        final String projectName = "NewPipelineV";
+        final String descriptionText = "New Created Description\nTRALALALALALALALA";
+
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        driver.findElement(By.id("ok-button")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description")))
+                .sendKeys(descriptionText);
+        driver.findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[@id='description']/div"))).getText(), descriptionText);
+    }
+
     private void goHomeUsingJS(WebDriver driver) {
         ((JavascriptExecutor)driver).executeScript("window.location.href='/';");
     }
