@@ -55,7 +55,6 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
 
-
         TestUtils.moveAndClickWithJS(getDriver(),
                 getWait5().until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//td/a/span[text() = '%s']/../button".formatted(projectNameFP1)))));
@@ -67,5 +66,16 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
 
         assertTrue(getDriver().findElement((By.id("out"))).getText().contains("Finished: SUCCESS"));
+    }
+
+    @Test
+    public void testCheckDescriptionIsSaved() {
+        final String description = "Job description";
+
+        TestUtils.createFreestyleProject(getDriver(), jobName);
+        getDriver().findElement(By.name("description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertEquals(getDriver().findElement(By.id("description")).getText(), description);
     }
 }
