@@ -23,7 +23,6 @@ public class WelcomePageTest extends BaseTest {
                         By.cssSelector("#description>div:not(.jenkins-buttons-row)"))).getText();
 
         Assert.assertEquals(actualDescription, description);
-
     }
 
     @Test
@@ -31,7 +30,7 @@ public class WelcomePageTest extends BaseTest {
         WebDriver driver = getDriver();
 
         driver.findElement(By.cssSelector("a[href='newJob']")).click();
-        WebElement itemsList = driver.findElement(By.id("items"));
+        WebElement itemsList = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("items")));
 
         Assert.assertTrue(itemsList.isDisplayed(), "The list of job item type should be visible.");
     }
