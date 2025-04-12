@@ -2,9 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -12,11 +14,13 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
+import java.time.Duration;
 import java.util.List;
 
 public class NewItemPage2Test extends BaseTest {
 
     private Actions actions;
+    private WebDriverWait wait15;
     private final By newJobsLocator = By.xpath("//a[@href='/view/all/newJob']");
 
     @BeforeMethod
@@ -82,13 +86,13 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test(dataProvider = "itemTypes")
-    public void testItemsDescriptions(String itemTypeName, String expectedItemDescription1) {
+    public void testItemsDescriptions(String itemTypeName, String expectedItemDescription) {
         clickOnNewItemLink();
 
         WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
         String itemDescriptionText = itemType.findElement(By.xpath("./../../div")).getText();
 
-        Assert.assertEquals(itemDescriptionText, expectedItemDescription1);
+        Assert.assertEquals(itemDescriptionText, expectedItemDescription);
     }
 
     @DataProvider(name = "itemTypes")
@@ -134,5 +138,21 @@ public class NewItemPage2Test extends BaseTest {
                     "» This field cannot be empty, please enter a valid name"
             );
         }
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsDisplayed() {
+        wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        TestUtils.createProjectWithName(getDriver(), randomAlphaNumericValue, 1);
+        wait15.until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-home-link"))).click();
+        clickOnNewItemLink();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("p.jenkins-form-label")).getText(),
+                "If you want to create a new item from other existing, you can use this option:"
+        );
+        Assert.assertTrue(getDriver().findElement(By.id("from")).isDisplayed());
     }
 }
