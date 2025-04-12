@@ -7,9 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
 import java.util.List;
 
 public class PipelineConfigurePage2Test extends BaseTest {
@@ -87,22 +88,23 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         Assert.assertTrue(buildNowButtons.isEmpty());
     }
-    @Ignore
+
     @Test (testName = "TC_03.001.05.2 > Verify 'Build Now' Button State When Project is Enabled")
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
+        final String jobName = "Test Pipeline item";
 
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        driver.findElement(By.id("name")).sendKeys("Test Pipeline item");
+        driver.findElement(By.id("name")).sendKeys(jobName);
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
 
         ((JavascriptExecutor)driver).executeScript("window.location.href='/';"); //back to homepage
 
-        WebElement dropdownMenu = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//tr[@id='job_Test Pipeline item']//button[contains(@class, 'jenkins-menu-dropdown-chevron')]")));
-        moveAndClickWithSelenium(driver,dropdownMenu);
+        By jobButton = By.xpath("//td/a/span[text() = '%s']/../button".formatted(jobName));
+        WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(jobButton));
+        TestUtils.moveAndClickWithJS(driver, button);
 
         WebElement buildNowOption = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//button[normalize-space()='Build Now']")));
