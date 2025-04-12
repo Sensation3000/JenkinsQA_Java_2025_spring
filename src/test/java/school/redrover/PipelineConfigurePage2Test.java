@@ -97,40 +97,27 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
 
-        WebElement dashboardLink = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[@href='/' and @class='model-link']")));
-        moveAndClickWithSelenium(driver, dashboardLink);
-
-        WebElement pipelineItem = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//span[contains(text(), 'Test Pipeline item')]")));
-        moveAndWaitWithSelenium(driver, pipelineItem);
+        ((JavascriptExecutor)driver).executeScript("window.location.href='/';"); //back to homepage
 
         WebElement dropdownMenu = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//tr[@id='job_Test Pipeline item']//button[contains(@class, 'jenkins-menu-dropdown-chevron')]")));
         moveAndClickWithSelenium(driver,dropdownMenu);
 
-        WebElement buildNowOption = getWait10().until(ExpectedConditions.presenceOfElementLocated(By
+        WebElement buildNowOption = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//button[normalize-space()='Build Now']")));
-
         Assert.assertTrue(buildNowOption.isDisplayed());
-    }
-
-    public static void moveAndClickWithJS(WebDriver driver, WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
-        js.executeScript("arguments[0].click();", element);
     }
 
     public static void moveAndClickWithSelenium(WebDriver driver, WebElement element) {
         Actions action = new Actions(driver);
-          action.moveToElement(element)
+        action.moveToElement(element)
                 .click()
                 .perform();
     }
 
     public static void moveAndWaitWithSelenium(WebDriver driver, WebElement element) {
         Actions action = new Actions(driver);
-          action.moveToElement(element)
+        action.moveToElement(element)
                 .perform();
     }
 }
