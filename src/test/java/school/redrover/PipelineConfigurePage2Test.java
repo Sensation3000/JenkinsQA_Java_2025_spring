@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
@@ -24,7 +23,6 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
 
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isDisplayed());
-
     }
 
     @Test(testName = "TC_03.001.02.2 > Verify Disabling a Project")
@@ -40,7 +38,6 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         Assert.assertTrue(driver.findElement(By.id("enable-project")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.id("enable-project")).getText().contains("This project is currently disabled"));
-
     }
 
     @Test(testName = "TC_03.001.03.2 > Verify Enabling a Project")
@@ -57,7 +54,6 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.className("jenkins-toggle-switch__label")).click();
 
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isEnabled());
-
     }
 
     @Test(testName = "TC_03.001.04.2 > Verify 'Build Now' button state when project is disabled")
@@ -89,10 +85,8 @@ public class PipelineConfigurePage2Test extends BaseTest {
                 .xpath("//button[contains(., 'Build Now')]"));
 
         Assert.assertTrue(buildNowButtons.isEmpty());
-
     }
 
-    @Ignore
     @Test (testName = "TC_03.001.05.2 > Verify 'Build Now' Button State When Project is Enabled")
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
