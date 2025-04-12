@@ -13,7 +13,7 @@ import static org.testng.Assert.assertEquals;
     public  class CreateUserAndDeleteTest extends BaseTest {
 
         @Test
-        public  void testCreateUser() throws InterruptedException {
+        public  void testCreateUser() {
             WebDriver driver  = getDriver();
 
             driver.findElement(By.xpath("//a[@href='/manage']")).click();
