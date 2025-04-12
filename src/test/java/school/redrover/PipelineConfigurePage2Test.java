@@ -107,7 +107,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         WebElement dropdownMenu = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//tr[@id='job_Test Pipeline item']//button[contains(@class, 'jenkins-menu-dropdown-chevron')]")));
-        moveAndClickWithJS(driver,dropdownMenu);
+        moveAndClickWithSelenium(driver,dropdownMenu);
 
         WebElement buildNowOption = getWait10().until(ExpectedConditions.presenceOfElementLocated(By
                 .xpath("//button[normalize-space()='Build Now']")));
