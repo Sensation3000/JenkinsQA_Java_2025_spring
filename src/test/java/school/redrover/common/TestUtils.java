@@ -117,11 +117,6 @@ public class TestUtils {
                 .click().perform();
     }
 
-    public static void logout(BaseTest baseTest) {
-        WebElement logoutLink = waitForHomePageLoad(baseTest);
-        logoutLink.click();
-    }
-
     public static void createNewUser(BaseTest baseTest, String userName, String password, String fullName, String email) {
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("Manage Jenkins"))).click();
         baseTest.getWait5()
