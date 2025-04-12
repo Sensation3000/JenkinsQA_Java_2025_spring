@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -142,7 +141,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfCopyFromOptionIsDisplayed() {
-        wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(16));
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
 
         TestUtils.createProjectWithName(getDriver(), randomAlphaNumericValue, 1);
@@ -154,5 +153,12 @@ public class NewItemPage2Test extends BaseTest {
                 "If you want to create a new item from other existing, you can use this option:"
         );
         Assert.assertTrue(getDriver().findElement(By.id("from")).isDisplayed());
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsNotDisplayed() {
+        clickOnNewItemLink();
+
+        Assert.assertTrue(getDriver().findElements(By.id("from")).isEmpty());
     }
 }
