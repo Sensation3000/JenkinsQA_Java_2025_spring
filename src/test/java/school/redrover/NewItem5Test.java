@@ -7,10 +7,19 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewItem5Test extends BaseTest {
+
+    @Test
+    public void testNewItemPageAvailableFromDashboard() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::div[@class='task ']")).click();
+        String actualHeader = getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+
+        Assert.assertEquals(actualHeader, "New Item");
+    }
 
     @Test
     public void testItemsList() {
