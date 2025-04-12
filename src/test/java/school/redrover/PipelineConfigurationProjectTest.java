@@ -26,7 +26,7 @@ public class PipelineConfigurationProjectTest extends BaseTest {
         previewButton.click();
         WebElement previewElement = driver.findElement(By.cssSelector(".textarea-preview"));
 
-        Assert.assertTrue(previewElement.isDisplayed(), "Preview is displayed.");
+        Assert.assertTrue(previewElement.isDisplayed(), "Preview is not displayed.");
 
         WebElement hidePreviewButton = driver.findElement(By.cssSelector(".textarea-hide-preview"));
         hidePreviewButton.click();
