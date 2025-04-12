@@ -221,7 +221,11 @@ public class GroupCodeCraftTest extends BaseTest {
         assertNotNull(moveToElement);
         assertNull(moveOutElement);
     }
-    @Ignore
+
+
+    @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
+    //GroupCodeCraftTest.testNewItemFreestyleProject:250 » Timeout Expected condition failed: waiting for visibility of element located by By.xpath: //textarea[@name='description'] (tried for 10 second(s) with 500 milliseconds interval)
+
     @Test
     public void testNewItemFreestyleProject() throws InterruptedException {
         final String nameItem1 = "New test ssN ~!@#$%^&*()_+}{[]`-=/.,<>?;':|";

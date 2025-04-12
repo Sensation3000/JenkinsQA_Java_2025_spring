@@ -72,11 +72,11 @@ public final class ProjectUtils {
                 getValue(PREFIX_JENKINS_PROP + "port"));
     }
 
-    static String getUserName() {
+    public static String getUserName() {
         return getValue(PREFIX_JENKINS_PROP + "username");
     }
 
-    static String getPassword() {
+    public static String getPassword() {
         return getValue(PREFIX_JENKINS_PROP + "password");
     }
 
