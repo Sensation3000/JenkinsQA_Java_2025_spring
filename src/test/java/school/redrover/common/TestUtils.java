@@ -22,6 +22,11 @@ public class TestUtils {
         ProjectUtils.get(driver);
     }
 
+    public static void openHomePage(BaseTest baseTest) {
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
     public static WebElement waitForHomePageLoad(BaseTest baseTest) {
         return baseTest
                 .getWait5()
