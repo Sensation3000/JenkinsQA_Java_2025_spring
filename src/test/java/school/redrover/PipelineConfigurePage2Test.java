@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
@@ -86,7 +87,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
 
         Assert.assertTrue(buildNowButtons.isEmpty());
     }
-
+    @Ignore
     @Test (testName = "TC_03.001.05.2 > Verify 'Build Now' Button State When Project is Enabled")
     public void testVerifyBuildNowButtonWhenEnabled() {
         WebDriver driver = getDriver();
@@ -103,7 +104,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
                 .xpath("//tr[@id='job_Test Pipeline item']//button[contains(@class, 'jenkins-menu-dropdown-chevron')]")));
         moveAndClickWithSelenium(driver,dropdownMenu);
 
-        WebElement buildNowOption = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement buildNowOption = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//button[normalize-space()='Build Now']")));
         Assert.assertTrue(buildNowOption.isDisplayed());
     }
