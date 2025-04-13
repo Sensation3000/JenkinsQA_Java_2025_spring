@@ -4,15 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class PipelineConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "PipelineConfigTest";
 
-    @Ignore
-    // https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14422822984/job/40447542453?pr=1096
+
     @Test
     public void testPreviewAndHidePreviewButtons() {
         WebDriver driver = getDriver();
@@ -29,7 +27,7 @@ public class PipelineConfigurationProjectTest extends BaseTest {
         previewButton.click();
         WebElement previewElement = driver.findElement(By.cssSelector(".textarea-preview"));
 
-        Assert.assertTrue(previewElement.isDisplayed(), "Preview is not displayed.");
+        Assert.assertTrue(previewElement.isDisplayed(), "Preview should be displayed");
 
         WebElement hidePreviewButton = driver.findElement(By.cssSelector(".textarea-hide-preview"));
         hidePreviewButton.click();
