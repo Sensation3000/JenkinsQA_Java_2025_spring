@@ -30,12 +30,12 @@ public class NewItemAccessibilityTets2 extends BaseTest {
             public void checkElementsNewItemTest() {
                 WebDriver driver = getDriver();
                 driver.findElement(By.xpath("//a[@href='/view/all/newJob' and contains(@class, 'task-link')]")).click();
-            driver.findElement(By.xpath("//span[text()='Freestyle project']")).isDisplayed();
-            driver.findElement(By.xpath("//span[text()='Pipeline']")).isDisplayed();
-            driver.findElement(By.xpath("//span[text()='Multi-configuration project']")).isDisplayed();
-            driver.findElement(By.xpath("//span[text()='Folder']")).isDisplayed();
-            driver.findElement(By.xpath("//span[text()='Multibranch Pipeline']")).isDisplayed();
-            driver.findElement(By.xpath("//span[text()='Organization Folder']")).isDisplayed();
+            Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Freestyle project']")).isDisplayed());
+            Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Pipeline']")).isDisplayed());
+                Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Multi-configuration project']")).isDisplayed());
+                Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Folder']")).isDisplayed());
+                Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Multibranch Pipeline']")).isDisplayed());
+                Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Organization Folder']")).isDisplayed());
 
     }
 }
