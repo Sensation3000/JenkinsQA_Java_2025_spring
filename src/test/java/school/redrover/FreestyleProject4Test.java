@@ -4,13 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class FreestyleProject4Test extends BaseTest {
     private static final String jobName = "Test item";
@@ -77,5 +77,19 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         assertEquals(getDriver().findElement(By.id("description")).getText(), description);
+    }
+
+    @Test
+    public void testAccessBuildSteps() {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("projectName");
+        getDriver().findElement(
+                By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        assertTrue(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
+                .isEnabled());
     }
 }
