@@ -42,4 +42,28 @@ public class SelectItemTypeTest extends BaseTest {
 
         Assert.assertTrue(items.containsAll(listOfNames));
     }
+
+    @Test
+    public void testItemsTypeDescriptionExist() {
+        final List<String> itemsDisc = Arrays.asList
+                ("Classic, general-purpose job type that checks out from up to one SCM, executes build steps serially, followed by post-build steps like archiving artifacts and sending email notifications.",
+                "Orchestrates long-running activities that can span multiple build agents. Suitable for building pipelines (formerly known as workflows) and/or organizing complex activities that do not easily fit in free-style job type.",
+                "Suitable for projects that need a large number of different configurations, such as testing on multiple environments, platform-specific builds, etc.",
+                "Creates a container that stores nested items in it. Useful for grouping things together. Unlike view, which is just a filter, a folder creates a separate namespace, so you can have multiple things of the same name as long as they are in different folders.",
+                "Creates a set of Pipeline projects according to detected branches in one SCM repository.",
+                "Creates a set of multibranch project subfolders by scanning for repositories.");
+
+        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+
+        List<WebElement> listOfItemsDisc = getDriver().findElements(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li//div[@class='desc']"));
+        List<WebElement> listOfFoldersDisc = getDriver().findElements(By.xpath("//div[@id='j-add-item-type-nested-projects']/ul/li//div[@class='desc']"));
+
+        List<WebElement> listOfJobsDisc = new ArrayList<>();
+        listOfJobsDisc.addAll(listOfItemsDisc);
+        listOfJobsDisc.addAll(listOfFoldersDisc);
+
+        List<String> listOfNamesDisc = listOfJobsDisc.stream().map(WebElement::getText).toList();
+
+        Assert.assertTrue(listOfNamesDisc.containsAll(itemsDisc));
+    }
 }
