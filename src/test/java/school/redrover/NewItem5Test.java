@@ -51,4 +51,15 @@ public class NewItem5Test extends BaseTest {
 
         Assert.assertEquals(itemTypesTextList, expectedItemTypesTextList);
     }
+
+    @Test
+    public void testItemNameFieldAcceptsAlphanumericsAndSpecialCharacters() {
+        String acceptableCharacters = "Q w1`~()_-+={}'\".,";
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-input#name")).sendKeys(acceptableCharacters);
+        WebElement invalidCharacterMessage = getDriver().findElement(By.id("itemname-invalid"));
+
+        Assert.assertFalse(invalidCharacterMessage.isDisplayed(), "An unsafe character error message is displayed");
+    }
 }
