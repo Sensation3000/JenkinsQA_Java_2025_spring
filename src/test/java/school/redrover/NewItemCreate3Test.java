@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,4 +59,24 @@ public class NewItemCreate3Test extends BaseTest {
             getDriver().findElement(By.id("name")).clear();
         }
     }
+
+    @Test
+    public void testCreateNewItemWithExistingName() {
+        goToNewItemPage();
+        getDriver().findElement(By.id("name")).sendKeys("New FreeStyleProject");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.gotoHomePage(this);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td/a[@href='job/New%20FreeStyleProject/']"))
+                        .getText(), "New FreeStyleProject");
+
+        goToNewItemPage();
+        getDriver().findElement(By.id("name")).sendKeys("New FreeStyleProject");
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).
+                        getText(), "» A job already exists with the name ‘New FreeStyleProject’");
+    }
 }
+
