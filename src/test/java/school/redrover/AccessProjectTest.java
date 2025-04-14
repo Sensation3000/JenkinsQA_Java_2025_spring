@@ -12,28 +12,28 @@ import school.redrover.common.ProjectUtils;
 import school.redrover.common.TestUtils;
 
 public class  AccessProjectTest extends BaseTest {
-    private static final String NAMEPROJECT = "first project";
-    private static final String LOCATORPROJECT = "//*[@id='job_" + NAMEPROJECT + "']/td[3]/a/span";
+    private static final String NAME_PROJECT = "first project";
+    private static final String LOCATOR = "//*[@id='job_" + NAME_PROJECT + "']/td[3]/a/span";
 
     @Test
     public void testVisibleProject () {
-        TestUtils.createFolder(getDriver(), NAMEPROJECT);
+        TestUtils.createFolder(getDriver(), NAME_PROJECT);
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/button")).click();
         TestUtils.gotoHomePage(this);
 
-        WebElement title = getDriver().findElement(By.xpath(LOCATORPROJECT));
-        Assert.assertEquals(title.getText(),NAMEPROJECT);
+        WebElement title = getDriver().findElement(By.xpath(LOCATOR));
+        Assert.assertEquals(title.getText(),NAME_PROJECT);
     }
 
     @Test
     public void testLinkProject () {
-        TestUtils.createFolder(getDriver(), NAMEPROJECT);
+        TestUtils.createFolder(getDriver(), NAME_PROJECT);
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[3]/span/button")).click();
         TestUtils.gotoHomePage(this);
 
-        getDriver().findElement(By.xpath(LOCATORPROJECT)).click();
+        getDriver().findElement(By.xpath(LOCATOR)).click();
 
         WebElement title = getDriver().findElement(By.cssSelector("h1"));
-        Assert.assertEquals(title.getText(),NAMEPROJECT);
+        Assert.assertEquals(title.getText(),NAME_PROJECT);
     }
 }

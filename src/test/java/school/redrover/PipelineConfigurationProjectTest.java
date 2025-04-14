@@ -10,6 +10,7 @@ import school.redrover.common.BaseTest;
 public class PipelineConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "PipelineConfigTest";
 
+
     @Test
     public void testPreviewAndHidePreviewButtons() {
         WebDriver driver = getDriver();
@@ -26,7 +27,7 @@ public class PipelineConfigurationProjectTest extends BaseTest {
         previewButton.click();
         WebElement previewElement = driver.findElement(By.cssSelector(".textarea-preview"));
 
-        Assert.assertTrue(previewElement.isDisplayed(), "Preview is not displayed.");
+        Assert.assertTrue(previewElement.isDisplayed(), "Preview should be displayed");
 
         WebElement hidePreviewButton = driver.findElement(By.cssSelector(".textarea-hide-preview"));
         hidePreviewButton.click();

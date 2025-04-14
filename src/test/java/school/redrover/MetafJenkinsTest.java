@@ -21,7 +21,8 @@ public class MetafJenkinsTest extends BaseTest {
         WebElement titleText = driver.findElement(By.xpath("//div[@class='empty-state-block']/h1"));
         Assert.assertEquals(titleText.getText(), "Welcome to Jenkins!");
     }
-@Ignore
+
+    @Ignore
     @Test
     void checkTasksMenuItemsTest() {
         WebDriver driver = getDriver();
@@ -36,6 +37,7 @@ public class MetafJenkinsTest extends BaseTest {
 
         Assert.assertEquals(List.of("New Item", "Build History", "Manage Jenkins", "My Views"), menuTexts);
     }
+
     @Ignore //no such element: Unable to locate element: {"method":"xpath","selector":"//h1[@class='job-index-headline page-headline']"}
     @Test
     void createNewFreestyleProjectTest() {

@@ -4,9 +4,7 @@ import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -20,6 +18,11 @@ public class TestUtils {
 
     public static void gotoHomePage(WebDriver driver) {
         ProjectUtils.get(driver);
+    }
+
+    public static void openHomePage(BaseTest baseTest) {
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
     public static WebElement waitForHomePageLoad(BaseTest baseTest) {

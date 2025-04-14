@@ -13,6 +13,24 @@ import java.util.List;
 public class NewItem5Test extends BaseTest {
 
     @Test
+    public void testNewItemPageAvailableFromDashboard() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        String actualHeader = getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+
+        Assert.assertEquals(actualHeader, "New Item");
+    }
+
+    @Test
+    public void testInputFieldLabelAndAvailability() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        boolean isInputFieldDisplayed = getDriver().findElement(By.xpath("//div[@class='add-item-name']/input")).isDisplayed();
+        String inputFieldLabelText = getDriver().findElement(By.xpath("//div[@class='add-item-name']/label")).getText();
+
+        Assert.assertTrue(isInputFieldDisplayed, "Input Field isn't displayed");
+        Assert.assertEquals(inputFieldLabelText, "Enter an item name");
+    }
+
+    @Test
     public void testItemsList() {
         List<String> expectedItemTypesTextList = List.of(
                 "Freestyle project",

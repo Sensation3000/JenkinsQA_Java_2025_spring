@@ -32,6 +32,7 @@ public class WelcomePageTest extends BaseTest {
         driver.findElement(By.cssSelector("a[href='newJob']")).click();
         WebElement itemsList = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("items")));
 
-        Assert.assertTrue(itemsList.isDisplayed(), "The list of job item type should be visible.");
+        Assert.assertTrue(itemsList.isDisplayed(),
+                "The list of job item type should be visible.");
     }
 }

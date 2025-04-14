@@ -5,7 +5,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -13,14 +12,12 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 public class NewItemPage2Test extends BaseTest {
-
     private Actions actions;
-    private WebDriverWait wait15;
-    private final By newJobsLocator = By.xpath("//a[@href='/view/all/newJob']");
+    String randomAlphaNumericValue;
 
     @BeforeMethod
     void setUp() {
@@ -43,8 +40,14 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     private void clickOnNewItemLink() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
-                .click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']")))
+                   .click();
+    }
+
+    private void createNewJobWithRandomValue() {
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        Random random = new Random();
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, random.nextInt(6) +1);
     }
 
     @Test
@@ -141,11 +144,10 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfCopyFromOptionIsDisplayed() {
-        wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(16));
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        Random random = new Random();
 
-        TestUtils.createProjectWithName(getDriver(), randomAlphaNumericValue, 1);
-        wait15.until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-home-link"))).click();
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, random.nextInt(6) +1);
         clickOnNewItemLink();
 
         Assert.assertEquals(
@@ -160,5 +162,77 @@ public class NewItemPage2Test extends BaseTest {
         clickOnNewItemLink();
 
         Assert.assertTrue(getDriver().findElements(By.id("from")).isEmpty());
+    }
+
+    @Test
+    public void testAutocompleteOption() {
+        createNewJobWithRandomValue();
+        clickOnNewItemLink();
+
+        Random random = new Random();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(inputValue);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item")));
+
+        WebElement dropdownItem = getDriver().findElement(By.className("jenkins-dropdown__item"));
+
+        Assert.assertTrue(dropdownItem.isDisplayed());
+        Assert.assertEquals(dropdownItem.getText(), randomAlphaNumericValue);
+    }
+
+    @Test
+    public void testIfNoItemsMessageIsDisplayed() {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String generated;
+        Random random = new Random();
+
+        createNewJobWithRandomValue();
+        clickOnNewItemLink();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+
+        do {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < randomLength; i++) {
+                char c = chars.charAt(random.nextInt(chars.length()));
+                sb.append(c);
+            }
+            generated = sb.toString();
+        } while (randomAlphaNumericValue.startsWith(generated));
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(generated);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
+
+        Assert.assertEquals(
+                getDriver().findElement(By.className("jenkins-dropdown__placeholder")).getText(),
+                "No items"
+        );
+    }
+
+    @Test
+    public void testCopyFromOptionWhenCreatingNewJob() {
+        Random random = new Random();
+
+        createNewJobWithRandomValue();
+        clickOnNewItemLink();
+
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
+        getDriver().findElement(By.id("name")).sendKeys(TestUtils.generateRandomAlphanumeric());
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(inputValue);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item"))).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait5().until(ExpectedConditions.urlContains("/job"));
+
+        Assert.assertTrue(getDriver().findElement(By.id("general")).isDisplayed());
     }
 }
