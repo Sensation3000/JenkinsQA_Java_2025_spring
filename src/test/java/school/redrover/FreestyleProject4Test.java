@@ -46,13 +46,15 @@ public class FreestyleProject4Test extends BaseTest {
         final String jobName2 = "Test item2";
 
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), "Configure"));
+        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
         TestUtils.createFreestyleProject(getDriver(), jobName2);
         TestUtils.scrollAndClickWithJS(getDriver(), getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(JOB_NAME);
         getDriver().findElement(By.name("Submit")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), jobName2));
+        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
         TestUtils.moveAndClickWithJS(getDriver(),
                 getWait5().until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
