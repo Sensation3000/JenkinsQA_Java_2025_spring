@@ -174,4 +174,13 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(actualItemsTypes, expectedItemsTypes, "Error!");
     }
+
+    @Test (dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
+    public void testCheckItemsTypes2(String expectedItemType) {
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String actualItemType = getDriver().findElement(By.xpath("//span[text()='" + expectedItemType + "']")).getText();
+
+        Assert.assertEquals(actualItemType, expectedItemType, "Error!");
+    }
 }
