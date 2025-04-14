@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -44,13 +45,16 @@ public class DisplaySystemInfoTest extends BaseTest {
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]")).click();
         driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]")).click();
         driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[2]/a")).click();
+
+        WebElement example = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/table/tbody/tr/td/div[1]"));
+        String infoHiddenClass = example.getDomAttribute(("class"));
+
         driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/div/button[1]")).click();
 
-        WebElement serviceId = driver.findElement(By.xpath("//*[.='SERVICE_ID']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", serviceId);
-        String servId = driver.findElement(By.xpath("//*[.='SERVICE_ID']/following-sibling::td/div[2]")).getText();
+        String infoShownClass = example.getDomAttribute(("class"));
 
-        Assert.assertEquals(servId, "jenkins");
+        Assert.assertEquals(infoHiddenClass, "app-hidden-info-reveal");
+        Assert.assertEquals(infoShownClass, "app-hidden-info-reveal jenkins-hidden");
     }
 
     @Test
