@@ -34,7 +34,7 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
     @Test
     public void testDescriptionCanBeEmpty() {
         WebDriver driver = getDriver();
-        String PROJECT_NAME = "Freestyle Project";
+        final String PROJECT_NAME = "Freestyle Project";
 
         TestUtils.createFreestyleProject(driver, PROJECT_NAME);
         driver.navigate().to("http://localhost:8080/job/" + PROJECT_NAME + "/configure");
