@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -45,7 +44,6 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 "Build scheduled");
     }
 
-    @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //*[contains(@href,'build') and contains(@class,'build')] (tried for 5 second(s) with 500 milliseconds interval)
     @Test
     public void testAvailableBuildNowOnbreadcrumbs() {
         WebDriver driver = getDriver();
@@ -54,10 +52,10 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
         TestUtils.gotoHomePage(this);
 
-        getWait5()
+        getWait10()
                 .until(ExpectedConditions
                         .visibilityOfElementLocated(
-                                By.xpath("//*[contains(@href,'build') and contains(@class,'build')]")))
+                                By.xpath("//td//a[@tooltip][contains(@href,'build')]")))
                 .click();
 
         Assert.assertEquals(
@@ -65,7 +63,6 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 "Build scheduled");
     }
 
-    @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //a[contains(@href,'build') and contains(@class,'build')] (tried for 5 second(s) with 500 milliseconds interval)
     @Test
     public void testAvailableSuccesResult() {
         WebDriver driver = getDriver();
@@ -77,7 +74,7 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         getWait5()
                 .until(ExpectedConditions
                         .visibilityOfElementLocated(
-                                By.xpath("//a[contains(@href,'build') and contains(@class,'build')]")))
+                                By.xpath("//td//a[@tooltip][contains(@href,'build')]")))
                 .click();
 
         getDriver().findElement(By.linkText(name_Freestyle_Project)).click();
