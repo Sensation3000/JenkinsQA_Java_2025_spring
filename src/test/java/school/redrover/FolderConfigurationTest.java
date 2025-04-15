@@ -12,15 +12,12 @@ import school.redrover.common.BaseTest;
 public class FolderConfigurationTest extends BaseTest {
 
     @Test
-
     public void questionMarkIconTest() {
-        WebDriver driver = getDriver();
         WebDriverWait wait5 = getWait5();
 
         WebElement newItemButton = wait5.until(ExpectedConditions.visibilityOfElementLocated
                 (By.linkText("New Item")));
         newItemButton.click();
-
 
         WebElement field = wait5.until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("name")));
@@ -32,13 +29,11 @@ public class FolderConfigurationTest extends BaseTest {
 
         WebElement submitButton = wait5.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("ok-button")));
-        System.out.println("!!!!!!!! hey"+ submitButton);
         submitButton.click();
 
         WebElement icon = wait5.until(ExpectedConditions.elementToBeClickable
                 (By.cssSelector("a.jenkins-help-button")));
 
         Assert.assertTrue(icon.isEnabled(), "Button is not clickable");
-
     }
 }
