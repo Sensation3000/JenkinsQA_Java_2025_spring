@@ -98,7 +98,7 @@ public class FreestyleProject4Test extends BaseTest {
                 .isEnabled());
     }
 
-    @Test(invocationCount = 50)
+    @Test
     public void testAddBuildSteps() {
         boolean present = true;
 
