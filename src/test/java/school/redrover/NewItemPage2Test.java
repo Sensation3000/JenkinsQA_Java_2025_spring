@@ -130,6 +130,18 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(itemDescriptionText, expectedItemDescription);
     }
 
+    @Test(dataProvider = "itemTypes")
+    public void testIfSelectedItemIsHighlighted(String itemTypeName,  String expectedItemDescription) throws InterruptedException {
+        clickOnNewItemLink();
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+
+        WebElement parentLi = itemType.findElement(By.xpath("./ancestor::li"));
+
+        Assert.assertTrue(parentLi.getDomAttribute("class").contains("active"));
+    }
+
     @DataProvider(name = "itemTypes")
     public Object[][] itemTypes() {
         return new Object[][]{
