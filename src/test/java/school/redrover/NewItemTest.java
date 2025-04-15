@@ -11,6 +11,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class NewItemTest extends BaseTest {
@@ -150,5 +152,35 @@ public class NewItemTest extends BaseTest {
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
 
         Assert.assertFalse(okButton.isEnabled(), "Expected OK button to be disabled.");
+    }
+
+    @Test
+    public void testCheckItemsTypes() {
+        final List<String> expectedItemsTypes = new ArrayList<>(List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"));
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+
+        List<WebElement> itemsTypes = getDriver().findElements(By.xpath("//span[@class='label']"));
+        List<String> actualItemsTypes = new ArrayList<>();
+        for (WebElement element : itemsTypes) {
+            actualItemsTypes.add(element.getDomProperty("innerText"));
+        }
+
+        Assert.assertEquals(actualItemsTypes, expectedItemsTypes, "Error!");
+    }
+
+    @Test (dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
+    public void testCheckItemsTypes2(String expectedItemType) {
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        String actualItemType = getDriver().findElement(By.xpath("//span[text()='" + expectedItemType + "']")).getText();
+
+        Assert.assertEquals(actualItemType, expectedItemType, "Error!");
     }
 }

@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -48,6 +49,23 @@ public class Folder1Test extends BaseTest {
                 "Full project name: First folder/First item",
                 "Full project name: " + folderName + "/" + itemName
         );
+    }
 
+    @Test
+    public void testCreateFolderWithoutName () {
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
+
+        WebElement itemNameField = getDriver().findElement(By.id("name"));
+        itemNameField.clear();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        String errorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+
+        Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        Assert.assertFalse(okButton.isEnabled(), "Ok button is not disabled");
     }
 }
