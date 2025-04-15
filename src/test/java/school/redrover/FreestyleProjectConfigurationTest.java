@@ -23,12 +23,13 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
     @Test
     public void testEnableProject() {
         TestUtils.createFreestyleProject(getDriver(), "Freestyle");
+        final By enableButton = By.xpath("//button[contains(text(),'Enable')]");
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable((By.name("Submit")))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Enable')]"))).click();
-        getWait5().until(ExpectedConditions.refreshed(
-                ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='configure']")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(enableButton)).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(enableButton));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='configure']"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//span[text()='Enabled']")).getText(),
