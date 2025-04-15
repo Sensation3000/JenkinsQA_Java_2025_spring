@@ -26,6 +26,6 @@ public class AssemblyTest extends BaseTest {
         driver.findElement(By.name("Submit")).click();
 
         Assert.assertEquals(driver.findElement
-                (By.xpath("//div[text()='No builds']")).getText(),"No builds");
+                (By.id("no-builds")).getText(),"No builds");
     }
 }
