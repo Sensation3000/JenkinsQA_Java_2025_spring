@@ -77,6 +77,9 @@ public class FolderConfigurationTest extends BaseTest {
         final String DISPLAY_NAME = "Folder Display Name";
 
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
+        TestUtils.openHomePage(this);
+        TestUtils.openJobByName(getDriver(), FOLDER_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
         getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("_.displayNameOrNull")))).clear();
         getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
@@ -85,5 +88,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).isDisplayed());
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td/a[@href='job/TestFolder/']/span")).getText(), DISPLAY_NAME);
     }
 }
