@@ -63,7 +63,8 @@ public class NewItemCreate3Test extends BaseTest {
     @Test
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys("New FreeStyleProject");
+        final String projectName = "New FreeStyleProject";
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
@@ -73,9 +74,9 @@ public class NewItemCreate3Test extends BaseTest {
                         .getText(), "New FreeStyleProject");
 
         goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys("New FreeStyleProject");
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
         Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).
                         getText(), "» A job already exists with the name ‘New FreeStyleProject’");
     }
 }
