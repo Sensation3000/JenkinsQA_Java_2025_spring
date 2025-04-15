@@ -9,10 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-
 import java.util.List;
-
 import static org.testng.Assert.*;
+
 
 public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME = "Test item";
@@ -43,7 +42,7 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    public void testTriggerBuildAfterOtherProjects(){
+    public void testTriggerBuildAfterOtherProjects() {
         final String jobName2 = "Test item2";
 
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
@@ -94,7 +93,7 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
 
         assertTrue(getDriver().findElement(
-                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
+                        By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
                 .isEnabled());
     }
 
@@ -104,14 +103,14 @@ public class FreestyleProject4Test extends BaseTest {
 
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
 
-        for (int i = 1; present ; i++) {
+        for (int i = 1; present; i++) {
             new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                            By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
                     .perform();
 
             getDriver().findElement(
-                    By.xpath(
-                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
+                            By.xpath(
+                                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
                     .click();
 
             try {
@@ -131,8 +130,19 @@ public class FreestyleProject4Test extends BaseTest {
                 .perform();
 
         assertEquals(getDriver().findElement(
-                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
-                .getText(),
+                                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
+                        .getText(),
                 "Set build status to \"pending\" on GitHub commit");
+    }
+
+    @Test
+    public void testCreateFreestyleProjectWithNoneSCM() {
+        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
+        new Actions(getDriver()).moveToElement(getDriver().findElement(
+                By.xpath("//label[text()='None']"))).perform();
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement result = getDriver().findElement(
+                By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1"));
+        Assert.assertEquals(result.getText(), JOB_NAME);
     }
 }
