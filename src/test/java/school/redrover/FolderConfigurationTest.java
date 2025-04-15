@@ -10,11 +10,9 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FolderConfigurationTest extends BaseTest {
-
     @Test
-    public void questionMarkIconTest() {
+    public void testQquestionMarkIcon() {
         WebDriverWait wait5 = getWait5();
-
         WebElement newItemButton = wait5.until(ExpectedConditions.visibilityOfElementLocated
                 (By.linkText("New Item")));
         newItemButton.click();
