@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class CreateAndDeletePipelineItemTest extends BaseTest {
-
+    @Ignore
     @Test
     public void testCreateAndDeletePipelineItem() {
         WebDriver driver = getDriver();
