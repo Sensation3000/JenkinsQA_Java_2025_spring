@@ -21,4 +21,16 @@ public class TestDataProvider {
                 {MAX_PROJECT_NAME}
         };
     }
+
+    @DataProvider(name = "itemTypes")
+    public Object[][] itemTypes() {
+        return new Object[][]{
+                {"Freestyle project"},
+                {"Pipeline"},
+                {"Multi-configuration project"},
+                {"Folder"},
+                {"Multibranch Pipeline"},
+                {"Organization Folder"}
+        };
+    }
 }
