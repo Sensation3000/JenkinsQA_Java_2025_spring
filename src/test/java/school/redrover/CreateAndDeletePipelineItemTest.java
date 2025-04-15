@@ -67,7 +67,7 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
     @Test
     public void isShownDialogOnDeletePipelineItem() {
         WebDriver driver = getDriver();
-       final String itemName = "somePipeline";
+        final String itemName = "somePipeline";
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
         driver.findElement(By.id("name")).sendKeys(itemName);
@@ -75,13 +75,13 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
         driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
-        try {
+       /* try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"jenkins\"]/dialog[2]")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//body[@id='jenkins']/dialog[@class='jenkins-dialog']")).isDisplayed());
     }
 
 }
