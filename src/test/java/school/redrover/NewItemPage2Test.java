@@ -130,6 +130,18 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(itemDescriptionText, expectedItemDescription);
     }
 
+    @Test(dataProvider = "itemTypes")
+    public void testIfSelectedItemIsHighlighted(String itemTypeName,  String expectedItemDescription) {
+        clickOnNewItemLink();
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+
+        WebElement parentLi = itemType.findElement(By.xpath("./ancestor::li"));
+
+        Assert.assertTrue(parentLi.getDomAttribute("class").contains("active"));
+    }
+
     @DataProvider(name = "itemTypes")
     public Object[][] itemTypes() {
         return new Object[][]{
@@ -286,5 +298,21 @@ public class NewItemPage2Test extends BaseTest {
         List<WebElement> checkboxes = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']"));
 
         Assert.assertTrue(checkboxes.stream().allMatch(WebElement::isSelected));
+    }
+
+    @Test
+    public void testIfNewFolderIsCreatedEmpty() {
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        clickOnNewItemLink();
+
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")));
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h2.h4")).getText(),
+                "This folder is empty"
+        );
     }
 }

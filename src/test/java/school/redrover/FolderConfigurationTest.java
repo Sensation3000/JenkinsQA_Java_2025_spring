@@ -42,10 +42,12 @@ public class FolderConfigurationTest extends BaseTest {
         String FOLDER_NAME = "TestFolder";
 
         TestUtils.createFolder(driver, FOLDER_NAME);
-        driver.navigate().to("http://localhost:8080/job/" + FOLDER_NAME + "/configure");
+        TestUtils.openHomePage(this);
+        TestUtils.openJobByName(driver, FOLDER_NAME);
+        driver.findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
         driver.findElement(By.name("_.displayNameOrNull")).clear();
         driver.findElement(By.name("Submit"));
-        TestUtils.gotoHomePage(driver);
+        TestUtils.openHomePage(this);
         getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.id("projectstatus"))));
 
         Assert.assertEquals(
