@@ -42,22 +42,24 @@ public class Pipeline3Test extends BaseTest {
 
     @Test
     public void testCreatePipelineWithEmptyName() {
-        final String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
-        final String errorMessageId = "itemname-required";
-
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
 
-        assertErrorMessageAndDisabledButton(driver, errorMessageId, expectedErrorMessage);
+        WebElement errorMessage = getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
+        WebElement button = driver.findElement(By.id("ok-button"));
+
+        Assert.assertEquals(
+                errorMessage.getText(), "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(
+                button.isEnabled(), "Button should be disabled");
     }
 
     @Test
     public void testCreatePipelineWithExistingName() {
         final String projectName = "TestPipeline";
-        final String expectedErrorMessage = "» A job already exists with the name ‘" + projectName + "’";
-        final String errorMessageId = "itemname-invalid";
 
         WebDriver driver = getDriver();
 
@@ -68,14 +70,20 @@ public class Pipeline3Test extends BaseTest {
         driver.findElement(By.id("name")).sendKeys(projectName);
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
 
-        assertErrorMessageAndDisabledButton(driver, errorMessageId, expectedErrorMessage);
+        WebElement errorMessage = getWait5().
+                until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+        WebElement button = driver.findElement(By.id("ok-button"));
+
+        Assert.assertEquals(
+                errorMessage.getText(), "» A job already exists with the name ‘" + projectName + "’");
+        Assert.assertFalse(
+                button.isEnabled(), "Button should be disabled");
+
 
     }
 
     @Test
     public void testCreatePipelineWithNameContainingInvalidCharacters() {
-        final String errorMessageId = "itemname-invalid";
-
         WebDriver driver = getDriver();
 
         List<String> invalidNames = List.of(
@@ -91,18 +99,33 @@ public class Pipeline3Test extends BaseTest {
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         for(String invalidName : invalidNames) {
-            driver.findElement(By.id("name")).sendKeys(invalidName);
+            WebElement nameField = driver.findElement(By.id("name"));
+            nameField.clear();
+            nameField.sendKeys(invalidName);
+
             driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
 
             String invalidChar = invalidName
                     .replaceAll("[a-zA-Z0-9 _-]", "")
                     .replaceAll("\\s+", "");
 
-            String expectedErrorMessage = "» ‘" + invalidChar + "’ is an unsafe character";
+            WebElement errorMessage = getWait5().until(
+                    ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+            Assert.assertEquals(
+                    errorMessage.getText(),
+                    "» ‘" + invalidChar + "’ is an unsafe character");
 
-            assertErrorMessageAndDisabledButton(driver, errorMessageId, expectedErrorMessage);
+            try {
+                getWait5().until(ExpectedConditions.attributeToBe(By.id("ok-button"), "disabled", "true"));
+            } catch (TimeoutException e) {
+                Assert.fail("Button did not become disabled after entering invalid name: '" +
+                        invalidName + "'. Invalid character: '" + invalidChar + "'");
+            }
 
-            driver.findElement(By.id("name")).clear();
+            WebElement button = driver.findElement(By.id("ok-button"));
+            Assert.assertFalse(button.isEnabled(), "Button should be disabled for invalid name: '" +
+                    invalidName + "' with character '" + invalidChar + "'");
+
         }
     }
 
@@ -113,7 +136,7 @@ public class Pipeline3Test extends BaseTest {
 
         WebDriver driver = getDriver();
 
-        //Создание первой сущности
+        //Creating first project
         createPipeline(driver, existingProjectName);
 
         openPipelineConfiguration();
@@ -129,7 +152,7 @@ public class Pipeline3Test extends BaseTest {
         getWait5().until(ExpectedConditions.stalenessOf(submitButton));
         goHomeUsingJS(driver);
 
-        //Создание второй сущности
+        //Creating second project
         driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         driver.findElement(By.id("name")).sendKeys(newProjectName);
         driver.findElement(By.id("from")).sendKeys(existingProjectName);
@@ -233,14 +256,5 @@ public class Pipeline3Test extends BaseTest {
     private void openPipelineSection(String sectionId) {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[@data-section-id ='" + sectionId + "']"))).click();
-    }
-
-    private void assertErrorMessageAndDisabledButton(WebDriver driver, String errorMessageId, String expectedErrorMessage) {
-        WebElement errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id(errorMessageId)));
-        WebElement button = driver.findElement(By.id("ok-button"));
-
-        Assert.assertEquals(errorMessage.getText(), expectedErrorMessage);
-        Assert.assertFalse(button.isEnabled(), "Button should be disabled");
     }
 }
