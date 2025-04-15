@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.ProjectUtils;
 import school.redrover.common.TestUtils;
 
 public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
@@ -34,10 +35,17 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
     @Test
     public void testDescriptionCanBeEmpty() {
         WebDriver driver = getDriver();
-        final String PROJECT_NAME = "Freestyle Project";
+        final String PROJECT_NAME = "FreestyleProject";
 
-        TestUtils.createFreestyleProject(driver, PROJECT_NAME);
-        driver.navigate().to("http://localhost:8080/job/" + PROJECT_NAME + "/configure");
+        driver.findElement(
+                By.xpath("//a[@href='/view/all/newJob']")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(
+                driver.findElement(By.id("name")))).sendKeys(PROJECT_NAME);
+        driver.findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        driver.findElement(By.id("ok-button")).click();
+        TestUtils.openHomePage(this);
+        TestUtils.openJobByName(driver, PROJECT_NAME);
+        driver.findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/configure']")).click();
         getWait5().until(ExpectedConditions.visibilityOf(
                 driver.findElement(By.xpath("//textarea[@name='description']")))).clear();
         driver.findElement(By.name("Apply")).click();
