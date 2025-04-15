@@ -89,6 +89,6 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).isDisplayed());
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//td/a[@href='job/TestFolder/']/span")).getText(), DISPLAY_NAME);
+                getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']/span")).getText(), DISPLAY_NAME);
     }
 }
