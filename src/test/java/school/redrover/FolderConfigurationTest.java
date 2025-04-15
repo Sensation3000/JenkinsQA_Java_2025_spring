@@ -80,6 +80,12 @@ public class FolderConfigurationTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("_.displayNameOrNull")))).clear();
         getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.xpath("//div[@id='main-panel']/h1"))));
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), DISPLAY_NAME);
         TestUtils.gotoHomePage(getDriver());
         getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("projectstatus"))));
 
