@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.List;
+
 public class User2Test extends BaseTest {
 
     @Test
@@ -38,5 +40,19 @@ public class User2Test extends BaseTest {
         WebElement usernameField = driver.findElement(By.id("username"));
         Assert.assertTrue(usernameField.isDisplayed(),
                 "Username field is not visible on the Create User page");
+    }
+
+    @Test
+    public void testCreateUserForm() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.cssSelector("a[href='/manage']")).click();
+        driver.findElement(By.cssSelector("a[href='securityRealm/']")).click();
+        driver.findElement(By.cssSelector("a[href='addUser']")).click();
+
+        WebElement createUserButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        Assert.assertTrue(createUserButton.isDisplayed(), "'Create User' button is not visible.");
+        List<WebElement> inputFields = getDriver().findElements(By.cssSelector(".jenkins-input"));
+        Assert.assertEquals(inputFields.size(), 5, "Expected 5 input fields in the Create User form");
     }
 }
