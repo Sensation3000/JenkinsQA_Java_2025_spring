@@ -11,6 +11,9 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class FolderConfigurationTest extends BaseTest {
+    private final String FOLDER_NAME = "TestFolder";
+    private final String DISPLAY_NAME = "Folder Display Name";
+
     @Test
     public void testQquestionMarkIcon() {
         WebDriverWait wait5 = getWait5();
@@ -39,7 +42,6 @@ public class FolderConfigurationTest extends BaseTest {
     @Test
     public void testEmptyDisplayName() {
         WebDriver driver = getDriver();
-        String FOLDER_NAME = "TestFolder";
 
         TestUtils.createFolder(driver, FOLDER_NAME);
         TestUtils.openHomePage(this);
@@ -57,8 +59,6 @@ public class FolderConfigurationTest extends BaseTest {
     @Test
     public void testValidDisplayName() {
         WebDriver driver = getDriver();
-        final String FOLDER_NAME = "TestFolder";
-        final String DISPLAY_NAME = "Folder Display Name";
 
         TestUtils.createFolder(driver, FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("_.displayNameOrNull")))).clear();
@@ -73,9 +73,6 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testDisplayNameDisplayedOnDashboard() {
-        final String FOLDER_NAME = "TestFolder";
-        final String DISPLAY_NAME = "Folder Display Name";
-
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         TestUtils.openHomePage(this);
         TestUtils.openJobByName(getDriver(), FOLDER_NAME);
