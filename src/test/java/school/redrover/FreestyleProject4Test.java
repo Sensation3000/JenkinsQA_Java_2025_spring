@@ -98,7 +98,7 @@ public class FreestyleProject4Test extends BaseTest {
                 .isEnabled());
     }
 
-    @Test
+    @Test(invocationCount = 50)
     public void testAddBuildSteps() {
         boolean present = true;
 
@@ -120,9 +120,8 @@ public class FreestyleProject4Test extends BaseTest {
             } catch (NoSuchElementException e) {
                 present = false;
             }
-
-            getDriver().findElement(
-                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]")).click();
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]"))).click();
 
             getDriver().findElement(By.tagName("textarea")).sendKeys(i + " OK ");
         }
