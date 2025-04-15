@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -75,9 +76,9 @@ public class NewItemCreate3Test extends BaseTest {
 
         goToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).
-                        getText(), "» A job already exists with the name ‘New FreeStyleProject’");
+        WebElement el = getDriver().findElement(By.id("itemname-invalid"));
+        TestUtils.scrollToItemWithJS(getDriver(), el);
+        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New FreeStyleProject’");
     }
 }
 
