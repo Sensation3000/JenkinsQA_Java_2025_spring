@@ -70,4 +70,20 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertEquals(
                 driver.findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), DISPLAY_NAME);
     }
+
+    @Test
+    public void testDisplayNameDisplayedOnDashboard() {
+        final String FOLDER_NAME = "TestFolder";
+        final String DISPLAY_NAME = "Folder Display Name";
+
+        TestUtils.createFolder(getDriver(), FOLDER_NAME);
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("_.displayNameOrNull")))).clear();
+        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+        TestUtils.gotoHomePage(this);
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("projectstatus"))));
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).isDisplayed());
+    }
 }
