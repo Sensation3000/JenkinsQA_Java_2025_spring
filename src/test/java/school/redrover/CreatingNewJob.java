@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-public class GroupClubRedroverTest extends BaseTest {
+public class CreatingNewJob extends BaseTest {
     SoftAssert softAssert;
 
     @Test

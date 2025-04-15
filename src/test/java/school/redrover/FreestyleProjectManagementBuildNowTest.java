@@ -2,17 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-
-import java.time.Duration;
 
 
 public class FreestyleProjectManagementBuildNowTest extends BaseTest {
@@ -49,8 +43,28 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                 "Build scheduled");
     }
+
     @Test
     public void testAvailableBuildNowOnbreadcrumbs() {
+        WebDriver driver = getDriver();
+
+        createNewItemFrestyle(driver);
+
+        TestUtils.gotoHomePage(this);
+
+        getWait10()
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(
+                                By.xpath("//td//a[@tooltip][contains(@href,'build')]")))
+                .click();
+
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
+                "Build scheduled");
+    }
+
+    @Test
+    public void testAvailableSuccesResult() {
         WebDriver driver = getDriver();
 
         createNewItemFrestyle(driver);
@@ -60,11 +74,18 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
         getWait5()
                 .until(ExpectedConditions
                         .visibilityOfElementLocated(
-                                By.xpath("//*[contains(@href,'build') and contains(@class,'build')]")))
+                                By.xpath("//td//a[@tooltip][contains(@href,'build')]")))
                 .click();
 
-        Assert.assertEquals(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
-                "Build scheduled");
+        getDriver().findElement(By.linkText(name_Freestyle_Project)).click();
+        getDriver().findElement(By.xpath("//*[@href='lastBuild/']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
+
+        Assert.assertTrue(
+                getWait10()
+                        .until(ExpectedConditions.visibilityOfElementLocated(By.id("out"))).getText()
+                        .contains("Finished: SUCCESS"),
+                "статус не соответсвует ожидаемому Finished: SUCCESS"
+        );
     }
 }
