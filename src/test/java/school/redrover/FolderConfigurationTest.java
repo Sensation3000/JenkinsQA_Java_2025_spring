@@ -42,7 +42,7 @@ public class FolderConfigurationTest extends BaseTest {
         String FOLDER_NAME = "TestFolder";
 
         TestUtils.createFolder(driver, FOLDER_NAME);
-        driver.navigate().to("http://localhost:8080/job/TestFolder/configure");
+        driver.navigate().to("http://localhost:8080/job/" + FOLDER_NAME + "/configure");
         driver.findElement(By.name("_.displayNameOrNull")).clear();
         driver.findElement(By.name("Submit"));
         TestUtils.gotoHomePage(driver);
@@ -50,5 +50,22 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(
                 driver.findElement(By.xpath("//a[@href='job/TestFolder/']")).getText(), FOLDER_NAME);
+    }
+
+    @Test
+    public void testValidDisplayName() {
+        WebDriver driver = getDriver();
+        String FOLDER_NAME = "TestFolder";
+        String DISPLAY_NAME = "Folder Display Name";
+
+        TestUtils.createFolder(driver, FOLDER_NAME);
+        getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("_.displayNameOrNull")))).clear();
+        driver.findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
+        driver.findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(
+                driver.findElement(By.xpath("//div[@id='main-panel']/h1"))));
+
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), DISPLAY_NAME);
     }
 }
