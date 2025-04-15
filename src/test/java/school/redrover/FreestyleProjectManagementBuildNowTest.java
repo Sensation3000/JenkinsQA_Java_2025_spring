@@ -45,7 +45,6 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
                 "Build scheduled");
     }
 
-    @Ignore //Expected condition failed: waiting for visibility of element located by By.xpath: //*[contains(@href,'build') and contains(@class,'build')] (tried for 5 second(s) with 500 milliseconds interval)
     @Test
     public void testAvailableBuildNowOnbreadcrumbs() {
         WebDriver driver = getDriver();
@@ -54,10 +53,10 @@ public class FreestyleProjectManagementBuildNowTest extends BaseTest {
 
         TestUtils.gotoHomePage(this);
 
-        getWait5()
+        getWait10()
                 .until(ExpectedConditions
                         .visibilityOfElementLocated(
-                                By.xpath("//*[contains(@href,'build') and contains(@class,'build')]")))
+                                By.xpath("//td//a[@tooltip][contains(@href,'build')]")))
                 .click();
 
         Assert.assertEquals(
