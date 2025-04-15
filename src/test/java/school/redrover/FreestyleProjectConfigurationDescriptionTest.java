@@ -9,11 +9,11 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
+    private final String PROJECT_NAME = "FreestyleProject";
+    private final String DESCRIPTION_TEXT = "Valid Freestyle Project Description";
 
     @Test
     public void testAddValidDescriptionDuringFreestyleProjectCreation() {
-        final String DESCRIPTION_TEXT = "Valid Freestyle Project Description";
-
         getDriver().findElement(
                 By.xpath("//a[@href='/view/all/newJob']")).click();
         getWait5().until(ExpectedConditions.visibilityOf(
@@ -34,7 +34,6 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
     @Test
     public void testDescriptionCanBeEmpty() {
         WebDriver driver = getDriver();
-        final String PROJECT_NAME = "FreestyleProject";
 
         driver.findElement(
                 By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -54,5 +53,18 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
                         getDriver().findElement(By.id("notification-bar")))).isDisplayed());
         Assert.assertTrue(
                 driver.findElement(By.xpath("//textarea[@name='description']")).getText().isBlank());
+    }
+
+    @Test
+    public void testPreviewDescriptionOption() {
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("general"))));
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_TEXT);
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.className("textarea-preview")).isDisplayed());
+        Assert.assertEquals(
+                getDriver().findElement(By.className("textarea-preview")).getText(), DESCRIPTION_TEXT);
     }
 }
