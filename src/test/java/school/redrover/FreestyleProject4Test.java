@@ -1,5 +1,6 @@
 package school.redrover;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -95,5 +96,40 @@ public class FreestyleProject4Test extends BaseTest {
         assertTrue(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
                 .isEnabled());
+    }
+
+    @Test
+    public void testAddBuildSteps() {
+        boolean present = true;
+
+        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
+
+        for (int i = 1; present ; i++) {
+            new Actions(getDriver()).scrollToElement(getDriver().findElement(
+                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                    .perform();
+
+            getDriver().findElement(
+                    By.xpath(
+                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
+                    .click();
+
+            try {
+                getDriver().findElement(
+                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + (i + 1) + "]"));
+            } catch (NoSuchElementException e) {
+                present = false;
+            }
+
+            getDriver().findElement(
+                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]")).click();
+
+            getDriver().findElement(By.tagName("textarea")).sendKeys(i + " OK ");
+        }
+
+        assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
+                .getText(),
+                "Set build status to \"pending\" on GitHub commit");
     }
 }
