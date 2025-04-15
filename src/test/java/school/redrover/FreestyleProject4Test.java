@@ -126,6 +126,10 @@ public class FreestyleProject4Test extends BaseTest {
             getDriver().findElement(By.tagName("textarea")).click();
         }
 
+        new Actions(getDriver()).scrollToElement(getDriver().findElement(
+                        By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                .perform();
+
         assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
                 .getText(),
