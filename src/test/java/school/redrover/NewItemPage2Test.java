@@ -250,4 +250,41 @@ public class NewItemPage2Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Error");
     }
+
+    @Test
+    public void testIfOriginalItemConfigurationIsCopied() {
+        clickOnNewItemLink();
+
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+
+        List<WebElement> labels = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::label"));
+        for (WebElement label : labels) {
+            TestUtils.scrollAndClickWithJS(getDriver(), label);
+        }
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+        TestUtils.gotoHomePage(getDriver());
+
+        clickOnNewItemLink();
+
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue + "_");
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(randomAlphaNumericValue);
+        getWait5().until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("[class^='jenkins-dropdown__item']")))
+                  .click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+        List<WebElement> checkboxes = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']"));
+
+        Assert.assertTrue(checkboxes.stream().allMatch(WebElement::isSelected));
+    }
 }
