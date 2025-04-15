@@ -123,7 +123,7 @@ public class FreestyleProject4Test extends BaseTest {
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]"))).click();
 
-            getDriver().findElement(By.tagName("textarea")).sendKeys(i + " OK ");
+            getDriver().findElement(By.tagName("textarea")).click();
         }
 
         assertEquals(getDriver().findElement(
