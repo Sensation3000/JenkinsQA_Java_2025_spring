@@ -1,25 +1,27 @@
 package school.redrover;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
+import java.util.List;
+
 import static org.testng.Assert.*;
 
 public class FreestyleProject4Test extends BaseTest {
-    private static final String jobName = "Test item";
+    private static final String JOB_NAME = "Test item";
 
     @Test
     public void testToolTipEnableDisable() {
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
-        TestUtils.createFreestyleProject(driver, jobName);
+        TestUtils.createFreestyleProject(driver, JOB_NAME);
 
         actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
         WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -31,7 +33,7 @@ public class FreestyleProject4Test extends BaseTest {
     @Test
     public void testCheckWarningWhenDisabled() {
         WebDriver driver = getDriver();
-        TestUtils.createFreestyleProject(driver, jobName);
+        TestUtils.createFreestyleProject(driver, JOB_NAME);
         driver.findElement(By.id("toggle-switch-enable-disable-project")).click();
         driver.findElement(By.name("Submit")).click();
 
@@ -40,39 +42,42 @@ public class FreestyleProject4Test extends BaseTest {
         assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
     }
 
-    @Ignore //WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
     @Test
     public void testTriggerBuildAfterOtherProjects(){
-        final String projectNameFP1 = "FreeStyleProject1";
-        final String projectNameFP2 = "FreeStyleProject2";
+        final String jobName2 = "Test item2";
 
-        TestUtils.createFreestyleProject(getDriver(), projectNameFP1);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
-        TestUtils.createFreestyleProject(getDriver(), projectNameFP2);
+        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), "Configure"));
+        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
+        TestUtils.createFreestyleProject(getDriver(), jobName2);
         TestUtils.scrollAndClickWithJS(getDriver(), getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
-        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(projectNameFP1);
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(JOB_NAME);
         getDriver().findElement(By.name("Submit")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#breadcrumbBar a[href='/']"))).click();
-
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), jobName2));
+        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
         TestUtils.moveAndClickWithJS(getDriver(),
                 getWait5().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//td/a/span[text() = '%s']/../button".formatted(projectNameFP1)))));
+                        By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted("Build Now")))).click();
-        getDriver().findElement(By.linkText(projectNameFP2)).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("jenkins-build-history")));
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-href='/job/" + projectNameFP2 + "/1/']"))).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'console')]")).click();
+        getDriver().findElement(By.linkText(jobName2)).click();
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("jenkins-build-history")));
+        getWait10().until(ExpectedConditions.textToBe(By.xpath("//span[@class='app-builds-container__heading']"), "Today"));
 
-        assertTrue(getDriver().findElement((By.id("out"))).getText().contains("Finished: SUCCESS"));
+        final String buildStatusText = getDriver().findElement(By.id("jenkins-build-history")).getText();
+        final List<WebElement> builds = getDriver().findElements(By.cssSelector("div[page-entry-id]"));
+
+        Assert.assertEquals(builds.size(), 1);
+        Assert.assertTrue(buildStatusText.contains("Today"));
+        Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
     @Test
     public void testCheckDescriptionIsSaved() {
         final String description = "Job description";
 
-        TestUtils.createFreestyleProject(getDriver(), jobName);
+        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
         getDriver().findElement(By.name("description")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
 
@@ -91,5 +96,43 @@ public class FreestyleProject4Test extends BaseTest {
         assertTrue(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
                 .isEnabled());
+    }
+
+    @Test
+    public void testAddBuildSteps() {
+        boolean present = true;
+
+        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
+
+        for (int i = 1; present ; i++) {
+            new Actions(getDriver()).scrollToElement(getDriver().findElement(
+                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                    .perform();
+
+            getDriver().findElement(
+                    By.xpath(
+                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
+                    .click();
+
+            try {
+                getDriver().findElement(
+                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + (i + 1) + "]"));
+            } catch (NoSuchElementException e) {
+                present = false;
+            }
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]"))).click();
+
+            getDriver().findElement(By.tagName("textarea")).click();
+        }
+
+        new Actions(getDriver()).scrollToElement(getDriver().findElement(
+                        By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                .perform();
+
+        assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
+                .getText(),
+                "Set build status to \"pending\" on GitHub commit");
     }
 }
