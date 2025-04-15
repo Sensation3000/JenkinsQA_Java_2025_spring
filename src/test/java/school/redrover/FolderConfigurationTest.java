@@ -57,8 +57,8 @@ public class FolderConfigurationTest extends BaseTest {
     @Test
     public void testValidDisplayName() {
         WebDriver driver = getDriver();
-        String FOLDER_NAME = "TestFolder";
-        String DISPLAY_NAME = "Folder Display Name";
+        final String FOLDER_NAME = "TestFolder";
+        final String DISPLAY_NAME = "Folder Display Name";
 
         TestUtils.createFolder(driver, FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("_.displayNameOrNull")))).clear();
