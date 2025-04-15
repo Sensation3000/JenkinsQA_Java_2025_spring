@@ -71,7 +71,7 @@ public class NewItemCreate3Test extends BaseTest {
 
         TestUtils.gotoHomePage(this);
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//td/a[@href='job/New%20FreeStyleProject/']"))
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/New%20FreeStyleProject/']")))
                         .getText(), "New FreeStyleProject");
 
         goToNewItemPage();
