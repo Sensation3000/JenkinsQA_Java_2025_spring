@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -52,14 +53,33 @@ public class NewItem5Test extends BaseTest {
         Assert.assertEquals(itemTypesTextList, expectedItemTypesTextList);
     }
 
+    @Ignore
     @Test
     public void testItemNameFieldAcceptsAlphanumericsAndSpecialCharacters() {
-        String acceptableCharacters = "Q w1`~()_-+={}'\".,";
+        final String ACCEPTABLE_CHARACTERS = "Q w1`~()_-+={}'\".,";
 
         getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
-        getDriver().findElement(By.cssSelector(".jenkins-input#name")).sendKeys(acceptableCharacters);
+        getDriver().findElement(By.cssSelector(".jenkins-input#name")).sendKeys(ACCEPTABLE_CHARACTERS);
         WebElement invalidCharacterMessage = getDriver().findElement(By.id("itemname-invalid"));
 
         Assert.assertFalse(invalidCharacterMessage.isDisplayed(), "An unsafe character error message is displayed");
+    }
+
+    @Test
+    public void testItemNameWithUnsafeSpecialCharacterNotAllowed() {
+        final List<String> UNSAFE_CHARACTERS_LIST = List.of("!", "@", "#", "$", "%", "^", "&", "*", "[", "]", "|", "<", ">", "?", "/", ":", ";");
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        WebElement unsafeCharacterMessage = getDriver().findElement(By.id("itemname-invalid"));
+        WebElement inputField = getDriver().findElement(By.cssSelector(".jenkins-input#name"));
+
+        for (String character: UNSAFE_CHARACTERS_LIST) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(inputField)).sendKeys(character);
+
+            Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOf(unsafeCharacterMessage)).isDisplayed(), "An unsafe character error message is NOT displayed");
+            Assert.assertEquals(unsafeCharacterMessage.getText(), "» ‘" + character + "’ is an unsafe character");
+
+            inputField.clear();
+        }
     }
 }

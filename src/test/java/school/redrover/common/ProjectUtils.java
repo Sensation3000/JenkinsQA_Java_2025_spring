@@ -1,10 +1,14 @@
 package school.redrover.common;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -72,20 +76,34 @@ public final class ProjectUtils {
                 getValue(PREFIX_JENKINS_PROP + "port"));
     }
 
+    static boolean isRunCI() {
+        return Boolean.TRUE.toString().equals(getValue(PREFIX_RUN_PROP + "ci"));
+    }
+
+
+    static boolean closeIfError() {
+        return Boolean.TRUE.toString().equals(getValue(PREFIX_BROWSER_PROP + "closeIfError"));
+    }
+
+    static void takeScreenshot(WebDriver driver, String className, String methodName) {
+        File screenshotDir = new File("screenshots");
+        if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
+            throw new RuntimeException("Failed to create a folder for screenshots");
+        }
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(screenshotDir, "%s.%s.png".formatted(className, methodName)))) {
+            fileOutputStream.write(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String getUserName() {
         return getValue(PREFIX_JENKINS_PROP + "username");
     }
 
     public static String getPassword() {
         return getValue(PREFIX_JENKINS_PROP + "password");
-    }
-
-    static boolean closeIfError() {
-        return Boolean.TRUE.toString().equals(getValue(PREFIX_BROWSER_PROP + "closeIfError"));
-    }
-
-    static boolean isRunCI() {
-        return Boolean.TRUE.toString().equals(getValue(PREFIX_RUN_PROP + "ci"));
     }
 
     public static void log(String str) {
