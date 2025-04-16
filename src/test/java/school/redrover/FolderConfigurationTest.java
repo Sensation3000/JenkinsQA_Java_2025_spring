@@ -34,7 +34,7 @@ public class FolderConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testEmptyDescriptionBox() {
+    public void testDescriptionBoxSaveEmpty() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("_.description"))).sendKeys("");

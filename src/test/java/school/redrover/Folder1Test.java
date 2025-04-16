@@ -67,4 +67,30 @@ public class Folder1Test extends BaseTest {
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         Assert.assertFalse(okButton.isEnabled(), "Ok button is not disabled");
     }
+
+    @Test
+    public void testVerifyFolderNameDescriptionConfiguration () {
+        final String folderName = "First folder";
+        final String displayName = "Display name of the folder";
+        final String descriptionField = "Some description here";
+
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/section[1]/ul/li/a")).click();
+        driver.findElement(By.id("name")).sendKeys(folderName);
+        driver.findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        driver.findElement(By.id("ok-button")).click();
+        driver.findElement(By.name("_.displayNameOrNull")).sendKeys(displayName);
+        driver.findElement(By.className("jenkins-help-button")).click();
+        driver.findElement(By.name("_.description")).sendKeys(descriptionField);
+        driver.findElement(By.className("textarea-show-preview")).click();
+        driver.findElement(By.className("textarea-hide-preview")).click();
+        driver.findElement(By.name("Submit")).click();
+
+        String actualHeader = driver.findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+        Assert.assertEquals(actualHeader, displayName);
+
+        String actualDescription = driver.findElement(By.id("view-message")).getText();
+        Assert.assertEquals(actualDescription, descriptionField);
+    }
 }
