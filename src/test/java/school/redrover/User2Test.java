@@ -8,7 +8,28 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.List;
+
 public class User2Test extends BaseTest {
+
+    private void navigateToCreateUserPage() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.cssSelector("a[href='/manage']")).click();
+        driver.findElement(By.cssSelector("a[href='securityRealm/']")).click();
+        driver.findElement(By.cssSelector("a[href='addUser']")).click();
+    }
+
+    public void createUser(String username, String password, String fullName, String email) {
+        navigateToCreateUserPage();
+        WebDriver driver = getDriver();
+        driver.findElement(By.id("username")).sendKeys(username);
+        driver.findElement(By.name("password1")).sendKeys(password);
+        driver.findElement(By.name("password2")).sendKeys(password);
+        driver.findElement(By.name("fullname")).sendKeys(fullName);
+        driver.findElement(By.name("email")).sendKeys(email);
+        driver.findElement(By.name("Submit")).click();
+    }
 
     @Test
     public void testUserItemOnManageJenkinsPage() {
@@ -28,9 +49,7 @@ public class User2Test extends BaseTest {
         final String expectedTitle = "Create User [Jenkins]";
         WebDriver driver = getDriver();
 
-        driver.findElement(By.cssSelector("a[href='/manage']")).click();
-        driver.findElement(By.cssSelector("a[href='securityRealm/']")).click();
-        driver.findElement(By.cssSelector("a[href='addUser']")).click();
+        navigateToCreateUserPage();
 
         getWait5().until(ExpectedConditions.titleIs(expectedTitle));
         Assert.assertEquals(driver.getTitle(), expectedTitle,
@@ -38,5 +57,27 @@ public class User2Test extends BaseTest {
         WebElement usernameField = driver.findElement(By.id("username"));
         Assert.assertTrue(usernameField.isDisplayed(),
                 "Username field is not visible on the Create User page");
+    }
+
+    @Test
+    public void testCreateUserForm() {
+
+        navigateToCreateUserPage();
+
+        WebElement createUserButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
+        Assert.assertTrue(createUserButton.isDisplayed(), "'Create User' button is not visible.");
+        List<WebElement> inputFields = getDriver().findElements(By.cssSelector(".jenkins-input"));
+        Assert.assertEquals(inputFields.size(), 5, "Expected 5 input fields in the Create User form");
+    }
+
+    @Test
+    public void testNewUserIsCreated() {
+        final String username = "TestUser";
+
+        createUser(username, "TestUserPassword", "Test User", "testuser@email.com");
+
+        String actualUsername = getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("a[href='user/testuser/']"))).getText();
+        Assert.assertEquals(actualUsername, username, "The expected new user " + username + " is not displayed");
     }
 }
