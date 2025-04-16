@@ -35,7 +35,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.xpath("//span[text() = 'Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("Submit")))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), FOLDER_NAME);
