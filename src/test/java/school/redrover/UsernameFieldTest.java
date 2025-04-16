@@ -46,7 +46,6 @@ public class UsernameFieldTest extends BaseTest {
         WebElement submitButton = driver.findElement(By.name("Submit"));
         submitButton.click();
 
-        //WebElement errorMessage = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/div[2]"));
         WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[3]/div/form/div[1]/div[2]"));
         assertEquals(errorMessage.getText(),
                 "User name must only contain alphanumeric characters, underscore and dash");
