@@ -2,9 +2,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -17,9 +15,8 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testQquestionMarkIcon() {
-        WebDriverWait wait5 = getWait5();
         TestUtils.createFolder(getDriver(),FOLDER_NAME);
-        WebElement icon = wait5.until(ExpectedConditions.elementToBeClickable
+        WebElement icon = getWait5().until(ExpectedConditions.elementToBeClickable
                 (By.cssSelector("a.jenkins-help-button")));
 
         Assert.assertTrue(icon.isEnabled(), "Button is not clickable");
@@ -27,7 +24,6 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testDescriptionBox() {
-        WebDriverWait wait5 = getWait5();
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("_.description"))).sendKeys(DESCRIPTION);
