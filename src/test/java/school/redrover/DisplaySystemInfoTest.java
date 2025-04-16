@@ -36,6 +36,6 @@ public class DisplaySystemInfoTest extends BaseTest {
         String javaVendor = driver.findElement(By.xpath("//*[.='java.specification.vendor']/following-sibling::td/div[2]")).getText();
 
         Assert.assertEquals(javaVendor, "Oracle Corporation");
-    }git
+    }
 }
 
