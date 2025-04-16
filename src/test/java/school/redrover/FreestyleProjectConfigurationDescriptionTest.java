@@ -63,7 +63,8 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
         Assert.assertTrue(
-                getDriver().findElement(By.className("textarea-preview")).isDisplayed(),
+                getWait5().until(ExpectedConditions.visibilityOf(
+                        getDriver().findElement(By.className("textarea-preview")))).isDisplayed(),
                 "Preview Description area is not displayed.");
         Assert.assertEquals(
                 getDriver().findElement(By.className("textarea-preview")).getText(), DESCRIPTION_TEXT,
