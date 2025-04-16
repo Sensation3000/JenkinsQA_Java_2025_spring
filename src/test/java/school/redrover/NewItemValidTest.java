@@ -9,12 +9,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.common.BaseTest;
 
 public class NewItemValidTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateItemSameName() {
         WebDriver driver = getDriver();

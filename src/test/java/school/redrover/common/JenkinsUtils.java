@@ -37,7 +37,7 @@ public final class JenkinsUtils {
     }
 
     private static Set<String> getSubstringsFromPage(String page, String from, String to) {
-        // 255 - максимально возможная длинна имени, но если используется не латиница или специальные символы, страка будет длинней из-за кодирования (пробел - %20)
+        // 255 - максимально возможная длинна имени, но если используется не латиница или специальные символы, строка будет длинней из-за кодирования (пробел - %20)
         return getSubstringsFromPage(page, from, to, 256);
     }
 
