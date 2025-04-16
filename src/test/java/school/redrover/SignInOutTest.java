@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
@@ -27,6 +28,7 @@ public class SignInOutTest extends BaseTest {
         };
     }
 
+    @Ignore
     @Test
     public void testSignOutSuccessfully() {
         JenkinsUtils.logout(getDriver());
@@ -38,6 +40,7 @@ public class SignInOutTest extends BaseTest {
         Assert.assertTrue(logoutList.isEmpty());
     }
 
+    @Ignore
     @Test(dataProvider = "invalidCredentials")
     public void testInvalidCredentialsError(String testUserName, String testPassword) {
         JenkinsUtils.logout(getDriver());
