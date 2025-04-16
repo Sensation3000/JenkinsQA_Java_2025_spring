@@ -17,21 +17,7 @@ public class FolderConfigurationTest extends BaseTest {
     @Test
     public void testQquestionMarkIcon() {
         WebDriverWait wait5 = getWait5();
-        WebElement newItemButton = wait5.until(ExpectedConditions.visibilityOfElementLocated
-                (By.linkText("New Item")));
-        newItemButton.click();
-
-        WebElement field = wait5.until(ExpectedConditions.visibilityOfElementLocated
-                (By.name("name")));
-        field.sendKeys("My Folder");
-
-        WebElement folder = wait5.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//label/span[text()='Folder']")));
-        folder.click();
-
-        WebElement submitButton = wait5.until(ExpectedConditions.visibilityOfElementLocated
-                (By.id("ok-button")));
-        submitButton.click();
+        TestUtils.createFolder(getDriver(),FOLDER_NAME);
 
         WebElement icon = wait5.until(ExpectedConditions.elementToBeClickable
                 (By.cssSelector("a.jenkins-help-button")));
