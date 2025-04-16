@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class AddPluginTest extends BaseTest {
-    @Ignore
+@Ignore
     @Test
     public void testAddPlugin() {
 

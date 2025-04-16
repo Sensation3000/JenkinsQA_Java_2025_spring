@@ -1,11 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,4 +60,26 @@ public class NewItemCreate3Test extends BaseTest {
             getDriver().findElement(By.id("name")).clear();
         }
     }
+
+    @Ignore
+    @Test
+    public void testCreateNewItemWithExistingName() {
+        goToNewItemPage();
+        final String projectName = "New FreeStyleProject";
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.gotoHomePage(this);
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New FreeStyleProject")))
+                        .getText(), "New FreeStyleProject");
+
+        goToNewItemPage();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        WebElement el = getDriver().findElement(By.id("itemname-invalid"));
+        TestUtils.scrollToItemWithJS(getDriver(), el);
+        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New FreeStyleProject’");
+    }
 }
+
