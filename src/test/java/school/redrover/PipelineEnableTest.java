@@ -45,7 +45,8 @@ public class PipelineEnableTest extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project"))).click();
 
-        String status = driver.findElement(By.className("jenkins-toggle-switch__label__unchecked-title")).getText();
+        String status = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__unchecked-title")))
+            .getText();
 
         Assert.assertEquals(status, "Disabled");
 
