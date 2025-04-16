@@ -43,7 +43,6 @@ public class Folder1Test extends BaseTest {
         driver.findElement(By.className("hudson_model_FreeStyleProject")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        // driver.findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a")).click();
 
         Assert.assertEquals(
                 "Full project name: First folder/First item",
