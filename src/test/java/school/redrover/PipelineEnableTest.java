@@ -32,4 +32,24 @@ public class PipelineEnableTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
+    @Test
+    public void changeStateNewPipelineTest() {
+        WebDriver driver = getDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")))
+            .click();
+
+        driver.findElement(By.id("name")).sendKeys("Pipeline project test");
+        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        driver.findElement(By.id("ok-button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project"))).click();
+
+        String status = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__unchecked-title")))
+            .getText();
+
+        Assert.assertEquals(status, "Disabled");
+
+    }
+
 }
