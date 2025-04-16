@@ -11,7 +11,7 @@ import school.redrover.common.TestUtils;
 public class FolderConfigurationTest extends BaseTest {
     private final String FOLDER_NAME = "TestFolder";
     private final String DISPLAY_NAME = "Folder Display Name";
-    private final String DESCRIPTION ="Some random text and special chars and русский текст";
+    private final String DESCRIPTION_BOX ="Some random text and special chars and русский текст";
 
     @Test
     public void testQquestionMarkIcon() {
@@ -26,15 +26,15 @@ public class FolderConfigurationTest extends BaseTest {
     public void testDescriptionBox() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.name("_.description"))).sendKeys(DESCRIPTION);
+                (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
         getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
         WebElement viewMessageInDescription = getDriver().findElement(By.id("view-message"));
 
-        Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION);
+        Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION_BOX);
     }
 
     @Test
-    public void testEmptyDescriptionBox() {
+    public void testDescriptionBoxSaveEmpty() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("_.description"))).sendKeys("");
@@ -48,14 +48,14 @@ public class FolderConfigurationTest extends BaseTest {
     public void testDescriptionBoxUsingApplyButton() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.name("_.description"))).sendKeys(DESCRIPTION);
+                (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
         getDriver().findElement(By.name("Apply")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
         WebElement viewMessageInDescription = getDriver().findElement(By.id("view-message"));
 
-        Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION);
+        Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION_BOX);
     }
 
     @Test
