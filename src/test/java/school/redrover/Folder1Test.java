@@ -87,8 +87,10 @@ public class Folder1Test extends BaseTest {
         driver.findElement(By.className("textarea-hide-preview")).click();
         driver.findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(driver.findElement(By.tagName("h1")).getText(), displayName);
-        Assert.assertEquals(driver.findElement(By.id("view-message")).getText(), descriptionField);
+        String actualHeader = driver.findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+        Assert.assertEquals(actualHeader, displayName);
 
+        String actualDescription = driver.findElement(By.id("view-message")).getText();
+        Assert.assertEquals(actualDescription, descriptionField);
     }
 }
