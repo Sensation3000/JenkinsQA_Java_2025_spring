@@ -44,4 +44,10 @@ public class HomePage extends BasePage {
 
         return new NewItemPage(getDriver());
     }
+
+    public NewItemPage clickNewItemOnLeftSidePanel() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+
+        return new NewItemPage(getDriver());
+    }
 }
