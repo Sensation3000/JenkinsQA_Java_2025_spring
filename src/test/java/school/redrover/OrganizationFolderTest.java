@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 
 public class OrganizationFolderTest extends BaseTest {
 
-    private static final String ORGANIZATION_FOLDER_NAME = "Organization_Folder2";
+    private static final String ORGANIZATION_FOLDER_NAME = "Organization_Folder";
 
     @Test
     public void testCreateOrganizationFolderWithDefaultIcon() {
@@ -36,7 +36,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolderWithDefaultIcon")
-    public void testCancelFolderDeletion(){
+    public void testCancelOrganizationFolderDeletion(){
         getDriver().findElement(By.xpath("//td/a[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='cancel']")).click();
@@ -45,4 +45,21 @@ public class OrganizationFolderTest extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOf(
                         getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")))).getText(), ORGANIZATION_FOLDER_NAME);
     }
+
+    @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
+    public void testDeleteEmptyOrganizationFolderFromFolderPage() {
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
+
+        String confirmationMessageBoxText = getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.className("jenkins-dialog__contents")))).getText();
+
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        Assert.assertTrue(
+                getWait5().until(ExpectedConditions.visibilityOf(
+                        getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")))).isDisplayed());
+        Assert.assertEquals(confirmationMessageBoxText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
+    }
+
 }
