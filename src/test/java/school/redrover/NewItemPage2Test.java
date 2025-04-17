@@ -44,10 +44,19 @@ public class NewItemPage2Test extends BaseTest {
                    .click();
     }
 
-    private void createNewJobWithRandomValue() {
+    private void createNewJob(int projectNumber) {
         randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        if (projectNumber >= 1 && projectNumber <= 6) {
+            TestUtils.newItemCreate(this, randomAlphaNumericValue, projectNumber);
+        } else {
+            throw new IllegalArgumentException("The project number is not valid");
+        }
+    }
+
+    private int  getRandomNumberWithin1And6() {
         Random random = new Random();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, random.nextInt(6) +1);
+        return random.nextInt(6) + 1;
     }
 
     private void enterNonExistingItemValueToCopyFrom() {
@@ -131,7 +140,7 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test(dataProvider = "itemTypes")
-    public void testIfSelectedItemIsHighlighted(String itemTypeName,  String expectedItemDescription) {
+    public void testIfSelectedItemIsHighlighted(String itemTypeName, String expectedItemDescription) {
         clickOnNewItemLink();
 
         WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
@@ -211,7 +220,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testAutocompleteOption() {
-        createNewJobWithRandomValue();
+        createNewJob(getRandomNumberWithin1And6());
         clickOnNewItemLink();
 
         enterExistingItemValueToCopyFrom();
@@ -224,7 +233,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfNoItemsMessageIsDisplayed() {
-        createNewJobWithRandomValue();
+        createNewJob(getRandomNumberWithin1And6());
         clickOnNewItemLink();
 
         enterNonExistingItemValueToCopyFrom();
@@ -237,7 +246,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testCopyFromOptionWhenCreatingNewJob() {
-        createNewJobWithRandomValue();
+        createNewJob(getRandomNumberWithin1And6());
         clickOnNewItemLink();
 
         enterExistingItemValueToCopyFrom();
@@ -251,7 +260,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfUserRedirectedToErrorPage() {
-        createNewJobWithRandomValue();
+        createNewJob(getRandomNumberWithin1And6());
         clickOnNewItemLink();
 
         getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
@@ -313,6 +322,34 @@ public class NewItemPage2Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h2.h4")).getText(),
                 "This folder is empty"
+        );
+    }
+
+    @Test(dataProvider = "itemTypes")
+    public void testJobCreationWithinFolder(String itemTypeName, String expectedItemDescription) {
+        createNewJob(4);
+
+        WebElement jobTableLink = getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"));
+        String projectName = jobTableLink.getText();
+        actions.moveToElement(jobTableLink).perform();
+
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("a[href='/job/%s/']", projectName))));
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("a.jenkins-table__link span")).getText(),
+                randomAlphaNumericValue
         );
     }
 }
