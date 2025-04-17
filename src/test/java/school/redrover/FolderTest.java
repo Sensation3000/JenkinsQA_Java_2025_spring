@@ -46,21 +46,4 @@ public class FolderTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
                 FOLDER_NAME);
     }
-
-    @Ignore
-    @Test
-    public void testDeleteEmptyFolderFromFolderPage() {
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Folder']")).click();
-
-        String confirmationMessageBoxText = getWait5().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.className("jenkins-dialog__contents")))).getText();
-
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")))).isDisplayed());
-        Assert.assertEquals(confirmationMessageBoxText, "Delete the Folder ‘" + FOLDER_NAME + "’?");
-    }
 }
