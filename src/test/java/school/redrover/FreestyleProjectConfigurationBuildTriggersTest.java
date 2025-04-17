@@ -1,11 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+
+import java.util.List;
 
 public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
@@ -95,13 +101,77 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 driver.findElement(By.id("source-code-management")));
 
         //Assertions
-        Assert.assertEquals(driver.findElement(By.xpath("//div[text()='Authentication Token']")).getText(),"Authentication Token");
-        Assert.assertEquals(driver.findElement(By.xpath("//input[@name='authToken']")).getDomAttribute("value"),"Authentication Token");
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]")).getText().trim(),
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//div[text()='Authentication Token']")).getText(),
+                "Authentication Token"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//input[@name='authToken']")).getDomAttribute("value"),
+                "Authentication Token"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]"))
+                        .getText()
+                        .trim(),
                 """
-            Use the following URL to trigger build remotely: JENKINS_URL/job/New%20project/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
-            Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
-            """.trim(), "Текст не совпадает с ожидаемым!");
+                Use the following URL to trigger build remotely: JENKINS_URL/job/New%20project/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
+                Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
+                """.trim(),
+                "Текст не совпадает с ожидаемым!"
+        );
     }
 
+
+    @Test
+    public void testBuildAfterOtherProjectsAreBuiltOptionDisplaysField() {
+        WebDriver driver = getDriver();
+        final String projectName = "New project";
+        TestUtils.createFreestyleProject(getDriver(), projectName);
+
+        getWait5();
+
+        TestUtils.scrollToItemWithJS(driver,
+                driver.findElement(By.id("source-code-management")));
+
+        // Enable “Build after other projects are built”
+        driver.findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
+
+        //Wait for the "Projects to watch" field to be displayed and ent
+        driver.findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys("New Project");
+
+        //Wait for the "Projects to watch" field to be displayed and enter the project name
+        getWait5().until(ExpectedConditions.attributeToBe(By.xpath("//input[@name='_.upstreamProjects']"), "aria-expanded", "true"));
+        driver.findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+        getWait5();
+
+        //Click on the "Trigger only if build is stable" checkbox and others
+        List<WebElement> labels = driver.findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"));
+        for (WebElement label : labels) {
+            label.click();
+        }
+
+        //Click Submit and save the project
+        driver.findElement(By.xpath("//button[@name='Submit']")).click();
+
+        //Configure
+        getWait5();
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        TestUtils.scrollToItemWithJS(driver,
+                driver.findElement(By.id("source-code-management")));
+
+        //Assertions
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//input[@name='_.upstreamProjects']"))
+                        .getDomAttribute("value"),
+                "New project, ",
+                "Value attribute doesn't match expected text"
+        );
+
+        List<WebElement> radios = driver.findElements(By.name("ReverseBuildTrigger.threshold"));
+        Assert.assertEquals(
+                radios.get(radios.size() - 1).getDomAttribute("checked"),
+                "true",
+                "The last radio button should be selected"
+        );
+    }
 }
