@@ -2,13 +2,15 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class CreateAndDeletePipelineItemTest extends BaseTest {
-    @Ignore //Error:    CreateAndDeletePipelineItemTest.testCreateAndDeletePipelineItem:29 » StaleElementReference stale element reference: stale element not found
+    @Ignore
+    //Error:    CreateAndDeletePipelineItemTest.testCreateAndDeletePipelineItem:29 » StaleElementReference stale element reference: stale element not found
     @Test
     public void testCreateAndDeletePipelineItem() {
         WebDriver driver = getDriver();
@@ -21,13 +23,16 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        Assert.assertEquals(driver.findElement(By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1")).getText(), "somePipeline");
+        Assert.assertEquals(driver.findElement(By.className("job-index-headline")).getText(), "somePipeline");
 
         //delete Item
-        driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
-        driver.findElement(new By.ByXPath("//*[@id=\"jenkins\"]/dialog[2]/div[3]/button[1]")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[data-url*='doDelete']")));
+        driver.findElement(By.cssSelector("a[data-url*='doDelete']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("button[data-id='ok']")));
+        driver.findElement(By.cssSelector("button[data-id='ok']")).click();
         Assert.assertNotEquals(driver.findElement(By.id("jenkins")).getText(), "somePipeline");
-        //soft.assertNotEquals(driver.findElement(By.id("jenkins")).getText(), "somePipeline");
+
     }
 
     @Test
@@ -76,12 +81,8 @@ public class CreateAndDeletePipelineItemTest extends BaseTest {
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
         driver.findElement(By.name("Submit")).click();
-        driver.findElement(new By.ByXPath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
-       /* try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
+        driver.findElement(By.className("job-index-headline")).click();
+
 
         Assert.assertTrue(driver.findElement(By.xpath("//body[@id='jenkins']/dialog[@class='jenkins-dialog']")).isDisplayed());
     }
