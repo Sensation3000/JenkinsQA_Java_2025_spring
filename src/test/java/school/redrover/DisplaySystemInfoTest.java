@@ -37,5 +37,24 @@ public class DisplaySystemInfoTest extends BaseTest {
 
         Assert.assertEquals(javaVendor, "Oracle Corporation");
     }
+
+    @Test
+    public void testShowEnviromentalVariables() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[2]/a")).click();
+
+        WebElement example = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/table/tbody/tr/td/div[1]"));
+        String infoHiddenClass = example.getDomAttribute(("class"));
+
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/div/button[1]")).click();
+
+        String infoShownClass = example.getDomAttribute(("class"));
+
+        Assert.assertEquals(infoHiddenClass, "app-hidden-info-reveal");
+        Assert.assertEquals(infoShownClass, "app-hidden-info-reveal jenkins-hidden");
+    }
 }
 
