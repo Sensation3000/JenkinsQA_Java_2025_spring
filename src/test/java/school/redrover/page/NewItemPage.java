@@ -35,6 +35,6 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-    return new FreestyleConfigurationPage(getDriver());
+        return new FreestyleConfigurationPage(getDriver());
     }
 }
