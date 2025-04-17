@@ -16,7 +16,7 @@ import java.util.List;
 public class NewItem5Test extends BaseTest {
 
     @Test
-    public void testNewItemPageAvailableFromDashboardPOM() {
+    public void testNewItemPageAvailableFromDashboard() {
         final String PAGE_HEADER_TEXT = "New Item";
         final String NEW_ITEM_PAGE_URL = "http://localhost:8080/view/all/newJob";
 
@@ -39,7 +39,7 @@ public class NewItem5Test extends BaseTest {
 
     @Test
     public void testItemsList() {
-        List<String> expectedItemTypesTextList = List.of(
+        final List<String> EXPECTED_ITEM_TYPES_TEXT_LIST = List.of(
                 "Freestyle project",
                 "Pipeline",
                 "Multi-configuration project",
@@ -47,16 +47,11 @@ public class NewItem5Test extends BaseTest {
                 "Multibranch Pipeline",
                 "Organization Folder");
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
+        List<String> actualItemTypesTextList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .getItemTypesTextList();
 
-        List<String> itemTypesTextList = new ArrayList<>();
-
-        for (WebElement webElement: webElementList) {
-            itemTypesTextList.add(webElement.getText());
-        }
-
-        Assert.assertEquals(itemTypesTextList, expectedItemTypesTextList);
+        Assert.assertEquals(actualItemTypesTextList, EXPECTED_ITEM_TYPES_TEXT_LIST);
     }
 
     @Ignore

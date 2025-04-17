@@ -2,7 +2,11 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewItemPage extends BasePage {
 
@@ -43,5 +47,14 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new FreestyleConfigurationPage(getDriver());
+    }
+
+    public List<String> getItemTypesTextList() {
+        List<String> itemTypesTextList = new ArrayList<>();
+        List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
+        for (WebElement webElement: webElementList) {
+            itemTypesTextList.add(webElement.getText());
+        }
+        return itemTypesTextList;
     }
 }
