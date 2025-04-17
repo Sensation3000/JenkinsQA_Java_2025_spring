@@ -59,7 +59,6 @@ public class MultibranchPipelineTest extends BaseTest {
         }
     }
 
-    @Ignore //stale element reference: stale element not found
     @Test
     public void testVerifySectionHasTooltip() {
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
@@ -70,18 +69,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-
-        JavascriptExecutor js1 = (JavascriptExecutor) getDriver();
-        js1.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//*[@id='jenkins-home-link']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//a[@class='jenkins-table__link model-link inside']"))).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
 
         String actualTooltip = getDriver().
                 findElement(By.xpath("//*[contains(text(), '" + "Display Name" + "')]//a"))

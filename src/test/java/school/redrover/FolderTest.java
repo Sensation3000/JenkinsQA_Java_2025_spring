@@ -1,8 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FolderTest extends BaseTest {
 
-    private static final String FOLDER_NAME = "Folder1";
+    private static final String FOLDER_NAME = "ProjectFolder";
 
     @Ignore
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
@@ -31,22 +31,19 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testCreateFolderWithBlankConfiguration () {
-        final String folderName = "ProjectFolder";
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//span[text() = 'Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("Submit")))).click();
 
-        WebDriver driver = getDriver();
-
-        driver.findElement(By.linkText("New Item")).click();
-        driver.findElement(By.id("name")).sendKeys(folderName);
-        driver.findElement(By.xpath("//span[text() = 'Folder']")).click();
-        driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), folderName);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), FOLDER_NAME);
 
         TestUtils.gotoHomePage(this);
 
         Assert.assertEquals(
-                driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
-                folderName);
+                getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
+                FOLDER_NAME);
     }
 }
