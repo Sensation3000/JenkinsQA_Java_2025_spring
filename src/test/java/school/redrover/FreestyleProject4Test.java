@@ -107,13 +107,13 @@ public class FreestyleProject4Test extends BaseTest {
 
         for (int i = 1; present; i++) {
             new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                            By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                            .perform();
+                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                    .perform();
 
             getDriver().findElement(
-                            By.xpath(
-                                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
-                            .click();
+                    By.xpath(
+                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
+                    .click();
 
             try {
                 getDriver().findElement(
