@@ -98,7 +98,7 @@ public class FreestyleProject4Test extends BaseTest {
                         By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
                 .isEnabled());
     }
-    @Ignore
+
     @Test
     public void testAddBuildSteps() {
         boolean present = true;
@@ -134,7 +134,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(getDriver().findElement(
                         By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
                         .getText(),
-                "Set build status to \"pending\" on GitHub commit1");
+                "Set build status to \"pending\" on GitHub commit");
     }
 
     @Test
