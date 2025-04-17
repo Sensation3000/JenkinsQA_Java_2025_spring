@@ -5,13 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
 import java.util.UUID;
 
-public class ATNewItemFolder extends BaseTest {
+public class Folder3Test extends BaseTest {
 
     @Test
     public void testCreate() {
-        String folderName = UUID.randomUUID().toString();
+        String folderName = "MyFolderName";
         String folderLink = "job/" + folderName + "/";
 
         WebDriver driver = getDriver();
