@@ -2,9 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.common.BaseTest;
 
 public class FreestyleConfigurationPage extends BasePage {
 
@@ -13,7 +11,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage sendDescription(String text) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(text);
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
 
         return this;
     }
