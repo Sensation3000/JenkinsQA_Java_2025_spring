@@ -23,5 +23,12 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public FolderConfigurationPage selectFolderAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FolderConfigurationPage(getDriver());
+    }
+
 
 }

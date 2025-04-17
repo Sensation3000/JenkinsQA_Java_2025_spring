@@ -133,7 +133,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(getDriver().findElement(
                         By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
                         .getText(),
-                "Set build status to \"pending\" on GitHub commit");
+                "Set build status to \"pending\" on GitHub commit1");
     }
 
     @Test
