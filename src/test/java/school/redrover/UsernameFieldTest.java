@@ -21,7 +21,6 @@ public class UsernameFieldTest extends BaseTest {
     }
 
     @Test
-    //@Description("The ability to click on the field.")
     public void testUsernameFieldFocusAndEditable() throws Exception {
         WebDriver driver = getDriver();
         setUp(driver);
@@ -34,7 +33,6 @@ public class UsernameFieldTest extends BaseTest {
 
 
     @Test
-    //@Description("If invalid values are entered")
     public void testUsernameFieldAcceptsOnlyValidChars() throws Exception {
         WebDriver driver = getDriver();
         setUp(driver);
@@ -56,7 +54,6 @@ public class UsernameFieldTest extends BaseTest {
     }
 
     @Test
-    //@Description("If the field is empty and the Create button is pressed")
     public void testEmptyUsernameValidation() throws Exception {
         WebDriver driver = getDriver();
         setUp(driver);
