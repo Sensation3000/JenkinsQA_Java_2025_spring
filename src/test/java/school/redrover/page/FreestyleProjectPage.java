@@ -2,7 +2,6 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class FreestyleProjectPage extends BasePage {
@@ -16,6 +15,6 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description > div"))).getText();
+        return getDriver().findElement(By.cssSelector("#description > div")).getText();
     }
 }
