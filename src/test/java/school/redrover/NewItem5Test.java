@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +16,15 @@ import java.util.List;
 public class NewItem5Test extends BaseTest {
 
     @Test
-    public void testNewItemPageAvailableFromDashboard() {
-        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
-        String actualHeader = getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+    public void testNewItemPageAvailableFromDashboardPOM() {
+        final String PAGE_HEADER_TEXT = "New Item";
+        final String NEW_ITEM_PAGE_URL = "http://localhost:8080/view/all/newJob";
 
-        Assert.assertEquals(actualHeader, "New Item");
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getNewItemPageHeaderText(), PAGE_HEADER_TEXT);
+        Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
     }
 
     @Test

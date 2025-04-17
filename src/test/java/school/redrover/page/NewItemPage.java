@@ -30,5 +30,11 @@ public class NewItemPage extends BasePage {
         return new FolderConfigurationPage(getDriver());
     }
 
+    public String getNewItemPageHeaderText() {
+        return getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+    }
 
+    public String getNewItemPageURL() {
+        return getDriver().getCurrentUrl();
+    }
 }
