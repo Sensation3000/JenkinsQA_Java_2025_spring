@@ -16,6 +16,6 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description > div"))).getText();
+        return getDriver().findElement(By.cssSelector("#description > div")).getText();
     }
 }

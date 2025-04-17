@@ -13,7 +13,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage sendDescription(String text) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(text);
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
 
         return this;
     }
