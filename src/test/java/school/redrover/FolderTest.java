@@ -48,8 +48,19 @@ public class FolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateFolderWithBlankConfiguration")
+    public void testCancelFolderDeletion(){
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@data-title='Delete Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='cancel']")).click();
+
+        Assert.assertEquals(
+                getWait5().until(ExpectedConditions.visibilityOf(
+                        getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")))).getText(), FOLDER_NAME);
+    }
+
+    @Test (dependsOnMethods = "testCancelFolderDeletion")
     public void testDeleteEmptyFolderFromFolderPage() {
-        getDriver().findElement(By.xpath("//td/a[@href='job/ProjectFolder/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//a[@data-title='Delete Folder']")).click();
 
         String confirmationMessageBoxText = getWait5().until(ExpectedConditions.visibilityOf(
