@@ -50,4 +50,10 @@ public class HomePage extends BasePage {
 
         return new NewItemPage(getDriver());
     }
+
+    public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
+        getDriver().findElement(By.xpath("//span[text()='" + nameItem + "']"));
+
+        return new FreestyleProjectPage(getDriver());
+    }
 }

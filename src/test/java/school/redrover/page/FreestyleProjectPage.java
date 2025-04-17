@@ -17,4 +17,22 @@ public class FreestyleProjectPage extends BasePage {
     public String getDescription() {
         return getDriver().findElement(By.cssSelector("#description > div")).getText();
     }
+
+    public FreestyleProjectPage clickEditDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage sendDescription(String text) {
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(text);
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickSave() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
 }

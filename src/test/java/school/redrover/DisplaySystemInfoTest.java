@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -55,6 +54,21 @@ public class DisplaySystemInfoTest extends BaseTest {
 
         Assert.assertEquals(infoHiddenClass, "app-hidden-info-reveal");
         Assert.assertEquals(infoShownClass, "app-hidden-info-reveal jenkins-hidden");
+    }
+
+    @Test
+    public void testPluginsInfo() {
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[3]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[3]/a")).click();
+
+        String plugin1 = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[5]/table/tbody/tr[1]/td[2]")).getText();
+        String plugin2 = driver.findElement(By.xpath("//*[@id=\"main-panel\"]/div[5]/table/tbody/tr[2]/td[2]")).getText();
+
+        Assert.assertNotNull(plugin1);
+        Assert.assertNotNull(plugin2);
     }
 }
 
