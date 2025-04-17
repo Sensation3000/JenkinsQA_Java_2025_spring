@@ -13,8 +13,10 @@ import school.redrover.common.BaseTest;
 import java.time.Duration;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class AddPluginsTest extends BaseTest {
-    @Ignore
+
     @Test
     public void plugin() {
 
@@ -51,5 +53,25 @@ public class AddPluginsTest extends BaseTest {
         // Verifying the "Pipeline: REST API Plugin" presence in the list
         List<WebElement> plugins = driver.findElements(By.xpath("//tr[@data-plugin-name=\"Pipeline: REST API Plugin\"]"));
         Assert.assertTrue(!plugins.isEmpty());
+    }
+
+    @Test(dependsOnMethods = "plugin")
+    public void testUnInstallPlugIn() {
+        final String local = "Locale";
+
+        getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
+        getDriver().findElement(By.cssSelector("a[href='pluginManager']")).click();
+        getDriver().findElement(By.cssSelector("a[href='/manage/pluginManager/installed']")).click();
+        getDriver().findElement(By.id("filter-box")).sendKeys(local);
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("button[data-href='plugin/locale/doUninstall']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog")));
+        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("page-body")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("filter-box"))).sendKeys(local);
+
+        assertEquals(getDriver().findElement(
+                        By.xpath("//tr[@data-plugin-name='Locale plugin']//td[contains(@class,'uninstall')]")).getText(),
+                "Uninstallation pending");
     }
 }
