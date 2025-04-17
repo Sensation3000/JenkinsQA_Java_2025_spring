@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelineProjectPage;
 
 import java.time.Duration;
 
@@ -30,4 +32,19 @@ public class CreateNewPipelineTest extends BaseTest {
 
     }
 
+    @Test
+    public void testCreateNewPipelinePOM() {
+        final String projectName = "MyPipeline";
+        final String projectDescription = "This is a test pipeline";
+
+        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(projectName)
+                .selectPipelineAndClickOk()
+                .sendDescription(projectDescription)
+                .clickSave();
+
+        Assert.assertEquals(pipelineProjectPage.getProjectName(), projectName);
+        Assert.assertEquals(pipelineProjectPage.getDescription(), projectDescription);
+    }
 }

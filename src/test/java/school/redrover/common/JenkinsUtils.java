@@ -2,6 +2,8 @@ package school.redrover.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -35,7 +37,7 @@ public final class JenkinsUtils {
     }
 
     private static Set<String> getSubstringsFromPage(String page, String from, String to) {
-        // 255 - максимально возможная длинна имени, но если используется не латиница или специальные символы, страка будет длинней из-за кодирования (пробел - %20)
+        // 255 - максимально возможная длинна имени, но если используется не латиница или специальные символы, строка будет длинней из-за кодирования (пробел - %20)
         return getSubstringsFromPage(page, from, to, 256);
     }
 
@@ -213,13 +215,17 @@ public final class JenkinsUtils {
         JenkinsUtils.resetTheme();
     }
 
-    static void login(WebDriver driver) {
-        driver.findElement(By.name("j_username")).sendKeys(ProjectUtils.getUserName());
-        driver.findElement(By.name("j_password")).sendKeys(ProjectUtils.getPassword());
+    public static void login(WebDriver driver, String userName, String password) {
+        driver.findElement(By.name("j_username")).sendKeys(userName);
+        driver.findElement(By.name("j_password")).sendKeys(password);
         driver.findElement(By.name("Submit")).click();
     }
 
-    static void logout(WebDriver driver) {
+    public static void login(WebDriver driver) {
+        login(driver, ProjectUtils.getUserName(), ProjectUtils.getPassword());
+    }
+
+    public static void logout(WebDriver driver) {
         ProjectUtils.get(driver);
 
         driver.findElement(By.xpath("//a[@href='/logout']")).click();

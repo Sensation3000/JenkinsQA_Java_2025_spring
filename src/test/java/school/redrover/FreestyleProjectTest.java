@@ -1,31 +1,28 @@
 package school.redrover;
 
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class FreestyleProjectTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testCreate() {
-        final String projectName = "FreestyleProjectTestName";
+        final String projectName = "Freestyle Project";
 
-        WebDriver driver = getDriver();
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        TestUtils.openHomePage(this);
+        String actualItem = getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//a[@class='jenkins-table__link model-link inside']"))).getText();
 
-        driver.findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        driver.findElement(By.id("name")).sendKeys(projectName);
-        driver.findElement(By.className("hudson_model_FreeStyleProject")).click();
-        driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.name("Submit")).click();
-        TestUtils.gotoHomePage(this);
-
-        Assert.assertEquals(
-                driver.findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
-                projectName);
+        Assert.assertEquals(actualItem, projectName);
     }
 }

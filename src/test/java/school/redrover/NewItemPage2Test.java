@@ -7,16 +7,17 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 import java.util.List;
+import java.util.Random;
 
 public class NewItemPage2Test extends BaseTest {
-
     private Actions actions;
-    private final By newJobsLocator = By.xpath("//a[@href='/view/all/newJob']");
+    String randomAlphaNumericValue;
 
     @BeforeMethod
     void setUp() {
@@ -39,8 +40,56 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     private void clickOnNewItemLink() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(newJobsLocator))
-                .click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']")))
+                   .click();
+    }
+
+    private void createNewJob(int projectNumber) {
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        if (projectNumber >= 1 && projectNumber <= 6) {
+            TestUtils.newItemCreate(this, randomAlphaNumericValue, projectNumber);
+        } else {
+            throw new IllegalArgumentException("The project number is not valid");
+        }
+    }
+
+    private int  getRandomNumberWithin1And6() {
+        Random random = new Random();
+        return random.nextInt(6) + 1;
+    }
+
+    private void enterNonExistingItemValueToCopyFrom() {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String generated;
+        Random random = new Random();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+
+        do {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < randomLength; i++) {
+                char c = chars.charAt(random.nextInt(chars.length()));
+                sb.append(c);
+            }
+            generated = sb.toString();
+        } while (randomAlphaNumericValue.startsWith(generated));
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(generated);
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
+    }
+
+    private void enterExistingItemValueToCopyFrom() {
+        Random random = new Random();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
+        getDriver().findElement(By.id("name")).sendKeys(TestUtils.generateRandomAlphanumeric());
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(inputValue);
     }
 
     @Test
@@ -80,6 +129,40 @@ public class NewItemPage2Test extends BaseTest {
         }
     }
 
+    @Test(dataProvider = "itemTypes")
+    public void testItemsDescriptions(String itemTypeName, String expectedItemDescription) {
+        clickOnNewItemLink();
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        String itemDescriptionText = itemType.findElement(By.xpath("./../../div")).getText();
+
+        Assert.assertEquals(itemDescriptionText, expectedItemDescription);
+    }
+
+    @Test(dataProvider = "itemTypes")
+    public void testIfSelectedItemIsHighlighted(String itemTypeName, String expectedItemDescription) {
+        clickOnNewItemLink();
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+
+        WebElement parentLi = itemType.findElement(By.xpath("./ancestor::li"));
+
+        Assert.assertTrue(parentLi.getDomAttribute("class").contains("active"));
+    }
+
+    @DataProvider(name = "itemTypes")
+    public Object[][] itemTypes() {
+        return new Object[][]{
+                {"Freestyle project", "Classic, general-purpose job type that checks out from up to one SCM, executes build steps serially, followed by post-build steps like archiving artifacts and sending email notifications."},
+                {"Pipeline", "Orchestrates long-running activities that can span multiple build agents. Suitable for building pipelines (formerly known as workflows) and/or organizing complex activities that do not easily fit in free-style job type."},
+                {"Multi-configuration project", "Suitable for projects that need a large number of different configurations, such as testing on multiple environments, platform-specific builds, etc."},
+                {"Folder", "Creates a container that stores nested items in it. Useful for grouping things together. Unlike view, which is just a filter, a folder creates a separate namespace, so you can have multiple things of the same name as long as they are in different folders."},
+                {"Multibranch Pipeline", "Creates a set of Pipeline projects according to detected branches in one SCM repository."},
+                {"Organization Folder", "Creates a set of multibranch project subfolders by scanning for repositories."}
+        };
+    }
+
     @Test
     public void testOkButtonWhenFieldIsEmpty() {
         clickOnNewItemLink();
@@ -111,5 +194,162 @@ public class NewItemPage2Test extends BaseTest {
                     "» This field cannot be empty, please enter a valid name"
             );
         }
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsDisplayed() {
+        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        Random random = new Random();
+
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, random.nextInt(6) +1);
+        clickOnNewItemLink();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("p.jenkins-form-label")).getText(),
+                "If you want to create a new item from other existing, you can use this option:"
+        );
+        Assert.assertTrue(getDriver().findElement(By.id("from")).isDisplayed());
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsNotDisplayed() {
+        clickOnNewItemLink();
+
+        Assert.assertTrue(getDriver().findElements(By.id("from")).isEmpty());
+    }
+
+    @Test
+    public void testAutocompleteOption() {
+        createNewJob(getRandomNumberWithin1And6());
+        clickOnNewItemLink();
+
+        enterExistingItemValueToCopyFrom();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item")));
+        WebElement dropdownItem = getDriver().findElement(By.className("jenkins-dropdown__item"));
+
+        Assert.assertTrue(dropdownItem.isDisplayed());
+        Assert.assertEquals(dropdownItem.getText(), randomAlphaNumericValue);
+    }
+
+    @Test
+    public void testIfNoItemsMessageIsDisplayed() {
+        createNewJob(getRandomNumberWithin1And6());
+        clickOnNewItemLink();
+
+        enterNonExistingItemValueToCopyFrom();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.className("jenkins-dropdown__placeholder")).getText(),
+                "No items"
+        );
+    }
+
+    @Test
+    public void testCopyFromOptionWhenCreatingNewJob() {
+        createNewJob(getRandomNumberWithin1And6());
+        clickOnNewItemLink();
+
+        enterExistingItemValueToCopyFrom();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item"))).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait5().until(ExpectedConditions.urlContains("/job"));
+
+        Assert.assertTrue(getDriver().findElement(By.id("general")).isDisplayed());
+    }
+
+    @Test
+    public void testIfUserRedirectedToErrorPage() {
+        createNewJob(getRandomNumberWithin1And6());
+        clickOnNewItemLink();
+
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+        enterNonExistingItemValueToCopyFrom();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait5().until(ExpectedConditions.urlContains("/createItem"));
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Error");
+    }
+
+    @Test
+    public void testIfOriginalItemConfigurationIsCopied() {
+        clickOnNewItemLink();
+
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+
+        List<WebElement> labels = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::label"));
+        for (WebElement label : labels) {
+            TestUtils.scrollAndClickWithJS(getDriver(), label);
+        }
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+        TestUtils.gotoHomePage(getDriver());
+
+        clickOnNewItemLink();
+
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue + "_");
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(randomAlphaNumericValue);
+        getWait5().until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("[class^='jenkins-dropdown__item']")))
+                  .click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+        List<WebElement> checkboxes = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']"));
+
+        Assert.assertTrue(checkboxes.stream().allMatch(WebElement::isSelected));
+    }
+
+    @Test
+    public void testIfNewFolderIsCreatedEmpty() {
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        clickOnNewItemLink();
+
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")));
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h2.h4")).getText(),
+                "This folder is empty"
+        );
+    }
+
+    @Test(dataProvider = "itemTypes")
+    public void testJobCreationWithinFolder(String itemTypeName, String expectedItemDescription) {
+        createNewJob(4);
+
+        WebElement jobTableLink = getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"));
+        String projectName = jobTableLink.getText();
+        actions.moveToElement(jobTableLink).perform();
+
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
+
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("a[href='/job/%s/']", projectName))));
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("a.jenkins-table__link span")).getText(),
+                randomAlphaNumericValue
+        );
     }
 }
