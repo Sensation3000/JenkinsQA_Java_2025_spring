@@ -13,7 +13,6 @@ public class CreatePipelineItemTest extends BaseTest {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
-
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         Assert.assertEquals(driver.findElement(By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
 
@@ -24,7 +23,6 @@ public class CreatePipelineItemTest extends BaseTest {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
-
         driver.findElement(By.id("name")).sendKeys("somePipeline");
         Assert.assertTrue(driver.findElement(By.id("ok-button")).isDisplayed());
 
@@ -35,7 +33,6 @@ public class CreatePipelineItemTest extends BaseTest {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//a[@href='newJob']")).click();
-
         driver.findElement(By.id("name")).sendKeys("somePipeline");
         driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         driver.findElement(By.id("ok-button")).click();
