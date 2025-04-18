@@ -10,14 +10,41 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import static org.testng.Assert.*;
 
 
 public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME = "Test item";
-    private static final String JOB_NAME_2 = "Test item2";
+    private static final String JOB_NAME_2 = "Second test item";
+
+    @Test
+    public void createNewFreestyleProject() {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+
+        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
+    }
+
+    @Test(dependsOnMethods = "createNewFreestyleProject")
+    public void testAddAndSaveDescription() {
+        final String description = "Job description";
+
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                        "//a[@href='/job/Test%20item/configure']")).click();
+        getDriver().findElement(By.name("description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
+    }
 
     @Test
     public void testToolTipEnableDisable() {
@@ -46,24 +73,30 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test
     public void testTriggerBuildAfterOtherProjects() {
+        final String pageCreateItem = "createItem";
+        final String h1Tag = "h1";
+
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), "Configure"));
-        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id(pageCreateItem)));
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName(h1Tag), "Configure"));
+        TestUtils.gotoHomePage(this);
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME_2);
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id(pageCreateItem)));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='triggers']/parent::section")));
         TestUtils.scrollAndClickWithJS(getDriver(), getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(JOB_NAME);
         getDriver().findElement(By.name("Submit")).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), JOB_NAME_2));
-        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(h1Tag), JOB_NAME_2));
+        TestUtils.gotoHomePage(this);
         TestUtils.moveAndClickWithJS(getDriver(),
-                getWait5().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted("Build Now")))).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#buildQueue table td.pane"), JOB_NAME_2));
         getDriver().findElement(By.linkText(JOB_NAME_2)).click();
-        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("jenkins-build-history")));
-        getWait10().until(ExpectedConditions.textToBe(By.xpath("//span[@class='app-builds-container__heading']"), "Today"));
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(h1Tag), JOB_NAME_2));
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(" #jenkins-build-history a[title='Success']")));
 
         final String buildStatusText = getDriver().findElement(By.id("jenkins-build-history")).getText();
         final List<WebElement> builds = getDriver().findElements(By.cssSelector("div[page-entry-id]"));
@@ -71,17 +104,6 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertEquals(builds.size(), 1);
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
-    }
-
-    @Test
-    public void testCheckDescriptionIsSaved() {
-        final String description = "Job description";
-
-        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        assertEquals(getDriver().findElement(By.id("description")).getText(), description);
     }
 
     @Test
@@ -106,13 +128,13 @@ public class FreestyleProject4Test extends BaseTest {
 
         for (int i = 1; present; i++) {
             new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                            By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                            .perform();
+                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
+                    .perform();
 
             getDriver().findElement(
-                            By.xpath(
-                                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
-                            .click();
+                    By.xpath(
+                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
+                    .click();
 
             try {
                 getDriver().findElement(
@@ -172,5 +194,17 @@ public class FreestyleProject4Test extends BaseTest {
         List<WebElement> entries = getDriver().findElements(By.className("app-builds-container__item"));
 
         assertEquals(entries.size(), logLimit);
+    }
+
+    @Test(dependsOnMethods = "createNewFreestyleProject")
+    public void deleteFreestyleProject() {
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath("//a[contains(@data-url, 'doDelete')]")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-dialog")));
+        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Welcome to Jenkins!"));
+
+        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 }

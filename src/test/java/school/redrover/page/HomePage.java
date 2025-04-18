@@ -2,7 +2,14 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class HomePage extends BasePage {
 
@@ -39,9 +46,65 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("#description > div:nth-child(1)")).getText();
     }
 
+    public String getWelcomeMessage(){
+
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//h1"))))
+                .getText();
+    }
+
     public NewItemPage createJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public NewItemPage clickNewItemOnLeftSidePanel() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickOnJobInListOfItemsOnHP(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td/a[@href='job/" + nameItem.replace(" ", "%20") + "/']"))).click();
+
+        return new  FreestyleProjectPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public String getNameFreestyleProjectText() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']"))).getText();
+    }
+
+    public AccountSettingsPage goToAccountSettingsPage() {
+        getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
+
+        return new AccountSettingsPage(getDriver());
+    }
+
+    public ManageJenkinsPage clickManageJenkinsOnLeftSidePanel(){
+        getWait10().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//a[@href='/manage']"))).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+  
+    public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                        .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
+
+        return new OrganizationFolderPage(getDriver());
+    }
+
+    public MultibranchProjectPage clickOnMultibranchJobInListOfItems(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
+
+        return new MultibranchProjectPage(getDriver());
     }
 }
