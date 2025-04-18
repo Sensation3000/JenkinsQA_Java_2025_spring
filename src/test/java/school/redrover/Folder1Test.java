@@ -4,25 +4,30 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 public class Folder1Test extends BaseTest {
 
-    @Test
+    @Test (invocationCount = 5)
     public void testIfCopyFromFieldAppears() {
         final String folderName = "My Super Cool Folder";
 
-        WebDriver driver = getDriver();
+        HomePage homePage = new HomePage(getDriver());
+        homePage
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(folderName)
+                .selectFolderAndClickOk();
+        TestUtils.clickOnJenkinsLogo(this);
 
-        TestUtils.newItemCreate(this, folderName, 4);
-        driver.findElement(By.linkText("New Item")).click();
+        String copyFromFieldText = homePage
+                .clickNewItemOnLeftSidePanel()
+                .getCopyFromFieldText();
 
-        Assert.assertEquals(driver.findElement(By.className("add-item-copy")).getText(), "Copy from");
-
+        Assert.assertEquals(copyFromFieldText, "Copy from");
     }
 
     @Test
@@ -51,7 +56,7 @@ public class Folder1Test extends BaseTest {
     }
 
     @Test
-    public void testCreateFolderWithoutName () {
+    public void testCreateFolderWithoutName() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
         getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
 
@@ -69,7 +74,7 @@ public class Folder1Test extends BaseTest {
     }
 
     @Test
-    public void testVerifyFolderNameDescriptionConfiguration () {
+    public void testVerifyFolderNameDescriptionConfiguration() {
         final String folderName = "First folder";
         final String displayName = "Display name of the folder";
         final String descriptionField = "Some description here";

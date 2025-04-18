@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class HomePage extends BasePage {
@@ -46,7 +47,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
 
         return new NewItemPage(getDriver());
     }

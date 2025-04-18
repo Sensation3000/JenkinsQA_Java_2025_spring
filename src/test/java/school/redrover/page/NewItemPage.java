@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
@@ -56,5 +57,10 @@ public class NewItemPage extends BasePage {
             itemTypesTextList.add(webElement.getText());
         }
         return itemTypesTextList;
+    }
+
+    public String getCopyFromFieldText() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 }
