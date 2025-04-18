@@ -2,8 +2,12 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,11 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("name")).sendKeys(name);
 
         return this;
+    }
+
+    public String getAlertMessageText() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
     public PipelineConfigurationPage selectPipelineAndClickOk() {
@@ -56,5 +65,10 @@ public class NewItemPage extends BasePage {
             itemTypesTextList.add(webElement.getText());
         }
         return itemTypesTextList;
+    }
+
+    public String getCopyFromFieldText() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 }

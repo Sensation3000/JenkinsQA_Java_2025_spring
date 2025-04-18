@@ -40,6 +40,12 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("#description > div:nth-child(1)")).getText();
     }
 
+    public String getWelcomeMessage(){
+
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//h1"))))
+                .getText();
+    }
+
     public NewItemPage createJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -47,7 +53,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
 
         return new NewItemPage(getDriver());
     }
@@ -56,5 +62,18 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public AccountSettingsPage goToAccountSettingsPage() {
+        getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
+
+        return new AccountSettingsPage(getDriver());
+    }
+
+    public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                        .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
+
+        return new OrganizationFolderPage(getDriver());
     }
 }
