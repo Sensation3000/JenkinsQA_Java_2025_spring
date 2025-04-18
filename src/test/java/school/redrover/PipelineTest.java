@@ -26,7 +26,3 @@ public class PipelineTest extends BaseTest {
                 "Project description does not contain expected value");
     }
 }
-
-
-
-
