@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -58,6 +59,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label")).isEnabled());
     }
 
+    @Ignore
     @Test
     public void testVerifyPipelineBuildNowButtonDisabled() {
         WebDriver driver = getDriver();

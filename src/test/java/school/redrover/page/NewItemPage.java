@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.time.Duration;
 
@@ -64,5 +65,10 @@ public class NewItemPage extends BasePage {
             itemTypesTextList.add(webElement.getText());
         }
         return itemTypesTextList;
+    }
+
+    public String getCopyFromFieldText() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 }
