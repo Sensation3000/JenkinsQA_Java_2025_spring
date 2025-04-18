@@ -53,7 +53,7 @@ public class HomePage extends BasePage {
     }
 
     public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
-        getDriver().findElement(By.xpath("//span[text()='" + nameItem + "']"));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
 
         return new FreestyleProjectPage(getDriver());
     }

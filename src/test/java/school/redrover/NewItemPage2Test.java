@@ -85,6 +85,20 @@ public class NewItemPage2Test extends BaseTest {
         copyFromInput.sendKeys(inputValue);
     }
 
+    private void openDropdownMenuForJob(String itemName) {
+        String buttonSelector = String.format("button[data-href*='%s']", itemName);
+        WebElement dropdownChevron = getDriver().findElement(By.cssSelector(buttonSelector));
+        TestUtils.moveAndClickWithJS(getDriver(), dropdownChevron);
+    }
+
+    private void createNewJob(String name, String itemTypeName) {
+        getDriver().findElement(By.id("name")).sendKeys(name);
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+    }
+
     @Test
     public void testIfPageIsAccessibleFromHomePage() {
         clickOnNewItemLink();
@@ -326,6 +340,8 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test(dataProvider = "itemTypes")
     public void testJobCreationWithinFolder(String itemTypeName, String expectedItemDescription) {
+        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
         TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), 4);
 
         WebElement jobTableLink = getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"));
@@ -335,13 +351,7 @@ public class NewItemPage2Test extends BaseTest {
         TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
 
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
-
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
-        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        createNewJob(randomAlphaNumericValue, itemTypeName);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("a[href='/job/%s/']", projectName))));
@@ -350,5 +360,35 @@ public class NewItemPage2Test extends BaseTest {
                 getDriver().findElement(By.cssSelector("a.jenkins-table__link span")).getText(),
                 randomAlphaNumericValue
         );
+    }
+
+    @Test(dataProvider = "itemTypes")
+    public void testIf(String itemTypeName, String expectedItemDescription) {
+        String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
+        String secondFolderProjectName = TestUtils.generateRandomAlphanumeric();
+        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+
+        TestUtils.newItemCreate(this, firstFolderProjectName, 4);
+
+        String firstFolderProjectLink = String.format("a[href*='%s'].jenkins-table__link", firstFolderProjectName);
+        actions.moveToElement(getDriver().findElement(By.cssSelector(firstFolderProjectLink))).perform();
+
+        openDropdownMenuForJob(firstFolderProjectName);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        createNewJob(randomAlphaNumericValue, itemTypeName);
+        TestUtils.gotoHomePage(getDriver());
+
+        TestUtils.newItemCreate(this, secondFolderProjectName, 4);
+
+        String secondFolderProjectLink  = String.format("a[href*='%s'].jenkins-table__link", secondFolderProjectName);
+        actions.moveToElement(getDriver().findElement(By.cssSelector(secondFolderProjectLink))).perform();
+
+        openDropdownMenuForJob(secondFolderProjectName);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        createNewJob(randomAlphaNumericValue, "Freestyle project");
+
+        Assert.assertEquals(getDriver().findElement(By.className("page-headline")).getText(), randomAlphaNumericValue);
     }
 }
