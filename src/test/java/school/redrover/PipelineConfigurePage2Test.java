@@ -69,7 +69,7 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.id("ok-button")).click();
 
         WebElement switchButton = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.id("enable-disable-project")));
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='toggle-switch-enable-disable-project']")));
                 moveAndClickWithSelenium(driver, switchButton);
 
                 driver.findElement(By.name("Submit")).click();
