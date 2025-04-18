@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class HomePage extends BasePage {
@@ -39,6 +40,12 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("#description > div:nth-child(1)")).getText();
     }
 
+    public String getWelcomeMessage(){
+
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//h1"))))
+                .getText();
+    }
+
     public NewItemPage createJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -55,5 +62,12 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='" + nameItem + "']"));
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                        .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
+
+        return new OrganizationFolderPage(getDriver());
     }
 }
