@@ -25,7 +25,8 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage sendDescription(String text) {
-        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(text);
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(text);
 
         return this;
     }
@@ -34,5 +35,36 @@ public class FreestyleProjectPage extends BasePage {
         getDriver().findElement(By.name("Submit")).click();
 
         return this;
+    }
+
+    public FreestyleProjectPage clickLeftSideMenuRename() {
+        getDriver().findElement(By.xpath("//span[text()='Rename']/..")).click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage sendName(String text) {
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(text);
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickRename() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickLeftSideMenuDelete() {
+        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+
+        return this;
+    }
+
+    public HomePage clickPopUpYesDeleteProject() {
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        return new HomePage(getDriver());
     }
 }

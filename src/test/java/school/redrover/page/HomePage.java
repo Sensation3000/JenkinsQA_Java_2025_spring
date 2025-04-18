@@ -59,9 +59,15 @@ public class HomePage extends BasePage {
     }
 
     public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
-        getDriver().findElement(By.xpath("//span[text()='" + nameItem + "']"));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public AccountSettingsPage goToAccountSettingsPage() {
+        getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
+
+        return new AccountSettingsPage(getDriver());
     }
 
     public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
