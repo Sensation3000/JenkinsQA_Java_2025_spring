@@ -2,7 +2,11 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewItemPage extends BasePage {
 
@@ -23,5 +27,34 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public FolderConfigurationPage selectFolderAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
 
+        return new FolderConfigurationPage(getDriver());
+    }
+
+    public String getNewItemPageHeaderText() {
+        return getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+    }
+
+    public String getNewItemPageURL() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public FreestyleConfigurationPage selectFreestyleAndClickOk() {
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FreestyleConfigurationPage(getDriver());
+    }
+
+    public List<String> getItemTypesTextList() {
+        List<String> itemTypesTextList = new ArrayList<>();
+        List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
+        for (WebElement webElement: webElementList) {
+            itemTypesTextList.add(webElement.getText());
+        }
+        return itemTypesTextList;
+    }
 }

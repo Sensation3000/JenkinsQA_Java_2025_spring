@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,14 @@ public class NewItem5Test extends BaseTest {
 
     @Test
     public void testNewItemPageAvailableFromDashboard() {
-        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
-        String actualHeader = getDriver().findElement(By.xpath("//h1[text()='New Item']")).getText();
+        final String PAGE_HEADER_TEXT = "New Item";
+        final String NEW_ITEM_PAGE_URL = "http://localhost:8080/view/all/newJob";
 
-        Assert.assertEquals(actualHeader, "New Item");
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getNewItemPageHeaderText(), PAGE_HEADER_TEXT);
+        Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
     }
 
     @Test
@@ -33,7 +39,7 @@ public class NewItem5Test extends BaseTest {
 
     @Test
     public void testItemsList() {
-        List<String> expectedItemTypesTextList = List.of(
+        final List<String> EXPECTED_ITEM_TYPES_TEXT_LIST = List.of(
                 "Freestyle project",
                 "Pipeline",
                 "Multi-configuration project",
@@ -41,16 +47,11 @@ public class NewItem5Test extends BaseTest {
                 "Multibranch Pipeline",
                 "Organization Folder");
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
+        List<String> actualItemTypesTextList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .getItemTypesTextList();
 
-        List<String> itemTypesTextList = new ArrayList<>();
-
-        for (WebElement webElement: webElementList) {
-            itemTypesTextList.add(webElement.getText());
-        }
-
-        Assert.assertEquals(itemTypesTextList, expectedItemTypesTextList);
+        Assert.assertEquals(actualItemTypesTextList, EXPECTED_ITEM_TYPES_TEXT_LIST);
     }
 
     @Ignore

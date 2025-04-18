@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class HomePage extends BasePage {
@@ -43,5 +44,17 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public NewItemPage clickNewItemOnLeftSidePanel() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
+
+        return new FreestyleProjectPage(getDriver());
     }
 }
