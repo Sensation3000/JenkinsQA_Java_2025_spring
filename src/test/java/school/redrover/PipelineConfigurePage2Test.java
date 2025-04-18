@@ -68,9 +68,11 @@ public class PipelineConfigurePage2Test extends BaseTest {
         driver.findElement(By.xpath("//span[text()='Pipeline']")).click();
         driver.findElement(By.id("ok-button")).click();
 
-        WebElement switchButton = driver.findElement(By.cssSelector("label.jenkins-toggle-switch__label"));
-        moveAndClickWithSelenium(driver, switchButton);
-        driver.findElement(By.name("Submit")).click();
+        WebElement switchButton = getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.id("enable-disable-project")));
+                moveAndClickWithSelenium(driver, switchButton);
+
+                driver.findElement(By.name("Submit")).click();
 
         ((JavascriptExecutor)driver).executeScript("window.location.href='/';"); //back to homepage
 
