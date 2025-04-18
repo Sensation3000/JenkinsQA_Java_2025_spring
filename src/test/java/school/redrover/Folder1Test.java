@@ -12,7 +12,7 @@ import school.redrover.page.HomePage;
 
 public class Folder1Test extends BaseTest {
 
-    @Test (invocationCount = 5)
+    @Test
     public void testIfCopyFromFieldAppears() {
         final String folderName = "My Super Cool Folder";
 
