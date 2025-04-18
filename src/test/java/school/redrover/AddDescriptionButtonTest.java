@@ -19,4 +19,5 @@ public class AddDescriptionButtonTest extends BaseTest {
         WebElement descriptionTextArea = driver.findElement(By.name("description"));
         assertTrue(descriptionTextArea.isDisplayed());
     }
+
 }
