@@ -57,4 +57,10 @@ public class HomePage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public AccountSettingsPage goToAccountSettingsPage() {
+        getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
+
+        return new AccountSettingsPage(getDriver());
+    }
 }
