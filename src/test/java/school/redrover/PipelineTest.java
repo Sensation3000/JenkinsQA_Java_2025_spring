@@ -25,4 +25,5 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(pipelineProjectPage.getDescription().contains(PIPELINE_DESCRIPTION),
                 "Project description does not contain expected value");
     }
+
 }
