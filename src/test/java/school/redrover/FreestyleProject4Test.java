@@ -6,19 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import static org.testng.Assert.*;
 
 
 public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME = "Test item";
-    private static final String JOB_NAME_2 = "Test item2";
+    private static final String JOB_NAME_2 = "Second test item";
 
     @Test
     public void testToolTipEnableDisable() {
@@ -44,27 +42,33 @@ public class FreestyleProject4Test extends BaseTest {
 
         assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
     }
-    @Ignore //FreestyleProject4Test.testTriggerBuildAfterOtherProjects:58 » WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
+
     @Test
     public void testTriggerBuildAfterOtherProjects() {
+        final String pageCreateItem = "createItem";
+        final String h1Tag = "h1";
+
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), "Configure"));
-        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id(pageCreateItem)));
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName(h1Tag), "Configure"));
+        TestUtils.gotoHomePage(this);
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME_2);
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id(pageCreateItem)));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='triggers']/parent::section")));
         TestUtils.scrollAndClickWithJS(getDriver(), getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(JOB_NAME);
         getDriver().findElement(By.name("Submit")).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("h1"), JOB_NAME_2));
-        getDriver().findElement(By.cssSelector("#breadcrumbBar a[href='/']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(h1Tag), JOB_NAME_2));
+        TestUtils.gotoHomePage(this);
         TestUtils.moveAndClickWithJS(getDriver(),
-                getWait5().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a/span[text() = '%s']/../button".formatted(JOB_NAME)))));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown__item__icon']/parent::*[contains(., '%s')]".formatted("Build Now")))).click();
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#buildQueue table td.pane"), JOB_NAME_2));
         getDriver().findElement(By.linkText(JOB_NAME_2)).click();
-        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("jenkins-build-history")));
-        getWait10().until(ExpectedConditions.textToBe(By.xpath("//span[@class='app-builds-container__heading']"), "Today"));
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(h1Tag), JOB_NAME_2));
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(" #jenkins-build-history a[title='Success']")));
 
         final String buildStatusText = getDriver().findElement(By.id("jenkins-build-history")).getText();
         final List<WebElement> builds = getDriver().findElements(By.cssSelector("div[page-entry-id]"));
