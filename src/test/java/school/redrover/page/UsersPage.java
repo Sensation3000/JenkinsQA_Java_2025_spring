@@ -23,7 +23,8 @@ public class UsersPage extends BasePage {
 
     public List<WebElement> getUsersList() {
 
-        return getDriver().findElements(By.xpath("//tbody/tr"));
+        return getWait10().until(ExpectedConditions
+                .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
 
     public String getUserIdTdText() {
