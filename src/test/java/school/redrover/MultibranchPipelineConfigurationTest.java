@@ -38,7 +38,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testEditDescriptionField() {
+    public void testDisableMultibranchPipeline() {
         final String projectName = "New Multibranch Pipeline Project";
 
         String toggleText = new HomePage(getDriver())
@@ -48,8 +48,23 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .clickEnableToggle()
                 .clickSaveButton()
                 .goToConfigurationPage()
-                .getEnableToggleText();
+                .getDisableToggleText();
 
         Assert.assertEquals("Disabled", toggleText, "EnableToggle is not Disabled");
+    }
+
+    @Test(dependsOnMethods = "testDisableMultibranchPipeline")
+    public void testEnableMultibranchPipeline() {
+        final String projectName = "New Multibranch Pipeline Project";
+
+        String toggleText = new HomePage(getDriver())
+                .clickOnMultibranchJobInListOfItems(projectName)
+                .goToConfigurationPage()
+                .clickEnableToggle()
+                .clickSaveButton()
+                .goToConfigurationPage()
+                .getEnableToggleText();
+
+        Assert.assertEquals("Enabled", toggleText, "EnableToggle is not Enabled");
     }
 }

@@ -83,4 +83,10 @@ public class HomePage extends BasePage {
 
         return new OrganizationFolderPage(getDriver());
     }
+
+    public MultibranchProjectPage clickOnMultibranchJobInListOfItems(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
+
+        return new MultibranchProjectPage(getDriver());
+    }
 }

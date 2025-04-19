@@ -20,7 +20,11 @@ public class MultibranchConfigurationPage extends BasePage {
         return new MultibranchProjectPage(getDriver());
     }
 
-    public String getEnableToggleText() {
+    public String getDisableToggleText() {
         return getDriver().findElement(By.className("jenkins-toggle-switch__label__unchecked-title")).getText();
+    }
+
+    public String getEnableToggleText() {
+        return getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title")).getText();
     }
 }
