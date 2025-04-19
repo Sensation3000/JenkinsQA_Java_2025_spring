@@ -70,6 +70,13 @@ public class HomePage extends BasePage {
         return new AccountSettingsPage(getDriver());
     }
 
+    public ManageJenkinsPage clickManageJenkinsOnLeftSidePanel(){
+        getWait10().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//a[@href='/manage']"))).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+  
     public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
         getWait5().until(ExpectedConditions.visibilityOf(getDriver()
                         .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
