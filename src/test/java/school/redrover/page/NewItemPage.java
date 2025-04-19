@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.time.Duration;
 
@@ -75,5 +74,12 @@ public class NewItemPage extends BasePage {
     public String getCopyFromFieldText() {
       
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
+    }
+
+    public MultibranchConfigurationPage selectMultibranchAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new MultibranchConfigurationPage(getDriver());
     }
 }
