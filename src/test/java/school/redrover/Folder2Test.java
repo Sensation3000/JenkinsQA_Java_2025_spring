@@ -9,27 +9,27 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 
 public class Folder2Test extends BaseTest {
 
-    @Test // Если тест опять упадет, пожалуйста, напишите комментарий с ошибкой
+    @Test
     public void testNewFolderIsEmptyByDefault() {
         final String folderName = "New Folder";
 
-        TestUtils.newItemCreate(this, folderName, 4);
+        String folderStatus = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(folderName)
+                .selectFolderAndClickOkWithJS()
+                .clickSave()
+                .getFolderStatus();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                        (By.xpath("//span[text()='" + folderName + "']"))))
-                .click();
-
-        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                        (By.className("h4"))).getText(),
-                "This folder is empty");
+        Assert.assertEquals(folderStatus, "This folder is empty");
     }
 
-    @Test // Если тест опять упадет, пожалуйста, напишите комментарий с ошибкой
+    @Test
     public void testCannotCreateItemsWithSameNameInFolder() {
         WebDriverWait wait1 = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
         final String folderName = "New Folder";
