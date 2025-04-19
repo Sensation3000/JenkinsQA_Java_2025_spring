@@ -66,9 +66,14 @@ public class NewItemPage extends BasePage {
         }
         return itemTypesTextList;
     }
-
+  
+    public String getItemNameInvalidMessage() {
+        
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+  
     public String getCopyFromFieldText() {
-
+      
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 }
