@@ -26,4 +26,10 @@ public class OrganizationFolderPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOf(
                 getDriver().findElement(By.className("jenkins-dialog__contents")))).getText();
     }
+
+    public NewItemWithinFolderPage clickOnNewItemWithinFolder() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/parent::a")).click();
+
+        return new NewItemWithinFolderPage(getDriver());
+    }
 }
