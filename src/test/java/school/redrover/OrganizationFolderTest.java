@@ -61,7 +61,7 @@ public class OrganizationFolderTest extends BaseTest {
         orgFolderPage.clickYesOnDeletionConfirmationPopup();
         HomePage homePage = new HomePage(getDriver());
 
-        Assert.assertFalse(homePage.getWelcomeMessage().isEmpty()); // OrganizationFolderTest.testDeleteEmptyOrganizationFolderFromFolderPage:62 » StaleElementReference stale element reference: stale element not found
+        Assert.assertFalse(homePage.getWelcomeMessage().isEmpty());
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
     }
 
