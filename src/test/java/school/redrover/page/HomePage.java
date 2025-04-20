@@ -64,6 +64,11 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
+    public String getNameFreestyleProjectText() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']"))).getText();
+    }
+
     public AccountSettingsPage goToAccountSettingsPage() {
         getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
 
