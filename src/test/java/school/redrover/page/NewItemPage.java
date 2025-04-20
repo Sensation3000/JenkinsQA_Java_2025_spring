@@ -2,8 +2,13 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
+
+import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,11 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("name")).sendKeys(name);
 
         return this;
+    }
+
+    public String getAlertMessageText() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
     public PipelineConfigurationPage selectPipelineAndClickOk() {
@@ -56,5 +66,30 @@ public class NewItemPage extends BasePage {
             itemTypesTextList.add(webElement.getText());
         }
         return itemTypesTextList;
+    }
+  
+    public String getItemNameInvalidMessage() {
+        
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+  
+    public String getCopyFromFieldText() {
+      
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
+    }
+
+    public MultibranchConfigurationPage selectMultibranchAndClickOk() {
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new MultibranchConfigurationPage(getDriver());
+    }
+
+    public FolderConfigurationPage selectFolderAndClickOkWithJS() {
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getDriver().findElement(By.xpath("//span[text()='Folder']")));
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FolderConfigurationPage(getDriver());
     }
 }

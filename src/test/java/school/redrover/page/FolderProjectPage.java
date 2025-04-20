@@ -17,4 +17,8 @@ public class FolderProjectPage extends BasePage {
     public String getDescription() {
         return getDriver().findElement(By.id("view-message")).getText();
     }
+
+    public String getFolderStatus() {
+        return getDriver().findElement(By.className("h4")).getText();
+    }
 }
