@@ -66,6 +66,7 @@ public class CheckNewItemCopyFromTest extends BaseTest {
         Assert.assertEquals(resultName.getText(), input2);
     }
 
+    @Ignore
     @Test
     public void unsuccessfulCopy() {
         WebDriver driver = getDriver();

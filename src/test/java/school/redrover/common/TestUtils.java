@@ -206,4 +206,9 @@ public class TestUtils {
             }
         }
     }
+
+    public static void clickOnJenkinsLogo(BaseTest baseTest){
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
 }
