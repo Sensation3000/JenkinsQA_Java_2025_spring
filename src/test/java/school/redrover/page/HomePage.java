@@ -57,4 +57,14 @@ public class HomePage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public PipelineConfigurationPage createNewPipeline(String projectName) {
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
 }
