@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
@@ -78,7 +80,8 @@ public class FreestyleProjectPage extends BasePage {
         By arrowSelector = By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron");
 
         actions.moveToElement(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector))).perform();
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector)))
+                .pause(Duration.ofMillis(500)).perform();
 
         getWait5().until(
                 ExpectedConditions.elementToBeClickable(arrowSelector)).click();
