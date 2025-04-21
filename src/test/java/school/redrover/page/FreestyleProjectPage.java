@@ -80,11 +80,14 @@ public class FreestyleProjectPage extends BasePage {
         By arrowSelector = By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron");
 
         actions.moveToElement(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector)))
-                .pause(Duration.ofSeconds(2)).perform();
+                        getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector))
+                )
+                .pause(Duration.ofSeconds(2))
+                .perform();
 
-        getWait5().until(
-                ExpectedConditions.elementToBeClickable(arrowSelector)).click();
+        // need to do this to combat StaleElementReferenceException
+        WebElement freshArrow = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
+        freshArrow.click();
 
         return this;
     }
