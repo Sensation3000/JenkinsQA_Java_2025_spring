@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     @Test
@@ -34,5 +35,36 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.id("toggle-switch-enable-disable-project")).getDomAttribute("aria-describedby"),
                 "tippy-10");
+    }
+
+    @Test
+    public void testDisableMultibranchPipeline() {
+        final String projectName = "New Multibranch Pipeline Project";
+
+        String toggleText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultibranchAndClickOk()
+                .clickEnableToggle()
+                .clickSaveButton()
+                .goToConfigurationPage()
+                .getDisableToggleText();
+
+        Assert.assertEquals("Disabled", toggleText, "EnableToggle is not Disabled");
+    }
+
+    @Test(dependsOnMethods = "testDisableMultibranchPipeline")
+    public void testEnableMultibranchPipeline() {
+        final String projectName = "New Multibranch Pipeline Project";
+
+        String toggleText = new HomePage(getDriver())
+                .clickOnMultibranchJobInListOfItems(projectName)
+                .goToConfigurationPage()
+                .clickEnableToggle()
+                .clickSaveButton()
+                .goToConfigurationPage()
+                .getEnableToggleText();
+
+        Assert.assertEquals("Enabled", toggleText, "EnableToggle is not Enabled");
     }
 }
