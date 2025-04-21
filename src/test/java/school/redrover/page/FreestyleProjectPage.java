@@ -100,7 +100,7 @@ public class FreestyleProjectPage extends BasePage {
     public String[] getMainMenuItemsText() {
         List<WebElement> menuItems =  getDriver().findElements(By.cssSelector(".task span:nth-of-type(2)"));
 
-        // the first element fount with the locator above is Status which is not in the drop-down menu
+        // the first element found with the locator above is Status which is not in the drop-down menu
         // (and is not technically a menu item) so we need to reduce size by one
         String[] menuItemsText = new String[menuItems.size() - 1];
 
