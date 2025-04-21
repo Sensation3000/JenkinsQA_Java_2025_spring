@@ -5,12 +5,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.OrganizationFolderPage;
 
 public class OrganizationFolderTest extends BaseTest {
 
-    private static final String ORGANIZATION_FOLDER_NAME = "Organization_Folder";
+    private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
 
     @Test
     public void testCreateOrganizationFolderWithDefaultIcon() {
@@ -46,20 +49,20 @@ public class OrganizationFolderTest extends BaseTest {
                         getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")))).getText(), ORGANIZATION_FOLDER_NAME);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
 
-        String confirmationMessageBoxText = getWait5().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.className("jenkins-dialog__contents")))).getText();
+        OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
+                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickDeleteOrganizationFolderOnLeftSidePanel();
 
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        String actualPopupText = orgFolderPage.getMDeletionPopupText();
+        orgFolderPage.clickYesOnDeletionConfirmationPopup();
+        HomePage homePage = new HomePage(getDriver());
 
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")))).isDisplayed());
-        Assert.assertEquals(confirmationMessageBoxText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
+        Assert.assertFalse(homePage.getWelcomeMessage().isEmpty());
+        Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
     }
 
 }

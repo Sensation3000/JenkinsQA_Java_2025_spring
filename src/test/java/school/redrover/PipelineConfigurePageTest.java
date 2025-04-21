@@ -12,8 +12,8 @@ import school.redrover.common.BaseTest;
 
 public class PipelineConfigurePageTest extends BaseTest {
 
-    @Test(testName = "TC_03.001.01 > Disable item on the Configure page")
-    public void disableItem() {
+    @Test
+    public void shouldDisableSwitchButton() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//span[text()='New Item']/..")).click();
@@ -27,8 +27,8 @@ public class PipelineConfigurePageTest extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label__unchecked-title")).isDisplayed());
     }
 
-    @Test(testName = "TC_03.001.02 > Enable item on the Configure page")
-    public void enableTest() {
+    @Test
+    public void shouldEnableSwitchButton() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//span[text()='New Item']/..")).click();
@@ -45,8 +45,8 @@ public class PipelineConfigurePageTest extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("jenkins-toggle-switch__label__checked-title")).isDisplayed());
     }
 
-    @Test(testName = "TC_03.001.03 > The tooltip appears on mouse hover")
-    public void hoverTooltip() {
+    @Test
+    public void shouldShowTooltipMessageOnHover() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//span[text()='New Item']/..")).click();
@@ -65,8 +65,8 @@ public class PipelineConfigurePageTest extends BaseTest {
         Assert.assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 
-    @Test(testName = "TC_03.001.04 > The warning message is shown on the Project page")
-    public void checkWarningMessageAppears() {
+    @Test
+    public void shouldShowWarningMessageWhenItemDisabled() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//span[text()='New Item']/..")).click();
@@ -80,8 +80,8 @@ public class PipelineConfigurePageTest extends BaseTest {
         Assert.assertTrue(driver.findElement(By.id("enable-project")).getText().contains("This project is currently disabled"));
     }
 
-    @Test(testName = "TC_03.001.05 > The warning message is hidden if Project is enabled", expectedExceptions = NoSuchElementException.class)
-    public void checkWarningMessageIsHidden() {
+    @Test(expectedExceptions = NoSuchElementException.class)
+    public void shouldNotShowWarningMessageWhenItemEnabled() {
         WebDriver driver = getDriver();
 
         driver.findElement(By.xpath("//span[text()='New Item']/..")).click();

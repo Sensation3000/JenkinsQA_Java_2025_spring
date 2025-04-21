@@ -1,0 +1,20 @@
+package school.redrover.page;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import school.redrover.common.BasePage;
+
+public class AccountSettingsPage extends BasePage {
+
+    public AccountSettingsPage(WebDriver driver)  { super(driver); }
+
+    public AccountPage goToAccountPage() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin/account']")).click();
+
+        return new AccountPage(getDriver());
+    }
+
+    public String getDescription() {
+        return getDriver().findElement(By.id("description")).getText();
+    }
+}

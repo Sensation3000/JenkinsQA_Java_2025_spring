@@ -14,7 +14,6 @@ public class User2Test extends BaseTest {
 
     private void navigateToCreateUserPage() {
         WebDriver driver = getDriver();
-
         driver.findElement(By.cssSelector("a[href='/manage']")).click();
         driver.findElement(By.cssSelector("a[href='securityRealm/']")).click();
         driver.findElement(By.cssSelector("a[href='addUser']")).click();
@@ -31,6 +30,13 @@ public class User2Test extends BaseTest {
         driver.findElement(By.name("Submit")).click();
     }
 
+    public void deleteUser() {
+        getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
+        getDriver().findElement(By.cssSelector("a[href='securityRealm/']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[data-message*='Delete Jenkins user']"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[data-id='ok']"))).click();
+    }
+
     @Test
     public void testUserItemOnManageJenkinsPage() {
         final String expectedPath = "/manage/securityRealm/";
@@ -45,7 +51,7 @@ public class User2Test extends BaseTest {
     }
 
     @Test
-    public void testCreateUserButton() {
+    public void testCreateUserPage() {
         final String expectedTitle = "Create User [Jenkins]";
         WebDriver driver = getDriver();
 
@@ -61,7 +67,6 @@ public class User2Test extends BaseTest {
 
     @Test
     public void testCreateUserForm() {
-
         navigateToCreateUserPage();
 
         WebElement createUserButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit")));
@@ -79,5 +84,14 @@ public class User2Test extends BaseTest {
         String actualUsername = getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("a[href='user/testuser/']"))).getText();
         Assert.assertEquals(actualUsername, username, "The expected new user " + username + " is not displayed");
+    }
+
+    @Test(dependsOnMethods = "testNewUserIsCreated")
+    public void testDeleteUser() {
+        deleteUser();
+
+        boolean deletedUser = getWait5().until(ExpectedConditions
+                .invisibilityOfElementLocated(By.cssSelector("a[href='user/testuser/']")));
+        Assert.assertTrue(deletedUser, "The deleted User still visible on the page.");
     }
 }

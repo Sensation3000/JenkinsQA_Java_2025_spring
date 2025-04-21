@@ -6,6 +6,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -94,41 +98,31 @@ public class NewItemTest extends BaseTest {
     public void testCheckErrorMessageForSpecialCharacters() {
         String[] specialCharacters = {"!","@","#","$","%","^","&","*","/","\\","|","[","]",";",":","?","<",">"};
 
-        WebDriver driver = getDriver();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
+        NewItemPage page = new HomePage(getDriver())
+                .createJob();
 
         for(String ch: specialCharacters) {
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(ch);
-            String alertMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+            page.sendItemName(ch);
+            String alertMessage = page.getAlertMessageText();
 
             Assert.assertEquals(alertMessage,  String.format("» ‘%s’ is an unsafe character", ch));
 
-            driver.findElement(By.className("jenkins-input")).sendKeys("\b");
+            page.sendItemName("\b");
         }
     }
 
     @Test
     public void testCreatePipeline() {
-        final String pipelineName = "NewPipeline";
+        final String pipelineName = "New Pipeline";
 
-        WebDriver driver = getDriver();
+        String actualProjectName = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSave()
+                .getProjectName();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(pipelineName);
-
-        driver.findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.documentElement.scrollHeight);");
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-
-        String title = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
-
-        Assert.assertEquals(title, pipelineName, "Pipeline title is not correct");
+        Assert.assertEquals(actualProjectName, pipelineName, "Pipeline title is not correct");
     }
 
     @DataProvider(name = "projectTypes")
