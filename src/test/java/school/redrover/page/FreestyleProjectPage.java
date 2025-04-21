@@ -73,14 +73,15 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickProjectBreadcrumbsDropDownMenu() {
-        WebElement arrow = getWait5().until(
-                ExpectedConditions.elementToBeClickable(
-                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
-
         Actions actions = new Actions(getDriver());
 
-        actions.moveToElement(arrow).perform();
-        arrow.click();
+        By arrowSelector = By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron");
+
+        actions.moveToElement(
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector))).perform();
+
+        getWait5().until(
+                ExpectedConditions.elementToBeClickable(arrowSelector)).click();
 
         return this;
     }
