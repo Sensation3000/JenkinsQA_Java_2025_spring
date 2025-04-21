@@ -16,7 +16,7 @@ public class FreestyleProject5Test extends BaseTest {
                 clickNewItemOnLeftSidePanel().
                 sendItemName(NEW_ITEM_NAME).
                 selectFreestyleAndClickOk().
-                clickSave().getProjectName();
+                clickSaveButton().getProjectName();
 
         Assert.assertEquals(currentName, NEW_ITEM_NAME);
     }
