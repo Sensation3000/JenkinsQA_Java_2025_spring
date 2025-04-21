@@ -111,8 +111,4 @@ public class FreestyleProjectPage extends BasePage {
 
         return menuItemsText;
     }
-
-
-
-
 }
