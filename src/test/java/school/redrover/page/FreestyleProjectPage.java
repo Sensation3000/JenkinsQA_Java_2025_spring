@@ -81,7 +81,7 @@ public class FreestyleProjectPage extends BasePage {
 
         actions.moveToElement(
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector)))
-                .pause(Duration.ofSeconds(1)).perform();
+                .pause(Duration.ofSeconds(2)).perform();
 
         getWait5().until(
                 ExpectedConditions.elementToBeClickable(arrowSelector)).click();
