@@ -1,11 +1,11 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.ProjectUtils;
+import school.redrover.common.TestUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -79,21 +79,30 @@ public class FreestyleProjectPage extends BasePage {
 
         By arrowSelector = By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron");
 
-        actions.moveToElement(
-                        getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector))
-                )
-                .pause(Duration.ofSeconds(2))
-                .perform();
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                WebElement arrow = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
 
-        // need to do this to combat StaleElementReferenceException
-        WebElement freshArrow = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
-        freshArrow.click();
+                actions.moveToElement(arrow).pause(Duration.ofMillis(500)).perform();
+                arrow.click();
 
-        return this;
+                return this;
+            } catch (StaleElementReferenceException e) {
+                attempts++;
+                ProjectUtils.log("Retrying due to StaleElementReferenceException, attempt: " + attempts);
+            } catch (ElementClickInterceptedException e) {
+                attempts++;
+                ProjectUtils.log("Retrying due to ElementClickInterceptedException, attempt: " + attempts);
+            }
+        }
+
+        throw new RuntimeException("Failed to click on breadcrumb arrow due to stale element");
     }
 
     public String[] getDropDownMenuItemsText() {
-        List<WebElement> menuItems =  getDriver().findElements(By.cssSelector(".jenkins-dropdown__item"));
+        List<WebElement> menuItems =  getWait5()
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-dropdown__item")));
 
         String[] menuItemsText = new String[menuItems.size()];
 
