@@ -192,4 +192,16 @@ public class FreestyleProject4Test extends BaseTest {
 
         assertEquals(entries.size(), logLimit);
     }
+
+    @Test(dependsOnMethods = "createNewFreestyleProject")
+    public void deleteFreestyleProject() {
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath("//a[contains(@data-url, 'doDelete')]")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-dialog")));
+        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Welcome to Jenkins!"));
+
+        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+    }
 }
