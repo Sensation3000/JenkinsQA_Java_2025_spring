@@ -24,7 +24,7 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public HomePage saveAndReturnToHomePage() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
 
         return new HomePage(getDriver());
