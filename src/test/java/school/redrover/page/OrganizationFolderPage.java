@@ -32,4 +32,15 @@ public class OrganizationFolderPage extends BasePage {
 
         return new NewItemWithinFolderPage(getDriver());
     }
+
+    public String getJobWithinFolderName(String jobName) {
+
+        return getDriver().findElement(By.xpath(String.format("//span[text()='%s']", jobName))).getText();
+    }
+
+    public HomePage goToHomePage() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
+
+        return new HomePage(getDriver());
+    }
 }
