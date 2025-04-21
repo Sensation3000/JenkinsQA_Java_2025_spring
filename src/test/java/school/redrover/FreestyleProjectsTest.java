@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -19,8 +18,8 @@ public class FreestyleProjectsTest extends BaseTest {
                 .createJob()
                 .sendItemName(FREESTYLE_NAME)
                 .selectFreestyleAndClickOk()
-                .sendDescription(projectDescription)
-                .clickSave();
+                .addDescription(projectDescription)
+                .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), FREESTYLE_NAME);
         Assert.assertEquals(freestyleProjectPage.getDescription(), projectDescription);

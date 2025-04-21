@@ -2,6 +2,9 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class FreestyleConfigurationPage extends BasePage {
@@ -10,13 +13,13 @@ public class FreestyleConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public FreestyleConfigurationPage sendDescription(String text) {
+    public FreestyleConfigurationPage addDescription(String text) {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
 
         return this;
     }
 
-    public FreestyleProjectPage clickSave() {
+    public FreestyleProjectPage clickSaveButton() {
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         return new FreestyleProjectPage(getDriver());
