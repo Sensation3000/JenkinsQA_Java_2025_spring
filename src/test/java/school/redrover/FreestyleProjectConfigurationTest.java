@@ -19,7 +19,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
 
         String warningMessage = new FreestyleConfigurationPage(getDriver())
                 .clickEnableDisableToggle()
-                .clickSave()
+                .clickSaveButton()
                 .getDisabledWarningMessageText();
 
         Assert.assertEquals(warningMessage, "This project is currently disabled");
