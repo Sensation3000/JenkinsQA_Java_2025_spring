@@ -9,12 +9,12 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
 public class FolderConfigurationTest extends BaseTest {
-    private final String FOLDER_NAME = "TestFolder";
-    private final String DISPLAY_NAME = "Folder Display Name";
-    private final String DESCRIPTION_BOX ="Some random text and special chars and русский текст";
+    private static final String FOLDER_NAME = "TestFolder";
+    private static final String DISPLAY_NAME = "Folder Display Name";
+    private static final String DESCRIPTION_BOX ="Some random text and special chars and русский текст";
 
     @Test
-    public void testQquestionMarkIcon() {
+    public void testQuestionMarkIcon() {
         TestUtils.createFolder(getDriver(),FOLDER_NAME);
         WebElement icon = getWait5().until(ExpectedConditions.elementToBeClickable
                 (By.cssSelector("a.jenkins-help-button")));
@@ -22,15 +22,34 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertTrue(icon.isEnabled(), "Button is not clickable");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testQuestionMarkIcon")
     public void testDescriptionBox() {
-        TestUtils.createFolder(getDriver(), FOLDER_NAME);
+       getWait5().until(ExpectedConditions.visibilityOfElementLocated
+              (By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//*[@id='tasks']/div[2]/span/a"))).click();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
         getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
         WebElement viewMessageInDescription = getDriver().findElement(By.id("view-message"));
 
         Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION_BOX);
+    }
+
+    @Test (dependsOnMethods = "testDescriptionBox")
+    public void testPreviewButton() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//*[@id='tasks']/div[2]/span/a"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.className("textarea-show-preview"))).click();
+
+        WebElement previewDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[text()='"+DESCRIPTION_BOX+"']")));
+
+        Assert.assertEquals(previewDescription.getText(), DESCRIPTION_BOX);
     }
 
     @Test
@@ -46,9 +65,9 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testDescriptionBoxUsingApplyButton() {
-        TestUtils.createFolder(getDriver(), FOLDER_NAME);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated
-                (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
+       TestUtils.createFolder(getDriver(), FOLDER_NAME);
+       getWait5().until(ExpectedConditions.visibilityOfElementLocated
+               (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
         getDriver().findElement(By.name("Apply")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated

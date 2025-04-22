@@ -43,8 +43,10 @@ public class Folder2Test extends BaseTest {
                 String.format("» A job already exists with the name ‘%s’", JOB_NAME));
     }
 
+
     @Ignore
     @Test
+
     public void testSameNameItemsInDifferentFolders() {
         String firstItemName = new HomePage(getDriver())
                 .clickOnOrganizationFolderInListOfItems(FOLDER_NAME_A)

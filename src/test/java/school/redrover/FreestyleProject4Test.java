@@ -32,11 +32,29 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFreestyleProject")
+    public void testAddAndSaveDescription() {
+        final String description = "Job description";
+
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                        "//a[@href='/job/Test%20item/configure']")).click();
+        getDriver().findElement(By.name("description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
+    }
+
+    @Test(dependsOnMethods = "testAddAndSaveDescription")
     public void testToolTipEnableDisable() {
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
-        TestUtils.createFreestyleProject(driver, JOB_NAME);
+
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                "//a[@href='/job/Test%20item/configure']")).click();
 
         actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
         WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -90,17 +108,6 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertEquals(builds.size(), 1);
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
-    }
-
-    @Test
-    public void testCheckDescriptionIsSaved() {
-        final String description = "Job description";
-
-        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        assertEquals(getDriver().findElement(By.id("description")).getText(), description);
     }
 
     @Test
@@ -193,7 +200,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
+    @Test(dependsOnMethods = "testToolTipEnableDisable")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
