@@ -1,16 +1,25 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-
+import java.util.Map;
 
     public class NewUserTest extends BaseTest {
+
+        private final Map<String, String> userData = Map.of(
+                "username", "testusername",
+                "password", "Tpp88CIjEkih",
+                "fullname", "Test User",
+                "email", "test@test.com"
+        );
 
         @Test
         public void testCreateNewUser() {
@@ -30,6 +39,36 @@ import school.redrover.common.BaseTest;
             WebElement result = getDriver().findElement(By.xpath("//a[@href='user/newhero/']"));
             Assert.assertEquals(result.getText(), "NewHero");
         }
+
+        @Ignore
+        @Test
+        public void testCreateExistingUser() {
+            WebDriver driver = getDriver();
+
+            //create first user
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//a[@href='/manage']"))).click();
+            driver.findElement(By.xpath("//a[@href='securityRealm/']")).click();
+            driver.findElement(By.className("jenkins-button--primary")).click();
+            fillForm(userData);
+            System.out.println("firs user created");
+
+            //create second user
+            driver.findElement(By.xpath("//a[@href='addUser']")).click();
+            fillForm(userData);
+            String errortext = driver.findElement(By.xpath(
+                    "//*[@id=\"main-panel\"]/form/div[1]/div[2]")).getText();
+
+            Assert.assertEquals(errortext, "User name is already taken");
+        }
+
+        public void fillForm(Map<String, String> userData) {
+            WebDriver driver = getDriver();
+            driver.findElement(By.id("username")).sendKeys(userData.get("username"));
+            driver.findElement(By.name("password1")).sendKeys(userData.get("password"));
+            driver.findElement(By.name("password2")).sendKeys(userData.get("password"));
+            driver.findElement(By.name("fullname")).sendKeys(userData.get("fullname"));
+            driver.findElement(By.name("email")).sendKeys(userData.get("email"));
+            driver.findElement(By.name("Submit")).click();
+        }
     }
-
-

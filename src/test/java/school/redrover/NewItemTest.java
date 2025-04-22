@@ -8,8 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
-import school.redrover.page.HomePage;
-import school.redrover.page.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -150,7 +148,7 @@ public class NewItemTest extends BaseTest {
 
     @Test
     public void testCheckItemsTypes() {
-        final List<String> expectedItemsTypes = new ArrayList<>(List.of(
+        final List<String> EXPECTED_ITEM_TYPES_TEXT_LIST = new ArrayList<>(List.of(
                 "Freestyle project",
                 "Pipeline",
                 "Multi-configuration project",
@@ -158,23 +156,20 @@ public class NewItemTest extends BaseTest {
                 "Multibranch Pipeline",
                 "Organization Folder"));
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        List<String> actualItemsTypesTextList = new HomePage (getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .getItemTypesTextList();
 
-        List<WebElement> itemsTypes = getDriver().findElements(By.xpath("//span[@class='label']"));
-        List<String> actualItemsTypes = new ArrayList<>();
-        for (WebElement element : itemsTypes) {
-            actualItemsTypes.add(element.getDomProperty("innerText"));
-        }
-
-        Assert.assertEquals(actualItemsTypes, expectedItemsTypes, "Error!");
+        Assert.assertEquals(actualItemsTypesTextList, EXPECTED_ITEM_TYPES_TEXT_LIST, "Error!");
     }
 
     @Test (dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
-    public void testCheckItemsTypes2(String expectedItemType) {
+    public void testCheckItemsTypes2(String expectedItemTypeText) {
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        String actualItemType = getDriver().findElement(By.xpath("//span[text()='" + expectedItemType + "']")).getText();
+        String actualItemTypeText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .getItemTypeText(expectedItemTypeText);
 
-        Assert.assertEquals(actualItemType, expectedItemType, "Error!");
+        Assert.assertEquals(actualItemTypeText, expectedItemTypeText, "Error!");
     }
 }

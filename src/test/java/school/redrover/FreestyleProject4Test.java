@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -63,7 +64,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
+    @Test(dependsOnMethods = "testToolTipEnableDisable")
     public void testCheckWarningWhenDisabled() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
@@ -202,7 +203,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "testToolTipEnableDisable")
+    @Test(dependsOnMethods = "testCheckWarningWhenDisabled")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
