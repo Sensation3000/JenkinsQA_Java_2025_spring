@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
@@ -81,15 +82,16 @@ public class FreestyleProjectPage extends BasePage {
 
         // this is needed to wait until element is fully rendered
         // locally, in the headless mode, the test fails without this intermediate wait
-        getWait5().until(
+        actions.pause(Duration.ofSeconds(1)).moveToElement(getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
+                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3)")))).perform();
 
         WebElement arrow = getWait5().until(
                 ExpectedConditions.elementToBeClickable(
                         By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
 
-        actions.moveToElement(arrow).click().perform();
+        actions.moveToElement(arrow).pause(Duration.ofSeconds(1)).perform();
+        arrow.click();
 
         return this;
     }
