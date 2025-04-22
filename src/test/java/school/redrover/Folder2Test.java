@@ -42,8 +42,9 @@ public class Folder2Test extends BaseTest {
         Assert.assertEquals(errorMessage.getText(),
                 String.format("» A job already exists with the name ‘%s’", JOB_NAME));
     }
+
     @Ignore
-    @Test(dependsOnMethods = "testNewFolderIsEmptyByDefault")
+    @Test
     public void testSameNameItemsInDifferentFolders() {
         String firstItemName = new HomePage(getDriver())
                 .clickOnOrganizationFolderInListOfItems(FOLDER_NAME_A)

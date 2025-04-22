@@ -2,8 +2,14 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class HomePage extends BasePage {
 
@@ -56,6 +62,13 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickOnJobInListOfItemsOnHP(String nameItem) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td/a[@href='job/" + nameItem.replace(" ", "%20") + "/']"))).click();
+
+        return new  FreestyleProjectPage(getDriver());
     }
 
     public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {

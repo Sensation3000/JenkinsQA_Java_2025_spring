@@ -19,6 +19,20 @@ public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME_2 = "Second test item";
 
     @Test
+    public void createNewFreestyleProject() {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+
+        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
+    }
+
+    @Test
     public void testToolTipEnableDisable() {
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
@@ -177,5 +191,17 @@ public class FreestyleProject4Test extends BaseTest {
         List<WebElement> entries = getDriver().findElements(By.className("app-builds-container__item"));
 
         assertEquals(entries.size(), logLimit);
+    }
+
+    @Test(dependsOnMethods = "createNewFreestyleProject")
+    public void deleteFreestyleProject() {
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath("//a[contains(@data-url, 'doDelete')]")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-dialog")));
+        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Welcome to Jenkins!"));
+
+        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 }
