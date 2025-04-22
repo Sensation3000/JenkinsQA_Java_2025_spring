@@ -3,9 +3,11 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
@@ -79,6 +81,10 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickProjectBreadcrumbsDropDownMenu() {
+
+        Actions actions = new Actions(getDriver());
+        actions.pause(Duration.ofSeconds(1)).perform();
+
         WebElement arrow = getWait5().until(
                 ExpectedConditions.elementToBeClickable(
                         By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
