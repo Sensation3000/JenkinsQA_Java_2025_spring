@@ -183,7 +183,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .scrollToTriggersItem()
                 .checkBuildPeriodicallyCheckbox()
                 .sendScheduleText(Schedule)
-                .clickSave()
+                .clickSaveButton()
                 .clickConfigure()
                 .scrollToTriggersItem()
                 .sendScheduleActualText();

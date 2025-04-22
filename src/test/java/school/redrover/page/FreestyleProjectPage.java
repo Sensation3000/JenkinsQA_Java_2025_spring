@@ -79,8 +79,6 @@ public class FreestyleProjectPage extends BasePage {
         return new FreestyleConfigurationPage(getDriver());
     }
 
-
-
     public FreestyleProjectPage clickProjectBreadcrumbsDropDownMenu() {
         Actions actions = new Actions(getDriver());
 
