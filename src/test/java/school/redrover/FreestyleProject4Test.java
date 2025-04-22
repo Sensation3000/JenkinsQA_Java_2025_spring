@@ -46,11 +46,15 @@ public class FreestyleProject4Test extends BaseTest {
         assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddAndSaveDescription")
     public void testToolTipEnableDisable() {
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
-        TestUtils.createFreestyleProject(driver, JOB_NAME);
+
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                "//a[@href='/job/Test%20item/configure']")).click();
 
         actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
         WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -59,14 +63,16 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFreestyleProject")
     public void testCheckWarningWhenDisabled() {
-        WebDriver driver = getDriver();
-        TestUtils.createFreestyleProject(driver, JOB_NAME);
-        driver.findElement(By.id("toggle-switch-enable-disable-project")).click();
-        driver.findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                "//a[@href='/job/Test%20item/configure']")).click();
+        getDriver().findElement(By.id("toggle-switch-enable-disable-project")).click();
+        getDriver().findElement(By.name("Submit")).click();
 
-        String warning = driver.findElement(By.id("enable-project")).getText();
+        String warning = getDriver().findElement(By.id("enable-project")).getText();
 
         assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
     }
@@ -196,7 +202,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
+    @Test(dependsOnMethods = "testToolTipEnableDisable")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
