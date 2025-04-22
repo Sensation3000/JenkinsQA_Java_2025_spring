@@ -63,7 +63,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
+    @Test(dependsOnMethods = "testToolTipEnableDisable")
     public void testCheckWarningWhenDisabled() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
@@ -202,7 +202,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "testToolTipEnableDisable")
+    @Test(dependsOnMethods = "testCheckWarningWhenDisabled")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
