@@ -80,11 +80,11 @@ public class FreestyleProjectPage extends BasePage {
     public FreestyleProjectPage clickProjectBreadcrumbsDropDownMenu() {
         Actions actions = new Actions(getDriver());
 
-        // this is needed to wait until element is fully rendered
-        // locally, in the headless mode, the test fails without this intermediate wait
-        actions.pause(Duration.ofSeconds(1)).moveToElement(getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3)")))).perform();
+        actions.pause(Duration.ofSeconds(1)).perform();
+
+        actions.moveToElement(getWait5().until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3)")))).perform();
 
         WebElement arrow = getWait5().until(
                 ExpectedConditions.elementToBeClickable(
