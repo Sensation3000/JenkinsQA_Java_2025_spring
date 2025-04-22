@@ -2,7 +2,11 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
 
@@ -74,5 +78,24 @@ public class FreestyleProjectPage extends BasePage {
         return new FreestyleConfigurationPage(getDriver());
     }
 
+    public String getDisabledWarningMessageText() {
+        String fullText = getDriver().findElement(By.xpath("//div[@class='warning']/form")).getText();
 
+        return fullText.split("\\n")[0];
+    }
+
+    public FreestyleProjectPage clickEnableButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='warning']/form")));
+
+        return this;
+    }
+
+    public boolean isWarningMessageDisplayed() {
+        return getDriver().findElement(By.xpath("//div[@class='warning']/form")).isDisplayed();
+    }
+
+    public List<WebElement> getWarningMessageList() {
+       return getDriver().findElements(By.xpath("//div[@class='warning']/form"));
+    }
 }
