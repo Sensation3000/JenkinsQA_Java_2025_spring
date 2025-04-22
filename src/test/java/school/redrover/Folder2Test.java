@@ -42,8 +42,11 @@ public class Folder2Test extends BaseTest {
         Assert.assertEquals(errorMessage.getText(),
                 String.format("» A job already exists with the name ‘%s’", JOB_NAME));
     }
-@Ignore //unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
-    @Test(dependsOnMethods = "testNewFolderIsEmptyByDefault")
+
+
+    @Ignore
+    @Test
+
     public void testSameNameItemsInDifferentFolders() {
         String firstItemName = new HomePage(getDriver())
                 .clickOnOrganizationFolderInListOfItems(FOLDER_NAME_A)
