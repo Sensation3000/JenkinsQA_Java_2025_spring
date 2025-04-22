@@ -15,13 +15,13 @@ public class FreestyleConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public FreestyleConfigurationPage sendDescription(String text) {
+    public FreestyleConfigurationPage addDescription(String text) {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
 
         return this;
     }
 
-    public FreestyleProjectPage clickSave() {
+    public FreestyleProjectPage clickSaveButton() {
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         return new FreestyleProjectPage(getDriver());

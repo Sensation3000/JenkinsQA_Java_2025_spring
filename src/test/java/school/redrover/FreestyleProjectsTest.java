@@ -21,8 +21,8 @@ public class FreestyleProjectsTest extends BaseTest {
                 .createJob()
                 .sendItemName(projectName)
                 .selectFreestyleAndClickOk()
-                .sendDescription(projectDescription)
-                .clickSave();
+                .addDescription(projectDescription)
+                .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), projectName);
         Assert.assertEquals(freestyleProjectPage.getDescription(), projectDescription);
