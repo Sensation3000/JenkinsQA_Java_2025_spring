@@ -117,4 +117,10 @@ public class HomePage extends BasePage {
 
         return new PipelineConfigurationPage(getDriver());
     }
+
+    public BuildHistoryPage clickBuildHistoryTab() {
+       getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
+
+       return new BuildHistoryPage(getDriver());
+    }
 }
