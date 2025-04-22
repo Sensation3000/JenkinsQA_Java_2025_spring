@@ -2,8 +2,14 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class HomePage extends BasePage {
 
@@ -88,7 +94,7 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
-  
+
     public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
         getWait5().until(ExpectedConditions.visibilityOf(getDriver()
                         .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
@@ -100,6 +106,16 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
 
         return new MultibranchProjectPage(getDriver());
+    }
+
+    public PipelineConfigurationPage createNewPipeline(String projectName) {
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new PipelineConfigurationPage(getDriver());
     }
 
     public BuildHistoryPage clickBuildHistoryTab() {

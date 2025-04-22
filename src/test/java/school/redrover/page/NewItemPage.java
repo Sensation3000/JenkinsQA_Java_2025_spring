@@ -92,4 +92,8 @@ public class NewItemPage extends BasePage {
 
         return new FolderConfigurationPage(getDriver());
     }
+
+    public String getItemTypeText(String itemType){
+        return getDriver().findElement(By.xpath("//span[text()='" + itemType + "']")).getText();
+    }
 }
