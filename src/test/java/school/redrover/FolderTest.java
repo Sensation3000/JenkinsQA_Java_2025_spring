@@ -46,4 +46,18 @@ public class FolderTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).getText(),
                 FOLDER_NAME);
     }
+
+    @Test
+    public void testCreateFolder() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[contains(@it,'hudson')]")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFolder");
+        getDriver().findElement(By.xpath("//li[contains(@class,'Folder')]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys("Folder1");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Thread.sleep(2000);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Folder1");
+    }
 }

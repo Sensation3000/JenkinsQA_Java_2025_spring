@@ -67,4 +67,12 @@ public class FreestyleProjectPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public FreestyleConfigurationPage clickConfigure() {
+        getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
+
+        return new FreestyleConfigurationPage(getDriver());
+    }
+
+
 }
