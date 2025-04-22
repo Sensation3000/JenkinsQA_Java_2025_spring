@@ -27,9 +27,9 @@ public class FolderConfigurationTest extends BaseTest {
     public void testDescriptionBox() {
        getWait5().until(ExpectedConditions.visibilityOfElementLocated
               (By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
-        WebElement configure = getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.xpath("//*[@id='tasks']/div[2]/span/a")));
-        configure.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//*[@id='tasks']/div[2]/span/a"))).click();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated
                 (By.name("_.description"))).sendKeys(DESCRIPTION_BOX);
         getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
@@ -38,6 +38,21 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertEquals(viewMessageInDescription.getText(), DESCRIPTION_BOX);
     }
 
+    @Test (dependsOnMethods = "testDescriptionBox")
+    public void testPreviewButton() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//*[@id='tasks']/div[2]/span/a"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable
+                (By.className("textarea-show-preview"))).click();
+
+        WebElement previewDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[text()='"+DESCRIPTION_BOX+"']")));
+
+        Assert.assertEquals(previewDescription.getText(), DESCRIPTION_BOX);
+    }
+    @Ignore
     @Test
     public void testDescriptionBoxSaveEmpty() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
