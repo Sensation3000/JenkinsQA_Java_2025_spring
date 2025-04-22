@@ -4,9 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.common.ProjectUtils;
-
-import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
@@ -82,31 +79,19 @@ public class FreestyleProjectPage extends BasePage {
     public FreestyleProjectPage clickProjectBreadcrumbsDropDownMenu() {
         Actions actions = new Actions(getDriver());
 
-        By arrowSelector = By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron");
+        // this is needed to wait until element is fully rendered
+        // locally, in the headless mode, the test fails without this intermediate wait
+        getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
 
-        int attempts = 0;
-        while (attempts < 3) {
-            try {
-                WebElement arrowToHover = getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector));
+        WebElement arrow = getWait5().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(3) .jenkins-menu-dropdown-chevron")));
 
-                actions.moveToElement(arrowToHover)
-                        .pause(Duration.ofSeconds(1))
-                        .perform();
+        actions.moveToElement(arrow).click().perform();
 
-                WebElement arrowToClick = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
-                arrowToClick.click();
-
-                return this;
-            } catch (StaleElementReferenceException e) {
-                attempts++;
-                ProjectUtils.log("Retrying due to StaleElementReferenceException, attempt: " + attempts);
-            } catch (ElementClickInterceptedException e) {
-                attempts++;
-                ProjectUtils.log("Retrying due to ElementClickInterceptedException, attempt: " + attempts);
-            }
-        }
-
-        throw new RuntimeException("Failed to click on breadcrumb arrow due to stale element. Attempts used: " + attempts);
+        return this;
     }
 
     public String[] getDropDownMenuItemsText() {
