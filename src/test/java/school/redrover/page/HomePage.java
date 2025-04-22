@@ -94,7 +94,7 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
-  
+
     public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
         getWait5().until(ExpectedConditions.visibilityOf(getDriver()
                         .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
@@ -106,5 +106,15 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
 
         return new MultibranchProjectPage(getDriver());
+    }
+
+    public PipelineConfigurationPage createNewPipeline(String projectName) {
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new PipelineConfigurationPage(getDriver());
     }
 }

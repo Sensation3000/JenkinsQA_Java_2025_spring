@@ -17,4 +17,10 @@ public class PipelineProjectPage extends BasePage {
     public String getDescription() {
         return getDriver().findElement(By.cssSelector("#description >div")).getText();
     }
+
+    public PipelineConfigurationPage clickConfigure() {
+        getDriver().findElement(By.cssSelector("[href$='configure']")).click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
 }
