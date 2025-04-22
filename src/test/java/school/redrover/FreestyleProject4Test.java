@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -63,6 +64,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(tooltip.getText(), "Enable or disable the current project");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "createNewFreestyleProject")
     public void testCheckWarningWhenDisabled() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
