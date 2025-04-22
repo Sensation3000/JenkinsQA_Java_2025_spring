@@ -46,11 +46,15 @@ public class FreestyleProject4Test extends BaseTest {
         assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFreestyleProject")
     public void testToolTipEnableDisable() {
         WebDriver driver = getDriver();
         Actions actions = new Actions(driver);
-        TestUtils.createFreestyleProject(driver, JOB_NAME);
+
+        getDriver().findElement(By.linkText(JOB_NAME)).click();
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
+        getDriver().findElement(By.xpath(
+                "//a[@href='/job/Test%20item/configure']")).click();
 
         actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
         WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
