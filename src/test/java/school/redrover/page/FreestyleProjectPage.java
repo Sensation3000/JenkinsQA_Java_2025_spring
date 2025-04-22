@@ -5,7 +5,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.ProjectUtils;
-import school.redrover.common.TestUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -82,10 +81,14 @@ public class FreestyleProjectPage extends BasePage {
         int attempts = 0;
         while (attempts < 3) {
             try {
-                WebElement arrow = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
+                WebElement arrowToHover = getWait5().until(ExpectedConditions.visibilityOfElementLocated(arrowSelector));
 
-                actions.moveToElement(arrow).pause(Duration.ofMillis(500)).perform();
-                arrow.click();
+                actions.moveToElement(arrowToHover)
+                        .pause(Duration.ofSeconds(1))
+                        .perform();
+
+                WebElement arrowToClick = getWait5().until(ExpectedConditions.elementToBeClickable(arrowSelector));
+                arrowToClick.click();
 
                 return this;
             } catch (StaleElementReferenceException e) {
@@ -97,7 +100,7 @@ public class FreestyleProjectPage extends BasePage {
             }
         }
 
-        throw new RuntimeException("Failed to click on breadcrumb arrow due to stale element");
+        throw new RuntimeException("Failed to click on breadcrumb arrow due to stale element. Attempts used: " + attempts);
     }
 
     public String[] getDropDownMenuItemsText() {
