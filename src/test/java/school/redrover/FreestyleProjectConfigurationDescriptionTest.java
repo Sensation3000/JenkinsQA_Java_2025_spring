@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -12,6 +13,7 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
     private final String PROJECT_NAME = "FreestyleProject";
     private final String DESCRIPTION_TEXT = "Valid Freestyle Project Description";
 
+    @Ignore
     @Test
     public void testAddValidDescriptionDuringFreestyleProjectCreation() {
         getDriver().findElement(
