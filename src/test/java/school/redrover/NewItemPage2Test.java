@@ -12,6 +12,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.List;
 import java.util.Random;
@@ -101,11 +103,13 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfPageIsAccessibleFromHomePage() {
-        clickOnNewItemLink();
+        HomePage homePage = new HomePage(getDriver());
+        NewItemPage newItemPage = new NewItemPage(getDriver());
 
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/view/all/newJob"));
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#add-item-panel > h1")).getText(),
+        homePage.clickNewItemOnLeftSidePanel();
+
+        Assert.assertTrue(newItemPage.getNewItemPageURL().contains("/view/all/newJob"));
+        Assert.assertEquals( newItemPage.getNewItemPageHeaderText(),
                 "New Item");
     }
 
