@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -9,61 +8,50 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class NewJob3Test extends BaseTest {
 
-    final String NEW_JOB = "//a[@href='newJob']";
-    final String ITEM_NAME_INPUT = "//input[@class='jenkins-input']";
-
     @Test
     public void testEmptyName() {
+        String expectedError = "» This field cannot be empty, please enter a valid name";
 
-        getDriver().findElement(By.xpath(NEW_JOB)).click();
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        WebElement validationMessage = getDriver().findElement(By.id("itemname-required"));
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+        newItemPage.selectFreestyleAndClickOk();
+        String actualError = newItemPage.getEmptyNameMessage();
 
-        Assert.assertEquals(validationMessage.getText(), "» This field cannot be empty, please enter a valid name");
+        Assert.assertEquals(actualError, expectedError);
     }
 
-    @Ignore //Timeout Expected condition failed: waiting for element to be clickable: By.xpath: //span[text()='New Folder'] (tried for 10 second(s) with 500 milliseconds interval)
     @Test
     public void testInvalidCharactersInItemName() {
         List<String> invalidNames = Arrays.asList("My $#Job!@#", "Test Job#@$", "Job#12$#@3", "My@Job#$", "Job%Test$#");
 
         for (String invalidName : invalidNames) {
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NEW_JOB))).click();
-            WebElement itemNameInput = getDriver().findElement(By
-                    .xpath(ITEM_NAME_INPUT));
-            itemNameInput.clear();
-            itemNameInput.sendKeys(invalidName + Keys.ENTER);
+            NewItemPage newItemPage = new HomePage(getDriver())
+                    .clickNewItemOnLeftSidePanel()
+                    .sendItemName(invalidName);
 
-            WebElement errorMessage = getWait5().until(ExpectedConditions
-                    .visibilityOfElementLocated(By.id("itemname-invalid")));
-            Assert.assertTrue(errorMessage.isDisplayed(), "Ошибка не отображается для имени: " + invalidName);
+            String actualError = newItemPage.getItemNameInvalidMessage();
+            Assert.assertTrue(actualError.contains("is an unsafe"), "Ошибка не отображается для имени: " + invalidName);
             TestUtils.gotoHomePage(this);
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
-        getDriver().findElement(By.xpath(NEW_JOB)).click();
-
-        WebElement itemNameInput = getDriver().findElement(By
-                .xpath(ITEM_NAME_INPUT));
-        itemNameInput.sendKeys("new_project_1");
-        getDriver().findElement(By.xpath("//span[@class][text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
+        NewItemPage NewItemPage = new HomePage(getDriver())
+                .createJob()
+                .enterProjectNameAndSelect("My name", "Pipeline");
         TestUtils.gotoHomePage(this);
-        WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[@href='job/new_project_1/']")));
 
-        Assert.assertEquals(projectName.getText(), "new_project_1");
+        String actualNameProject = new HomePage(getDriver()).getNameProject();
+        Assert.assertEquals(actualNameProject, "My name");
     }
 
     @Test
@@ -95,7 +83,7 @@ public class NewJob3Test extends BaseTest {
     }
 
     @Ignore
-    @Test(description = "TC_01.003.20")
+    @Test
     public void testNewItemCreation() {
         String projectName = TestUtils.getItemTypeName(1);
 
@@ -107,7 +95,7 @@ public class NewJob3Test extends BaseTest {
                 .xpath("//div[@class='add-item-copy']"));
         Assert.assertEquals(actualTextCopyForm.getText().trim(), "Copy from");
     }
-    @Test(description = "TC_01.003.21")
+    @Test
     public void testNewItemCopyFromAutocomplete() {
         String projectName = TestUtils.getItemTypeName(1);
 
@@ -125,7 +113,7 @@ public class NewJob3Test extends BaseTest {
     }
 
     @Ignore
-    @Test(description = "TC_01.003.22")
+    @Test
     public void testCopyFromNonExistingItem() {
         String projectName = TestUtils.getItemTypeName(2);
 
