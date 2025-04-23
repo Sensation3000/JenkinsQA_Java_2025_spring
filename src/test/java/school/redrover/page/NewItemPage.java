@@ -30,6 +30,11 @@ public class NewItemPage extends BasePage {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
+    public String getEmptyNameMessage() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required"))).getText();
+    }
+
     public PipelineConfigurationPage selectPipelineAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
@@ -102,4 +107,15 @@ public class NewItemPage extends BasePage {
     public String getItemTypeText(String itemType){
         return getDriver().findElement(By.xpath("//span[text()='" + itemType + "']")).getText();
     }
+
+    public NewItemPage enterProjectNameAndSelect(String nameProject, String projectTypeText) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(nameProject);
+        String xpath = String.format("//span[text()='%s']", projectTypeText);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+
+        return new NewItemPage(getDriver());
+    }
+
 }
