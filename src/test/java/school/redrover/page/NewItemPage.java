@@ -25,6 +25,10 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public String getInputValue() {
+        return getDriver().findElement(By.id("name")).getShadowRoot().findElement(By.cssSelector("div")).getText();
+    }
+
     public String getAlertMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();

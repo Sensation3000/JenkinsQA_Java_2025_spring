@@ -20,9 +20,12 @@ import java.util.Random;
 
 public class NewItemPage2Test extends BaseTest {
     private Actions actions;
+    HomePage homePage;
 
     @BeforeMethod
     void setUp() {
+        homePage = new HomePage(getDriver());
+
         if (getDriver() != null) {
             actions = new Actions(getDriver());
         } else {
@@ -103,27 +106,22 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfPageIsAccessibleFromHomePage() {
-        HomePage homePage = new HomePage(getDriver());
         NewItemPage newItemPage = new NewItemPage(getDriver());
 
         homePage.clickNewItemOnLeftSidePanel();
 
         Assert.assertTrue(newItemPage.getNewItemPageURL().contains("/view/all/newJob"));
-        Assert.assertEquals( newItemPage.getNewItemPageHeaderText(),
-                "New Item");
+        Assert.assertEquals(newItemPage.getNewItemPageHeaderText(),"New Item");
     }
 
     @Test
     public void testInputPositiveValidation() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric() + "_";
-        clickOnNewItemLink();
 
-        WebElement inputField = getDriver().findElement(By.id("name"));
-        inputField.sendKeys(randomAlphaNumericValue);
-        WebElement divEl = inputField.getShadowRoot().findElement(By.cssSelector("div"));
+        homePage.clickNewItemOnLeftSidePanel()
+                .sendItemName(randomAlphaNumericValue);
 
-        Assert.assertTrue(getDriver().findElement(By.id("itemname-invalid")).getText().isEmpty());
-        Assert.assertEquals(randomAlphaNumericValue, divEl.getText());
+        Assert.assertEquals(randomAlphaNumericValue, new NewItemPage(getDriver()).getInputValue());
     }
 
     @Test
