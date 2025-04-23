@@ -142,4 +142,10 @@ public class FreestyleProjectPage extends BasePage {
     public List<WebElement> getWarningMessageList() {
         return getDriver().findElements(By.xpath("//div[@class='warning']/form"));
     }
+
+    public FreestyleProjectPage waitUntilTextNameProjectToBePresentInH1(String text) {
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), text));
+
+        return this;
+    }
 }
