@@ -11,11 +11,12 @@ import school.redrover.page.HomePage;
 import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
-    private final String projectName = "Freestyle";
+
+    private static final String PROJECT_NAME = "Freestyle";
 
     @Test
     public void testDisableProject() {
-        TestUtils.createFreestyleProject(getDriver(), projectName);
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
 
         String warningMessage = new FreestyleConfigurationPage(getDriver())
                 .clickEnableDisableToggle()
@@ -27,27 +28,27 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisableProject")
     public void testWarningMessageIsDisplayedAfterDisableProject() {
-        boolean isWarningMessageDisplayed = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName)
-                .isWarningMessageDisplayed();
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .getWarningMessageList();
 
-        Assert.assertTrue(isWarningMessageDisplayed, "Warning message should be visible when the project is disabled.");
+        Assert.assertEquals(warningMessageList.size(), 1);
     }
 
     @Test(dependsOnMethods = "testWarningMessageIsDisplayedAfterDisableProject")
     public void testWarningMessageDisappearsAfterEnableProject() {
         List<WebElement> warningMessageList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName)
+                .clickOnJobInListOfItems(PROJECT_NAME)
                 .clickEnableButton()
                 .getWarningMessageList();
 
-        Assert.assertTrue(warningMessageList.isEmpty(), "Warning message should disappear, but it is still present.");
+        Assert.assertEquals(warningMessageList.size(), 0);
     }
 
     @Test(dependsOnMethods = "testWarningMessageDisappearsAfterEnableProject")
     public void testEnableProject() {
         String toggleStatus = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName)
+                .clickOnJobInListOfItems(PROJECT_NAME)
                 .clickConfigure()
                 .getToggleStatus();
 
