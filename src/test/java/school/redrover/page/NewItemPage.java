@@ -12,6 +12,7 @@ import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
 
@@ -110,6 +111,12 @@ public class NewItemPage extends BasePage {
 
     public String getItemTypeText(String itemType){
         return getDriver().findElement(By.xpath("//span[text()='" + itemType + "']")).getText();
+    }
+
+    public List<String> getAllItemsTypesLabels() {
+        return getDriver().findElements(By.className("label"))
+                          .stream()
+                          .map(itemType -> itemType.getText()).collect(Collectors.toList());
     }
 
     public NewItemPage enterProjectNameAndSelect(String nameProject, String projectTypeText) {
