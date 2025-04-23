@@ -3,8 +3,11 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
 
@@ -103,5 +106,21 @@ public class FreestyleConfigurationPage extends BasePage {
     public String sendScheduleActualText() {
 
         return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).getText();
+    }
+
+    public FreestyleConfigurationPage clickEnableDisableToggle() {
+        getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
+
+        return this;
+    }
+
+    public String getToggleStatus() {
+        List<WebElement> statusList = getDriver().findElements(By.cssSelector("span[class^='jenkins-toggle-switch__label']"));
+        for (WebElement e : statusList) {
+            if (e.isDisplayed()) {
+                return e.getText();
+            }
+        }
+        return "";
     }
 }
