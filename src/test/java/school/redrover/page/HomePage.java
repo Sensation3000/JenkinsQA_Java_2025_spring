@@ -123,4 +123,9 @@ public class HomePage extends BasePage {
 
        return new BuildHistoryPage(getDriver());
     }
+
+    public List<String> getProjectNameList() {
+        return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
+                .map(WebElement::getText).toList();
+    }
 }

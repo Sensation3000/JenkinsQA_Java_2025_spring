@@ -3,23 +3,70 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
+import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "Freestyle Project";
+    private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
+
     @Test
-    public void testCreateNewFreestyleProject() {
-        final String projectName = "Freestyle Project";
+    public void testCreateFreestyleProject() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton();
 
-        HomePage homePage = new HomePage(getDriver());
-        homePage
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testCreateDuplicate() {
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectFreestyleAndClickOk();
-        TestUtils.clickOnJenkinsLogo(this);
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyle()
+                .getItemNameInvalidMessage();
 
-        String actualItem = homePage.getNameFreestyleProjectText();
-        Assert.assertEquals(actualItem, projectName);
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateDuplicate")
+    public void testEditDescription() {
+        final String newProjectDescription = "This is a NEW freestyleProject description";
+
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickEditDescriptionButton()
+                .sendDescription(newProjectDescription)
+                .clickSave();
+
+        Assert.assertEquals(freestyleProjectPage.getDescription(), newProjectDescription);
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testRenameFreestyleProject() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickLeftSideMenuRename()
+                .sendName(UPDATED_PROJECT_NAME)
+                .clickRename();
+
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), UPDATED_PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRenameFreestyleProject")
+    public void testDeleteFreestyleProject() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(UPDATED_PROJECT_NAME)
+                .clickLeftSideMenuDelete()
+                .clickPopUpYesDeleteProject()
+                .getProjectNameList();
+
+        Assert.assertEquals(projectNameList.size(), 0);
     }
 }

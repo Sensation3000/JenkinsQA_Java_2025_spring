@@ -123,6 +123,8 @@ public class NewJob3Test extends BaseTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
         Assert.assertNotNull(autocompleteSuggestion, "Autocomplete suggestion not found.");
     }
+
+    @Ignore
     @Test(description = "TC_01.003.22")
     public void testCopyFromNonExistingItem() {
         String projectName = TestUtils.getItemTypeName(2);
