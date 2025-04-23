@@ -43,4 +43,8 @@ public class OrganizationFolderPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public String getProjectName() {
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+    }
 }

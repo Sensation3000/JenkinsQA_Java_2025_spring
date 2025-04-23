@@ -142,4 +142,12 @@ public class NewItemPage extends BasePage {
 
         return new FreestyleConfigurationPage(getDriver());
     }
+
+    public OrganizationFolderConfigurePage selectOrganizationFolderAndClickOk() {
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getDriver().findElement(By.xpath("//span[text()='Organization Folder']")));
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new OrganizationFolderConfigurePage(getDriver());
+    }
 }

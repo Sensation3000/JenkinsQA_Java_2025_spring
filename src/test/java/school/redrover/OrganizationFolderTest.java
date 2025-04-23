@@ -65,4 +65,15 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
     }
 
+    @Test
+    public void testCreateOrganizationFolder() {
+        String projectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSave()
+                .getProjectName();
+
+     Assert.assertEquals(projectName, ORGANIZATION_FOLDER_NAME);
+    }
 }
