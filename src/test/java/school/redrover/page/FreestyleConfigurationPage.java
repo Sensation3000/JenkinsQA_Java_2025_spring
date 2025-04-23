@@ -123,4 +123,10 @@ public class FreestyleConfigurationPage extends BasePage {
         }
         return "";
     }
+
+    public FreestyleConfigurationPage waitUntilTextConfigureToBePresentInH1() {
+        getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
+
+        return this;
+    }
 }

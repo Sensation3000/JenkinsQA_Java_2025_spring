@@ -135,4 +135,10 @@ public class HomePage extends BasePage {
         return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
                 .map(WebElement::getText).toList();
     }
+
+    public NewItemPage clickNewItem() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+
+        return new NewItemPage(getDriver());
+    }
 }

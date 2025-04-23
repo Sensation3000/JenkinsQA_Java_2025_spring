@@ -6,10 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+
 
 import java.util.List;
 import static org.testng.Assert.*;
@@ -21,16 +22,19 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test
     public void createNewFreestyleProject() {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
-        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
 
-        assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
+        String projectName = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(JOB_NAME)
+                .selectFreestyleAndClickOkNoPageChange()
+                .waitInvisibilityCreateItemPage()
+                .waitUntilTextConfigureToBePresentInH1()
+                .clickSaveButton()
+                .waitUntilTextNameProjectToBePresentInH1(JOB_NAME)
+                .getProjectName();
+
+        assertEquals(projectName, JOB_NAME);
+
     }
 
     @Test(dependsOnMethods = "createNewFreestyleProject")
