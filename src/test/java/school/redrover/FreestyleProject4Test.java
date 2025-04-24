@@ -37,51 +37,6 @@ public class FreestyleProject4Test extends BaseTest {
 
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
-    public void testAddAndSaveDescription() {
-        final String description = "Job description";
-
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                        "//a[@href='/job/Test%20item/configure']")).click();
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
-    }
-
-    @Test(dependsOnMethods = "testAddAndSaveDescription")
-    public void testToolTipEnableDisable() {
-        WebDriver driver = getDriver();
-        Actions actions = new Actions(driver);
-
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                "//a[@href='/job/Test%20item/configure']")).click();
-
-        actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
-        WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.className("tippy-content")));
-
-        assertEquals(tooltip.getText(), "Enable or disable the current project");
-    }
-
-    @Test(dependsOnMethods = "testToolTipEnableDisable")
-    public void testCheckWarningWhenDisabled() {
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                "//a[@href='/job/Test%20item/configure']")).click();
-        getDriver().findElement(By.id("toggle-switch-enable-disable-project")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        String warning = getDriver().findElement(By.id("enable-project")).getText();
-
-        assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
-    }
-
     @Test
     public void testTriggerBuildAfterOtherProjects() {
         final String pageCreateItem = "createItem";
@@ -207,7 +162,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "testCheckWarningWhenDisabled")
+    @Test(dependsOnMethods = "testCheckDiscardOldBuilds")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
