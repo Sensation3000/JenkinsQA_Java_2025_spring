@@ -92,8 +92,7 @@ public class NewItemCreate3Test extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New Item")));
         goToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
-        WebElement el = getDriver().findElement(By.id("itemname-invalid"));
-        getWait10().until(ExpectedConditions.visibilityOf(el));
+        WebElement el = getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("itemname-invalid"))));
 
         Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New FreeStyleProject’");
     }
