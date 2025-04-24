@@ -44,7 +44,6 @@ public class NewJob3Test extends BaseTest {
         }
     }
 
-
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
