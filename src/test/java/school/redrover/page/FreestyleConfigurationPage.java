@@ -1,9 +1,7 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -214,5 +212,30 @@ public class FreestyleConfigurationPage extends BasePage {
     public String getGithubHookTriggerHelpIconTitle() {
         return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[6]/div[1]/div/a"))
                 .getDomAttribute("title");
+    }
+
+    public FreestyleConfigurationPage addBuildSteps(Integer itemNumber){
+        Actions actions = new Actions(getDriver());
+
+        WebElement scroll = getDriver()
+                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button"));
+
+        actions.scrollToElement(scroll).perform();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[position() >= 2][last()]/button")))
+                .click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
+
+        actions.scrollToElement(scroll).perform();
+
+        return this;
+    }
+
+    public List<String> getBuildStepsList() {
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
+                .map(WebElement::getText).toList();
     }
 }

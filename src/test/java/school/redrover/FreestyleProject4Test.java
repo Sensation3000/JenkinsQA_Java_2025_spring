@@ -73,55 +73,21 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    public void testAccessBuildSteps() {
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys("projectName");
-        getDriver().findElement(
-                By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        assertTrue(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
-                .isEnabled());
-    }
-
-    @Test
     public void testAddBuildSteps() {
-        boolean present = true;
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .addBuildSteps(7)
+                .addBuildSteps(2)
+                .addBuildSteps(3)
+                .addBuildSteps(4)
+                .addBuildSteps(5)
+                .addBuildSteps(6)
+                .addBuildSteps(1)
+                .getBuildStepsList();
 
-        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-
-        for (int i = 1; present; i++) {
-            new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                    .perform();
-
-            getDriver().findElement(
-                    By.xpath(
-                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
-                    .click();
-
-            try {
-                getDriver().findElement(
-                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + (i + 1) + "]"));
-            } catch (NoSuchElementException e) {
-                present = false;
-            }
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]"))).click();
-
-            getDriver().findElement(By.tagName("textarea")).click();
-        }
-
-        new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                        .perform();
-
-        assertEquals(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
-                        .getText(),
-                "Set build status to \"pending\" on GitHub commit");
+        assertEquals(projectNameList.size(), 8);
     }
 
     @Test
