@@ -38,3 +38,4 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(pipelineConfigurationPage.isToggleEnabled(), "The switch is not in an active state");
     }
 }
+
