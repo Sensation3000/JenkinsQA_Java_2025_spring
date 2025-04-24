@@ -124,6 +124,10 @@ public class FreestyleConfigurationPage extends BasePage {
         return "";
     }
 
+    public String getProjectStatus() {
+        return getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title")).getText();
+    }
+
     public FreestyleConfigurationPage waitUntilTextConfigureToBePresentInH1() {
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
 
