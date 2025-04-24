@@ -5,22 +5,23 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
 public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
+    private final String PROJECT_NAME = "New project";
 
     @Test
     public void testCheckBuildTriggersSection() {
 
         WebDriver driver = getDriver();
-        final String projectName = "New project";
-        TestUtils.createFreestyleProject(getDriver(), projectName);
+
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
 
         TestUtils.scrollToItemWithJS(driver,
                 driver.findElement(By.id("source-code-management")));
@@ -76,13 +77,10 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
 
 
-    @Test
+    @Test()
     public void testRemoteTriggerOptionDisplaysTokenField() {
         WebDriver driver = getDriver();
-        final String projectName = "New project";
-        TestUtils.createFreestyleProject(getDriver(), projectName);
-
-        getWait5();
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
 
         TestUtils.scrollToItemWithJS(driver,
                 driver.findElement(By.id("source-code-management")));
@@ -95,7 +93,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         driver.findElement(By.xpath("//button[@name='Submit']")).click();
 
         //Configure
-        getWait5();
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
         TestUtils.scrollToItemWithJS(driver,
                 driver.findElement(By.id("source-code-management")));
@@ -125,10 +122,8 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     @Test
     public void testBuildAfterOtherProjectsAreBuiltOptionDisplaysField() {
         WebDriver driver = getDriver();
-        final String projectName = "New project";
-        TestUtils.createFreestyleProject(getDriver(), projectName);
 
-        getWait5();
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
 
         TestUtils.scrollToItemWithJS(driver,
                 driver.findElement(By.id("source-code-management")));
@@ -142,7 +137,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         //Wait for the "Projects to watch" field to be displayed and enter the project name
         getWait5().until(ExpectedConditions.attributeToBe(By.xpath("//input[@name='_.upstreamProjects']"), "aria-expanded", "true"));
         driver.findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
-        getWait5();
 
         //Click on the "Trigger only if build is stable" checkbox and others
         List<WebElement> labels = driver.findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"));
@@ -154,7 +148,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         driver.findElement(By.xpath("//button[@name='Submit']")).click();
 
         //Configure
-        getWait5();
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
         TestUtils.scrollToItemWithJS(driver,
                 driver.findElement(By.id("source-code-management")));
@@ -173,5 +166,30 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 "true",
                 "The last radio button should be selected"
         );
+    }
+
+
+
+    @Test
+    public void testBuildPeriodicallyScheduleFieldIsDisplayed() {
+
+        final String Schedule = "H 14 * * 1-5";
+
+        //Actions
+        String actualSchedule = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToTriggersItem()
+                .checkBuildPeriodicallyCheckbox()
+                .sendScheduleText(Schedule)
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToTriggersItem()
+                .sendScheduleActualText();
+
+
+        //Assertions
+        Assert.assertEquals(actualSchedule, Schedule, "Schedule text doesn't match expected text");
     }
 }

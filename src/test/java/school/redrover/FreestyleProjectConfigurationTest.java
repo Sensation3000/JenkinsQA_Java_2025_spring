@@ -1,56 +1,57 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.FreestyleConfigurationPage;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "Freestyle";
+
     @Test
     public void testDisableProject() {
-        TestUtils.createFreestyleProject(getDriver(), "Freestyle");
+        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-        getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(By.name("Submit")))).click();
-        String projectIsDisabledText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project"))).getText();
+        String warningMessage = new FreestyleConfigurationPage(getDriver())
+                .clickEnableDisableToggle()
+                .clickSaveButton()
+                .getDisabledWarningMessageText();
 
-        Assert.assertTrue(projectIsDisabledText.contains("This project is currently disabled"));
+        Assert.assertEquals(warningMessage, "This project is currently disabled");
     }
-    @Ignore//FreestyleProjectConfigurationTest.testEnableProject:30 » Timeout Expected condition failed: waiting for element to be clickable: By.xpath: //button[contains(text(),'Enable')] (tried for 5 second(s) with 500 milliseconds interval)
-    @Test
+
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testWarningMessageIsDisplayedAfterDisableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .getWarningMessageList();
+
+        Assert.assertEquals(warningMessageList.size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageIsDisplayedAfterDisableProject")
+    public void testWarningMessageDisappearsAfterEnableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickEnableButton()
+                .getWarningMessageList();
+
+        Assert.assertEquals(warningMessageList.size(), 0);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageDisappearsAfterEnableProject")
     public void testEnableProject() {
-        TestUtils.createFreestyleProject(getDriver(), "Freestyle");
-        final By enableButton = By.xpath("//button[contains(text(),'Enable')]");
+        String toggleStatus = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickConfigure()
+                .getToggleStatus();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable((By.name("Submit")))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(enableButton)).click();
-        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(enableButton));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='configure']"))).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//span[text()='Enabled']")).getText(),
-                "Enabled");
-    }
-
-    @Test
-    public void testWarningMessageDisappears() {
-        final By warningMessage = By.id("enable-project");
-        TestUtils.createFreestyleProject(getDriver(), "Freestyle");
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-        getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(By.name("Submit")))).click();
-
-        String projectIsDisabledText = getWait5().until(ExpectedConditions.visibilityOfElementLocated(warningMessage)).getText();
-        Assert.assertTrue(projectIsDisabledText.contains("This project is currently disabled"));
-
-        getDriver().findElement(By.xpath("//button[contains(text(),'Enable')]")).click();
-
-        Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(warningMessage)),
-                "The warning message is still present" );
+        Assert.assertEquals(toggleStatus, "Enabled");
     }
 }

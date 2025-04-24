@@ -14,14 +14,12 @@ public class NewItem6Test extends BaseTest {
     public void testItemAlreadyExists() {
         final String freestyleProjectName = "New Project";
 
-        HomePage homePage = new HomePage(getDriver());
-        homePage
+        String invalidItemMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(freestyleProjectName)
-                .selectFreestyleAndClickOk();
-        TestUtils.clickOnJenkinsLogo(this);
-
-        String invalidItemMessage = homePage
+                .selectFreestyleAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(freestyleProjectName)
                 .getItemNameInvalidMessage();
