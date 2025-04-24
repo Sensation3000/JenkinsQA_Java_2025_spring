@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.NewItemPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +61,26 @@ public class NewItemCreate3Test extends BaseTest {
             getDriver().findElement(By.id("name")).clear();
         }
     }
+    @Test
+    public  void  testCreateNewItemWithCorrectName() {
+        final String newItemName = "New free-style project";
+        final String expectedName = "New free-style project";
 
-    @Ignore
+        goToNewItemPage();
+        getDriver().findElement(By.id("name")).sendKeys(newItemName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).getText(), expectedName);
+
+    }
+
     @Test
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
         final String projectName = "New FreeStyleProject";
+
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
@@ -78,7 +93,8 @@ public class NewItemCreate3Test extends BaseTest {
         goToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         WebElement el = getDriver().findElement(By.id("itemname-invalid"));
-        TestUtils.scrollToItemWithJS(getDriver(), el);
+        getWait5().until(ExpectedConditions.visibilityOf(el));
+
         Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New FreeStyleProject’");
     }
 }
