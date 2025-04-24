@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineConfigurationPage;
 import school.redrover.page.PipelineProjectPage;
 
 public class PipelineTest extends BaseTest {
@@ -22,6 +23,20 @@ public class PipelineTest extends BaseTest {
                 .clickSave();
 
         Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
-        Assert.assertEquals(pipelineProjectPage.getDescription(),PIPELINE_DESCRIPTION);
+        Assert.assertEquals(pipelineProjectPage.getDescription(), PIPELINE_DESCRIPTION);
+    }
+
+    @Test
+    public void testDisableProject() {
+
+        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectPipelineAndClickOk()
+                .switchToggle();
+
+        Assert.assertTrue(pipelineConfigurationPage.isToggleEnabled(), "The switch is not in an active state");
     }
 }
+
+
