@@ -12,7 +12,7 @@ public class EnableDisableMultiConfigProjTest extends BaseTest {
 
         String tooltipIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName("MyProject1")
+                .sendItemName("MyProject120")
                 .selectMultiConfigurationAndClickOk()
                 .checkTooltipVisibility();
 
@@ -24,7 +24,7 @@ public class EnableDisableMultiConfigProjTest extends BaseTest {
 
         boolean projectDisabledMessageIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName("MyProject2")
+                .sendItemName("MyProject121")
                 .selectMultiConfigurationAndClickOk()
                 .clickEnableToggle()
                 .clickSaveButton()
@@ -38,7 +38,7 @@ public class EnableDisableMultiConfigProjTest extends BaseTest {
 
         boolean projectDisabledMessageInvisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName("MyProject3")
+                .sendItemName("MyProject122")
                 .selectMultiConfigurationAndClickOk()
                 .clickEnableToggle()
                 .clickSaveButton()
