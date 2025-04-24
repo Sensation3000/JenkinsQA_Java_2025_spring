@@ -89,6 +89,7 @@ public class NewItemCreate3Test extends BaseTest {
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New FreeStyleProject")))
                         .getText(), "New FreeStyleProject");
 
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New Item")));
         goToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         WebElement el = getDriver().findElement(By.id("itemname-invalid"));
