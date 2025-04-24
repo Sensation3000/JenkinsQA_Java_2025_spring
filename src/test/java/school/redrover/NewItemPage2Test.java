@@ -14,15 +14,19 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
 import java.util.Random;
 
 public class NewItemPage2Test extends BaseTest {
     private Actions actions;
+    HomePage homePage;
 
     @BeforeMethod
     void setUp() {
+        homePage = new HomePage(getDriver());
+
         if (getDriver() != null) {
             actions = new Actions(getDriver());
         } else {
@@ -103,51 +107,41 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfPageIsAccessibleFromHomePage() {
-        HomePage homePage = new HomePage(getDriver());
         NewItemPage newItemPage = new NewItemPage(getDriver());
 
         homePage.clickNewItemOnLeftSidePanel();
 
         Assert.assertTrue(newItemPage.getNewItemPageURL().contains("/view/all/newJob"));
-        Assert.assertEquals( newItemPage.getNewItemPageHeaderText(),
-                "New Item");
+        Assert.assertEquals(newItemPage.getNewItemPageHeaderText(),"New Item");
     }
 
     @Test
     public void testInputPositiveValidation() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric() + "_";
-        clickOnNewItemLink();
 
-        WebElement inputField = getDriver().findElement(By.id("name"));
-        inputField.sendKeys(randomAlphaNumericValue);
-        WebElement divEl = inputField.getShadowRoot().findElement(By.cssSelector("div"));
+        homePage.clickNewItemOnLeftSidePanel()
+                .sendItemName(randomAlphaNumericValue);
 
-        Assert.assertTrue(getDriver().findElement(By.id("itemname-invalid")).getText().isEmpty());
-        Assert.assertEquals(randomAlphaNumericValue, divEl.getText());
+        Assert.assertEquals(randomAlphaNumericValue, new NewItemPage(getDriver()).getInputValue());
     }
 
     @Test
     public void testIfAvailableJobsAreDisplayedOnThePage() {
-        clickOnNewItemLink();
-
-        List<WebElement> jobsLabels = getDriver().findElements(By.className("label"));
         List<String> expectedLabels = List.of(
-                "Freestyle project", "Pipeline", "Multi-configuration project",
-                "Folder", "Multibranch Pipeline", "Organization Folder");
+                "Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline",
+                "Organization Folder"
+        );
 
-        for (int i = 0; i < expectedLabels.size(); i++) {
-            Assert.assertEquals(jobsLabels.get(i).getText(), expectedLabels.get(i));
-        }
+        Assert.assertEquals(homePage.clickNewItemOnLeftSidePanel().getAllItemsTypesLabels(),
+                            expectedLabels
+        );
     }
 
-    @Test(dataProvider = "itemTypes")
-    public void testItemsDescriptions(String itemTypeName, String expectedItemDescription) {
-        clickOnNewItemLink();
+    @Test(dataProvider = "itemDescriptions", dataProviderClass = TestDataProvider.class)
+    public void testItemsDescriptions(List<String> expectedItemDescriptions) {
+        List<String> actualItemDescriptions = homePage.clickNewItemOnLeftSidePanel().getJobsDescriptions();
 
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
-        String itemDescriptionText = itemType.findElement(By.xpath("./../../div")).getText();
-
-        Assert.assertEquals(itemDescriptionText, expectedItemDescription);
+        Assert.assertEquals(actualItemDescriptions, expectedItemDescriptions);
     }
 
     @Test(dataProvider = "itemTypes")

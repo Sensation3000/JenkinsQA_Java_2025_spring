@@ -52,6 +52,13 @@ public class HomePage extends BasePage {
                 .getText();
     }
 
+    public String getNameProject() {
+
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By
+                        .xpath("//*[@id='job_My name']/td[3]/a"))))
+                .getText();
+    }
+
     public NewItemPage createJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -127,5 +134,11 @@ public class HomePage extends BasePage {
     public List<String> getProjectNameList() {
         return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
                 .map(WebElement::getText).toList();
+    }
+
+    public NewItemPage clickNewItem() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+
+        return new NewItemPage(getDriver());
     }
 }

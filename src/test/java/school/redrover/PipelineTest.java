@@ -7,6 +7,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.PipelineProjectPage;
 
 public class PipelineTest extends BaseTest {
+
     private static final String PROJECT_NAME = "New Pipeline";
     private static final String PIPELINE_DESCRIPTION = "Pipeline Project Name";
 
@@ -20,9 +21,7 @@ public class PipelineTest extends BaseTest {
                 .sendDescription(PIPELINE_DESCRIPTION)
                 .clickSave();
 
-        Assert.assertTrue(pipelineProjectPage.getProjectName().contains(PROJECT_NAME),
-                "The project name does not contain the expected value");
-        Assert.assertTrue(pipelineProjectPage.getDescription().contains(PIPELINE_DESCRIPTION),
-                "Project description does not contain expected value");
+        Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
+        Assert.assertEquals(pipelineProjectPage.getDescription(),PIPELINE_DESCRIPTION);
     }
 }
