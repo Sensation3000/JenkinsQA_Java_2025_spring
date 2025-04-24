@@ -87,7 +87,7 @@ public class FreestyleProject4Test extends BaseTest {
                 .addBuildSteps(1)
                 .getBuildStepsList();
 
-        assertEquals(projectNameList.size(), 8);
+        assertEquals(projectNameList.size(), 7);
     }
 
     @Test
