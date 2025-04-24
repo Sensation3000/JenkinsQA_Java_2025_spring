@@ -78,6 +78,13 @@ public class NewItemPage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 
+    public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[4]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
+    }
+
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
