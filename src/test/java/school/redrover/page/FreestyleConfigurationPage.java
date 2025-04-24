@@ -217,14 +217,12 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addBuildSteps(Integer itemNumber){
         Actions actions = new Actions(getDriver());
 
-        WebElement scroll = getDriver()
-                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button"));
+        WebElement scroll = getDriver().findElement(By.cssSelector("button.hetero-list-add[suffix='publisher']"));
 
         actions.scrollToElement(scroll).perform();
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[position() >= 2][last()]/button")))
-                .click();
+                By.cssSelector("button.jenkins-button.hetero-list-add[suffix='builder']"))).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
