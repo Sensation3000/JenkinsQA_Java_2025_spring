@@ -150,4 +150,10 @@ public class NewItemPage extends BasePage {
 
         return new OrganizationFolderConfigurePage(getDriver());
     }
+
+    public List<String> getJobsDescriptions() {
+        return getDriver().findElements(By.className("desc"))
+                .stream()
+                .map(jobDescription -> jobDescription.getText()).collect(Collectors.toList());
+    }
 }
