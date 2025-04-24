@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
 
@@ -43,13 +44,14 @@ public class NewJob3Test extends BaseTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
-        NewItemPage NewItemPage = new HomePage(getDriver())
+        new HomePage(getDriver())
                 .createJob()
                 .enterProjectNameAndSelect("My name", "Pipeline");
-        TestUtils.gotoHomePage(this);
+        new HeaderComponent(getDriver())
+                .goToHomePage();
 
         String actualNameProject = new HomePage(getDriver()).getNameProject();
         Assert.assertEquals(actualNameProject, "My name");
@@ -57,45 +59,36 @@ public class NewJob3Test extends BaseTest {
 
     @Test
     public void testAllItemTypesArePresent() {
-        TestUtils.createProject(this);
+        new HomePage(getDriver()).createJob();
 
-        List<String> expectedTitles = Arrays.asList(
-                "Freestyle project",
+        NewItemPage newItemPage = new NewItemPage(getDriver());
+
+        List<String> expectedTitles = Arrays.asList("Freestyle project",
                 "Pipeline",
                 "Multi-configuration project",
                 "Folder",
                 "Multibranch Pipeline",
                 "Organization Folder");
 
-        List<WebElement> actualTitles = Arrays.asList(
-                getDriver().findElement(By.xpath("//span[@class][text()='Freestyle project']")),
-                getDriver().findElement(By.xpath("//span[@class][text()='Pipeline']")),
-                getDriver().findElement(By.xpath("//span[@class][text()='Multi-configuration project']")),
-                getDriver().findElement(By.xpath("//span[@class][text()='Folder']")),
-                getDriver().findElement(By.xpath("//span[@class][text()='Multibranch Pipeline']")),
-                getDriver().findElement(By.xpath("//span[@class][text()='Organization Folder']"))
-        );
+        List<String> actualTitles = newItemPage.getAllProjectTypeTitles();
 
-        for (int i = 0; i < expectedTitles.size(); i++) {
-            String expectedText = expectedTitles.get(i);
-            String actualText = actualTitles.get(i).getText();
-            Assert.assertEquals(actualText, expectedText);
-        }
+        Assert.assertEquals(actualTitles, expectedTitles);
     }
 
-    @Ignore
     @Test
     public void testNewItemCreation() {
         String projectName = TestUtils.getItemTypeName(1);
 
         TestUtils.createProjectWithName(getDriver(), projectName, 1);
-        TestUtils.gotoHomePage(this);
+        NewItemPage newItemPage = new HeaderComponent(getDriver())
+                .goToHomePage()
+                .clickNewItem();
 
-        TestUtils.createProject(this);
-        WebElement actualTextCopyForm = getDriver().findElement(By
-                .xpath("//div[@class='add-item-copy']"));
-        Assert.assertEquals(actualTextCopyForm.getText().trim(), "Copy from");
+        String actualCopyFromText = newItemPage.getCopyFromText();
+
+        Assert.assertEquals(actualCopyFromText, "Copy from");
     }
+
     @Test
     public void testNewItemCopyFromAutocomplete() {
         String projectName = TestUtils.getItemTypeName(1);
