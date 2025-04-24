@@ -82,7 +82,7 @@ public class NewItemCreate3Test extends BaseTest {
 
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
 
         TestUtils.gotoHomePage(this);
         Assert.assertEquals(
