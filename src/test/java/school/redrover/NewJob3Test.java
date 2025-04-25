@@ -1,10 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -39,12 +35,11 @@ public class NewJob3Test extends BaseTest {
                     .sendItemName(invalidName);
 
             String actualError = newItemPage.getItemNameInvalidMessage();
-            Assert.assertTrue(actualError.contains("is an unsafe"), "Ошибка не отображается для имени: " + invalidName);
+            Assert.assertTrue(actualError.contains("is an unsafe"), invalidName);
             TestUtils.gotoHomePage(this);
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
@@ -75,12 +70,12 @@ public class NewJob3Test extends BaseTest {
         Assert.assertEquals(actualTitles, expectedTitles);
     }
 
-    @Ignore
     @Test
     public void testNewItemCreation() {
-        String projectName = TestUtils.getItemTypeName(1);
+        new HomePage(getDriver())
+                .createJob()
+                .enterProjectNameAndSelect("Freestyle project","Freestyle project");
 
-        TestUtils.createProjectWithName(getDriver(), projectName, 1);
         NewItemPage newItemPage = new HeaderComponent(getDriver())
                 .goToHomePage()
                 .clickNewItem();
@@ -92,36 +87,36 @@ public class NewJob3Test extends BaseTest {
 
     @Test
     public void testNewItemCopyFromAutocomplete() {
-        String projectName = TestUtils.getItemTypeName(1);
+        new HomePage(getDriver())
+                .createJob()
+                .enterProjectNameAndSelect("Freestyle project","Freestyle project");
+        new HeaderComponent(getDriver())
+                .goToHomePage();
 
-        TestUtils.createProjectWithName(getDriver(), projectName, 1);
-        TestUtils.gotoHomePage(this);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .sendTextCopyForm("Freestyle");
+        String actualText = new NewItemPage(getDriver())
+                .getAutocompleteSuggestionText();
 
-        TestUtils.createProject(this);
-        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("from")));
-        actualTextCopyForm.sendKeys("Freestyle");
-
-        WebElement autocompleteSuggestion = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")));
-        Assert.assertNotNull(autocompleteSuggestion, "Autocomplete suggestion not found.");
+        Assert.assertNotNull(actualText,"Autocomplete suggestion not found.");
     }
 
-    @Ignore
     @Test
     public void testCopyFromNonExistingItem() {
-        String projectName = TestUtils.getItemTypeName(2);
+        new HomePage(getDriver())
+                .createJob()
+                .enterProjectNameAndSelect("Pipeline","Pipeline");
+        new HeaderComponent(getDriver())
+                .goToHomePage();
 
-        TestUtils.createProjectWithName(getDriver(), projectName, 2);
-        TestUtils.gotoHomePage(this);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .sendTextCopyForm("NonExistingItem");
 
-        TestUtils.createProject(this);
-        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("from")));
-        actualTextCopyForm.sendKeys("NonExistingItem");
-        WebElement actualText = getWait5()
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("tippy-7")));
-        Assert.assertEquals(actualText.getText(),"No items");
+        String actualText = new NewItemPage(getDriver())
+                .getAutocompleteSuggestionText();
+        Assert.assertEquals(actualText,"No items");
     }
 }
 
