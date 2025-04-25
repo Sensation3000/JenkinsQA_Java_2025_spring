@@ -150,19 +150,11 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertTrue(newItemPage.isListItemHighlighted(itemTypeName));
     }
 
-    @Test
-    public void testOkButtonWhenFieldIsEmpty() {
-        clickOnNewItemLink();
+    @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
+    public void testOkButtonWhenFieldIsEmpty(String itemTypeName) {
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel().clickOnJobItem(itemTypeName);
 
-        List<WebElement> newItemTypes = getNewItemTypes();
-        int expectedScrollValue = getScrollValue();
-
-        for (int i = 0; i < newItemTypes.size(); i++) {
-            newItemTypes.get(i).click();
-            actions.scrollByAmount(0, expectedScrollValue).perform();
-
-            Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
-        }
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
     }
 
     @Test

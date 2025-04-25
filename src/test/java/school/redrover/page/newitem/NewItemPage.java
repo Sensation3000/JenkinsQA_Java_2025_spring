@@ -36,6 +36,10 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("name")).getShadowRoot().findElement(By.cssSelector("div")).getText();
     }
 
+    public boolean isOkButtonEnabled() {
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
+
     public String getAlertMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
