@@ -115,4 +115,16 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertEquals(projectNameList.size(), 7);
     }
+
+    @Test
+    public void testEmptyItemNameField() {
+        final String message = "» This field cannot be empty, please enter a valid name";
+
+        String actualMessage = new HomePage(getDriver())
+                .createJob()
+                .selectFreestyle()
+                .getErrorMessageOnEmptyField();
+
+        Assert.assertEquals(actualMessage, message);
+    }
 }
