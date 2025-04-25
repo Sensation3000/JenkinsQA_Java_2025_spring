@@ -236,4 +236,36 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
                 .map(WebElement::getText).toList();
     }
+
+    public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage enterAuthToken(String token) {
+        getDriver().findElement(By.xpath("//input[@name='authToken']")).sendKeys(token);
+
+        return this;
+    }
+
+    public String getAuthenticationTokenLabelText() {
+        return getDriver().findElement(By.xpath("//div[text()='Authentication Token']")).getText();
+    }
+
+    public String getAuthTokenDomValue() {
+        return getDriver().findElement(By.xpath("//input[@name='authToken']")).getDomAttribute("value");
+    }
+
+    public String getTriggerInfoText() {
+        return getDriver()
+                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]"))
+                .getText()
+                .trim();
+    }
+
+
+
+
+
 }
