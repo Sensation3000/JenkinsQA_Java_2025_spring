@@ -95,7 +95,7 @@ public class NewItemPage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[4]"))).click();
+        getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new MultiConfigurationConfigurePage(getDriver());
