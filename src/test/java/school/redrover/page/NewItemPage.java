@@ -11,6 +11,7 @@ import school.redrover.common.TestUtils;
 import java.time.Duration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,5 +157,28 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new OrganizationFolderConfigurePage(getDriver());
+    }
+
+    public List<String> getJobsDescriptions() {
+        return getDriver().findElements(By.className("desc"))
+                .stream()
+                .map(jobDescription -> jobDescription.getText()).collect(Collectors.toList());
+    }
+    public List<String> getAllProjectTypeTitles() {
+        return Arrays.asList(
+                        "//span[@class][text()='Freestyle project']",
+                        "//span[@class][text()='Pipeline']",
+                        "//span[@class][text()='Multi-configuration project']",
+                        "//span[@class][text()='Folder']",
+                        "//span[@class][text()='Multibranch Pipeline']",
+                        "//span[@class][text()='Organization Folder']"
+                ).stream()
+                .map(xpath -> getDriver().findElement(By.xpath(xpath)).getText())
+                .toList();
+    }
+
+    public String getCopyFromText() {
+        WebElement copyFromTextBlock = getDriver().findElement(By.xpath("//div[@class='add-item-copy']"));
+        return copyFromTextBlock.getText().trim();
     }
 }

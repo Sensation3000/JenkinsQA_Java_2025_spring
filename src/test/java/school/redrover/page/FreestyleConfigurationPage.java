@@ -1,9 +1,7 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -124,9 +122,118 @@ public class FreestyleConfigurationPage extends BasePage {
         return "";
     }
 
+    public String getProjectStatus() {
+        return getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title")).getText();
+    }
+
     public FreestyleConfigurationPage waitUntilTextConfigureToBePresentInH1() {
         getWait10().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), "Configure"));
 
         return this;
+    }
+
+    public String getSectionNameTriggers() {
+        return getDriver().findElement(By.id("triggers")).getText();
+    }
+
+    public String getSubtitleTextTriggers() {
+        return getDriver()
+                .findElement(By.xpath("//div[contains(text(), 'Set up')]"))
+                .getText();
+    }
+
+    public boolean isTriggerBuildsRemotelyCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb13")).isDisplayed();
+    }
+
+    public boolean isTriggerBuildsRemotelyCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb13")).isEnabled();
+    }
+
+    public String getTriggerBuildsRemotelyLabelText() {
+        return getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).getText();
+    }
+
+    public int countHelperIconsTriggersSection() {
+        return getDriver().findElements(By.xpath("//div[@class='jenkins-section__title' and @id='triggers']/following-sibling::div//a[@class='jenkins-help-button']")).size();
+    }
+
+    public String getTriggerBuildsRemotelyHelpIconTitle() {
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[1]/div/a"))
+                .getDomAttribute("title");
+    }
+
+    public boolean isBuildAfterProjectsCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb14")).isDisplayed();
+    }
+
+    public boolean isBuildAfterProjectsCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb14")).isEnabled();
+    }
+
+    public String getBuildAfterProjectsLabelText() {
+        return getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).getText();
+    }
+
+    public String getBuildAfterProjectsHelpIconTitle() {
+        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[4]/div[1]/div/a"))
+                .getDomAttribute("title");
+    }
+
+    public boolean isBuildPeriodicallyCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb15")).isDisplayed();
+    }
+
+    public boolean isBuildPeriodicallyCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb15")).isEnabled();
+    }
+
+    public String getBuildPeriodicallyLabelText() {
+        return getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).getText();
+    }
+
+    public String getBuildPeriodicallyHelpIconTitle() {
+        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[5]/div[1]/div/a"))
+                .getDomAttribute("title");
+    }
+
+    public boolean isGithubHookTriggerCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb16")).isDisplayed();
+    }
+
+    public boolean isGithubHookTriggerCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb16")).isEnabled();
+    }
+
+    public String getGithubHookTriggerLabelText() {
+        return getDriver().findElement(By.xpath("//label[contains(text(), 'GitHub hook trigger for GITScm polling')]")).getText();
+    }
+
+    public String getGithubHookTriggerHelpIconTitle() {
+        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[6]/div[1]/div/a"))
+                .getDomAttribute("title");
+    }
+
+    public FreestyleConfigurationPage addBuildSteps(Integer itemNumber){
+        Actions actions = new Actions(getDriver());
+
+        WebElement scroll = getDriver().findElement(By.cssSelector("button.hetero-list-add[suffix='publisher']"));
+
+        actions.scrollToElement(scroll).perform();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.cssSelector("button.jenkins-button.hetero-list-add[suffix='builder']"))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
+
+        actions.scrollToElement(scroll).perform();
+
+        return this;
+    }
+
+    public List<String> getBuildStepsList() {
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
+                .map(WebElement::getText).toList();
     }
 }

@@ -14,6 +14,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
 import java.util.Random;
@@ -136,14 +137,11 @@ public class NewItemPage2Test extends BaseTest {
         );
     }
 
-    @Test(dataProvider = "itemTypes")
-    public void testItemsDescriptions(String itemTypeName, String expectedItemDescription) {
-        clickOnNewItemLink();
+    @Test(dataProvider = "itemDescriptions", dataProviderClass = TestDataProvider.class)
+    public void testItemsDescriptions(List<String> expectedItemDescriptions) {
+        List<String> actualItemDescriptions = homePage.clickNewItemOnLeftSidePanel().getJobsDescriptions();
 
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
-        String itemDescriptionText = itemType.findElement(By.xpath("./../../div")).getText();
-
-        Assert.assertEquals(itemDescriptionText, expectedItemDescription);
+        Assert.assertEquals(actualItemDescriptions, expectedItemDescriptions);
     }
 
     @Test(dataProvider = "itemTypes")

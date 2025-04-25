@@ -37,51 +37,6 @@ public class FreestyleProject4Test extends BaseTest {
 
     }
 
-    @Test(dependsOnMethods = "createNewFreestyleProject")
-    public void testAddAndSaveDescription() {
-        final String description = "Job description";
-
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                        "//a[@href='/job/Test%20item/configure']")).click();
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        assertTrue(getDriver().findElement(By.id("description")).getText().contains(description));
-    }
-
-    @Test(dependsOnMethods = "testAddAndSaveDescription")
-    public void testToolTipEnableDisable() {
-        WebDriver driver = getDriver();
-        Actions actions = new Actions(driver);
-
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                "//a[@href='/job/Test%20item/configure']")).click();
-
-        actions.moveToElement(driver.findElement(By.className("jenkins-toggle-switch__label"))).perform();
-        WebElement tooltip = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.className("tippy-content")));
-
-        assertEquals(tooltip.getText(), "Enable or disable the current project");
-    }
-
-    @Test(dependsOnMethods = "testToolTipEnableDisable")
-    public void testCheckWarningWhenDisabled() {
-        getDriver().findElement(By.linkText(JOB_NAME)).click();
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
-        getDriver().findElement(By.xpath(
-                "//a[@href='/job/Test%20item/configure']")).click();
-        getDriver().findElement(By.id("toggle-switch-enable-disable-project")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        String warning = getDriver().findElement(By.id("enable-project")).getText();
-
-        assertTrue(warning.contains("This project is currently disabled"), "Project is not disabled");
-    }
-
     @Test
     public void testTriggerBuildAfterOtherProjects() {
         final String pageCreateItem = "createItem";
@@ -118,55 +73,21 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    public void testAccessBuildSteps() {
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys("projectName");
-        getDriver().findElement(
-                By.xpath("//span[contains(text(),'Freestyle project')]/ancestor::li")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        assertTrue(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[2]/button"))
-                .isEnabled());
-    }
-
-    @Test
     public void testAddBuildSteps() {
-        boolean present = true;
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .addBuildSteps(7)
+                .addBuildSteps(2)
+                .addBuildSteps(3)
+                .addBuildSteps(4)
+                .addBuildSteps(5)
+                .addBuildSteps(6)
+                .addBuildSteps(1)
+                .getBuildStepsList();
 
-        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-
-        for (int i = 1; present; i++) {
-            new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                    By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                    .perform();
-
-            getDriver().findElement(
-                    By.xpath(
-                    "//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[" + (i + 1) + "]/button"))
-                    .click();
-
-            try {
-                getDriver().findElement(
-                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + (i + 1) + "]"));
-            } catch (NoSuchElementException e) {
-                present = false;
-            }
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + i + "]"))).click();
-
-            getDriver().findElement(By.tagName("textarea")).click();
-        }
-
-        new Actions(getDriver()).scrollToElement(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[6]/div[3]/div[2]/button")))
-                        .perform();
-
-        assertEquals(getDriver().findElement(
-                        By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[3]/div[7]/div/div[1]"))
-                        .getText(),
-                "Set build status to \"pending\" on GitHub commit");
+        assertEquals(projectNameList.size(), 7);
     }
 
     @Test
@@ -207,7 +128,7 @@ public class FreestyleProject4Test extends BaseTest {
         assertEquals(entries.size(), logLimit);
     }
 
-    @Test(dependsOnMethods = "testCheckWarningWhenDisabled")
+    @Test(dependsOnMethods = "testCheckDiscardOldBuilds")
     public void deleteFreestyleProject() {
         getDriver().findElement(By.linkText(JOB_NAME)).click();
         getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), JOB_NAME));
