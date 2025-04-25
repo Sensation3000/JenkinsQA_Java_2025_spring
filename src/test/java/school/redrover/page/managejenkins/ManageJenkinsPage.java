@@ -1,9 +1,10 @@
-package school.redrover.page;
+package school.redrover.page.managejenkins;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.user.UsersPage;
 
 public class ManageJenkinsPage extends BasePage {
 

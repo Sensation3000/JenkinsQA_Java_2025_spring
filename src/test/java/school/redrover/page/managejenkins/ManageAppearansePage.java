@@ -1,12 +1,9 @@
-package school.redrover.page;
+package school.redrover.page.managejenkins;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.common.BasePage;
-
-import static java.sql.DriverManager.getDriver;
 
 public class ManageAppearansePage extends BasePage {
 

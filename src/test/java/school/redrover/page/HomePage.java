@@ -5,11 +5,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.account.AccountSettingsPage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
+import school.redrover.page.managejenkins.ManageJenkinsPage;
+import school.redrover.page.multiconfiguration.MultibranchProjectPage;
+import school.redrover.page.newitam.NewItemPage;
+import school.redrover.page.organizaitionfolder.OrganizationFolderPage;
+import school.redrover.page.pipeline.PipelineConfigurationPage;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class HomePage extends BasePage {
 
