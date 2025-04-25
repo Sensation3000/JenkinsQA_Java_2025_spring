@@ -8,8 +8,6 @@ import school.redrover.page.HomePage;
 
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
-
 public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle Project";
