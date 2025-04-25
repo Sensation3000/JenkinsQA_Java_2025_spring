@@ -73,24 +73,6 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    public void testAddBuildSteps() {
-        List<String> projectNameList = new HomePage(getDriver())
-                .clickNewItem()
-                .sendItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
-                .addBuildSteps(7)
-                .addBuildSteps(2)
-                .addBuildSteps(3)
-                .addBuildSteps(4)
-                .addBuildSteps(5)
-                .addBuildSteps(6)
-                .addBuildSteps(1)
-                .getBuildStepsList();
-
-        assertEquals(projectNameList.size(), 7);
-    }
-
-    @Test
     public void testCreateFreestyleProjectWithNoneSCM() {
         TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
         new Actions(getDriver()).moveToElement(getDriver().findElement(

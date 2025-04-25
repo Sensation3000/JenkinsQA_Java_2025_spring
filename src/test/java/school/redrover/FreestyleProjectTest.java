@@ -9,6 +9,8 @@ import school.redrover.page.HomePage;
 
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle Project";
@@ -94,5 +96,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
+    }
+
+    @Test
+    public void testAddBuildSteps() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addBuildSteps(7)
+                .addBuildSteps(2)
+                .addBuildSteps(3)
+                .addBuildSteps(4)
+                .addBuildSteps(5)
+                .addBuildSteps(6)
+                .addBuildSteps(1)
+                .getBuildStepsList();
+
+        assertEquals(projectNameList.size(), 7);
     }
 }
