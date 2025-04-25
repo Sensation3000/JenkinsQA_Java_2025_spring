@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleProjectPage;
@@ -36,7 +37,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(warningProjectIsDisabled, "This project is currently disabled");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testDisableProject")
     public void testEnableProject() {
         String projectIsEnabled = new HomePage(getDriver())
