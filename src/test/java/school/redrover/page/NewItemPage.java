@@ -95,8 +95,8 @@ public class NewItemPage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[4]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[4]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new MultiConfigurationConfigurePage(getDriver());
     }
