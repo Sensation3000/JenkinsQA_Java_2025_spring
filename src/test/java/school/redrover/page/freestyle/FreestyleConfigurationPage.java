@@ -1,4 +1,4 @@
-package school.redrover.page;
+package school.redrover.page.freestyle;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;

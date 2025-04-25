@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.NewItemPage;
+import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
