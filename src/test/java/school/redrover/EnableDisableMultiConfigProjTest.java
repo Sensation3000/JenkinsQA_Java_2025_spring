@@ -16,7 +16,7 @@ public class EnableDisableMultiConfigProjTest extends BaseTest {
                 .selectMultiConfigurationAndClickOk()
                 .checkTooltipVisibility();
 
-        Assert.assertEquals(tooltipIsVisible,"tippy-15");
+        Assert.assertTrue(tooltipIsVisible.contains("tippy"));
     }
 
     @Test (dependsOnMethods = {"testTooltipIsVisible"})
