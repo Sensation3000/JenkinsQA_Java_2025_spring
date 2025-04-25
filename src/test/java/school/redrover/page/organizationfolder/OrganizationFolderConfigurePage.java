@@ -1,4 +1,4 @@
-package school.redrover.page.organizaitionfolder;
+package school.redrover.page.organizationfolder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

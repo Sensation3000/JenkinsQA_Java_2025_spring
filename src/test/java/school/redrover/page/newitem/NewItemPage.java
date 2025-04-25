@@ -1,4 +1,4 @@
-package school.redrover.page.newitam;
+package school.redrover.page.newitem;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +10,7 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multiconfiguration.MultibranchConfigurationPage;
-import school.redrover.page.organizaitionfolder.OrganizationFolderConfigurePage;
+import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
 import java.time.Duration;

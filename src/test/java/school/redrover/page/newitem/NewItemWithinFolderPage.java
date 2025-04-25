@@ -1,4 +1,4 @@
-package school.redrover.page.newitam;
+package school.redrover.page.newitem;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;

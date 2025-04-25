@@ -1,11 +1,11 @@
-package school.redrover.page.organizaitionfolder;
+package school.redrover.page.organizationfolder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
-import school.redrover.page.newitam.NewItemWithinFolderPage;
+import school.redrover.page.newitem.NewItemWithinFolderPage;
 
 public class OrganizationFolderPage extends BasePage {
 
