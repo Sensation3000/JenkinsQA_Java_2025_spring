@@ -193,19 +193,20 @@ public class NewItemPage extends BasePage {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
                 .getText();
 
+    }
+        public NewItemPage clickOnJobItem (String itemLabel){
+            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+            TestUtils.scrollAndClickWithJS(getDriver(), itemType);
 
-    public NewItemPage clickOnJobItem(String itemLabel) {
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+            return this;
+        }
 
-        return this;
+        public boolean isListItemHighlighted (String itemLabel){
+            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+            WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
+
+            return listItem.getDomAttribute("class").contains("active");
+
+        }
     }
 
-    public boolean isListItemHighlighted(String itemLabel) {
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-        WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
-
-        return listItem.getDomAttribute("class").contains("active");
-
-    }
-}
