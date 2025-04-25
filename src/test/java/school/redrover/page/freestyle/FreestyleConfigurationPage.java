@@ -244,6 +244,33 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleConfigurationPage clickBuildAfterProjects() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage setProjectToWatch(String projectName) {
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(projectName);
+        getWait5().until(ExpectedConditions.attributeToBe(By
+                .xpath("//input[@name='_.upstreamProjects']"), "aria-expanded", "true"));
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
+        List<WebElement> labels = getDriver().findElements(
+                By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label")
+        );
+        for (WebElement label : labels) {
+            label.click();
+        }
+
+        return this;
+    }
+
     public FreestyleConfigurationPage enterAuthToken(String token) {
         getDriver().findElement(By.xpath("//input[@name='authToken']")).sendKeys(token);
 
@@ -263,6 +290,16 @@ public class FreestyleConfigurationPage extends BasePage {
                 .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]"))
                 .getText()
                 .trim();
+    }
+
+    public String getCurrentProjectName() {
+        return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
+                .getDomAttribute("value");
+    }
+
+    public boolean isLastRadioButtonSelected() {
+        List<WebElement> radios = getDriver().findElements(By.name("ReverseBuildTrigger.threshold"));
+        return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
 
