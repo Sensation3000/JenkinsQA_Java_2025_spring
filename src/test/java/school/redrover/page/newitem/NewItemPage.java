@@ -180,17 +180,31 @@ public class NewItemPage extends BasePage {
         return copyFromTextBlock.getText().trim();
     }
 
-    public NewItemPage clickOnJobItem(String itemLabel) {
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+    public NewItemPage sendTextCopyForm(String text) {
+        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("from")));
+        actualTextCopyForm.sendKeys(text);
 
-        return this;
+        return new NewItemPage(getDriver());
     }
 
-    public boolean isListItemHighlighted(String itemLabel) {
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-        WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
-
-        return listItem.getDomAttribute("class").contains("active");
+    public String getAutocompleteSuggestionText() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
+                .getText();
     }
-}
+        public NewItemPage clickOnJobItem (String itemLabel){
+            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+            TestUtils.scrollAndClickWithJS(getDriver(), itemType);
+
+            return this;
+        }
+
+        public boolean isListItemHighlighted (String itemLabel){
+            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+            WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
+
+            return listItem.getDomAttribute("class").contains("active");
+        }
+    }
+
