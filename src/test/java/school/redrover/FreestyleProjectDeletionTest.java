@@ -17,9 +17,9 @@ public class FreestyleProjectDeletionTest extends BaseTest {
                 .clickSaveButton()
                 .clickLeftSideMenuDelete()
                 .clickPopUpYesDeleteProject()
-                .isFreestileProgectDeleted(PROJECT_NAME);
+                .isFreestyleProjectDeleted(PROJECT_NAME);
 
-        boolean projectDeleted = homePage.isFreestileProgectDeleted(PROJECT_NAME);
+        boolean projectDeleted = homePage.isFreestyleProjectDeleted(PROJECT_NAME);
 
         Assert.assertTrue(projectDeleted, "Project '" + PROJECT_NAME + "'is not deleted");
     }

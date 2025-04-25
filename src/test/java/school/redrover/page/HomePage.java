@@ -33,7 +33,7 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.name("description")).isDisplayed();
     }
 
-    public boolean isFreestileProgectDeleted(String projectName) {
+    public boolean isFreestyleProjectDeleted(String projectName) {
         try {
             WebElement element = getDriver().
                     findElement(By.xpath("//a[@class='jenkins-table__link model-link inside' and text()='"+ projectName + "']"
