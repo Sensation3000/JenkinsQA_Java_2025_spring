@@ -179,4 +179,17 @@ public class NewItemPage extends BasePage {
         WebElement copyFromTextBlock = getDriver().findElement(By.xpath("//div[@class='add-item-copy']"));
         return copyFromTextBlock.getText().trim();
     }
+    public NewItemPage sendTextCopyForm(String text) {
+        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("from")));
+        actualTextCopyForm.sendKeys(text);
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getAutocompleteSuggestionText() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
+                .getText();
+    }
 }
