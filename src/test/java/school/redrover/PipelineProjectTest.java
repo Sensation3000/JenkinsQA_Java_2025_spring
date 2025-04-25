@@ -7,7 +7,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
-public class PipelineTest extends BaseTest {
+public class PipelineProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "New Pipeline";
     private static final String PIPELINE_DESCRIPTION = "Pipeline Project Name";
