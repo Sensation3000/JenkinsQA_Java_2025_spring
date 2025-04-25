@@ -35,7 +35,7 @@ public class NewJob3Test extends BaseTest {
                     .sendItemName(invalidName);
 
             String actualError = newItemPage.getItemNameInvalidMessage();
-            Assert.assertTrue(actualError.contains("is an unsafe"), "Ошибка не отображается для имени: " + invalidName);
+            Assert.assertTrue(actualError.contains("is an unsafe"), invalidName);
             TestUtils.gotoHomePage(this);
         }
     }
