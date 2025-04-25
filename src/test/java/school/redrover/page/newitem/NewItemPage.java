@@ -192,7 +192,6 @@ public class NewItemPage extends BasePage {
         return getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
                 .getText();
-
     }
         public NewItemPage clickOnJobItem (String itemLabel){
             WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
@@ -206,7 +205,6 @@ public class NewItemPage extends BasePage {
             WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
 
             return listItem.getDomAttribute("class").contains("active");
-
         }
     }
 
