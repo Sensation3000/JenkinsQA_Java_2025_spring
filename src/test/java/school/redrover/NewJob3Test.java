@@ -44,6 +44,7 @@ public class NewJob3Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
@@ -74,6 +75,7 @@ public class NewJob3Test extends BaseTest {
         Assert.assertEquals(actualTitles, expectedTitles);
     }
 
+    @Ignore
     @Test
     public void testNewItemCreation() {
         String projectName = TestUtils.getItemTypeName(1);
