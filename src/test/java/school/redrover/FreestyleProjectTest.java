@@ -37,7 +37,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(warningProjectIsDisabled, "This project is currently disabled");
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testDisableProject")
     public void testEnableProject() {
         String projectIsEnabled = new HomePage(getDriver())
