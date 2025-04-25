@@ -10,7 +10,6 @@ public class FreestyleProjectDeletionTest extends BaseTest {
 
     @Test
     public void testFreestyleProjectDeletion() {
-
         HomePage homePage = new HomePage(getDriver());
         homePage.clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
