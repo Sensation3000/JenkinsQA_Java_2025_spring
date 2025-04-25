@@ -1,5 +1,6 @@
 package school.redrover.page.freestyle;
 
+import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -214,18 +215,18 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public FreestyleConfigurationPage addBuildSteps(Integer itemNumber){
+    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
         Actions actions = new Actions(getDriver());
 
-        WebElement scroll = getDriver().findElement(By.cssSelector("button.hetero-list-add[suffix='publisher']"));
+        WebElement scroll = getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
 
         actions.scrollToElement(scroll).perform();
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("button.jenkins-button.hetero-list-add[suffix='builder']"))).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']"))).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
+                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
 
         actions.scrollToElement(scroll).perform();
 
