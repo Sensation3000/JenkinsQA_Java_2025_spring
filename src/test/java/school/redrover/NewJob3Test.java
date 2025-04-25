@@ -76,9 +76,10 @@ public class NewJob3Test extends BaseTest {
 
     @Test
     public void testNewItemCreation() {
-        String projectName = TestUtils.getItemTypeName(1);
+        new HomePage(getDriver())
+                .createJob()
+                .enterProjectNameAndSelect("Freestyle project","Freestyle project");
 
-        TestUtils.createProjectWithName(getDriver(), projectName, 1);
         NewItemPage newItemPage = new HeaderComponent(getDriver())
                 .goToHomePage()
                 .clickNewItem();
