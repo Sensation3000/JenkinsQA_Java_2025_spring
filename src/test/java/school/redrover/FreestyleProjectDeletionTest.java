@@ -6,23 +6,23 @@ import school.redrover.page.HomePage;
 
 public class FreestyleProjectDeletionTest extends BaseTest {
 
-    private static final String projectName = "TestProject";
+    private static final String PROJECT_NAME = "TestProject";
 
     @Test
     public void testFreestyleProjectDeletion() {
 
         HomePage homePage = new HomePage(getDriver());
         homePage.clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
+                .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLeftSideMenuDelete()
                 .clickPopUpYesDeleteProject()
-                .isFreestileProgectDeleted(projectName);
+                .isFreestileProgectDeleted(PROJECT_NAME);
 
-        boolean projectDeleted = homePage.isFreestileProgectDeleted(projectName);
+        boolean projectDeleted = homePage.isFreestileProgectDeleted(PROJECT_NAME);
 
-        Assert.assertTrue(projectDeleted, "Project '" + projectName + "'is not deleted");
+        Assert.assertTrue(projectDeleted, "Project '" + PROJECT_NAME + "'is not deleted");
     }
 }
 
