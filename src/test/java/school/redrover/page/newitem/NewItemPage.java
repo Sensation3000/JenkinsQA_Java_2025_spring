@@ -9,7 +9,8 @@ import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.multiconfiguration.MultibranchConfigurationPage;
+import school.redrover.page.multibranch.MultibranchConfigurationPage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
