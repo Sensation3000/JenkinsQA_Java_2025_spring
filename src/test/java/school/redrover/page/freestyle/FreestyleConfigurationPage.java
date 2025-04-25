@@ -218,24 +218,25 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
         Actions actions = new Actions(getDriver());
 
-        WebElement scroll = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
-
-        actions.scrollToElement(scroll).perform();
+        actions.scrollToElement(getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")))).perform();
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']"))).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
 
-        actions.scrollToElement(scroll).perform();
+        actions.sendKeys(Keys.END).perform();
 
         return this;
     }
 
     public List<String> getBuildStepsList() {
-        return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
-                .map(WebElement::getText).toList();
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -264,9 +265,4 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getText()
                 .trim();
     }
-
-
-
-
-
 }
