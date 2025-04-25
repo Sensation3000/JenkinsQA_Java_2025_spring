@@ -1,4 +1,4 @@
-package school.redrover.page;
+package school.redrover.page.newitem;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +7,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.page.folder.FolderConfigurationPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
+import school.redrover.page.multiconfiguration.MultibranchConfigurationPage;
+import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
+import school.redrover.page.pipeline.PipelineConfigurationPage;
 
 import java.time.Duration;
 
@@ -37,7 +42,6 @@ public class NewItemPage extends BasePage {
     }
 
     public String getEmptyNameMessage() {
-
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required"))).getText();
     }
 
@@ -79,19 +83,19 @@ public class NewItemPage extends BasePage {
     public List<String> getItemTypesTextList() {
         List<String> itemTypesTextList = new ArrayList<>();
         List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
-        for (WebElement webElement: webElementList) {
+        for (WebElement webElement : webElementList) {
             itemTypesTextList.add(webElement.getText());
         }
         return itemTypesTextList;
     }
-  
+
     public String getItemNameInvalidMessage() {
-        
+
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
-  
+
     public String getCopyFromFieldText() {
-      
+
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 
@@ -110,14 +114,14 @@ public class NewItemPage extends BasePage {
         return new FolderConfigurationPage(getDriver());
     }
 
-    public String getItemTypeText(String itemType){
+    public String getItemTypeText(String itemType) {
         return getDriver().findElement(By.xpath("//span[text()='" + itemType + "']")).getText();
     }
 
     public List<String> getAllItemsTypesLabels() {
         return getDriver().findElements(By.className("label"))
-                          .stream()
-                          .map(itemType -> itemType.getText()).collect(Collectors.toList());
+                .stream()
+                .map(itemType -> itemType.getText()).collect(Collectors.toList());
     }
 
     public NewItemPage enterProjectNameAndSelect(String nameProject, String projectTypeText) {
@@ -157,6 +161,7 @@ public class NewItemPage extends BasePage {
                 .stream()
                 .map(jobDescription -> jobDescription.getText()).collect(Collectors.toList());
     }
+
     public List<String> getAllProjectTypeTitles() {
         return Arrays.asList(
                         "//span[@class][text()='Freestyle project']",
