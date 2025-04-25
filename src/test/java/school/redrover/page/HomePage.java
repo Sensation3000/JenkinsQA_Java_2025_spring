@@ -33,6 +33,17 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.name("description")).isDisplayed();
     }
 
+    public boolean isFreestileProgectDeleted(String projectName) {
+        try {
+            WebElement element = getDriver().
+                    findElement(By.xpath("//a[@class='jenkins-table__link model-link inside' and text()='"+ projectName + "']"
+            ));
+            return element.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            return true;
+        }
+    }
+
     public HomePage sendDescription(String text) {
         getDriver().findElement(By.cssSelector("#description > form > div.jenkins-form-item.tr > div.setting-main.help-sibling > textarea"))
                 .sendKeys(text);
