@@ -94,7 +94,7 @@ public class NewItemPage extends BasePage {
       
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
-
+// test
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
         getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
