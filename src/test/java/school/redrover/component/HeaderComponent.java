@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseComponent;
 import school.redrover.page.HomePage;
-import school.redrover.page.SearchPage;
+import school.redrover.page.search.SearchPage;
 
 public class HeaderComponent extends BaseComponent {
 

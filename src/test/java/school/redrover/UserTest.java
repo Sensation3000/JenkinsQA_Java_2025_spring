@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.component.HeaderComponent;
-import school.redrover.page.AccountSettingsPage;
+import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.HomePage;
 
 import static org.testng.Assert.assertEquals;

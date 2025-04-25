@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
-import school.redrover.page.NewItemPage;
+import school.redrover.page.newitem.NewItemPage;
 
 import java.util.Arrays;
 import java.util.List;
