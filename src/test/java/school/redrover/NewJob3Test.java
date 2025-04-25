@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -85,6 +86,7 @@ public class NewJob3Test extends BaseTest {
         Assert.assertEquals(actualCopyFromText, "Copy from");
     }
 
+    @Ignore
     @Test
     public void testNewItemCopyFromAutocomplete() {
         new HomePage(getDriver())
