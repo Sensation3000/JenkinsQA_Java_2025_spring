@@ -1,9 +1,10 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.FreestyleProjectPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -25,6 +26,31 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testDisableProject() {
+        String warningProjectIsDisabled = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .waitUntilTextNameProjectToBePresentInH1(PROJECT_NAME)
+                .clickConfigure()
+                .clickEnableDisableToggle()
+                .clickSaveButton()
+                .getDisabledWarningMessageText();
+
+        Assert.assertEquals(warningProjectIsDisabled, "This project is currently disabled");
+    }
+
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testEnableProject() {
+        String projectIsEnabled = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .waitUntilTextNameProjectToBePresentInH1(PROJECT_NAME)
+                .clickEnableButton()
+                .clickConfigure()
+                .getProjectStatus();
+
+        Assert.assertEquals(projectIsEnabled, "Enabled");
+    }
+
+    @Test(dependsOnMethods = "testEnableProject")
     public void testCreateDuplicate() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -40,7 +66,7 @@ public class FreestyleProjectTest extends BaseTest {
         final String newProjectDescription = "This is a NEW freestyleProject description";
 
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickEditDescriptionButton()
                 .sendDescription(newProjectDescription)
                 .clickSave();
@@ -51,7 +77,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testEditDescription")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuRename()
                 .sendName(UPDATED_PROJECT_NAME)
                 .clickRename();
@@ -62,7 +88,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testRenameFreestyleProject")
     public void testDeleteFreestyleProject() {
         List<String> projectNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(UPDATED_PROJECT_NAME)
+                .clickOnJobInListOfItems(UPDATED_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuDelete()
                 .clickPopUpYesDeleteProject()
                 .getProjectNameList();
