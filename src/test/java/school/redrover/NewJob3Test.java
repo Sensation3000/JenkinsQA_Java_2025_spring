@@ -40,7 +40,6 @@ public class NewJob3Test extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
