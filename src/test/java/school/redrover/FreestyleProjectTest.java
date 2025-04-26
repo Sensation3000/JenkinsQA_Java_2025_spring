@@ -98,7 +98,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
     }
 
-    @Ignore
     @Test
     public void testAddBuildSteps() {
         List<String> projectNameList = new HomePage(getDriver())
