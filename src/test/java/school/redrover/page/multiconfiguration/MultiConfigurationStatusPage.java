@@ -2,6 +2,7 @@ package school.redrover.page.multiconfiguration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultiConfigurationStatusPage extends BasePage {
@@ -16,7 +17,18 @@ public class MultiConfigurationStatusPage extends BasePage {
         return this;
     }
 
+    public boolean MessageNotDisplayedCheck() {
+    try {
+        getWait5().until(ExpectedConditions.stalenessOf(getDriver().findElement(By.xpath("//*[@id='enable-project']"))));
+        return true;
+    }
+     catch (Exception e) {
+            return false;
+        }
+    }
+
     public boolean projectDisabledMessageCheck() {
+
         try {
             return getDriver().findElement(By.xpath("//*[@id='enable-project']")).isDisplayed();
         }
