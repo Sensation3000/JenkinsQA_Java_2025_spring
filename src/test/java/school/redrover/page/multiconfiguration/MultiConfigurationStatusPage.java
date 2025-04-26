@@ -17,7 +17,7 @@ public class MultiConfigurationStatusPage extends BasePage {
         return this;
     }
 
-    public boolean MessageNotDisplayedCheck() {
+    public boolean messageNotDisplayedCheck() {
     try {
         getWait5().until(ExpectedConditions.stalenessOf(getDriver().findElement(By.xpath("//*[@id='enable-project']"))));
         return true;

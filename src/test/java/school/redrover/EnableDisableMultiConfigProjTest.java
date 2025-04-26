@@ -43,7 +43,7 @@ public class EnableDisableMultiConfigProjTest extends BaseTest {
                 .clickEnableToggle()
                 .clickSaveButton()
                 .clickEnableButton()
-                .MessageNotDisplayedCheck();
+                .messageNotDisplayedCheck();
 
         Assert.assertTrue(projectDisabledMessageInvisible);
     }
