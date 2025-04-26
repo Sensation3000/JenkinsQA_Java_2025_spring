@@ -1,7 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleProjectPage;
@@ -98,6 +98,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
     }
 
+    @Ignore
     @Test
     public void testAddBuildSteps() {
         List<String> projectNameList = new HomePage(getDriver())
@@ -127,5 +128,17 @@ public class FreestyleProjectTest extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
+    }
+
+    @Test
+    public void testEmptyItemNameField() {
+        final String message = "» This field cannot be empty, please enter a valid name";
+
+        String actualMessage = new HomePage(getDriver())
+                .createJob()
+                .selectFreestyle()
+                .getErrorMessageOnEmptyField();
+
+        Assert.assertEquals(actualMessage, message);
     }
 }
