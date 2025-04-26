@@ -112,7 +112,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .addBuildSteps(5)
                 .addBuildSteps(6)
                 .addBuildSteps(1)
-                .getBuildStepsList();
+                .getChunkHeaderList();
 
         assertEquals(projectNameList.size(), 7);
     }
@@ -140,5 +140,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .getErrorMessageOnEmptyField();
 
         Assert.assertEquals(actualMessage, message);
+    }
+
+    @Test
+    public void testAddPostBuildActions () {
+        List<String> postBuildNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addAddPostBuildActions(1)
+                .addAddPostBuildActions(1)
+                .addAddPostBuildActions(5)
+                .addAddPostBuildActions(11)
+                .addAddPostBuildActions(2)
+                .addAddPostBuildActions(8)
+                .addAddPostBuildActions(10)
+                .getChunkHeaderList();
+
+        assertEquals(postBuildNameList.size(), 6);
     }
 }
