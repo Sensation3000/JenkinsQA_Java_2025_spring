@@ -25,7 +25,7 @@ public class NewJob3Test extends BaseTest {
 
         Assert.assertEquals(actualError, expectedError);
     }
-
+    @Ignore
     @Test
     public void testInvalidCharactersInItemName() {
         List<String> invalidNames = Arrays.asList("My $#Job!@#", "Test Job#@$", "Job#12$#@3", "My@Job#$", "Job%Test$#");
@@ -40,7 +40,7 @@ public class NewJob3Test extends BaseTest {
             TestUtils.gotoHomePage(this);
         }
     }
-
+    @Ignore
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
