@@ -36,6 +36,10 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("name")).getShadowRoot().findElement(By.cssSelector("div")).getText();
     }
 
+    public boolean isOkButtonEnabled() {
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
+
     public String getAlertMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
@@ -134,7 +138,6 @@ public class NewItemPage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-
     public NewItemPage selectFreestyleAndClickOkNoPageChange() {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
@@ -193,18 +196,34 @@ public class NewItemPage extends BasePage {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
                 .getText();
     }
-        public NewItemPage clickOnJobItem (String itemLabel){
-            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-            TestUtils.scrollAndClickWithJS(getDriver(), itemType);
 
-            return this;
-        }
+    public NewItemPage clickOnJobItem(String itemLabel) {
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
 
-        public boolean isListItemHighlighted (String itemLabel){
-            WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-            WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
-
-            return listItem.getDomAttribute("class").contains("active");
-        }
+        return this;
     }
+
+    public boolean isListItemHighlighted(String itemLabel) {
+        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
+        WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
+
+        return listItem.getDomAttribute("class").contains("active");
+    }
+
+    public String getErrorMessageOnEmptyField() {
+        return getWait5().until
+                (ExpectedConditions.visibilityOfElementLocated((By.cssSelector("#itemname-required.input-validation-message"))))
+                .getText();
+    }
+
+    public boolean isUnsafeCharacterMessageDisplayed() {
+
+        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
+    }
+
+    public boolean isCopyFromOptionInputDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("from"))).isDisplayed();
+    }
+}
 

@@ -1,5 +1,5 @@
 package school.redrover.page;
-
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,6 +31,17 @@ public class HomePage extends BasePage {
 
     public boolean isDescriptionFieldDisplayed() {
         return getDriver().findElement(By.name("description")).isDisplayed();
+    }
+
+    public boolean isFreestyleProjectDeleted(String projectName) {
+        try {
+            WebElement element = getDriver().
+                    findElement(By.xpath("//a[@class='jenkins-table__link model-link inside' and text()='"+ projectName + "']"
+            ));
+            return element.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return true;
+        }
     }
 
     public HomePage sendDescription(String text) {
