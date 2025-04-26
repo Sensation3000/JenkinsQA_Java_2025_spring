@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleProjectPage;
@@ -8,10 +9,13 @@ import school.redrover.page.HomePage;
 
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle Project";
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
+    private static final String PROJECT_DESCRIPTION = "This is a NEW freestyleProject description";
 
     @Test
     public void testCreateFreestyleProject() {
@@ -62,15 +66,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateDuplicate")
     public void testEditDescription() {
-        final String newProjectDescription = "This is a NEW freestyleProject description";
-
-        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickEditDescriptionButton()
-                .sendDescription(newProjectDescription)
-                .clickSave();
+                .sendDescription(PROJECT_DESCRIPTION)
+                .clickSave()
+                .getDescription();
 
-        Assert.assertEquals(freestyleProjectPage.getDescription(), newProjectDescription);
+        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testEditDescription")
@@ -93,5 +96,49 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
+    }
+
+    @Ignore
+    @Test
+    public void testAddBuildSteps() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addBuildSteps(7)
+                .addBuildSteps(2)
+                .addBuildSteps(3)
+                .addBuildSteps(4)
+                .addBuildSteps(5)
+                .addBuildSteps(6)
+                .addBuildSteps(1)
+                .getBuildStepsList();
+
+        assertEquals(projectNameList.size(), 7);
+    }
+
+    @Test
+    public void testCreateWithDescription() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
+    }
+
+    @Test
+    public void testEmptyItemNameField() {
+        final String message = "» This field cannot be empty, please enter a valid name";
+
+        String actualMessage = new HomePage(getDriver())
+                .createJob()
+                .selectFreestyle()
+                .getErrorMessageOnEmptyField();
+
+        Assert.assertEquals(actualMessage, message);
     }
 }
