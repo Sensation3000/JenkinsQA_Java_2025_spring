@@ -229,5 +229,9 @@ public class NewItemPage extends BasePage {
 
         return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
     }
+
+    public boolean isCopyFromOptionInputDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("from"))).isDisplayed();
+    }
 }
 
