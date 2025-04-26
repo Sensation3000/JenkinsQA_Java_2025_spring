@@ -146,4 +146,10 @@ public class FreestyleProjectPage extends BasePage {
 
         return this;
     }
+
+    public FreestyleProjectPage clickLeftSideMenuBuildNow() {
+        getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
+
+        return this;
+    }
 }

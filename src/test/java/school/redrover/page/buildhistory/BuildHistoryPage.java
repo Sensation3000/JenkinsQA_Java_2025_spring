@@ -12,7 +12,11 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public String isBuildHistoryText() {
-
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
+    }
+
+    public String buildProjectText(String name) {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[text()='%s']/..".formatted(name)))).getText();
     }
 }
