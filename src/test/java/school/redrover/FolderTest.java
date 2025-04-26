@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
@@ -59,5 +60,22 @@ public class FolderTest extends BaseTest {
         Thread.sleep(2000);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Folder1");
+    }
+
+    @Test
+    public void testIfCopyFromFieldAppears() {
+        final String folderName = "My Super Cool Folder";
+        final String expectedText = "Copy from";
+
+        String copyFromFieldText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(folderName)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickNewItemOnLeftSidePanel()
+                .getCopyFromFieldText();
+
+        Assert.assertEquals(copyFromFieldText, expectedText);
     }
 }
