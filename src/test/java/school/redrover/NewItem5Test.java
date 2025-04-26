@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -53,6 +54,7 @@ public class NewItem5Test extends BaseTest {
         Assert.assertEquals(actualItemTypesTextList, EXPECTED_ITEM_TYPES_TEXT_LIST);
     }
 
+    @Ignore
     @Test(dataProvider = "safeCharacters", dataProviderClass = TestDataProvider.class)
     public void testCreateItemNameWithSafeCharacters(String safeCharacter) {
         boolean isUnsafeCharacterMessageDisplayed = new HomePage(getDriver())

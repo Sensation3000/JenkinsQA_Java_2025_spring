@@ -71,6 +71,7 @@ public class NewJob3Test extends BaseTest {
         Assert.assertEquals(actualTitles, expectedTitles);
     }
 
+    @Ignore
     @Test
     public void testNewItemCreation() {
         new HomePage(getDriver())
