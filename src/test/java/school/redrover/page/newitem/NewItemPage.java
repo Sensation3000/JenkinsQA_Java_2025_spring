@@ -216,5 +216,14 @@ public class NewItemPage extends BasePage {
                 (ExpectedConditions.visibilityOfElementLocated((By.cssSelector("#itemname-required.input-validation-message"))))
                 .getText();
     }
+
+    public boolean isUnsafeCharacterMessageDisplayed() {
+
+        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
+    }
+
+    public boolean isCopyFromOptionInputDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("from"))).isDisplayed();
+    }
 }
 

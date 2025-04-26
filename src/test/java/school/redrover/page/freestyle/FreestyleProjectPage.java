@@ -19,7 +19,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String getProjectName() {
-        return getDriver().findElement(By.className("page-headline")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline"))).getText();
     }
 
     public String getDescription() {
