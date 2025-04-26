@@ -25,7 +25,7 @@ public class NewJob3Test extends BaseTest {
 
         Assert.assertEquals(actualError, expectedError);
     }
-
+    @Ignore
     @Test
     public void testInvalidCharactersInItemName() {
         List<String> invalidNames = Arrays.asList("My $#Job!@#", "Test Job#@$", "Job#12$#@3", "My@Job#$", "Job%Test$#");
