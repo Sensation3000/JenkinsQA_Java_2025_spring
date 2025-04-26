@@ -216,5 +216,10 @@ public class NewItemPage extends BasePage {
                 (ExpectedConditions.visibilityOfElementLocated((By.cssSelector("#itemname-required.input-validation-message"))))
                 .getText();
     }
+
+    public boolean isUnsafeCharacterMessageDisplayed() {
+
+        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
+    }
 }
 
