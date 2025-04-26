@@ -11,7 +11,7 @@ public class TestDataProvider {
     @DataProvider
     public Object[][] safeCharacters() {
         return new Object[][] {{"Q"}, {"q"}, {"1"}, {"`"}, {"~"}, {"("}, {")"}, {"_"},
-                {"-"}, {"+"}, {"="}, {"{"}, {"}"},  {"'"}, {"\""}, {".A"}, {","}};
+                {"-"}, {"+"}, {"="}, {"{"}, {"}"},  {"'"}, {"\""}, {"a.a"}, {","}};
     }
 
     @DataProvider(name = "provideInvalidCharacters")

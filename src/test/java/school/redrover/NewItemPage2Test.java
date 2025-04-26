@@ -158,13 +158,11 @@ public class NewItemPage2Test extends BaseTest {
     @Test
     public void testIfCopyFromOptionIsDisplayed() {
         TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
-        clickOnNewItemLink();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("p.jenkins-form-label")).getText(),
-                "If you want to create a new item from other existing, you can use this option:"
-        );
-        Assert.assertTrue(getDriver().findElement(By.id("from")).isDisplayed());
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getCopyFromFieldText(), "Copy from");
+        Assert.assertTrue(newItemPage.isCopyFromOptionInputDisplayed());
     }
 
     @Test
