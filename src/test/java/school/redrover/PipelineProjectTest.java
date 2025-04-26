@@ -40,7 +40,6 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testEnableProject() {
-
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
                 .createNewPipeline(PROJECT_NAME)
                 .switchToggle()
