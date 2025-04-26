@@ -10,8 +10,6 @@ import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
 
-    private static int callCount = 0;
-
     public FreestyleConfigurationPage(WebDriver driver) {
         super(driver);
     }
