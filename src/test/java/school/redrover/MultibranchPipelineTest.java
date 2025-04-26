@@ -11,9 +11,24 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.multiconfiguration.MultibranchProjectPage;
 
 
 public class MultibranchPipelineTest extends BaseTest {
+
+    private static final String MULTIBRANCH_NAME = "Multibranch Pipeline Job Test";
+
+    @Test
+    public void testCreateNewJobMultibranch() {
+        MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(MULTIBRANCH_NAME)
+                .selectMultibranchAndClickOk()
+                .clickSaveButton();
+
+        Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);
+    }
 
     @Test
     public void testAddDescriptionCreatingMultibranch() {
