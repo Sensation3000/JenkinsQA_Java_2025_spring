@@ -14,7 +14,6 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
-
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .createJob()
                 .sendItemName(PROJECT_NAME)
@@ -28,7 +27,6 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testDisableProject() {
-
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)

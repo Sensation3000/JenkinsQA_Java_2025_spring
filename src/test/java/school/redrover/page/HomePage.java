@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-task-success='Done.']"))).click();
 
         return new NewItemPage(getDriver());
     }
