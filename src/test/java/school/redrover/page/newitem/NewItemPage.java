@@ -231,7 +231,9 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isCopyFromOptionInputDisplayed() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("from"))).isDisplayed();
+        List<WebElement> copyFromOptionInputs = getDriver().findElements(By.id("from"));
+
+        return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
     }
 }
 
