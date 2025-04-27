@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.List;
 
@@ -248,6 +249,12 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickFreestyleText() {
+        getDriver().findElement(By.xpath("//a[text()='Freestyle']")).click();
 
         return this;
     }
