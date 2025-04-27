@@ -166,11 +166,12 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test
-    public void testIfCopyFromOptionIsNotDisplayed() {
-        clickOnNewItemLink();
+    public void testIfCopyFromOptionInputIsNotDisplayed() {
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
 
-        Assert.assertTrue(getDriver().findElements(By.id("from")).isEmpty());
+        Assert.assertFalse(newItemPage.isCopyFromOptionInputDisplayed());
     }
+
     @Ignore //NewItemPage2Test.testAutocompleteOption:227 » Timeout Expected condition failed: waiting for visibility of element located by By.className: jenkins-dropdown__item (tried for 10 second(s) with 500 milliseconds interval)
     @Test
     public void testAutocompleteOption() {
