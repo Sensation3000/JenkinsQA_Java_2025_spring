@@ -23,7 +23,7 @@ public class BuildHistoryPage extends BasePage {
 
     public String getTextNoBuilds() {
 
-        return getDriver().findElement(By.className("app-builds-container__placeholder")).getText();
+        return getDriver().findElement(By.xpath("//*[@id='no-builds']")).getText();
     }
 
     public BuildHistoryPage clickCollectNow() {
