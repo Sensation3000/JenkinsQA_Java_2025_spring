@@ -28,6 +28,7 @@ public class MultiConfigurationConfigurePage extends BasePage {
         Actions actions = new Actions(getDriver());
         WebElement element = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
         actions.moveToElement(element).perform();
+
         return element.getAttribute("aria-describedby");
     }
 }
