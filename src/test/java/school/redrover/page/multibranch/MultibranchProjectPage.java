@@ -1,4 +1,4 @@
-package school.redrover.page.multiconfiguration;
+package school.redrover.page.multibranch;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

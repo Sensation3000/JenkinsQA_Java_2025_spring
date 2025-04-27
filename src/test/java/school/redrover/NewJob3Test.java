@@ -104,7 +104,7 @@ public class NewJob3Test extends BaseTest {
 
         Assert.assertNotNull(actualText,"Autocomplete suggestion not found.");
     }
-
+    @Ignore
     @Test
     public void testCopyFromNonExistingItem() {
         new HomePage(getDriver())

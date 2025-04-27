@@ -9,7 +9,8 @@ import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.multiconfiguration.MultibranchConfigurationPage;
+import school.redrover.page.multibranch.MultibranchConfigurationPage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
@@ -101,6 +102,13 @@ public class NewItemPage extends BasePage {
     public String getCopyFromFieldText() {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
+    }
+// test
+    public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
+        getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
