@@ -49,17 +49,19 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFolder() throws InterruptedException {
-        getDriver().findElement(By.xpath("//a[contains(@it,'hudson')]")).click();
-        getDriver().findElement(By.id("name")).sendKeys("NewFolder");
-        getDriver().findElement(By.xpath("//li[contains(@class,'Folder')]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys("Folder1");
-        getDriver().findElement(By.name("Submit")).click();
+    public void testDisplayName() {
+        final String folderName = "My Super Cool Folder";
+        final String expectedDisplayName = "Folder Display Name";
 
-        Thread.sleep(2000);
+        String actualDisplayName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(folderName)
+                .selectFolderAndClickOk()
+                .sendDisplayName(expectedDisplayName)
+                .clickSave()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Folder1");
+        Assert.assertEquals(actualDisplayName, expectedDisplayName);
     }
 
     @Test
