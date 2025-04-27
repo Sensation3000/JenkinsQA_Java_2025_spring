@@ -75,6 +75,9 @@ public class NewItemCreate3Test extends BaseTest {
 
     }
 
+
+    @Ignore
+    @Test
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
         final String projectName = "New FreeStyleProject";
