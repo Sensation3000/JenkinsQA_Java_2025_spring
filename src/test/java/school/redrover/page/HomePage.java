@@ -13,6 +13,7 @@ import school.redrover.page.multiconfiguration.MultibranchProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
+import school.redrover.page.view.NewViewPage;
 
 import java.util.List;
 
@@ -167,4 +168,16 @@ public class HomePage extends BasePage {
 
         return new NewItemPage(getDriver());
     }
+
+    public NewViewPage clickNewView() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[aria-label='New View']"))).click();
+
+        return new NewViewPage(getDriver());
+    }
+
+    public String getNameOfView(String viewName) {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/view/" + viewName + "/']"))).getText();
+    }
+
 }
