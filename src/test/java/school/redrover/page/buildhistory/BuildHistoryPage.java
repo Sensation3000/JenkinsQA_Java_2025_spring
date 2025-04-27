@@ -22,7 +22,8 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public String getTextNoBuilds() {
-        return getDriver().findElement(By.xpath("//div[text()='No builds']")).getText();
+
+        return getDriver().findElement(By.xpath("//div[@id='no-builds']")).getText();
     }
 
     public BuildHistoryPage clickCollectNow() {
