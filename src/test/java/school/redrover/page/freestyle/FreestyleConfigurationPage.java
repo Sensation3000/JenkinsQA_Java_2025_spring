@@ -1,9 +1,11 @@
 package school.redrover.page.freestyle;
 
+import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.List;
 
@@ -214,27 +216,91 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public FreestyleConfigurationPage addBuildSteps(Integer itemNumber){
+    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
         Actions actions = new Actions(getDriver());
 
-        WebElement scroll = getDriver().findElement(By.cssSelector("button.hetero-list-add[suffix='publisher']"));
+        WebElement scroll = getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
+        WebElement buttonBuildSteps = getWait5()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']")));
 
-        actions.scrollToElement(scroll).perform();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("button.jenkins-button.hetero-list-add[suffix='builder']"))).click();
+        try {
+            actions.scrollToElement(scroll).perform();
+            buttonBuildSteps.click();
+        } catch (ElementClickInterceptedException e) {
+            getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
+            buttonBuildSteps.click();
+        }
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
-
+                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
         actions.scrollToElement(scroll).perform();
 
         return this;
     }
 
-    public List<String> getBuildStepsList() {
-        return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
-                .map(WebElement::getText).toList();
+    public List<String> getChunkHeaderList() {
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
+    }
+
+    public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickFreestyleText() {
+        getDriver().findElement(By.xpath("//a[text()='Freestyle']")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage enterAuthToken(String token) {
+        getDriver().findElement(By.xpath("//input[@name='authToken']")).sendKeys(token);
+
+        return this;
+    }
+
+    public String getAuthenticationTokenLabelText() {
+        return getDriver().findElement(By.xpath("//div[text()='Authentication Token']")).getText();
+    }
+
+    public String getAuthTokenDomValue() {
+        return getDriver().findElement(By.xpath("//input[@name='authToken']")).getDomAttribute("value");
+    }
+
+    public String getTriggerInfoText() {
+        return getDriver()
+                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[3]/div[4]/div/div[2]"))
+                .getText()
+                .trim();
+    }
+
+    public FreestyleConfigurationPage addAddPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+        final String cssSelector = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement buttonPostBuildAction = getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
+
+        actions.sendKeys(Keys.END).perform();
+        actions.scrollToElement(buttonPostBuildAction).perform();
+
+        buttonPostBuildAction.click();
+
+        List<WebElement> elements = getDriver().findElements(By.cssSelector(cssSelector));
+
+        elements.get(--itemNumber).click();
+
+        actions.sendKeys(Keys.END).perform();
+        actions.scrollToElement(buttonPostBuildAction).perform();
+
+        return this;
     }
 
     public FreestyleConfigurationPage clickToReverseBuildTriggerAndSetUpStreamProject(String jobName) {

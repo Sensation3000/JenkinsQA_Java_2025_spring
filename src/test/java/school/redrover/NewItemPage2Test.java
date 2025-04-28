@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,17 +30,6 @@ public class NewItemPage2Test extends BaseTest {
         } else {
             throw new IllegalStateException("WebDriver is null. Cannot initialize Actions.");
         }
-    }
-
-    private List<WebElement> getNewItemTypes() {
-        return getDriver().findElements(By.xpath("//li[@role='radio']"));
-    }
-
-    private int getScrollValue() {
-        List<WebElement> newItemTypes = getDriver().findElements(By.xpath("//li[@role='radio']"));
-        Dimension size = newItemTypes.get(0).getSize();
-
-        return (size.getHeight() - 12 * 2) * (newItemTypes.size() - 1);
     }
 
     private void clickOnNewItemLink() {
@@ -150,70 +138,49 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertTrue(newItemPage.isListItemHighlighted(itemTypeName));
     }
 
-    @Test
-    public void testOkButtonWhenFieldIsEmpty() {
-        clickOnNewItemLink();
+    @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
+    public void testOkButtonWhenFieldIsEmpty(String itemTypeName) {
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel().clickOnJobItem(itemTypeName);
 
-        List<WebElement> newItemTypes = getNewItemTypes();
-        int expectedScrollValue = getScrollValue();
-
-        for (int i = 0; i < newItemTypes.size(); i++) {
-            newItemTypes.get(i).click();
-            actions.scrollByAmount(0, expectedScrollValue).perform();
-
-            Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
-        }
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
     }
 
     @Test
     public void testIfErrorMessageIsDisplayedWhenFieldIsEmpty() {
-        clickOnNewItemLink();
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel().selectFreestyle();
 
-        List<WebElement> newItemTypes = getNewItemTypes();
-        int expectedScrollValue = getScrollValue();
-
-        for (int i = 0; i < newItemTypes.size(); i++) {
-            newItemTypes.get(i).click();
-            actions.scrollByAmount(0, expectedScrollValue).perform();
-
-            Assert.assertEquals(
-                    getDriver().findElement(By.cssSelector(".input-validation-message")).getText(),
-                    "» This field cannot be empty, please enter a valid name"
-            );
-        }
+        Assert.assertEquals(
+                         newItemPage.getErrorMessageOnEmptyField(),
+                "» This field cannot be empty, please enter a valid name"
+        );
     }
 
     @Test
     public void testIfCopyFromOptionIsDisplayed() {
         TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
-        clickOnNewItemLink();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("p.jenkins-form-label")).getText(),
-                "If you want to create a new item from other existing, you can use this option:"
-        );
-        Assert.assertTrue(getDriver().findElement(By.id("from")).isDisplayed());
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getCopyFromFieldText(), "Copy from");
+        Assert.assertTrue(newItemPage.isCopyFromOptionInputDisplayed());
     }
 
     @Test
-    public void testIfCopyFromOptionIsNotDisplayed() {
-        clickOnNewItemLink();
+    public void testIfCopyFromOptionInputIsNotDisplayed() {
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
 
-        Assert.assertTrue(getDriver().findElements(By.id("from")).isEmpty());
+        Assert.assertFalse(newItemPage.isCopyFromOptionInputDisplayed());
     }
-    @Ignore //NewItemPage2Test.testAutocompleteOption:227 » Timeout Expected condition failed: waiting for visibility of element located by By.className: jenkins-dropdown__item (tried for 10 second(s) with 500 milliseconds interval)
+
     @Test
     public void testAutocompleteOption() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
         TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
-        clickOnNewItemLink();
 
-        enterExistingItemValueToCopyFrom(randomAlphaNumericValue);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item")));
-        WebElement dropdownItem = getDriver().findElement(By.className("jenkins-dropdown__item"));
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
+                                          .enterExistingItemsValueToCopyFrom(randomAlphaNumericValue);
 
-        Assert.assertTrue(dropdownItem.isDisplayed());
-        Assert.assertEquals(dropdownItem.getText(), randomAlphaNumericValue);
+        Assert.assertEquals(newItemPage.getDropdownItemText(), randomAlphaNumericValue);
     }
 
     @Test

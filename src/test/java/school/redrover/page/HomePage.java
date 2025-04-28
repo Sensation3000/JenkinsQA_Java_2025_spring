@@ -1,5 +1,5 @@
 package school.redrover.page;
-
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +10,7 @@ import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
-import school.redrover.page.multiconfiguration.MultibranchProjectPage;
+import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
@@ -32,6 +32,17 @@ public class HomePage extends BasePage {
 
     public boolean isDescriptionFieldDisplayed() {
         return getDriver().findElement(By.name("description")).isDisplayed();
+    }
+
+    public boolean isFreestyleProjectDeleted(String projectName) {
+        try {
+            WebElement element = getDriver().
+                    findElement(By.xpath("//a[@class='jenkins-table__link model-link inside' and text()='"+ projectName + "']"
+            ));
+            return element.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return true;
+        }
     }
 
     public HomePage sendDescription(String text) {
@@ -72,7 +83,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-task-success='Done.']"))).click();
 
         return new NewItemPage(getDriver());
     }

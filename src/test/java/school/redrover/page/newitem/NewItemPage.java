@@ -9,7 +9,8 @@ import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.multiconfiguration.MultibranchConfigurationPage;
+import school.redrover.page.multibranch.MultibranchConfigurationPage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
@@ -18,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
@@ -34,6 +36,10 @@ public class NewItemPage extends BasePage {
 
     public String getInputValue() {
         return getDriver().findElement(By.id("name")).getShadowRoot().findElement(By.cssSelector("div")).getText();
+    }
+
+    public boolean isOkButtonEnabled() {
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
     public String getAlertMessageText() {
@@ -97,6 +103,13 @@ public class NewItemPage extends BasePage {
     public String getCopyFromFieldText() {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
+    }
+// test
+    public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
+        getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
@@ -174,6 +187,20 @@ public class NewItemPage extends BasePage {
         return copyFromTextBlock.getText().trim();
     }
 
+    public NewItemPage sendTextCopyForm(String text) {
+        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("from")));
+        actualTextCopyForm.sendKeys(text);
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getAutocompleteSuggestionText() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-7")))
+                .getText();
+    }
+
     public NewItemPage clickOnJobItem(String itemLabel) {
         WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
         TestUtils.scrollAndClickWithJS(getDriver(), itemType);
@@ -187,4 +214,44 @@ public class NewItemPage extends BasePage {
 
         return listItem.getDomAttribute("class").contains("active");
     }
+
+    public String getErrorMessageOnEmptyField() {
+        return getWait5().until
+                (ExpectedConditions.visibilityOfElementLocated((By.cssSelector("#itemname-required.input-validation-message"))))
+                .getText();
+    }
+
+    public boolean isUnsafeCharacterMessageDisplayed() {
+
+        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
+    }
+
+    public boolean isCopyFromOptionInputDisplayed() {
+        List<WebElement> copyFromOptionInputs = getDriver().findElements(By.id("from"));
+
+        return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
+    }
+
+    public NewItemPage enterExistingItemsValueToCopyFrom(String randomAlphaNumericValue) {
+        Random random = new Random();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
+
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
+                .sendKeys(TestUtils.generateRandomAlphanumeric());
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(inputValue);
+
+        return this;
+    }
+
+    public String getDropdownItemText() {
+        return getWait10()
+                          .until(ExpectedConditions.elementToBeClickable(By.className("jenkins-dropdown__item")))
+                          .getText();
+    }
 }
+
