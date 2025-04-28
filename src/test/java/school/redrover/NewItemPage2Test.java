@@ -178,23 +178,20 @@ public class NewItemPage2Test extends BaseTest {
         TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
-                                          .enterExistingItemsValueToCopyFrom(randomAlphaNumericValue);
+                                          .enterValueToCopyFrom(randomAlphaNumericValue);
 
         Assert.assertEquals(newItemPage.getDropdownItemText(), randomAlphaNumericValue);
     }
 
     @Test
     public void testIfNoItemsMessageIsDisplayed() {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
-        clickOnNewItemLink();
+        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
 
-        enterNonExistingItemValueToCopyFrom(randomAlphaNumericValue);
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
+                                          .enterValueToCopyFrom(TestUtils.generateRandomAlphanumeric() + "_");
 
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__placeholder"))).getText(),
-                "No items"
-        );
+        Assert.assertEquals(newItemPage.getDropdownItemText(), "No items");
+
     }
     @Ignore //NewItemPage2Test.testCopyFromOptionWhenCreatingNewJob:246 » Timeout Expected condition failed: waiting for visibility of element located by By.className: jenkins-dropdown__item (tried for 10 second(s) with 500 milliseconds interval)
     @Test
