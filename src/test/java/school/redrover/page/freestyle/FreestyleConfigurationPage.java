@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
@@ -217,34 +219,60 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
-        Actions actions = new Actions(getDriver());
+        final String locator = "button.jenkins-dropdown__item";
 
-        WebElement scroll = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
-        WebElement buttonBuildSteps = getWait5()
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']")));
+        WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
 
-        try {
-            actions.scrollToElement(scroll).perform();
-            buttonBuildSteps.click();
-        } catch (ElementClickInterceptedException e) {
-            getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
-            buttonBuildSteps.click();
-        }
+            for (int i = 0; i < 5; i++) {
+                try {
+                    new Actions(getDriver())
+                            .scrollToElement(getWait5()
+                            .until(ExpectedConditions
+                            .elementToBeClickable(By.xpath("//*[@id='post-build-actions']")))).perform();
+                    buttonBuildSteps.click();
+                    getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
-        actions.scrollToElement(scroll).perform();
+                    break;
+                } catch (ElementClickInterceptedException e) {
+                    try {
+                        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
+                        buttonBuildSteps.click();
+                        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+
+                        break;
+                    } catch (ElementClickInterceptedException ignored) {}
+                }
+            }
+        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
 
     public List<String> getChunkHeaderList() {
-        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
-                .map(WebElement::getText)
-                .map(text -> text.replace("?", ""))
-                .filter(text -> !text.trim().isEmpty())
-                .toList();
+        final int MAX_ATTEMPTS = 3;
+
+        List<String> previousList = Collections.emptyList();
+        List<String> currentList;
+
+        for (int i = 0; i < MAX_ATTEMPTS; i++) {
+            currentList = getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                    .map(WebElement::getText)
+                    .map(text -> text.replace("?", ""))
+                    .filter(text -> !text.trim().isEmpty())
+                    .toList();
+
+            if (currentList.equals(previousList)) return currentList;
+
+            previousList = new ArrayList<>(currentList);
+
+            if (i < MAX_ATTEMPTS - 1) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+            }
+        }
+
+        return previousList;
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -320,25 +348,24 @@ public class FreestyleConfigurationPage extends BasePage {
         return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
-    public FreestyleConfigurationPage addAddPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
-        final String cssSelector = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
+    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+        final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
 
         Actions actions = new Actions(getDriver());
 
-        WebElement buttonPostBuildAction = getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
+        for (int i = 0; i < 10; i++) {
+            try {
+                actions.sendKeys(Keys.END).perform();
+                getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
-        actions.sendKeys(Keys.END).perform();
-        actions.scrollToElement(buttonPostBuildAction).perform();
+                break;
+            }catch (Exception ignored){
 
-        buttonPostBuildAction.click();
+            }
+        }
 
-        List<WebElement> elements = getDriver().findElements(By.cssSelector(cssSelector));
-
-        elements.get(--itemNumber).click();
-
-        actions.sendKeys(Keys.END).perform();
-        actions.scrollToElement(buttonPostBuildAction).perform();
+        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
