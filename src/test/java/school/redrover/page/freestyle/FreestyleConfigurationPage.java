@@ -248,9 +248,6 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public List<String> getChunkHeaderList() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='general']")));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='post-build-actions']")));
-
         return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
                 .map(WebElement::getText)
                 .map(text -> text.replace("?", ""))
@@ -392,5 +389,11 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public String getBuildStatusText() {
         return getDriver().findElement(By.id("jenkins-build-history")).getText();
+    }
+
+    public FreestyleConfigurationPage clickApply() {
+        new Actions(getDriver()).sendKeys(Keys.END).perform();
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("jenkins-button apply-button")));
+        return this;
     }
 }

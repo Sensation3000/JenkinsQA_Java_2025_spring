@@ -186,6 +186,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .addPostBuildActions(2)
                 .addPostBuildActions(8)
                 .addPostBuildActions(10)
+                .clickApply()
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 6);
