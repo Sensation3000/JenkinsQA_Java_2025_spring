@@ -43,6 +43,12 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
+    public CommonComponent clickOnOkButton() {
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return this.getCommonComponent();
+    }
+
     public String getAlertMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
@@ -126,30 +132,6 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new FolderConfigurationPage(getDriver());
-    }
-
-    public FreestyleConfigurationPage selectFreestyleConfigurationAndClickOkWithJS() {
-        TestUtils.scrollAndClickWithJS(getDriver(),
-                getDriver().findElement(By.xpath("//span[text()='Freestyle project']")));
-        getDriver().findElement(By.id("ok-button")).click();
-
-        return new FreestyleConfigurationPage(getDriver());
-    }
-
-    public PipelineConfigurationPage selectPipelineAndClickOkWithJS() {
-        TestUtils.scrollAndClickWithJS(getDriver(),
-                getDriver().findElement(By.xpath("//span[text()='Pipeline']")));
-        getDriver().findElement(By.id("ok-button")).click();
-
-        return new PipelineConfigurationPage(getDriver());
-    }
-
-    public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOkWithJS() {
-        TestUtils.scrollAndClickWithJS(getDriver(),
-                getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")));
-        getDriver().findElement(By.id("ok-button")).click();
-
-        return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public String getItemTypeText(String itemType) {
@@ -257,7 +239,7 @@ public class NewItemPage extends BasePage {
         return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
     }
 
-    public NewItemPage enterValueToCopyFrom(String randomAlphaNumericValue) {
+    public NewItemPage enterValueToCopyFromInput(String randomAlphaNumericValue) {
         Random random = new Random();
         int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
         String inputValue = randomAlphaNumericValue.substring(0, randomLength);
@@ -270,6 +252,10 @@ public class NewItemPage extends BasePage {
         TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
         copyFromInput.sendKeys(inputValue);
 
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
+                .click();
+
         return this;
     }
 
@@ -277,33 +263,6 @@ public class NewItemPage extends BasePage {
         return getWait10()
                           .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
                           .getText();
-    }
-
-    public CommonComponent selectItemTypeAndClickOk(int randomNumber) {
-        switch (randomNumber) {
-            case 1:
-                selectFreestyleConfigurationAndClickOkWithJS();
-                break;
-            case 2:
-                selectPipelineAndClickOkWithJS();
-                break;
-            case 3:
-                selectMultiConfigurationAndClickOkWithJS();
-                break;
-            case 4:
-                selectFolderAndClickOkWithJS();
-                break;
-            case 5:
-                selectMultibranchAndClickOk();
-                break;
-            case 6:
-                selectOrganizationFolderAndClickOk();
-                break;
-            default:
-                throw new IllegalArgumentException("Unexpected randomNumber: " + randomNumber);
-        }
-
-        return new CommonComponent(getDriver());
     }
 }
 

@@ -42,28 +42,6 @@ public class NewItemPage2Test extends BaseTest {
         return random.nextInt(6) + 1;
     }
 
-    private void enterNonExistingItemValueToCopyFrom(String randomAlphaNumericValue) {
-        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        String generated;
-        Random random = new Random();
-        int randomLength = getRandomNumberWithin1And6();
-
-        do {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < randomLength; i++) {
-                char c = chars.charAt(random.nextInt(chars.length()));
-                sb.append(c);
-            }
-            generated = sb.toString();
-        } while (randomAlphaNumericValue.startsWith(generated));
-
-        WebElement copyFromInput = getDriver().findElement(By.id("from"));
-        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
-        copyFromInput.sendKeys(generated);
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
-    }
-
     private void openDropdownMenuForJob(String itemName) {
         String buttonSelector = String.format("button[data-href*='%s']", itemName);
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector(buttonSelector));
@@ -164,7 +142,7 @@ public class NewItemPage2Test extends BaseTest {
         TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
-                                          .enterValueToCopyFrom(randomAlphaNumericValue);
+                                          .enterValueToCopyFromInput(randomAlphaNumericValue);
 
         Assert.assertEquals(newItemPage.getDropdownItemText(), randomAlphaNumericValue);
     }
@@ -174,7 +152,7 @@ public class NewItemPage2Test extends BaseTest {
         TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
-                                          .enterValueToCopyFrom(TestUtils.generateRandomAlphanumeric() + "_");
+                                          .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric() + "_");
 
         Assert.assertEquals(newItemPage.getDropdownItemText(), "No items");
 
@@ -188,28 +166,22 @@ public class NewItemPage2Test extends BaseTest {
         TestUtils.newItemCreate(this, randomAlphaNumericValue, randomNumber);
 
         CommonComponent commonComponent = homePage.clickNewItemOnLeftSidePanel()
-                                                  .enterValueToCopyFrom(randomAlphaNumericValue)
-                                                  .selectItemTypeAndClickOk(randomNumber);
+                                                  .enterValueToCopyFromInput(randomAlphaNumericValue)
+                                                  .clickOnOkButton();
 
-        Assert.assertTrue(commonComponent.doesUrlContainJobEndpoint());
         Assert.assertTrue(commonComponent.isHeadingDisplayed());
     }
 
     @Test
     public void testIfUserRedirectedToErrorPage() {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
-        clickOnNewItemLink();
+        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
 
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(TestUtils.generateRandomAlphanumeric());
-        enterNonExistingItemValueToCopyFrom(randomAlphaNumericValue);
-        getDriver().findElement(By.id("ok-button")).click();
+        CommonComponent commonComponent = homePage.clickNewItemOnLeftSidePanel()
+                                                  .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric())
+                                                  .clickOnOkButton();
 
-        getWait5().until(ExpectedConditions.urlContains("/createItem"));
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Error");
+        Assert.assertTrue(commonComponent.doesUrlContainCreateItemEndpoint());
+        Assert.assertEquals(commonComponent.getHeadingText(), "Error");
     }
 
     @Test

@@ -11,11 +11,15 @@ public class CommonComponent extends BaseComponent {
         super(driver);
     }
 
-    public boolean doesUrlContainJobEndpoint() {
-        return getWait5().until(ExpectedConditions.urlContains("/job"));
+    public boolean doesUrlContainCreateItemEndpoint() {
+        return getWait5().until(ExpectedConditions.urlContains("/createItem"));
     }
 
     public boolean isHeadingDisplayed() {
         return getWait5().until(ExpectedConditions.elementToBeClickable(By.id("general"))).isDisplayed();
+    }
+
+    public String getHeadingText() {
+        return getDriver().findElement(By.tagName("h1")).getText();
     }
 }
