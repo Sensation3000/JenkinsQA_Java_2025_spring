@@ -277,6 +277,7 @@ public class FreestyleConfigurationPage extends BasePage {
         for (WebElement label : labels) {
             label.click();
         }
+    }
 
     public FreestyleConfigurationPage clickFreestyleText() {
         getDriver().findElement(By.xpath("//a[text()='Freestyle']")).click();
