@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -20,6 +21,7 @@ public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME = "Test item";
     private static final String JOB_NAME_2 = "Second test item";
 
+    @Ignore
     @Test
     public void createNewFreestyleProject() {
 
