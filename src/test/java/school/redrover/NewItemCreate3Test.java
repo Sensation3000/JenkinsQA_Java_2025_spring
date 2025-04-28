@@ -8,11 +8,12 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewItemCreate3Test extends BaseTest {
+
+    static final String NEW_ITEM_NAME = "New free-style project";
 
     public void goToNewItemPage() {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -60,44 +61,28 @@ public class NewItemCreate3Test extends BaseTest {
             getDriver().findElement(By.id("name")).clear();
         }
     }
+
     @Test
-    public  void  testCreateNewItemWithCorrectName() {
-        final String newItemName = "New free-style project";
+    public void testCreateNewItemWithCorrectName() {
         final String expectedName = "New free-style project";
 
         goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys(newItemName);
+        getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
 
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).getText(), expectedName);
-
     }
 
-
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreateNewItemWithCorrectName")
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
-        final String projectName = "New FreeStyleProject";
-
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
-
-        TestUtils.gotoHomePage(this);
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New FreeStyleProject")))
-                        .getText(), "New FreeStyleProject");
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("New Item")));
-        goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         WebElement el = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
-        getWait5().until(ExpectedConditions.visibilityOf(el));
+        getWait10().until(ExpectedConditions.visibilityOf(el));
 
-        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New FreeStyleProject’");
+        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New free-style project’");
     }
 }
-
