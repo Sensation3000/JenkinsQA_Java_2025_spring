@@ -249,6 +249,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public List<String> getChunkHeaderList() {
         waitUntilTextConfigureToBePresentInH1();
+        scrollToTriggersItem();
 
         return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
                 .map(WebElement::getText)
@@ -342,8 +343,8 @@ public class FreestyleConfigurationPage extends BasePage {
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
                 break;
-            }catch (Exception e){
-                actions.sendKeys(Keys.END).perform();
+            }catch (Exception ignored){
+
             }
         }
 
