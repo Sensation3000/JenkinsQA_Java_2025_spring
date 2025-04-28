@@ -172,7 +172,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
-}
 
     @Test
     public void testAddPostBuildActions () {
