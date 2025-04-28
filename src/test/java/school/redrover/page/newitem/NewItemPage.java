@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.component.CommonComponent;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
@@ -125,6 +126,30 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public FreestyleConfigurationPage selectFreestyleConfigurationAndClickOkWithJS() {
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getDriver().findElement(By.xpath("//span[text()='Freestyle project']")));
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FreestyleConfigurationPage(getDriver());
+    }
+
+    public PipelineConfigurationPage selectPipelineAndClickOkWithJS() {
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getDriver().findElement(By.xpath("//span[text()='Pipeline']")));
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+
+    public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOkWithJS() {
+        TestUtils.scrollAndClickWithJS(getDriver(),
+                getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")));
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public String getItemTypeText(String itemType) {
@@ -252,6 +277,33 @@ public class NewItemPage extends BasePage {
         return getWait10()
                           .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
                           .getText();
+    }
+
+    public CommonComponent selectItemTypeAndClickOk(int randomNumber) {
+        switch (randomNumber) {
+            case 1:
+                selectFreestyleConfigurationAndClickOkWithJS();
+                break;
+            case 2:
+                selectPipelineAndClickOkWithJS();
+                break;
+            case 3:
+                selectMultiConfigurationAndClickOkWithJS();
+                break;
+            case 4:
+                selectFolderAndClickOkWithJS();
+                break;
+            case 5:
+                selectMultibranchAndClickOk();
+                break;
+            case 6:
+                selectOrganizationFolderAndClickOk();
+                break;
+            default:
+                throw new IllegalArgumentException("Unexpected randomNumber: " + randomNumber);
+        }
+
+        return new CommonComponent(getDriver());
     }
 }
 
