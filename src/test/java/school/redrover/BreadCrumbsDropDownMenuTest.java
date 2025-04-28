@@ -9,7 +9,6 @@ import school.redrover.page.HomePage;
 
 public class BreadCrumbsDropDownMenuTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testVerifyDropDownMenu() {
         String[] dropDownMenuItems = new HomePage(getDriver())
@@ -23,6 +22,6 @@ public class BreadCrumbsDropDownMenuTest extends BaseTest {
 
         String[] mainMenuItems = new FreestyleProjectPage(getDriver()).getMainMenuItemsText();
 
-        Assert.assertEquals(mainMenuItems, dropDownMenuItems, "Items don't match.");
+        Assert.assertEquals(mainMenuItems, dropDownMenuItems);
     }
 }
