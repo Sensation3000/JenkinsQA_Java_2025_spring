@@ -9,7 +9,7 @@ import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
-import school.redrover.page.multiconfiguration.MultibranchProjectPage;
+import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;

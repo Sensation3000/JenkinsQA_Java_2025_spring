@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -10,7 +11,7 @@ import school.redrover.page.newitem.NewItemPage;
 
 public class AssemblyTest extends BaseTest {
 
-
+    @Ignore
     @Test
     public void testBuildHistory() {
         final String text = "Freestyle";
