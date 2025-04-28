@@ -330,7 +330,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
-    public FreestyleConfigurationPage addAddPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
 
         Actions actions = new Actions(getDriver());

@@ -179,13 +179,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .addAddPostBuildActions(1)
-                .addAddPostBuildActions(1)
-                .addAddPostBuildActions(5)
-                .addAddPostBuildActions(11)
-                .addAddPostBuildActions(2)
-                .addAddPostBuildActions(8)
-                .addAddPostBuildActions(10)
+                .addPostBuildActions(1)
+                .addPostBuildActions(1)
+                .addPostBuildActions(5)
+                .addPostBuildActions(11)
+                .addPostBuildActions(2)
+                .addPostBuildActions(8)
+                .addPostBuildActions(10)
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 6);
