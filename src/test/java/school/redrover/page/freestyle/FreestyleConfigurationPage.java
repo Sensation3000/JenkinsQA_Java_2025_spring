@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.List;
 
@@ -220,22 +221,30 @@ public class FreestyleConfigurationPage extends BasePage {
 
         WebElement scroll = getWait5()
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
+        WebElement buttonBuildSteps = getWait5()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']")));
 
-        actions.scrollToElement(scroll).perform();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[suffix='builder']"))).click();
+        try {
+            actions.scrollToElement(scroll).perform();
+            buttonBuildSteps.click();
+        } catch (ElementClickInterceptedException e) {
+            getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
+            buttonBuildSteps.click();
+        }
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))).click();
-
         actions.scrollToElement(scroll).perform();
 
         return this;
     }
 
-    public List<String> getBuildStepsList() {
-        return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
-                .map(WebElement::getText).toList();
+    public List<String> getChunkHeaderList() {
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -243,6 +252,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
         return this;
     }
+
 
     public FreestyleConfigurationPage clickBuildAfterProjects() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
@@ -268,6 +278,10 @@ public class FreestyleConfigurationPage extends BasePage {
             label.click();
         }
 
+    public FreestyleConfigurationPage clickFreestyleText() {
+        getDriver().findElement(By.xpath("//a[text()='Freestyle']")).click();
+
+
         return this;
     }
 
@@ -292,6 +306,7 @@ public class FreestyleConfigurationPage extends BasePage {
                 .trim();
     }
 
+
     public String getCurrentProjectName() {
         return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
                 .getDomAttribute("value");
@@ -302,8 +317,67 @@ public class FreestyleConfigurationPage extends BasePage {
         return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
+    public FreestyleConfigurationPage addAddPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+        final String cssSelector = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement buttonPostBuildAction = getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[suffix='publisher']")));
+
+        actions.sendKeys(Keys.END).perform();
+        actions.scrollToElement(buttonPostBuildAction).perform();
+
+        buttonPostBuildAction.click();
+
+        List<WebElement> elements = getDriver().findElements(By.cssSelector(cssSelector));
+
+        elements.get(--itemNumber).click();
+
+        actions.sendKeys(Keys.END).perform();
+        actions.scrollToElement(buttonPostBuildAction).perform();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickToReverseBuildTriggerAndSetUpStreamProject(String jobName) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@id='triggers']/parent::section")));
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
 
 
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
 
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(jobName);
 
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickBuildNow() {
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage waitJobStarted(String jobName) {
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-builds")));
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.cssSelector(" #jenkins-build-history a[title='Success']")));
+
+        return this;
+    }
+
+    public List<String> getBuildList() {
+        return getDriver().findElements(By.cssSelector("div[page-entry-id]")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public String getBuildStatusText() {
+        return getDriver().findElement(By.id("jenkins-build-history")).getText();
+    }
 }
