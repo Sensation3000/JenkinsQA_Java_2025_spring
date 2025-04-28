@@ -3,6 +3,8 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.component.HeaderComponent;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
@@ -12,6 +14,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle Project";
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
+    private static final String SECOND_PROJECT_NAME = "Second Freestyle Project";
 
     @Test
     public void testCreateFreestyleProject() {
@@ -93,5 +96,35 @@ public class FreestyleProjectTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
+    }
+
+    @Test
+    public void testTriggerBuildAfterOtherProjects() {
+        new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleClickOkAndWaitCreateItemFormIsClose();
+
+        new HeaderComponent(getDriver())
+                .goToHomePage()
+                .clickNewItem()
+                .sendItemName(SECOND_PROJECT_NAME)
+                .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
+                .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
+                .clickSaveButton()
+                .waitUntilTextNameProjectToBePresentInH1(SECOND_PROJECT_NAME);
+
+        final List<String> builds = new HeaderComponent(getDriver())
+                .goToHomePage()
+                .clickJobLink(PROJECT_NAME)
+                .clickBuildNow()
+                .waitJobStarted(SECOND_PROJECT_NAME)
+                .getBuildList();
+
+        final String buildStatusText = new FreestyleConfigurationPage(getDriver()).getBuildStatusText();
+
+        Assert.assertEquals(builds.size(), 1);
+        Assert.assertTrue(buildStatusText.contains("Today"));
+        Assert.assertTrue(buildStatusText.contains("#1"));
     }
 }

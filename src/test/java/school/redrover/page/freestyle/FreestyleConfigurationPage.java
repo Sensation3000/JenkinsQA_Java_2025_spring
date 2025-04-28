@@ -236,4 +236,44 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElements(By.cssSelector(".repeated-chunk__header > div")).stream()
                 .map(WebElement::getText).toList();
     }
+
+    public FreestyleConfigurationPage clickToReverseBuildTriggerAndSetUpStreamProject(String jobName) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@id='triggers']/parent::section")));
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("input[name = 'jenkins-triggers-ReverseBuildTrigger']"))));
+
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(jobName);
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickBuildNow() {
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage waitJobStarted(String jobName) {
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-builds")));
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.cssSelector(" #jenkins-build-history a[title='Success']")));
+
+        return this;
+    }
+
+    public List<String> getBuildList() {
+        return getDriver().findElements(By.cssSelector("div[page-entry-id]")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public String getBuildStatusText() {
+        return getDriver().findElement(By.id("jenkins-build-history")).getText();
+    }
 }
