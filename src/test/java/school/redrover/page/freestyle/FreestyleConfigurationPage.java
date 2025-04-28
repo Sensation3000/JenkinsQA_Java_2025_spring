@@ -8,6 +8,7 @@ import school.redrover.common.BasePage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
@@ -248,11 +249,30 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public List<String> getChunkHeaderList() {
-        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
-                .map(WebElement::getText)
-                .map(text -> text.replace("?", ""))
-                .filter(text -> !text.trim().isEmpty())
-                .toList();
+        final int MAX_ATTEMPTS = 3;
+
+        List<String> previousList = Collections.emptyList();
+        List<String> currentList;
+
+        for (int i = 0; i < MAX_ATTEMPTS; i++) {
+            currentList = getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                    .map(WebElement::getText)
+                    .map(text -> text.replace("?", ""))
+                    .filter(text -> !text.trim().isEmpty())
+                    .toList();
+
+            if (currentList.equals(previousList)) return currentList;
+
+            previousList = new ArrayList<>(currentList);
+
+            if (i < MAX_ATTEMPTS - 1) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+            }
+        }
+
+        return previousList;
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -389,11 +409,5 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public String getBuildStatusText() {
         return getDriver().findElement(By.id("jenkins-build-history")).getText();
-    }
-
-    public FreestyleConfigurationPage clickApply() {
-        new Actions(getDriver()).sendKeys(Keys.END).perform();
-        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("jenkins-button apply-button")));
-        return this;
     }
 }
