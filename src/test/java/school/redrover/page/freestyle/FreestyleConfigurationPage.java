@@ -248,8 +248,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public List<String> getChunkHeaderList() {
-        scrollToGeneralItem();
-        clickPostBuildActionsItem();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='general']")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='post-build-actions']")));
 
         return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
                 .map(WebElement::getText)
