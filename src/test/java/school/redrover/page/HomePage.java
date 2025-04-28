@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
@@ -167,6 +168,12 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public FreestyleConfigurationPage clickJobLink(String jobName) {
+        getDriver().findElement(By.linkText(jobName)).click();
+
+        return new FreestyleConfigurationPage(getDriver());
     }
 
     public NewViewPage clickNewView() {
