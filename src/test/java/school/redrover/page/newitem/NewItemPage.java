@@ -147,14 +147,9 @@ public class NewItemPage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public NewItemPage selectFreestyleAndClickOkNoPageChange() {
+    public FreestyleConfigurationPage selectFreestyleClickOkAndWaitCreateItemFormIsClose() {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        return this;
-    }
-
-    public FreestyleConfigurationPage waitInvisibilityCreateItemPage() {
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
 
         return new FreestyleConfigurationPage(getDriver());
