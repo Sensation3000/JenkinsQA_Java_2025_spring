@@ -232,7 +232,7 @@ public class NewItemPage extends BasePage {
         return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
     }
 
-    public NewItemPage enterExistingItemsValueToCopyFrom(String randomAlphaNumericValue) {
+    public NewItemPage enterValueToCopyFrom(String randomAlphaNumericValue) {
         Random random = new Random();
         int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
         String inputValue = randomAlphaNumericValue.substring(0, randomLength);
@@ -250,7 +250,7 @@ public class NewItemPage extends BasePage {
 
     public String getDropdownItemText() {
         return getWait10()
-                          .until(ExpectedConditions.elementToBeClickable(By.className("jenkins-dropdown__item")))
+                          .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
                           .getText();
     }
 }
