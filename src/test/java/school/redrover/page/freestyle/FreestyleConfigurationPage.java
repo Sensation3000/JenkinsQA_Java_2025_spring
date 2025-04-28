@@ -277,6 +277,8 @@ public class FreestyleConfigurationPage extends BasePage {
         for (WebElement label : labels) {
             label.click();
         }
+
+        return this;
     }
 
     public FreestyleConfigurationPage clickFreestyleText() {
