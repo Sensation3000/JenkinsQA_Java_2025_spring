@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
@@ -234,6 +235,28 @@ public class NewItemPage extends BasePage {
         List<WebElement> copyFromOptionInputs = getDriver().findElements(By.id("from"));
 
         return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
+    }
+
+    public NewItemPage enterExistingItemsValueToCopyFrom(String randomAlphaNumericValue) {
+        Random random = new Random();
+        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
+        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
+
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
+                .sendKeys(TestUtils.generateRandomAlphanumeric());
+
+        WebElement copyFromInput = getDriver().findElement(By.id("from"));
+        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        copyFromInput.sendKeys(inputValue);
+
+        return this;
+    }
+
+    public String getDropdownItemText() {
+        return getWait10()
+                          .until(ExpectedConditions.elementToBeClickable(By.className("jenkins-dropdown__item")))
+                          .getText();
     }
 }
 
