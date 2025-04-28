@@ -6,10 +6,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.component.CommonComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
@@ -62,20 +62,6 @@ public class NewItemPage2Test extends BaseTest {
         copyFromInput.sendKeys(generated);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
-    }
-
-    private void enterExistingItemValueToCopyFrom(String randomAlphaNumericValue) {
-        Random random = new Random();
-        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
-        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(TestUtils.generateRandomAlphanumeric());
-
-        WebElement copyFromInput = getDriver().findElement(By.id("from"));
-        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
-        copyFromInput.sendKeys(inputValue);
     }
 
     private void openDropdownMenuForJob(String itemName) {
@@ -193,20 +179,20 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(newItemPage.getDropdownItemText(), "No items");
 
     }
-    @Ignore //NewItemPage2Test.testCopyFromOptionWhenCreatingNewJob:246 » Timeout Expected condition failed: waiting for visibility of element located by By.className: jenkins-dropdown__item (tried for 10 second(s) with 500 milliseconds interval)
+
     @Test
     public void testCopyFromOptionWhenCreatingNewJob() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
-        clickOnNewItemLink();
+        int randomNumber = getRandomNumberWithin1And6();
 
-        enterExistingItemValueToCopyFrom(randomAlphaNumericValue);
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown__item"))).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, randomNumber);
 
-        getWait5().until(ExpectedConditions.urlContains("/job"));
+        CommonComponent commonComponent = homePage.clickNewItemOnLeftSidePanel()
+                                                  .enterValueToCopyFrom(randomAlphaNumericValue)
+                                                  .selectItemTypeAndClickOk(randomNumber);
 
-        Assert.assertTrue(getDriver().findElement(By.id("general")).isDisplayed());
+        Assert.assertTrue(commonComponent.doesUrlContainJobEndpoint());
+        Assert.assertTrue(commonComponent.isHeadingDisplayed());
     }
 
     @Test
