@@ -87,7 +87,8 @@ public class NewJob3Test extends BaseTest {
         Assert.assertEquals(actualCopyFromText, "Copy from");
     }
 
-    @Ignore
+    @Ignore //Error:    NewJob3Test.testNewItemCopyFromAutocomplete:94 » StaleElementReference stale element reference: stale element not found
+
     @Test
     public void testNewItemCopyFromAutocomplete() {
         new HomePage(getDriver())
