@@ -30,7 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
     public void testDisableProject() {
         String warningProjectIsDisabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))

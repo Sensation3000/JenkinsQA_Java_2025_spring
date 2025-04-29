@@ -24,7 +24,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("button[name='Submit']")))).click();
 
         return new FreestyleProjectPage(getDriver());
     }
