@@ -20,17 +20,6 @@ public class FreestyleProject4Test extends BaseTest {
     private static final String JOB_NAME = "Test item";
 
     @Test
-    public void testCreateFreestyleProjectWithNoneSCM() {
-        TestUtils.createFreestyleProject(getDriver(), JOB_NAME);
-        new Actions(getDriver()).moveToElement(getDriver().findElement(
-                By.xpath("//label[text()='None']"))).perform();
-        getDriver().findElement(By.name("Submit")).click();
-        WebElement result = getDriver().findElement(
-                By.cssSelector("#main-panel > div.jenkins-app-bar > div.jenkins-app-bar__content.jenkins-build-caption > h1"));
-        Assert.assertEquals(result.getText(), JOB_NAME);
-    }
-
-    @Test
     public void testCheckDiscardOldBuilds() {
         int expectedClicks = 8;
         int logLimit = 5;

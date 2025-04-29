@@ -453,4 +453,9 @@ public class FreestyleConfigurationPage extends BasePage {
     public String getTimePeriod() {
         return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
+
+    public void selectNoneSCM() {
+        new Actions(getDriver()).moveToElement(getDriver().findElement(
+                By.xpath("//label[text()='None']"))).perform();
+    }
 }
