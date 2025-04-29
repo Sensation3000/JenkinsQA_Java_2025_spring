@@ -180,12 +180,29 @@ public class FreestyleProjectTest extends BaseTest {
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
-                .addPostBuildActions(1)
                 .addPostBuildActions(5)
+                .addPostBuildActions(1)
                 .addPostBuildActions(11)
                 .addPostBuildActions(2)
                 .addPostBuildActions(8)
                 .addPostBuildActions(10)
+                .getChunkHeaderList();
+
+        assertEquals(postBuildNameList.size(), 6);
+    }
+
+    @Test
+    public void testAddBuildStepsANDPostBuildActions () {
+        List<String> postBuildNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addPostBuildActions(1)
+                .addPostBuildActions(5)
+                .addBuildSteps(5)
+                .addPostBuildActions(11)
+                .addBuildSteps(7)
+                .addPostBuildActions(8)
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 6);

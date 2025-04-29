@@ -226,9 +226,9 @@ public class FreestyleConfigurationPage extends BasePage {
             for (int i = 0; i < 5; i++) {
                 try {
                     new Actions(getDriver())
-                            .scrollToElement(getWait5()
-                            .until(ExpectedConditions
-                            .elementToBeClickable(By.xpath("//*[@id='post-build-actions']")))).perform();
+                            .scrollToElement(
+                                    getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
+                            .perform();
                     buttonBuildSteps.click();
                     getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
@@ -240,7 +240,9 @@ public class FreestyleConfigurationPage extends BasePage {
                         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
                         break;
-                    } catch (ElementClickInterceptedException ignored) {}
+                    } catch (ElementClickInterceptedException y) {
+                        System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
+                    }
                 }
             }
         getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
@@ -268,7 +270,10 @@ public class FreestyleConfigurationPage extends BasePage {
             if (i < MAX_ATTEMPTS - 1) {
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException ignored) {}
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Список продолжает обновляться", e);
+                }
             }
         }
 
@@ -353,15 +358,15 @@ public class FreestyleConfigurationPage extends BasePage {
 
         Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 actions.sendKeys(Keys.END).perform();
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
                 break;
-            }catch (Exception ignored){
-
+            }catch (Exception e){
+                System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
 
