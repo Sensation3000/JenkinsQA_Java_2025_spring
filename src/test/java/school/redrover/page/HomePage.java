@@ -187,4 +187,12 @@ public class HomePage extends BasePage {
         return new FreestyleConfigurationPage(getDriver());
     }
 
+    public FreestyleProjectPage clickFreestyleProjectOnDashboard(String projectName) {
+        getDriver().findElement(
+                By.xpath("//a[@class='jenkins-table__link model-link inside']/span[text()='%s']".formatted(projectName)))
+                .click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
 }

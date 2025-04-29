@@ -190,4 +190,14 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertEquals(postBuildNameList.size(), 6);
     }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testAccessProjectManagementPageFromDashboard() {
+
+        String currentProjectName = new HomePage(getDriver())
+                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
+    }
 }
