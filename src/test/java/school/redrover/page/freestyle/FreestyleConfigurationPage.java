@@ -4,6 +4,7 @@ import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
@@ -420,5 +421,31 @@ public class FreestyleConfigurationPage extends BasePage {
         getDriver().findElement(By.xpath("//div/input[@name='_.projectUrlStr']")).sendKeys(projectURL);
 
         return this;
+    }
+
+    public FreestyleConfigurationPage clickThrottleBuilds() {
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[12]/div[1]/div/span/label")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage selectTimePeriod(String period) {
+        WebElement timePeriod = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.name("_.durationName"))));
+        timePeriod.click();
+        new Select(timePeriod).selectByVisibleText(period);
+
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("description")))).getText();
+    }
+
+    public boolean getSelectThrottleBuilds() {
+        return getDriver().findElement(By.name("_.throttle")).isSelected();
+    }
+
+    public String getTimePeriod() {
+        return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
 }
