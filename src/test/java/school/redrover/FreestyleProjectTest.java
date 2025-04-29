@@ -30,7 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
     public void testDisableProject() {
         String warningProjectIsDisabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -206,5 +206,14 @@ public class FreestyleProjectTest extends BaseTest {
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 6);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testAccessProjectManagementPageFromDashboard() {
+        String currentProjectName = new HomePage(getDriver())
+                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 }
