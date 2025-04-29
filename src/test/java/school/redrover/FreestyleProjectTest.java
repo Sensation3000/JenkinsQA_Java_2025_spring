@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -56,6 +57,21 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    public void testDiscardOldBuilds() {
+        int buildLogLimit = 5;
+
+        List<WebElement> entries = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickDiscardOldBuilds(5)
+                .clickSaveButton()
+                .clickBuildNowButton(8)
+                .getListOfBuilds();
+
+        assertEquals(entries.size(), buildLogLimit);
+    }
+
+    @Test(dependsOnMethods = "testDiscardOldBuilds")
     public void testCreateDuplicate() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()

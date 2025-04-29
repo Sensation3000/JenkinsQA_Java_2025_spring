@@ -35,6 +35,13 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
+        getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]")).click();
+        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(buildLogLimit));
+
+        return this;
+    }
+
     public FreestyleConfigurationPage scrollToSourceCodeManagementItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='source-code-management']")));
 
@@ -280,7 +287,6 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-
     public FreestyleConfigurationPage clickBuildAfterProjects() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
 
@@ -335,7 +341,6 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getText()
                 .trim();
     }
-
 
     public String getCurrentProjectName() {
         return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
