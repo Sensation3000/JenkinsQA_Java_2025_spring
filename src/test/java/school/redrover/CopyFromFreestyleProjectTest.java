@@ -7,7 +7,6 @@ import school.redrover.page.HomePage;
 import school.redrover.page.error.ErrorPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
-import school.redrover.page.newitem.NewItemPage;
 
 public class CopyFromFreestyleProjectTest extends BaseTest {
 
