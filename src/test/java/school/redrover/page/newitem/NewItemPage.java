@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.component.CommonComponent;
+import school.redrover.page.error.ErrorPage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
@@ -47,6 +48,18 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return this.getCommonComponent();
+    }
+
+    public FreestyleConfigurationPage clickOkButton() {
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FreestyleConfigurationPage(getDriver());
+    }
+
+    public ErrorPage clickOkButtonWithError() {
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new ErrorPage(getDriver());
     }
 
     public String getAlertMessageText() {
