@@ -31,4 +31,8 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
         return element.getAttribute("aria-describedby");
     }
+
+    public String getHeadingText() {
+        return getDriver().findElement(By.id("general")).getText();
+    }
 }

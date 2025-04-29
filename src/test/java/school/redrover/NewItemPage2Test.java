@@ -10,8 +10,9 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
-import school.redrover.component.CommonComponent;
 import school.redrover.page.HomePage;
+import school.redrover.page.error.ErrorPage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
@@ -140,7 +141,7 @@ public class NewItemPage2Test extends BaseTest {
     @Test
     public void testAutocompleteOption() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, getRandomNumberWithin1And6());
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, TestUtils.generateRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
                                           .enterValueToCopyFromInput(randomAlphaNumericValue);
@@ -150,27 +151,26 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfNoItemsMessageIsDisplayed() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
+        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
                                           .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric() + "_");
 
         Assert.assertEquals(newItemPage.getDropdownItemText(), "No items");
-
     }
 
     @Test
     public void testCopyFromOptionWhenCreatingNewJob() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        int randomNumber = getRandomNumberWithin1And6();
 
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, randomNumber);
+        TestUtils.newItemCreate(this, randomAlphaNumericValue, 3);
 
-        CommonComponent commonComponent = homePage.clickNewItemOnLeftSidePanel()
-                                                  .enterValueToCopyFromInput(randomAlphaNumericValue)
-                                                  .clickOnOkButton();
+        MultiConfigurationConfigurePage multiConfigurationConfigurePage =
+                homePage.clickNewItemOnLeftSidePanel()
+                        .enterValueToCopyFromInput(randomAlphaNumericValue)
+                        .redirectToMultiConfigurationConfigurePage();
 
-        Assert.assertTrue(commonComponent.isHeadingDisplayed());
+        Assert.assertEquals(multiConfigurationConfigurePage.getHeadingText(), "General");
     }
 
     @Ignore//NewItemPage2Test.testIfUserRedirectedToErrorPage:180 » Timeout Expected condition failed: waiting for element to be clickable: By.cssSelector: .jenkins-dropdown.jenkins-dropdown--compact https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14733047885/job/41351971771?pr=1586
@@ -178,12 +178,12 @@ public class NewItemPage2Test extends BaseTest {
     public void testIfUserRedirectedToErrorPage() {
         TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
 
-        CommonComponent commonComponent = homePage.clickNewItemOnLeftSidePanel()
-                                                  .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric())
-                                                  .clickOnOkButton();
+        ErrorPage errorPage =
+                homePage.clickNewItemOnLeftSidePanel()
+                        .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric())
+                        .redirectToErrorPage();
 
-        Assert.assertTrue(commonComponent.doesUrlContainCreateItemEndpoint());
-        Assert.assertEquals(commonComponent.getHeadingText(), "Error");
+        Assert.assertEquals(errorPage.getHeadingText(), "Error");
     }
 
     @Test
