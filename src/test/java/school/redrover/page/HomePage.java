@@ -188,8 +188,8 @@ public class HomePage extends BasePage {
     }
 
     public FreestyleProjectPage clickFreestyleProjectOnDashboard(String projectName) {
-        getDriver().findElement(
-                By.xpath("//a[@class='jenkins-table__link model-link inside']/span[text()='%s']".formatted(projectName)))
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//a[@class='jenkins-table__link model-link inside']/span[text()='%s']".formatted(projectName)))))
                 .click();
 
         return new FreestyleProjectPage(getDriver());
