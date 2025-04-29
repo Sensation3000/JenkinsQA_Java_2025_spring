@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
-import school.redrover.component.CommonComponent;
+import school.redrover.page.error.ErrorPage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
@@ -43,10 +43,16 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
-    public CommonComponent clickOnOkButton() {
+    public FreestyleConfigurationPage clickOkButton() {
         getDriver().findElement(By.id("ok-button")).click();
 
-        return this.getCommonComponent();
+        return new FreestyleConfigurationPage(getDriver());
+    }
+
+    public ErrorPage clickOkButtonWithError() {
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new ErrorPage(getDriver());
     }
 
     public String getAlertMessageText() {
@@ -132,6 +138,20 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public MultiConfigurationConfigurePage redirectToMultiConfigurationConfigurePage() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+        getWait5().until(ExpectedConditions.urlContains("/job"));
+
+        return new MultiConfigurationConfigurePage(getDriver());
+    }
+
+    public ErrorPage redirectToErrorPage() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+        getWait5().until(ExpectedConditions.urlContains("/createItem"));
+
+        return new ErrorPage(getDriver());
     }
 
     public String getItemTypeText(String itemType) {

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 public class TestUtils {
@@ -34,6 +35,11 @@ public class TestUtils {
     public static String generateRandomAlphanumeric() {
 
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public static int generateRandomNumberWithin1And6() {
+        Random random = new Random();
+        return random.nextInt(6) + 1;
     }
 
     public static void moveAndClickWithJS(WebDriver driver, WebElement element) {

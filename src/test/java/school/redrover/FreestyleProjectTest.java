@@ -31,7 +31,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
     public void testDisableProject() {
         String warningProjectIsDisabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -190,14 +190,14 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddPostBuildActions () {
+    public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
-                .addPostBuildActions(1)
                 .addPostBuildActions(5)
+                .addPostBuildActions(1)
                 .addPostBuildActions(11)
                 .addPostBuildActions(2)
                 .addPostBuildActions(8)
@@ -206,4 +206,48 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertEquals(postBuildNameList.size(), 6);
     }
+
+    @Test
+    public void testAddBuildStepsANDPostBuildActions() {
+        List<String> postBuildNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addPostBuildActions(1)
+                .addPostBuildActions(5)
+                .addBuildSteps(5)
+                .addPostBuildActions(11)
+                .addBuildSteps(7)
+                .addPostBuildActions(8)
+                .getChunkHeaderList();
+
+        assertEquals(postBuildNameList.size(), 6);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testAccessProjectManagementPageFromDashboard() {
+        String currentProjectName = new HomePage(getDriver())
+                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
+    }
+
+    @Test
+    public void testCreateFreestyleProjectWithNoneSCM() {
+        FreestyleConfigurationPage configPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk();
+
+        configPage.selectNoneSCM();
+
+        FreestyleProjectPage projectPage = configPage.clickSaveButton();
+
+        Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
+    }
 }
+
+
+
+
