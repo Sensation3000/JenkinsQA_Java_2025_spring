@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderProjectPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
@@ -79,5 +80,20 @@ public class FolderTest extends BaseTest {
                 .getCopyFromFieldText();
 
         Assert.assertEquals(copyFromFieldText, expectedText);
+    }
+
+    @Test
+    public void testLinkProject () {
+        final String descriptionName = "folder";
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .sendDescription(descriptionName)
+                .clickSave();
+
+        Assert.assertEquals(folderProjectPage.getProjectName(),FOLDER_NAME);
+        Assert.assertEquals(folderProjectPage.getDescription(),descriptionName);
     }
 }
