@@ -210,7 +210,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAccessProjectManagementPageFromDashboard() {
-
         String currentProjectName = new HomePage(getDriver())
                 .clickFreestyleProjectOnDashboard(PROJECT_NAME)
                 .getProjectName();
