@@ -5,7 +5,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -409,5 +408,17 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public String getBuildStatusText() {
         return getDriver().findElement(By.id("jenkins-build-history")).getText();
+    }
+
+    public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
+        getDriver().findElement(By.xpath("//section[@nameref='rowSetStart28']//div[@nameref='rowSetStart25']//span/label")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage sentGitHubProjectURL(String projectURL) {
+        getDriver().findElement(By.xpath("//div/input[@name='_.projectUrlStr']")).sendKeys(projectURL);
+
+        return this;
     }
 }

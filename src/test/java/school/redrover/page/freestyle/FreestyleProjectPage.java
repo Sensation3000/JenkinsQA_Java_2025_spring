@@ -152,4 +152,9 @@ public class FreestyleProjectPage extends BasePage {
 
         return this;
     }
+
+    public List<String> getLeftSideMenuNameList() {
+        return getDriver().findElements(By.xpath("//div[@id='tasks']/div/span/a/span[2]")).stream()
+                .map(WebElement::getText).toList();
+    }
 }
