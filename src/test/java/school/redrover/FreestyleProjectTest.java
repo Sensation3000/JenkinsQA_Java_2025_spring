@@ -230,6 +230,24 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
     }
+
+    @Test
+    public void testBuildPeriodically() {
+        final String everyMinuteSchedule = "* * * * *";
+
+        List<String> buildList = new HomePage(getDriver())
+                .clickNewItem().sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickBuildTriggersOnLeftSidePanel()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(everyMinuteSchedule)
+                .clickSaveButton()
+                .waitForBuildToAppear(60);
+
+        Assert.assertEquals(buildList.size(), 1);
+        Assert.assertEquals(buildList.get(0), "#1");
+
+    }
 }
 
 

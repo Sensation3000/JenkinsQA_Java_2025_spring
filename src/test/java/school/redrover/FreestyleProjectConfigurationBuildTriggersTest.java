@@ -115,7 +115,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToTriggersItem()
-                .checkBuildPeriodicallyCheckbox()
+                .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(EXPECTED_SCHEDULE)
                 .clickSaveButton()
                 .clickConfigure()
