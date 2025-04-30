@@ -159,7 +159,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public List<String> getBuildNameList() {
-        return getDriver().findElements(By.xpath("//td[@class='build-row-cell']/div[1]")).stream()
+        return getDriver().findElements(By.className("app-builds-container__item")).stream()
                 .map(WebElement::getText).toList();
     }
 
