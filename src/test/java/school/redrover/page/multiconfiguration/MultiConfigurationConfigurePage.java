@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
+
+import java.util.List;
 
 public class MultiConfigurationConfigurePage extends BasePage {
 
@@ -34,5 +37,29 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
     public String getHeadingText() {
         return getDriver().findElement(By.id("general")).getText();
+    }
+
+    public MultiConfigurationConfigurePage scrollToEnvironmentSectionWithJS() {
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+
+        return this;
+    }
+
+    public MultiConfigurationStatusPage checkEnvironmentCheckboxesAndClickOnSaveButton() {
+        List<WebElement> labels = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::label"));
+        for (WebElement label : labels) {
+            TestUtils.scrollAndClickWithJS(getDriver(), label);
+        }
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+
+        return new MultiConfigurationStatusPage(getDriver());
+    }
+
+    public boolean verifyIfAllEnvironmentCheckboxesAreSelected() {
+        List<WebElement> checkboxes = getDriver().findElements(
+                By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']")
+        );
+
+        return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
     }
 }
