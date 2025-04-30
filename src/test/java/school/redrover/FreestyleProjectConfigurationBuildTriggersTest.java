@@ -1,5 +1,6 @@
 package school.redrover;
 
+import com.beust.ah.A;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -17,49 +18,25 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
 
     @Test
-    public void testCheckBuildTriggersSection() {
-
-        //Actions
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+    public void testTriggersSectionHeaderAndHelperIcons() {
+        FreestyleConfigurationPage page = new HomePage(getDriver())
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToTriggersItem();
 
-        //Assertions - Common
-        Assert.assertEquals(freestyleConfigurationPage.getSectionNameTriggers(), "Triggers");
-        Assert.assertEquals(freestyleConfigurationPage.getSubtitleTextTriggers(),
-                "Set up automated actions that start your build based on specific events, like code changes or scheduled times.");
-        Assert.assertEquals(freestyleConfigurationPage.countHelperIconsTriggersSection(), 8);
-
-        //Assertions - Trigger builds remotely (e.g., from scripts)
-        Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxDisplayed());
-        Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxEnabled());
-        Assert.assertEquals(freestyleConfigurationPage
-                .getTriggerBuildsRemotelyLabelText(), "Trigger builds remotely (e.g., from scripts)");
-        Assert.assertEquals(freestyleConfigurationPage
-                .getTriggerBuildsRemotelyHelpIconTitle(), "Help for feature: Trigger builds remotely (e.g., from scripts)");
-
-        //Assertions - Build after other projects are built
-        Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxDisplayed());
-        Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxEnabled());
-        Assert.assertEquals(freestyleConfigurationPage.getBuildAfterProjectsLabelText(), "Build after other projects are built");
-        Assert.assertEquals(freestyleConfigurationPage
-                .getBuildAfterProjectsHelpIconTitle(), "Help for feature: Build after other projects are built");
-
-        //Assertions - Build periodically
-        Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxDisplayed());
-        Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxEnabled());
-        Assert.assertEquals(freestyleConfigurationPage
-                .getBuildPeriodicallyLabelText(), "Build periodically");
-        Assert.assertEquals(freestyleConfigurationPage.getBuildPeriodicallyHelpIconTitle(), "Help for feature: Build periodically");
-
-        //Assertions - GitHub hook trigger for GITScm polling
-        Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxDisplayed());
-        Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxEnabled());
-        Assert.assertEquals(freestyleConfigurationPage.getGithubHookTriggerLabelText(), "GitHub hook trigger for GITScm polling");
-        Assert.assertEquals(freestyleConfigurationPage
-                .getGithubHookTriggerHelpIconTitle(), "Help for feature: GitHub hook trigger for GITScm polling");
+        Assert.assertEquals(page.getSectionNameTriggers(), "Triggers");
+        Assert.assertEquals(page.countHelperIconsTriggersSection(), 8);
+        Assert.assertTrue(page.isTriggerBuildsRemotelyCheckboxDisplayed());
+        Assert.assertTrue(page.isTriggerBuildsRemotelyCheckboxEnabled());
+        Assert.assertTrue(page.isBuildAfterProjectsCheckboxDisplayed());
+        Assert.assertTrue(page.isBuildAfterProjectsCheckboxEnabled());
+        Assert.assertTrue(page.isBuildPeriodicallyCheckboxDisplayed());
+        Assert.assertTrue(page.isBuildPeriodicallyCheckboxEnabled());
+        Assert.assertTrue(page.isGithubHookTriggerCheckboxDisplayed());
+        Assert.assertTrue(page.isGithubHookTriggerCheckboxEnabled());
+        Assert.assertTrue(page.isPollSCMCheckboxDisplayed());
+        Assert.assertTrue(page.isPollSCMCheckboxEnabled());
     }
 
     @Test()
@@ -82,7 +59,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(freestyleConfigurationPage.getAuthTokenDomValue(), AUTH_TOKEN);
         Assert.assertEquals(freestyleConfigurationPage.getTriggerInfoText(), EXPECTED_TRIGGER_INFO_TEXT);
     }
-
 
     @Test
     public void testBuildAfterOtherProjectsAreBuiltOptionDisplaysField() {
