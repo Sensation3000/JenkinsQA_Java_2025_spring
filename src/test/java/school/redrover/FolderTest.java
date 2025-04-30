@@ -1,13 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderProjectPage;
 import school.redrover.testdata.TestDataProvider;
@@ -25,7 +20,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(folderName)
                 .selectFolderAndClickOk()
-                .saveAndReturnToHomePage()
+                .clickOnDashboard()
                 .getProjectNameList();
 
         Assert.assertEquals(jobs.size(), 1);
