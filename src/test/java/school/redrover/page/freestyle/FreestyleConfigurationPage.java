@@ -350,16 +350,12 @@ public class FreestyleConfigurationPage extends BasePage {
                 List<WebElement> elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
-                    elements.get(--itemNumber).click();
-
                     break;
                 }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
         getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
