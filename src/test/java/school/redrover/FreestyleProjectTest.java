@@ -19,6 +19,8 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
     private static final String PROJECT_DESCRIPTION = "This is a NEW freestyleProject description";
     private static final String SECOND_PROJECT_NAME = "Second Freestyle Project";
+    private static final String GITHUB_PROJECT_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
+    private static final String MENU_GITHUB_OPTION = "GitHub";
 
     @Test
     public void testCreateFreestyleProject() {
@@ -29,6 +31,15 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testAccessProjectManagementPageFromDashboard() {
+        String currentProjectName = new HomePage(getDriver())
+                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
@@ -57,6 +68,20 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    public void testFreestyleProjectAddGitHubURL() {
+        List<String> freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .waitUntilTextNameProjectToBePresentInH1(PROJECT_NAME)
+                .clickConfigure()
+                .checkGitHubProjectCheckbox()
+                .sentGitHubProjectURL(GITHUB_PROJECT_URL)
+                .clickSaveButton()
+                .getLeftSideMenuNameList();
+
+        Assert.assertTrue(freestyleProjectPage.contains(MENU_GITHUB_OPTION));
+    }
+
+    @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
     public void testDiscardOldBuilds() {
         int buildLogLimit = 5;
 
@@ -224,15 +249,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 7);
-    }
-
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
-    public void testAccessProjectManagementPageFromDashboard() {
-        String currentProjectName = new HomePage(getDriver())
-                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
-                .getProjectName();
-
-        Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 
     @Test
