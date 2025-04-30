@@ -341,7 +341,7 @@ public class FreestyleConfigurationPage extends BasePage {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
         List<WebElement> elements = List.of();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             try {
                 new Actions(getDriver()).sendKeys(Keys.END).perform();
 
@@ -351,13 +351,14 @@ public class FreestyleConfigurationPage extends BasePage {
                 elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
+                    elements.get(--itemNumber).click();
+
                     break;
                 }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
-        elements.get(--itemNumber).click();
 
         return this;
     }

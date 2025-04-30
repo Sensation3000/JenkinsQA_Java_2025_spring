@@ -143,7 +143,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
     }
 
-    @Test
+    @Test(invocationCount = 50)
     public void testAddBuildSteps() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
@@ -216,7 +216,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
-    @Test
+    @Test(invocationCount = 50)
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickNewItem()
@@ -234,7 +234,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(postBuildNameList.size(), 6);
     }
 
-    @Test
+    @Test(invocationCount = 50)
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickNewItem()
