@@ -425,7 +425,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
-        getDriver().findElement(By.xpath("//section[@nameref='rowSetStart28']//div[@nameref='rowSetStart25']//span/label")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
+        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
 
         return this;
     }

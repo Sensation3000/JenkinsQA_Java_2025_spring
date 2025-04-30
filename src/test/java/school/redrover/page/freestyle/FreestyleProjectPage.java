@@ -154,6 +154,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public List<String> getLeftSideMenuNameList() {
+        getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
         return getDriver().findElements(By.xpath("//div[@id='tasks']/div/span/a/span[2]")).stream()
                 .map(WebElement::getText).toList();
     }
