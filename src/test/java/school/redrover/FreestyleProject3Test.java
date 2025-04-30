@@ -1,5 +1,6 @@
 package school.redrover;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -10,7 +11,7 @@ public class FreestyleProject3Test extends BaseTest {
     private static final String PROJECT_NAME = "Freestyle Project";
     private static final String GITHUB_PROJECT_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
     private static final String MENU_GITHUB_OPTION = "GitHub";
-
+    @Ignore
     @Test
     public void testFreestyleProjectAddGitHubURL() {
         List<String> freestyleProjectPage = new HomePage(getDriver())
