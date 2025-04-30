@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -25,7 +24,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         //Assertions - Common
         Assert.assertEquals(freestyleConfigurationPage.getSectionNameTriggers(), "Triggers");
@@ -71,12 +70,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .clickTriggerBuildsRemotely()
                 .enterAuthToken(AUTH_TOKEN)
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         //Assertions
         Assert.assertEquals(freestyleConfigurationPage.getAuthenticationTokenLabelText(), "Authentication Token");
@@ -84,22 +83,22 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(freestyleConfigurationPage.getTriggerInfoText(), EXPECTED_TRIGGER_INFO_TEXT);
     }
 
-    @Ignore//FreestyleProjectConfigurationBuildTriggersTest.testBuildAfterOtherProjectsAreBuiltOptionDisplaysField:104 » NullPointer Cannot invoke "String.equals(Object)" because the https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14732685957/job/41350713407?pr=1586
+
     @Test
     public void testBuildAfterOtherProjectsAreBuiltOptionDisplaysField() {
 
         //Actions
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .createJob()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .clickBuildAfterProjects()
                 .setProjectToWatch(PROJECT_NAME)
                 .clickAllReverseBuildTriggerLabels()
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         //Assertions
         Assert.assertEquals(freestyleConfigurationPage.getCurrentProjectName(), PROJECT_NAME+", ");
@@ -114,12 +113,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
-                .checkBuildPeriodicallyCheckbox()
+                .scrollToBuildTriggers()
+                .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(EXPECTED_SCHEDULE)
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .sendScheduleActualText();
 
         //Assertions

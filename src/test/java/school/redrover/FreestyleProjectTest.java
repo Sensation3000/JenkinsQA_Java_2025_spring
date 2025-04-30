@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -8,6 +9,8 @@ import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -18,6 +21,8 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
     private static final String PROJECT_DESCRIPTION = "This is a NEW freestyleProject description";
     private static final String SECOND_PROJECT_NAME = "Second Freestyle Project";
+    private static final String GITHUB_PROJECT_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
+    private static final String MENU_GITHUB_OPTION = "GitHub";
 
     @Test
     public void testCreateFreestyleProject() {
@@ -28,6 +33,15 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    public void testAccessProjectManagementPageFromDashboard() {
+        String currentProjectName = new HomePage(getDriver())
+                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
@@ -56,6 +70,35 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    public void testFreestyleProjectAddGitHubURL() {
+        List<String> freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .waitUntilTextNameProjectToBePresentInH1(PROJECT_NAME)
+                .clickConfigure()
+                .checkGitHubProjectCheckbox()
+                .sentGitHubProjectURL(GITHUB_PROJECT_URL)
+                .clickSaveButton()
+                .getLeftSideMenuNameList();
+
+        Assert.assertTrue(freestyleProjectPage.contains(MENU_GITHUB_OPTION));
+    }
+
+    @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
+    public void testDiscardOldBuilds() {
+        int buildLogLimit = 5;
+
+        List<WebElement> entries = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickDiscardOldBuilds(5)
+                .clickSaveButton()
+                .clickBuildNowButton(8)
+                .getListOfBuilds();
+
+        assertEquals(entries.size(), buildLogLimit);
+    }
+
+    @Test(dependsOnMethods = "testDiscardOldBuilds")
     public void testCreateDuplicate() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -208,15 +251,6 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(postBuildNameList.size(), 6);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
-    public void testAccessProjectManagementPageFromDashboard() {
-        String currentProjectName = new HomePage(getDriver())
-                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
-                .getProjectName();
-
-        Assert.assertEquals(currentProjectName, PROJECT_NAME);
-    }
-
     @Test
     public void testCreateFreestyleProjectWithNoneSCM() {
         FreestyleConfigurationPage configPage = new HomePage(getDriver())
@@ -229,6 +263,23 @@ public class FreestyleProjectTest extends BaseTest {
         FreestyleProjectPage projectPage = configPage.clickSaveButton();
 
         Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
+    }
+
+    @Test
+    public void testBuildPeriodically() {
+        final String everyMinuteSchedule = "* * * * *";
+
+        List<String> buildList = new HomePage(getDriver())
+                .clickNewItem().sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggers()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(everyMinuteSchedule)
+                .clickSaveButton()
+                .waitForBuildToAppear(70);
+
+        Assert.assertEquals(buildList.size(), 1);
+        Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
     }
 }
 

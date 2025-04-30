@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.plugins.PluginsPage;
 import school.redrover.page.user.UsersPage;
 
 public class ManageJenkinsPage extends BasePage {
@@ -23,6 +24,12 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='appearance']")).click();
 
         return new ManageAppearansePage(getDriver());
+    }
+
+    public PluginsPage clickPlugins() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[2]/div/div[3]/a")).click();
+
+        return new PluginsPage(getDriver());
     }
 
 }

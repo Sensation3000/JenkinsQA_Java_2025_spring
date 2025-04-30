@@ -29,9 +29,15 @@ public class FreestyleConfigurationPage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-
     public FreestyleConfigurationPage scrollToGeneralItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='general']")));
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
+        getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]")).click();
+        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(buildLogLimit));
 
         return this;
     }
@@ -42,8 +48,8 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage scrollToTriggersItem() {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='triggers']")));
+    public FreestyleConfigurationPage scrollToBuildTriggers() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.className("jenkins-checkbox-help-wrapper")));
 
         return this;
     }
@@ -79,8 +85,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage checkBuildPeriodicallyCheckbox() {
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//label[contains(text(), 'Build periodically')]")));
+    public FreestyleConfigurationPage setBuildPeriodicallyCheckbox() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
 
         return this;
@@ -286,7 +291,6 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-
     public FreestyleConfigurationPage clickBuildAfterProjects() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
 
@@ -304,13 +308,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
-        List<WebElement> labels = getDriver().findElements(
-                By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label")
-        );
-        for (WebElement label : labels) {
-            label.click();
-        }
-
+        getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
+                .forEach(WebElement::click);
         return this;
     }
 
@@ -342,7 +341,6 @@ public class FreestyleConfigurationPage extends BasePage {
                 .trim();
     }
 
-
     public String getCurrentProjectName() {
         return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
                 .getDomAttribute("value");
@@ -370,6 +368,7 @@ public class FreestyleConfigurationPage extends BasePage {
             }
         }
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
         getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
@@ -417,7 +416,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
-        getDriver().findElement(By.xpath("//section[@nameref='rowSetStart28']//div[@nameref='rowSetStart25']//span/label")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
+        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
 
         return this;
     }
