@@ -238,7 +238,6 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> buildList = new HomePage(getDriver())
                 .clickNewItem().sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .clickBuildTriggersOnLeftSidePanel()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(everyMinuteSchedule)
                 .clickSaveButton()

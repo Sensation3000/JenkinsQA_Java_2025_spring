@@ -29,12 +29,6 @@ public class FreestyleConfigurationPage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleConfigurationPage clickBuildTriggersOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='build-triggers']"))).click();
-
-        return this;
-    }
-
     public FreestyleConfigurationPage scrollToGeneralItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='general']")));
 
@@ -85,7 +79,9 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage setBuildPeriodicallyCheckbox() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[contains(text(), 'Build periodically')]"))).click();
+        WebElement buildPeriodicallyCheckbox = getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", buildPeriodicallyCheckbox);
+        buildPeriodicallyCheckbox.click();
 
         return this;
     }
