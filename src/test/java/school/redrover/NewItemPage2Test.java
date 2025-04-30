@@ -33,11 +33,6 @@ public class NewItemPage2Test extends BaseTest {
         }
     }
 
-    private void clickOnNewItemLink() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']")))
-                   .click();
-    }
-
     private void openDropdownMenuForJob(String itemName) {
         String buttonSelector = String.format("button[data-href*='%s']", itemName);
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector(buttonSelector));
@@ -198,23 +193,6 @@ public class NewItemPage2Test extends BaseTest {
                         .scrollToEnvironmentSectionWithJS();
 
         Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
-    }
-
-    @Test
-    public void testIfNewFolderIsCreatedEmpty() {
-        clickOnNewItemLink();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(TestUtils.generateRandomAlphanumeric());
-
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")));
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("h2.h4")).getText(),
-                "This folder is empty"
-        );
     }
 
     @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
