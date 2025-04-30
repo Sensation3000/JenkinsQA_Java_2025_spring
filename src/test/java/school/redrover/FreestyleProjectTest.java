@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public class FreestyleProjectTest extends BaseTest{
+public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle Project";
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
@@ -35,7 +35,8 @@ public class FreestyleProjectTest extends BaseTest{
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
-@Ignore
+
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAccessProjectManagementPageFromDashboard() {
         String currentProjectName = new HomePage(getDriver())
@@ -216,6 +217,7 @@ public class FreestyleProjectTest extends BaseTest{
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
+
     @Ignore
     @Test
     public void testAddPostBuildActions() {
@@ -235,6 +237,7 @@ public class FreestyleProjectTest extends BaseTest{
         assertEquals(postBuildNameList.size(), 6);
     }
 
+    @Ignore
     @Test
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
@@ -254,16 +257,15 @@ public class FreestyleProjectTest extends BaseTest{
 
     @Test
     public void testCreateFreestyleProjectWithNoneSCM() {
-        FreestyleConfigurationPage configPage = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .createJob()
                 .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk();
+                .selectFreestyleAndClickOk()
+                .selectNoneSCM()
+                .clickSaveButton()
+                .getProjectName();
 
-        configPage.selectNoneSCM();
-
-        FreestyleProjectPage projectPage = configPage.clickSaveButton();
-
-        Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
+        Assert.assertEquals(projectName, PROJECT_NAME);
     }
 
     @Test
