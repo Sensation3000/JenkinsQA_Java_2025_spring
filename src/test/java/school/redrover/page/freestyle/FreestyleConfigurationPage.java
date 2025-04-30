@@ -29,7 +29,6 @@ public class FreestyleConfigurationPage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-
     public FreestyleConfigurationPage scrollToGeneralItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='general']")));
 
@@ -49,8 +48,8 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage scrollToTriggersItem() {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='triggers']")));
+    public FreestyleConfigurationPage scrollToBuildTriggers() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.className("jenkins-checkbox-help-wrapper")));
 
         return this;
     }
@@ -86,8 +85,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage checkBuildPeriodicallyCheckbox() {
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//label[contains(text(), 'Build periodically')]")));
+    public FreestyleConfigurationPage setBuildPeriodicallyCheckbox() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
 
         return this;
@@ -371,6 +369,7 @@ public class FreestyleConfigurationPage extends BasePage {
             }
         }
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
         getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
