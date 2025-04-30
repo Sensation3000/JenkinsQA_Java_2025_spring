@@ -240,7 +240,7 @@ public class FreestyleConfigurationPage extends BasePage {
                 break;
             } catch (Exception e) {
                 try {
-                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/button")).click();
+                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
                     buttonBuildSteps.click();
                     getDriver().findElement(
                             By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
@@ -340,14 +340,12 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
         List<WebElement> elements = List.of();
+        Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < 10; i++) {
             try {
-                new Actions(getDriver()).sendKeys(Keys.END).perform();
-
+                actions.sendKeys(Keys.END).perform();
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
-               // getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-
                 elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
