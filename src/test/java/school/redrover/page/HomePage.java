@@ -4,8 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -199,4 +201,19 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
+    public NewItemPage clickOnNewItemLinkWithChevron() {
+        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))));
+        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getProjectName() {
+        return getWait5()
+                         .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
+                         .getText();
+    }
 }
