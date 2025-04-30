@@ -185,7 +185,7 @@ public class NewItemPage extends BasePage {
     public OrganizationFolderConfigurePage selectOrganizationFolderAndClickOk() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Organization Folder']")));
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new OrganizationFolderConfigurePage(getDriver());
     }
