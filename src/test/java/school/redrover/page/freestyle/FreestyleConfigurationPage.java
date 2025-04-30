@@ -116,7 +116,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickEnableDisableToggle() {
-        getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
+       // getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
 
         return this;
     }
