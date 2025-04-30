@@ -226,8 +226,6 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
-        final String locator = "button.jenkins-dropdown__item";
-
         WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
 
         for (int i = 0; i < 5; i++) {
@@ -237,16 +235,18 @@ public class FreestyleConfigurationPage extends BasePage {
                                 getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
                         .perform();
                 buttonBuildSteps.click();
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-                getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
+                getDriver().findElement(
+                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                        .click();
 
                 break;
             } catch (Exception e) {
                 try {
                     getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/button")).click();
                     buttonBuildSteps.click();
-                    getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-                    getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
+                    getDriver().findElement(
+                            By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                            .click();
 
                     break;
                 } catch (Exception y) {
@@ -348,9 +348,14 @@ public class FreestyleConfigurationPage extends BasePage {
 
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-                getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
-                break;
+                List<WebElement> elements = getDriver().findElements(By.cssSelector(locator));
+
+                if (elements.size() == 11) {
+                    elements.get(--itemNumber).click();
+
+                    break;
+                }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
