@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.component.HeaderComponent;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public class FreestyleProjectTest extends BaseTest {
+public class FreestyleProjectTest extends BaseTest{
 
     private static final String PROJECT_NAME = "Freestyle Project";
     private static final String UPDATED_PROJECT_NAME = "NEW Freestyle NAME";
@@ -42,7 +43,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testDisableProject() {
         String warningProjectIsDisabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
