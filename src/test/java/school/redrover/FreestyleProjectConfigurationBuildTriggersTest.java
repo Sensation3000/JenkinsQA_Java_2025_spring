@@ -23,7 +23,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         Assert.assertEquals(page.getSectionNameTriggers(), "Triggers");
         Assert.assertEquals(page.countHelperIconsTriggersSection(), 8);
@@ -47,12 +47,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .clickTriggerBuildsRemotely()
                 .enterAuthToken(AUTH_TOKEN)
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         //Assertions
         Assert.assertEquals(freestyleConfigurationPage.getAuthenticationTokenLabelText(), "Authentication Token");
@@ -68,13 +68,13 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .clickBuildAfterProjects()
                 .setProjectToWatch(PROJECT_NAME)
                 .clickAllReverseBuildTriggerLabels()
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem();
+                .scrollToBuildTriggers();
 
         //Assertions
         Assert.assertEquals(freestyleConfigurationPage.getCurrentProjectName(), PROJECT_NAME+", ");
@@ -89,12 +89,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .createJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToTriggersItem()
-                .checkBuildPeriodicallyCheckbox()
+                .scrollToBuildTriggers()
+                .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(EXPECTED_SCHEDULE)
                 .clickSaveButton()
                 .clickConfigure()
-                .scrollToTriggersItem()
+                .scrollToBuildTriggers()
                 .sendScheduleActualText();
 
         //Assertions
