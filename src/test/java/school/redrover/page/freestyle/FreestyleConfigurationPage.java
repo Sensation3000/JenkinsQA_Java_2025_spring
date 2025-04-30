@@ -250,7 +250,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
                     break;
                 } catch (Exception y) {
-                    System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
+                    System.err.println("Ошибка, пробуем снова... " + y.getMessage());
                 }
             }
         }
@@ -342,11 +342,10 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
 
-        Actions actions = new Actions(getDriver());
-
         for (int i = 0; i < 5; i++) {
             try {
                 new Actions(getDriver()).sendKeys(Keys.END).perform();
+
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
                 getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
