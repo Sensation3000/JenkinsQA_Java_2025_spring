@@ -17,7 +17,6 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
-import java.util.Random;
 
 public class NewItemPage2Test extends BaseTest {
     private Actions actions;
@@ -37,11 +36,6 @@ public class NewItemPage2Test extends BaseTest {
     private void clickOnNewItemLink() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']")))
                    .click();
-    }
-
-    private int  getRandomNumberWithin1And6() {
-        Random random = new Random();
-        return random.nextInt(6) + 1;
     }
 
     private void openDropdownMenuForJob(String itemName) {
@@ -123,7 +117,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test
     public void testIfCopyFromOptionIsDisplayed() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
+        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
 
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
 
@@ -176,53 +170,34 @@ public class NewItemPage2Test extends BaseTest {
     @Ignore//NewItemPage2Test.testIfUserRedirectedToErrorPage:180 » Timeout Expected condition failed: waiting for element to be clickable: By.cssSelector: .jenkins-dropdown.jenkins-dropdown--compact https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14733047885/job/41351971771?pr=1586
     @Test
     public void testIfUserRedirectedToErrorPage() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumberWithin1And6());
+        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
 
         ErrorPage errorPage =
                 homePage.clickNewItemOnLeftSidePanel()
                         .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric())
                         .redirectToErrorPage();
 
-        Assert.assertEquals(errorPage.getHeadingText(), "Error");
+        Assert.assertEquals(errorPage.getTitle(), "Error");
     }
 
     @Test
     public void testIfOriginalItemConfigurationIsCopied() {
-        clickOnNewItemLink();
-
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericValue);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
 
-        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
+        MultiConfigurationConfigurePage multiConfigurationConfigurePage =
+                homePage.clickNewItemOnLeftSidePanel()
+                        .sendItemName(randomAlphaNumericValue)
+                        .selectMultiConfigurationAndClickOk()
+                        .scrollToEnvironmentSectionWithJS()
+                        .checkEnvironmentCheckboxesAndClickOnSaveButton()
+                        .getHeader()
+                        .goToHomePage()
+                        .clickNewItemOnLeftSidePanel()
+                        .enterValueToCopyFromInput(randomAlphaNumericValue)
+                        .redirectToMultiConfigurationConfigurePage()
+                        .scrollToEnvironmentSectionWithJS();
 
-        List<WebElement> labels = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::label"));
-        for (WebElement label : labels) {
-            TestUtils.scrollAndClickWithJS(getDriver(), label);
-        }
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
-        TestUtils.gotoHomePage(getDriver());
-
-        clickOnNewItemLink();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(TestUtils.generateRandomAlphanumeric());
-
-        WebElement copyFromInput = getDriver().findElement(By.id("from"));
-        TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
-        copyFromInput.sendKeys(randomAlphaNumericValue);
-        getWait5().until(
-                ExpectedConditions.elementToBeClickable(By.cssSelector("[class^='jenkins-dropdown__item']")))
-                  .click();
-
-        getDriver().findElement(By.id("ok-button")).click();
-
-        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("environment")));
-        List<WebElement> checkboxes = getDriver().findElements(By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']"));
-
-        Assert.assertTrue(checkboxes.stream().allMatch(WebElement::isSelected));
+        Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
     }
 
     @Test

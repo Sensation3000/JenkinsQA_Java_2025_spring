@@ -18,8 +18,4 @@ public class ErrorPage extends BasePage {
     public String getErrorText() {
         return getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText();
     }
-
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText();
-    }
 }
