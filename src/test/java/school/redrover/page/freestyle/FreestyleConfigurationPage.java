@@ -310,13 +310,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
-        List<WebElement> labels = getDriver().findElements(
-                By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label")
-        );
-        for (WebElement label : labels) {
-            label.click();
-        }
-
+        getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
+                .forEach(WebElement::click);
         return this;
     }
 
