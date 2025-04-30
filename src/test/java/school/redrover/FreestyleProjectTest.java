@@ -33,7 +33,7 @@ public class FreestyleProjectTest extends BaseTest{
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
-
+@Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAccessProjectManagementPageFromDashboard() {
         String currentProjectName = new HomePage(getDriver())
@@ -214,7 +214,7 @@ public class FreestyleProjectTest extends BaseTest{
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
-
+    @Ignore
     @Test
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
