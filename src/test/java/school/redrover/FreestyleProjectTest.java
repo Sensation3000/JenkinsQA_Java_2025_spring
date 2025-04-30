@@ -247,7 +247,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .waitForBuildToAppear(70);
 
         Assert.assertEquals(buildList.size(), 1);
-        Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"))));
+        Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
     }
 }
 
