@@ -21,7 +21,7 @@ public class NewFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testFolderName")
-    public void FolderIsEmptyTest() {
+    public void folderIsEmptyTest() {
 
         String folderStatus = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
