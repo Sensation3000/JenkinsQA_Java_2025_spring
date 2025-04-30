@@ -455,9 +455,11 @@ public class FreestyleConfigurationPage extends BasePage {
         return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
 
-    public void selectNoneSCM() {
+    public FreestyleConfigurationPage selectNoneSCM() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//label[text()='None']"))).perform();
+
+        return this;
     }
 }
 
