@@ -97,7 +97,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String[] getDropDownMenuItemsText() {
-        List<WebElement> menuItems =  getWait5()
+        List<WebElement> menuItems = getWait5()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-dropdown__item")));
 
         String[] menuItemsText = new String[menuItems.size()];
@@ -110,7 +110,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String[] getMainMenuItemsText() {
-        List<WebElement> menuItems =  getDriver().findElements(By.cssSelector(".task span:nth-of-type(2)"));
+        List<WebElement> menuItems = getDriver().findElements(By.cssSelector(".task span:nth-of-type(2)"));
 
         // the first element found with the locator above is Status which is not in the drop-down menu
         // (and is not technically a menu item) so we need to reduce size by one
@@ -154,8 +154,34 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public List<String> getLeftSideMenuNameList() {
+        getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
         return getDriver().findElements(By.xpath("//div[@id='tasks']/div/span/a/span[2]")).stream()
                 .map(WebElement::getText).toList();
+    }
+
+    public FreestyleProjectPage clickBuildNowButton(int expectedClicks) {
+        WebElement button = getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']"));
+        By logLocator = By.className("app-builds-container__item__inner__link");
+        String previousLogNumber = "";
+
+        for (int i = 1; i <= expectedClicks; i++) {
+            button.click();
+            getWait10().until(ExpectedConditions.presenceOfElementLocated(logLocator));
+            WebElement latestLog = getDriver().findElements(logLocator).get(0);
+            String currentLogNumber = latestLog.getText();
+
+            if (!previousLogNumber.isEmpty()) {
+                getWait10().until(ExpectedConditions.not(
+                        ExpectedConditions.textToBePresentInElement(latestLog, previousLogNumber)
+                ));
+            }
+            previousLogNumber = currentLogNumber;
+        }
+        return this;
+    }
+
+    public List<WebElement> getListOfBuilds() {
+        return getDriver().findElements(By.className("app-builds-container__item"));
     }
 
     public List<String> getBuildNameList() {

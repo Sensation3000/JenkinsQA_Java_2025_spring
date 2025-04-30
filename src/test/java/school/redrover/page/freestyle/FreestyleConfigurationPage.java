@@ -35,6 +35,13 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
+        getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]")).click();
+        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(buildLogLimit));
+
+        return this;
+    }
+
     public FreestyleConfigurationPage scrollToSourceCodeManagementItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='source-code-management']")));
 
@@ -284,7 +291,6 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-
     public FreestyleConfigurationPage clickBuildAfterProjects() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
 
@@ -302,13 +308,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
-        List<WebElement> labels = getDriver().findElements(
-                By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label")
-        );
-        for (WebElement label : labels) {
-            label.click();
-        }
-
+        getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
+                .forEach(WebElement::click);
         return this;
     }
 
@@ -339,7 +340,6 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getText()
                 .trim();
     }
-
 
     public String getCurrentProjectName() {
         return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
@@ -416,7 +416,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
-        getDriver().findElement(By.xpath("//section[@nameref='rowSetStart28']//div[@nameref='rowSetStart25']//span/label")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
+        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
 
         return this;
     }
