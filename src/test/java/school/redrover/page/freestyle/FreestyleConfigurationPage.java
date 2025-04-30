@@ -218,33 +218,33 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
+    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
         final String locator = "button.jenkins-dropdown__item";
 
         WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
 
-            for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
+            try {
+                new Actions(getDriver())
+                        .scrollToElement(
+                                getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
+                        .perform();
+                buttonBuildSteps.click();
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+
+                break;
+            } catch (ElementClickInterceptedException e) {
                 try {
-                    new Actions(getDriver())
-                            .scrollToElement(
-                                    getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
-                            .perform();
+                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
                     buttonBuildSteps.click();
                     getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
                     break;
-                } catch (ElementClickInterceptedException e) {
-                    try {
-                        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
-                        buttonBuildSteps.click();
-                        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-
-                        break;
-                    } catch (ElementClickInterceptedException y) {
-                        System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
-                    }
+                } catch (ElementClickInterceptedException y) {
+                    System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
                 }
             }
+        }
         getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
@@ -353,7 +353,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
-    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
 
         Actions actions = new Actions(getDriver());
@@ -365,7 +365,7 @@ public class FreestyleConfigurationPage extends BasePage {
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
 
                 break;
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
@@ -453,4 +453,10 @@ public class FreestyleConfigurationPage extends BasePage {
     public String getTimePeriod() {
         return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
+
+    public void selectNoneSCM() {
+        new Actions(getDriver()).moveToElement(getDriver().findElement(
+                By.xpath("//label[text()='None']"))).perform();
+    }
 }
+

@@ -2,6 +2,7 @@ package school.redrover.page.error;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class ErrorPage extends BasePage {

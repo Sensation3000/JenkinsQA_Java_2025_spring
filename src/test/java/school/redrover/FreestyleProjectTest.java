@@ -174,7 +174,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddPostBuildActions () {
+    public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .sendItemName(PROJECT_NAME)
@@ -192,7 +192,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddBuildStepsANDPostBuildActions () {
+    public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .sendItemName(PROJECT_NAME)
@@ -216,4 +216,22 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
+
+    @Test
+    public void testCreateFreestyleProjectWithNoneSCM() {
+        FreestyleConfigurationPage configPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk();
+
+        configPage.selectNoneSCM();
+
+        FreestyleProjectPage projectPage = configPage.clickSaveButton();
+
+        Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
+    }
 }
+
+
+
+
