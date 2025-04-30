@@ -214,14 +214,16 @@ public class FreestyleProjectTest extends BaseTest {
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
-                .addPostBuildActions(5)
+                .addPostBuildActions(9)
                 .addBuildSteps(5)
                 .addPostBuildActions(11)
+                .addBuildSteps(1)
                 .addBuildSteps(7)
-                .addPostBuildActions(8)
+                .addPostBuildActions(1)
+                .addBuildSteps(5)
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 6);
+        assertEquals(postBuildNameList.size(), 7);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")

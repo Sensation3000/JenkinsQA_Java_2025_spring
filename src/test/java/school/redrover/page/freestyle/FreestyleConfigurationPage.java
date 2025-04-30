@@ -238,53 +238,39 @@ public class FreestyleConfigurationPage extends BasePage {
                         .perform();
                 buttonBuildSteps.click();
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
                 break;
-            } catch (ElementClickInterceptedException e) {
+            } catch (Exception e) {
                 try {
-                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
+                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/button")).click();
                     buttonBuildSteps.click();
                     getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                    getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
                     break;
-                } catch (ElementClickInterceptedException y) {
+                } catch (Exception y) {
                     System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
                 }
             }
         }
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
 
     public List<String> getChunkHeaderList() {
-        final int MAX_ATTEMPTS = 3;
-
-        List<String> previousList = Collections.emptyList();
-        List<String> currentList;
-
-        for (int i = 0; i < MAX_ATTEMPTS; i++) {
-            currentList = getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
-                    .map(WebElement::getText)
-                    .map(text -> text.replace("?", ""))
-                    .filter(text -> !text.trim().isEmpty())
-                    .toList();
-
-            if (currentList.equals(previousList)) return currentList;
-
-            previousList = new ArrayList<>(currentList);
-
-            if (i < MAX_ATTEMPTS - 1) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Список продолжает обновляться", e);
-                }
-            }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Ошибка: sleep прерван", e);
         }
 
-        return previousList;
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -360,17 +346,16 @@ public class FreestyleConfigurationPage extends BasePage {
 
         for (int i = 0; i < 5; i++) {
             try {
-                actions.sendKeys(Keys.END).perform();
+                new Actions(getDriver()).sendKeys(Keys.END).perform();
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
                 getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
                 break;
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
-
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
