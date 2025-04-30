@@ -11,9 +11,25 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
+import java.util.List;
+
 public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
+
+    @Test
+    public void testCreateOrganizationFolder() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertListContainsObject(
+                projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
+    }
 
     @Test
     public void testCreateOrganizationFolderWithDefaultIcon() {
@@ -63,18 +79,5 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(homePage.getWelcomeMessage().isEmpty());
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
-    }
-
-    @Ignore
-    @Test
-    public void testCreateOrganizationFolder() {
-        String projectName = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSave()
-                .getProjectName();
-
-     Assert.assertEquals(projectName, ORGANIZATION_FOLDER_NAME);
     }
 }
