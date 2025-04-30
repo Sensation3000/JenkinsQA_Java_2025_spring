@@ -238,10 +238,11 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> buildList = new HomePage(getDriver())
                 .clickNewItem().sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
+                .scrollToBuildTriggers()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(everyMinuteSchedule)
                 .clickSaveButton()
-                .waitForBuildToAppear(60);
+                .waitForBuildToAppear(70);
 
         Assert.assertEquals(buildList.size(), 1);
         Assert.assertEquals(buildList.get(0), "#1");
