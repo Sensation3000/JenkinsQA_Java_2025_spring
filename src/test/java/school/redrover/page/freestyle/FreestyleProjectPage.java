@@ -148,7 +148,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickLeftSideMenuBuildNow() {
-        getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Build Now']/.."))).click();
 
         return this;
     }
@@ -183,5 +183,25 @@ public class FreestyleProjectPage extends BasePage {
     public List<WebElement> getListOfBuilds() {
         return getDriver().findElements(By.className("app-builds-container__item"));
     }
-}
 
+    public List<String> getBuildNameList() {
+        return getDriver().findElements(By.className("app-builds-container__item")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public List<String> waitForBuildToAppear( int timeoutSeconds) {
+        for (int i = 0; i < timeoutSeconds; i += 10) {
+            List<String> builds = this.getBuildNameList();
+            if (!builds.isEmpty()) {
+                return builds;
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new AssertionError("Build did not start within expected time");
+    }
+
+}

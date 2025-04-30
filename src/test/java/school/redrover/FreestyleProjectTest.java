@@ -9,6 +9,8 @@ import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -263,6 +265,23 @@ public class FreestyleProjectTest extends BaseTest {
         FreestyleProjectPage projectPage = configPage.clickSaveButton();
 
         Assert.assertEquals(projectPage.getProjectName(), PROJECT_NAME);
+    }
+
+    @Test
+    public void testBuildPeriodically() {
+        final String everyMinuteSchedule = "* * * * *";
+
+        List<String> buildList = new HomePage(getDriver())
+                .clickNewItem().sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggers()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(everyMinuteSchedule)
+                .clickSaveButton()
+                .waitForBuildToAppear(70);
+
+        Assert.assertEquals(buildList.size(), 1);
+        Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
     }
 }
 
