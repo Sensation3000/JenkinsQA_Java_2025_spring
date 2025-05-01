@@ -8,6 +8,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.error.ErrorPage;
+import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
 public class Pipeline2Test extends BaseTest {
@@ -40,5 +41,16 @@ public class Pipeline2Test extends BaseTest {
 
         Assert.assertEquals(error.getTitle(), "Error");
         Assert.assertEquals(error.getErrorText(), "No such job: " + copyFrom);
+    }
+
+    @Test
+    public void testEmptyItemNamePOM() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .createJob()
+                .selectPipeline();
+
+        Assert.assertEquals(newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
+        Assert.assertEquals(newItemPage.getEmptyNameMessageColor(), "rgba(230, 0, 31, 1)");
     }
 }
