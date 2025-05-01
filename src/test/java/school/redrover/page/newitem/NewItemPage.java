@@ -55,7 +55,7 @@ public class NewItemPage extends BasePage {
         return new ErrorPage(getDriver());
     }
 
-    public String getAlertMessageText() {
+    public String getErrorMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
@@ -185,7 +185,7 @@ public class NewItemPage extends BasePage {
     public OrganizationFolderConfigurePage selectOrganizationFolderAndClickOk() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Organization Folder']")));
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new OrganizationFolderConfigurePage(getDriver());
     }
@@ -283,6 +283,13 @@ public class NewItemPage extends BasePage {
         return getWait10()
                           .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
                           .getText();
+    }
+
+    public NewItemPage selectItemByName(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(projectName)))).click();
+
+        return this;
     }
 }
 

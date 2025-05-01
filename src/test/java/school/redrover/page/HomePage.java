@@ -1,10 +1,13 @@
 package school.redrover.page;
-import org.openqa.selenium.NoSuchElementException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -20,6 +23,8 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
+    @FindBy(css = "#description > div:nth-child(1)")
+    private WebElement descriptionText;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -35,15 +40,12 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.name("description")).isDisplayed();
     }
 
-    public boolean isFreestyleProjectDeleted(String projectName) {
-        try {
-            WebElement element = getDriver().
-                    findElement(By.xpath("//a[@class='jenkins-table__link model-link inside' and text()='"+ projectName + "']"
-            ));
-            return element.isDisplayed();
-        } catch (NoSuchElementException e) {
-            return true;
-        }
+    public boolean isJobListEmpty() {
+        return getDriver().findElement(By.id("main-panel")).getText().contains("Welcome to Jenkins!");
+    }
+
+    public boolean isProjectExists(String projectName) {
+        return getProjectNameList().contains(projectName);
     }
 
     public HomePage sendDescription(String text) {
@@ -61,7 +63,7 @@ public class HomePage extends BasePage {
     }
 
     public String getDescriptionText() {
-        return getDriver().findElement(By.cssSelector("#description > div:nth-child(1)")).getText();
+        return descriptionText.getText();
     }
 
     public String getWelcomeMessage() {
@@ -160,6 +162,10 @@ public class HomePage extends BasePage {
     }
 
     public List<String> getProjectNameList() {
+        if (isJobListEmpty()) {
+            return List.of();
+        }
+
         return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
                 .map(WebElement::getText).toList();
     }
@@ -195,4 +201,19 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
+    public NewItemPage clickOnNewItemLinkWithChevron() {
+        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))));
+        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getProjectName() {
+        return getWait5()
+                         .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
+                         .getText();
+    }
 }

@@ -1,55 +1,48 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
+
+import java.util.List;
 
 public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
 
     @Test
-    public void testCreateOrganizationFolderWithDefaultIcon() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(ORGANIZATION_FOLDER_NAME);
+    public void testCreateOrganizationFolder() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        JavascriptExecutor js2 = (JavascriptExecutor) getDriver();
-        js2.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
-                .selectByVisibleText("Default Icon");
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String organizationFolderCurrentIcon = getDriver().findElement(By.cssSelector("h1 > svg")).getAttribute("title");
-        Assert.assertEquals(organizationFolderCurrentIcon, "Folder");
+        Assert.assertListContainsObject(
+                projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolderWithDefaultIcon")
+    @Test (dependsOnMethods = "testCreateOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='cancel']")).click();
+        String orgFolderPageHeader = new HomePage(getDriver())
+                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickDeleteOrganizationFolderOnLeftSidePanel()
+                .clickCancelOnDeletionConfirmationPopup()
+                .getOrganizationFolderNameFromHeader();
 
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")))).getText(), ORGANIZATION_FOLDER_NAME);
+        List<String> projectNameList = new HomePage(getDriver())
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertEquals(orgFolderPageHeader, ORGANIZATION_FOLDER_NAME);
+        Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME, "Organization folder is deleted");
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
 
@@ -63,18 +56,5 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(homePage.getWelcomeMessage().isEmpty());
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
-    }
-
-    @Ignore
-    @Test
-    public void testCreateOrganizationFolder() {
-        String projectName = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSave()
-                .getProjectName();
-
-     Assert.assertEquals(projectName, ORGANIZATION_FOLDER_NAME);
     }
 }

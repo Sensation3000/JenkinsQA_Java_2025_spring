@@ -116,7 +116,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickEnableDisableToggle() {
-        getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
+       // getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
 
         return this;
     }
@@ -462,9 +463,11 @@ public class FreestyleConfigurationPage extends BasePage {
         return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
 
-    public void selectNoneSCM() {
+    public FreestyleConfigurationPage selectNoneSCM() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//label[text()='None']"))).perform();
+
+        return this;
     }
 }
 
