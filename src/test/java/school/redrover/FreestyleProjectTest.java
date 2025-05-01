@@ -70,7 +70,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectIsEnabled, "Enabled");
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testEnableProject")
     public void testFreestyleProjectAddGitHubURL() {
         List<String> freestyleProjectPage = new HomePage(getDriver())
@@ -84,7 +84,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(freestyleProjectPage.contains(MENU_GITHUB_OPTION));
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
     public void testDiscardOldBuilds() {
         int buildLogLimit = 5;
@@ -99,7 +99,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertEquals(entries.size(), buildLogLimit);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testDiscardOldBuilds")
     public void testCreateDuplicate() {
         String errorMessage = new HomePage(getDriver())
@@ -110,7 +110,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(errorMessage, "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testCreateDuplicate")
     public void testEditDescription() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
@@ -122,7 +122,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testEditDescription")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
@@ -133,7 +133,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), UPDATED_PROJECT_NAME);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testRenameFreestyleProject")
     public void testDeleteFreestyleProject() {
         List<String> projectNameList = new HomePage(getDriver())
