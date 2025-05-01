@@ -45,16 +45,19 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
-
         OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
                 .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
                 .clickDeleteOrganizationFolderOnLeftSidePanel();
 
         String actualPopupText = orgFolderPage.getMDeletionPopupText();
-        orgFolderPage.clickYesOnDeletionConfirmationPopup();
-        HomePage homePage = new HomePage(getDriver());
 
-        Assert.assertFalse(homePage.getWelcomeMessage().isEmpty());
-        Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘" + ORGANIZATION_FOLDER_NAME + "’?");
+        List<String> projectNameList = orgFolderPage
+                .clickYesOnDeletionConfirmationPopup()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertEquals(projectNameList.size(), 0);
+        Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
 }

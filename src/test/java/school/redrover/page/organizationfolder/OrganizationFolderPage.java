@@ -19,8 +19,10 @@ public class OrganizationFolderPage extends BasePage {
         return this;
     }
 
-    public void clickYesOnDeletionConfirmationPopup() {
+    public OrganizationFolderPage clickYesOnDeletionConfirmationPopup() {
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        return new OrganizationFolderPage(getDriver());
     }
 
     public OrganizationFolderPage clickCancelOnDeletionConfirmationPopup() {
