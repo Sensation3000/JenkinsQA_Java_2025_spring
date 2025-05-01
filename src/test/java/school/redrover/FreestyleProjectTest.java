@@ -134,13 +134,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), UPDATED_PROJECT_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRenameFreestyleProject")
     public void testDeleteFreestyleProject() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(UPDATED_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuDelete()
                 .clickPopUpYesDeleteProject()
+                .getHeader()
+                .clickLogoIcon()
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
