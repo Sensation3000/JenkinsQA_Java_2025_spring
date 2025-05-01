@@ -3,7 +3,6 @@ package school.redrover.page.folder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.FolderTest;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
 
@@ -34,6 +33,12 @@ public class FolderConfigurationPage extends BasePage {
     public HomePage saveAndReturnToHomePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage clickOnDashboard() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("jenkins-breadcrumbs__list-item"))).click();
 
         return new HomePage(getDriver());
     }

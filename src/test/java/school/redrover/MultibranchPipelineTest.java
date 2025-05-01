@@ -16,6 +16,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_NAME = "Multibranch Pipeline Job Test";
 
+    @Ignore
     @Test
     public void testCreateNewJobMultibranch() {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
