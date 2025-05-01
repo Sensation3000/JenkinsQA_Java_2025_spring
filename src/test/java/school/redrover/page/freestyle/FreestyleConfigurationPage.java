@@ -4,6 +4,7 @@ import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
@@ -23,14 +24,20 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("button[name='Submit']")))).click();
 
         return new FreestyleProjectPage(getDriver());
     }
 
-
     public FreestyleConfigurationPage scrollToGeneralItem() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='general']")));
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
+        getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]")).click();
+        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(buildLogLimit));
 
         return this;
     }
@@ -41,8 +48,8 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage scrollToTriggersItem() {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='triggers']")));
+    public FreestyleConfigurationPage scrollToBuildTriggers() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.className("jenkins-checkbox-help-wrapper")));
 
         return this;
     }
@@ -78,8 +85,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage checkBuildPeriodicallyCheckbox() {
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//label[contains(text(), 'Build periodically')]")));
+    public FreestyleConfigurationPage setBuildPeriodicallyCheckbox() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
 
         return this;
@@ -110,7 +116,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickEnableDisableToggle() {
-        getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
+       // getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
 
         return this;
     }
@@ -204,8 +211,16 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElement(By.id("cb16")).isDisplayed();
     }
 
+    public boolean isPollSCMCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb17")).isDisplayed();
+    }
+
     public boolean isGithubHookTriggerCheckboxEnabled() {
         return getDriver().findElement(By.id("cb16")).isEnabled();
+    }
+
+    public boolean isPollSCMCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb17")).isEnabled();
     }
 
     public String getGithubHookTriggerLabelText() {
@@ -217,61 +232,52 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber){
-        final String locator = "button.jenkins-dropdown__item";
-
+    public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
         WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
 
-            for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
+            try {
+                new Actions(getDriver())
+                        .scrollToElement(
+                                getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
+                        .perform();
+                buttonBuildSteps.click();
+                getDriver().findElement(
+                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                        .click();
+
+                break;
+            } catch (Exception e) {
                 try {
-                    new Actions(getDriver())
-                            .scrollToElement(getWait5()
-                            .until(ExpectedConditions
-                            .elementToBeClickable(By.xpath("//*[@id='post-build-actions']")))).perform();
+                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
                     buttonBuildSteps.click();
-                    getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                    getDriver().findElement(
+                            By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                            .click();
 
                     break;
-                } catch (ElementClickInterceptedException e) {
-                    try {
-                        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
-                        buttonBuildSteps.click();
-                        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-
-                        break;
-                    } catch (ElementClickInterceptedException ignored) {}
+                } catch (Exception y) {
+                    System.err.println("Ошибка, пробуем снова... " + y.getMessage());
                 }
             }
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
+        }
 
         return this;
     }
 
     public List<String> getChunkHeaderList() {
-        final int MAX_ATTEMPTS = 3;
-
-        List<String> previousList = Collections.emptyList();
-        List<String> currentList;
-
-        for (int i = 0; i < MAX_ATTEMPTS; i++) {
-            currentList = getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
-                    .map(WebElement::getText)
-                    .map(text -> text.replace("?", ""))
-                    .filter(text -> !text.trim().isEmpty())
-                    .toList();
-
-            if (currentList.equals(previousList)) return currentList;
-
-            previousList = new ArrayList<>(currentList);
-
-            if (i < MAX_ATTEMPTS - 1) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ignored) {}
-            }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Ошибка: sleep прерван", e);
         }
 
-        return previousList;
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -279,7 +285,6 @@ public class FreestyleConfigurationPage extends BasePage {
 
         return this;
     }
-
 
     public FreestyleConfigurationPage clickBuildAfterProjects() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
@@ -298,13 +303,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
-        List<WebElement> labels = getDriver().findElements(
-                By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label")
-        );
-        for (WebElement label : labels) {
-            label.click();
-        }
-
+        getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
+                .forEach(WebElement::click);
         return this;
     }
 
@@ -336,7 +336,6 @@ public class FreestyleConfigurationPage extends BasePage {
                 .trim();
     }
 
-
     public String getCurrentProjectName() {
         return getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']"))
                 .getDomAttribute("value");
@@ -347,24 +346,26 @@ public class FreestyleConfigurationPage extends BasePage {
         return radios.get(radios.size() - 1).getDomAttribute("checked").equals("true");
     }
 
-    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber){
+    public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
-
+        List<WebElement> elements = List.of();
         Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < 10; i++) {
             try {
                 actions.sendKeys(Keys.END).perform();
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                elements = getDriver().findElements(By.cssSelector(locator));
 
-                break;
-            }catch (Exception ignored){
+                if (elements.size() == 11) {
+                    elements.get(--itemNumber).click();
 
+                    break;
+                }
+            } catch (Exception e) {
+                System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
-
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
@@ -411,7 +412,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
-        getDriver().findElement(By.xpath("//section[@nameref='rowSetStart28']//div[@nameref='rowSetStart25']//span/label")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
+        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
 
         return this;
     }
@@ -421,4 +423,38 @@ public class FreestyleConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public FreestyleConfigurationPage clickThrottleBuilds() {
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[12]/div[1]/div/span/label")).click();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage selectTimePeriod(String period) {
+        WebElement timePeriod = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.name("_.durationName"))));
+        timePeriod.click();
+        new Select(timePeriod).selectByVisibleText(period);
+
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("description")))).getText();
+    }
+
+    public boolean getSelectThrottleBuilds() {
+        return getDriver().findElement(By.name("_.throttle")).isSelected();
+    }
+
+    public String getTimePeriod() {
+        return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
+    }
+
+    public FreestyleConfigurationPage selectNoneSCM() {
+        new Actions(getDriver()).moveToElement(getDriver().findElement(
+                By.xpath("//label[text()='None']"))).perform();
+
+        return this;
+    }
 }
+
