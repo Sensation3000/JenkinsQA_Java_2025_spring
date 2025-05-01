@@ -211,8 +211,16 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElement(By.id("cb16")).isDisplayed();
     }
 
+    public boolean isPollSCMCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb17")).isDisplayed();
+    }
+
     public boolean isGithubHookTriggerCheckboxEnabled() {
         return getDriver().findElement(By.id("cb16")).isEnabled();
+    }
+
+    public boolean isPollSCMCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb17")).isEnabled();
     }
 
     public String getGithubHookTriggerLabelText() {
