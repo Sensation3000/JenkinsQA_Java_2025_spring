@@ -8,12 +8,13 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewItemCreate3Test extends BaseTest {
 
-    static final String NEW_ITEM_NAME = "New free-style project";
+    private static final String NEW_ITEM_NAME = "New free-style project";
 
     public void goToNewItemPage() {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -65,14 +66,15 @@ public class NewItemCreate3Test extends BaseTest {
     @Test
     public void testCreateNewItemWithCorrectName() {
         final String expectedName = "New free-style project";
+        String projectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(NEW_ITEM_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .waitUntilTextNameProjectToBePresentInH1(NEW_ITEM_NAME)
+                .getProjectName();
 
-        goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).getText(), expectedName);
+        Assert.assertEquals(projectName, expectedName);
     }
 
     @Test(dependsOnMethods = "testCreateNewItemWithCorrectName")
