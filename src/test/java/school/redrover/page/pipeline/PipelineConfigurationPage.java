@@ -53,6 +53,13 @@ public class PipelineConfigurationPage extends BasePage {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")));
     }
 
+    public boolean isToggleDisplayed() {
+        By toggleLocator = By.className("jenkins-toggle-switch__label");
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleLocator));
+
+        return getDriver().findElement(toggleLocator).isDisplayed();
+    }
+
     public boolean isToggleDisabled() {
         By toggleDisabled = By.xpath("//span[@class='jenkins-toggle-switch__label__unchecked-title']");
 
@@ -71,9 +78,11 @@ public class PipelineConfigurationPage extends BasePage {
 
     public PipelineProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Status']")));
 
         return new PipelineProjectPage(getDriver());
     }
+
     public String checkStatusOnToggle() {
         WebElement statusToggle;
         statusToggle = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__checked-title")));
@@ -88,7 +97,19 @@ public class PipelineConfigurationPage extends BasePage {
         return statusToggle.getText();
     }
 
+    public PipelineConfigurationPage clickPreviewButton() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
 
+        return this;
+    }
 
+    public PipelineConfigurationPage clickHidePreviewButton() {
+        getDriver().findElement(By.className("textarea-hide-preview")).click();
 
+        return this;
+    }
+
+    public boolean isPreviewDisplayed() {
+        return getDriver().findElement(By.className("textarea-preview")).isDisplayed();
+    }
 }

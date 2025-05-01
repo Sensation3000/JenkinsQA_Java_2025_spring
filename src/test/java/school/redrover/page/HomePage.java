@@ -221,6 +221,26 @@ public class HomePage extends BasePage {
                          .getText();
     }
 
+    public HomePage showDropdownOnHoverByJobName(String jobName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName))))
+                .perform();
+        getDriver().findElement(By.xpath("//tr[@id='job_%s']//button".formatted(jobName))).click();
+
+        return this;
+    }
+
+    public List<WebElement> getDropdownOptionsList() {
+        return getDriver().findElements(By.cssSelector("#tippy-6 .jenkins-dropdown__item"));
+    }
+
+    public boolean isOptionPresentedInDropdown(String optionName) {
+        List<WebElement> dropdownOptionsList = getDropdownOptionsList();
+
+        return dropdownOptionsList.stream()
+                .anyMatch(webElement -> webElement.getText().contains(optionName));
+    }
+
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());
