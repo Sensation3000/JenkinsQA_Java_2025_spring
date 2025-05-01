@@ -7,38 +7,38 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.error.ErrorPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
 public class Pipeline2Test extends BaseTest {
 
+    private static final String PROJECT_NAME = "PipelineProjectNameTest";
+
     @Test
     public void testCreateNewPipeline() {
-        final String projectName = "PipelineProjectNameTest";
-
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .createJob()
-                .sendItemName(projectName)
+                .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .clickSave();
 
-        Assert.assertEquals(pipelineProjectPage.getProjectName(), projectName);
+        Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCopyFromError() {
-        final String freestyleProjectA = "FirstProject";
-        final String freestyleProjectB = "SecondProject";
+
+        final String projectNameB = "SecondProject";
         final String copyFrom = "No such item";
 
-        WebDriver driver = getDriver();
-        TestUtils.newItemCreate(this, freestyleProjectA, 2);
+        ErrorPage error = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(projectNameB)
+                .selectPipeline()
+                .sendTextCopyForm(copyFrom)
+                .clickOkButtonWithError();
 
-        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
-        driver.findElement(By.className("jenkins-input")).sendKeys(freestyleProjectB);
-        driver.findElement(By.id("from")).sendKeys(copyFrom);
-        driver.findElement(By.id("ok-button")).click();
-
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"main-panel\"]/h1")).getText(),"Error");
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"main-panel\"]/p")).getText(), "No such job: " + copyFrom);
+        Assert.assertEquals(error.getTitle(), "Error");
+        Assert.assertEquals(error.getErrorText(), "No such job: " + copyFrom);
     }
 }
