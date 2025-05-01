@@ -3,6 +3,7 @@ package school.redrover.page.pipeline;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -43,6 +44,15 @@ public class PipelineConfigurationPage extends BasePage {
         return tooltipText;
     }
 
+    public WebElement getToggleTooltipElementOnHover() {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
+                .perform();
+
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")));
+    }
+
     public boolean isToggleDisabled() {
         By toggleDisabled = By.xpath("//span[@class='jenkins-toggle-switch__label__unchecked-title']");
 
@@ -60,7 +70,7 @@ public class PipelineConfigurationPage extends BasePage {
     }
 
     public PipelineProjectPage clickSave() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getDriver().findElement(By.name("Submit")).click();
 
         return new PipelineProjectPage(getDriver());
     }
