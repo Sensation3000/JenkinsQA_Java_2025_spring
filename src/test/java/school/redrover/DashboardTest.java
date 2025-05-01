@@ -42,13 +42,13 @@ public class DashboardTest extends BaseTest {
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .getHeader()
-                .goToHomePage()
+                .clickLogo()
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(JOB_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .getHeader()
-                .goToHomePage();
+                .clickLogo();
 
         List<String> actualListOfJobs = new ArrayList<>(new HomePage(getDriver()).getProjectNameList());
         List<String> expectedListOfJobs =
