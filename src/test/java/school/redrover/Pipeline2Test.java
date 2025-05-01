@@ -12,17 +12,17 @@ import school.redrover.page.pipeline.PipelineProjectPage;
 
 public class Pipeline2Test extends BaseTest {
 
-    final String projectName = "PipelineProjectNameTest";
+    private static final String PROJECT_NAME = "PipelineProjectNameTest";
 
     @Test
     public void testCreateNewPipeline() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .createJob()
-                .sendItemName(projectName)
+                .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .clickSave();
 
-        Assert.assertEquals(pipelineProjectPage.getProjectName(), projectName);
+        Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
