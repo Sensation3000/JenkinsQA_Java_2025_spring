@@ -225,4 +225,8 @@ public class HomePage extends BasePage {
         logOutButton.click();
         return new SignInPage(getDriver());
     }
+
+    public String getLogOutButtonText(){
+        return logOutButton.getText();
+    }
 }

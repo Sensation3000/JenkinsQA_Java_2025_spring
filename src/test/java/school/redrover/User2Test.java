@@ -75,24 +75,4 @@ public class User2Test extends BaseTest {
         List<WebElement> inputFields = getDriver().findElements(By.cssSelector(".jenkins-input"));
         Assert.assertEquals(inputFields.size(), 5, "Expected 5 input fields in the Create User form");
     }
-
-    @Test
-    public void testNewUserIsCreated() {
-        final String username = "TestUser";
-
-        createUser(username, "TestUserPassword", "Test User", "testuser@email.com");
-
-        String actualUsername = getWait5().until(ExpectedConditions
-                .visibilityOfElementLocated(By.cssSelector("a[href='user/testuser/']"))).getText();
-        Assert.assertEquals(actualUsername, username, "The expected new user " + username + " is not displayed");
-    }
-    @Ignore
-    @Test(dependsOnMethods = "testNewUserIsCreated")
-    public void testDeleteUser() {
-        deleteUser();
-
-        boolean deletedUser = getWait5().until(ExpectedConditions
-                .invisibilityOfElementLocated(By.cssSelector("a[href='user/testuser/']")));
-        Assert.assertTrue(deletedUser, "The deleted User still visible on the page.");
-    }
 }

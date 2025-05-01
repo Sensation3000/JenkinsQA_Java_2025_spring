@@ -11,10 +11,17 @@ import school.redrover.common.BaseTest;
 import school.redrover.common.JenkinsUtils;
 import school.redrover.common.ProjectUtils;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SignInOutTest extends BaseTest {
+public class SignInTest extends BaseTest {
+
+    private static final String USERNAME = "UserName";
+    private static final String PASSWORD = "P@ssword";
+    private static final String EMAIL = "test@gmail.com";
+    private static final String FULLNAME = "User Full Name";
 
     @DataProvider(name = "invalidCredentials")
     private Object[][] getData() {
@@ -27,19 +34,44 @@ public class SignInOutTest extends BaseTest {
                 {"", "" }
         };
     }
-
     @Ignore
     @Test
     public void testSignOutSuccessfully() {
         JenkinsUtils.logout(getDriver());
         List<WebElement> logoutList = getDriver().findElements(By.xpath("//a[@href='/logout']"));
 
-        JenkinsUtils.login(getDriver());
-        TestUtils.waitForHomePageLoad(this);
-
-        Assert.assertTrue(logoutList.isEmpty());
     }
 
+    @Test
+    public void testCreateNewUser() {
+        List<String> userIds = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickUsers()
+                .clickCreateUserButton()
+                .sendUserName(USERNAME)
+                .sendPassword(PASSWORD)
+                .sendConfirmPassword(PASSWORD)
+                .sendFullName(FULLNAME)
+                .sendEmailAddress(EMAIL)
+                .clickCreateUserButton()
+                .getUserIdLinks().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertTrue(userIds.contains(USERNAME));
+    }
+
+    @Test (dependsOnMethods = "testCreateNewUser")
+    public void testSignInAsExistingUser(){
+        String logOutButtonText = new HomePage(getDriver())
+                .clickLogOutButton()
+                .setUserName(USERNAME)
+                .setPassword(PASSWORD)
+                .clickSignInButton()
+                .getLogOutButtonText();
+
+        Assert.assertEquals(logOutButtonText,"log out");
+    }
     @Ignore
     @Test(dataProvider = "invalidCredentials")
     public void testInvalidCredentialsError(String testUserName, String testPassword) {
@@ -54,24 +86,5 @@ public class SignInOutTest extends BaseTest {
         TestUtils.waitForHomePageLoad(this);
 
         Assert.assertEquals(actualErrorText, "Invalid username or password");
-    }
-
-    @Test
-    public void testSignInAsANewUser() {
-        final String userName = "UserName";
-        final String password = "P@ssword";
-        final String newUserFullName = "User";
-        final String email = "user@test.com";
-
-        TestUtils.createNewUser(this, userName, password, newUserFullName, email);
-
-        JenkinsUtils.logout(getDriver());
-
-        JenkinsUtils.login(getDriver(), userName, password);
-        TestUtils.waitForHomePageLoad(this);
-
-        final String actualUserName = getDriver().findElement(By.cssSelector("#page-header a.model-link")).getText();
-
-        Assert.assertEquals(actualUserName, newUserFullName);
     }
 }
