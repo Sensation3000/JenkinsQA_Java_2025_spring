@@ -140,6 +140,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnJobInListOfItems(UPDATED_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuDelete()
                 .clickPopUpYesDeleteProject()
+                .getHeader()
+                .clickLogoIcon()
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
