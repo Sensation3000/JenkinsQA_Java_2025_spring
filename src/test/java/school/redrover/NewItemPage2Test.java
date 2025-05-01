@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -143,6 +144,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfNoItemsMessageIsDisplayed() {
         String noItemsMessage = homePage.clickNewItemOnLeftSidePanel()

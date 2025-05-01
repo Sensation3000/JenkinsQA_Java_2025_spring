@@ -39,7 +39,7 @@ public class FolderProjectPage extends BasePage {
     public HomePage selectFreestyleClickOkAndReturnToHomePage() {
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
+        getHeader().clickLogo();
 
         return new HomePage(getDriver());
     }
