@@ -254,7 +254,7 @@ public class FreestyleConfigurationPage extends BasePage {
                         By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
                         .click();
 
-                break;
+                return this;
             } catch (Exception e) {
                 try {
                     buttonEnvironment.click();
@@ -263,14 +263,14 @@ public class FreestyleConfigurationPage extends BasePage {
                             By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
                             .click();
 
-                    break;
+                    return this;
                 } catch (Exception y) {
                     System.err.println("Ошибка, пробуем снова... " + y.getMessage());
                 }
             }
         }
 
-        return this;
+        throw new RuntimeException("Failed to add build step");
     }
 
     public List<String> getChunkHeaderList() {
@@ -367,14 +367,14 @@ public class FreestyleConfigurationPage extends BasePage {
                 if (elements.size() == 11) {
                     elements.get(--itemNumber).click();
 
-                    break;
+                    return this;
                 }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
 
-        return this;
+        throw new RuntimeException("Failed to add post build actions");
     }
 
     public FreestyleConfigurationPage clickToReverseBuildTriggerAndSetUpStreamProject(String jobName) {
