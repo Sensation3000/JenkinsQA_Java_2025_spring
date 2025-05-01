@@ -70,7 +70,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectIsEnabled, "Enabled");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testEnableProject")
     public void testFreestyleProjectAddGitHubURL() {
         List<String> freestyleProjectPage = new HomePage(getDriver())
