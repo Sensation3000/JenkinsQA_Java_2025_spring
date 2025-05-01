@@ -225,4 +225,10 @@ public class HomePage extends BasePage {
         logOutButton.click();
         return new SignInPage(getDriver());
     }
+
+    public List<String> getColumnNames() {
+
+        return getDriver().findElements(By.xpath("//th/a")).stream()
+                .map(WebElement::getText).toList();
+    }
 }
