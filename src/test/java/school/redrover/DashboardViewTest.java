@@ -13,7 +13,6 @@ public class DashboardViewTest extends BaseTest {
     private static final String JOB_NAME = "Test item";
     private final String VIEW_NAME = "TestViewName";
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
         new HomePage(getDriver())
@@ -26,7 +25,6 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(newViewName, VIEW_NAME);
     }
 
-    @Ignore
     @Test
     public void testCreateFreestyleProjectForView() {
         String projectName = new HomePage(getDriver())
