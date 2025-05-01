@@ -3,15 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.error.ErrorPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
@@ -21,6 +18,7 @@ import java.util.List;
 public class NewItemPage2Test extends BaseTest {
     private Actions actions;
     HomePage homePage;
+    String projectName;
 
     @BeforeMethod
     void setUp() {
@@ -48,6 +46,15 @@ public class NewItemPage2Test extends BaseTest {
     }
 
     @Test
+    public void createNewFolderProject() {
+        projectName = TestUtils.generateRandomAlphanumeric();
+
+        TestUtils.newItemCreate(this, projectName, 4);
+
+        Assert.assertEquals(homePage.getProjectName(), projectName);
+    }
+
+    @Test
     public void testIfPageIsAccessibleFromHomePage() {
         NewItemPage newItemPage = new NewItemPage(getDriver());
 
@@ -61,10 +68,11 @@ public class NewItemPage2Test extends BaseTest {
     public void testInputPositiveValidation() {
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric() + "_";
 
-        homePage.clickNewItemOnLeftSidePanel()
-                .sendItemName(randomAlphaNumericValue);
+        String inputValue = homePage.clickNewItemOnLeftSidePanel()
+                                    .sendItemName(randomAlphaNumericValue)
+                                    .getInputValue();
 
-        Assert.assertEquals(randomAlphaNumericValue, new NewItemPage(getDriver()).getInputValue());
+        Assert.assertEquals(inputValue, randomAlphaNumericValue);
     }
 
     @Test
@@ -110,10 +118,8 @@ public class NewItemPage2Test extends BaseTest {
         );
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfCopyFromOptionIsDisplayed() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
-
         NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel();
 
         Assert.assertEquals(newItemPage.getCopyFromFieldText(), "Copy from");
@@ -127,96 +133,80 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertFalse(newItemPage.isCopyFromOptionInputDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFolderProject")
     public void testAutocompleteOption() {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, TestUtils.generateRandomNumberWithin1And6());
+        String actualProjectName = homePage.clickNewItemOnLeftSidePanel()
+                                           .sendItemName(TestUtils.generateRandomAlphanumeric())
+                                           .enterValueToCopyFromInput(projectName)
+                                           .getDropdownItemText();
 
-        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
-                                          .enterValueToCopyFromInput(randomAlphaNumericValue);
-
-        Assert.assertEquals(newItemPage.getDropdownItemText(), randomAlphaNumericValue);
+        Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfNoItemsMessageIsDisplayed() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
+        String noItemsMessage = homePage.clickNewItemOnLeftSidePanel()
+                                          .sendItemName(TestUtils.generateRandomAlphanumeric())
+                                          .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric() + "_")
+                                          .getDropdownItemText();
 
-        NewItemPage newItemPage = homePage.clickNewItemOnLeftSidePanel()
-                                          .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric() + "_");
-
-        Assert.assertEquals(newItemPage.getDropdownItemText(), "No items");
+        Assert.assertEquals(noItemsMessage, "No items");
     }
 
-    @Test
+    @Test(dependsOnMethods = "createNewFolderProject")
     public void testCopyFromOptionWhenCreatingNewJob() {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
-
-        TestUtils.newItemCreate(this, randomAlphaNumericValue, 3);
-
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage =
+        String headingText =
                 homePage.clickNewItemOnLeftSidePanel()
-                        .enterValueToCopyFromInput(randomAlphaNumericValue)
-                        .redirectToMultiConfigurationConfigurePage();
+                        .sendItemName(TestUtils.generateRandomAlphanumeric())
+                        .enterValueToCopyFromInput(projectName)
+                        .redirectToMultiConfigurationConfigurePage()
+                        .getHeadingText();
 
-        Assert.assertEquals(multiConfigurationConfigurePage.getHeadingText(), "General");
+        Assert.assertEquals(headingText, "General");
     }
 
-    @Ignore//NewItemPage2Test.testIfUserRedirectedToErrorPage:180 » Timeout Expected condition failed: waiting for element to be clickable: By.cssSelector: .jenkins-dropdown.jenkins-dropdown--compact https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14733047885/job/41351971771?pr=1586
-    @Test
+    @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfUserRedirectedToErrorPage() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomNumberWithin1And6());
-
-        ErrorPage errorPage =
+        String errorPageHeading =
                 homePage.clickNewItemOnLeftSidePanel()
+                        .sendItemName(TestUtils.generateRandomAlphanumeric())
                         .enterValueToCopyFromInput(TestUtils.generateRandomAlphanumeric())
-                        .redirectToErrorPage();
+                        .redirectToErrorPage()
+                        .getTitle();
 
-        Assert.assertEquals(errorPage.getTitle(), "Error");
+        Assert.assertEquals(errorPageHeading, "Error");
     }
 
     @Test
     public void testIfOriginalItemConfigurationIsCopied() {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+        projectName = TestUtils.generateRandomAlphanumeric();
 
         MultiConfigurationConfigurePage multiConfigurationConfigurePage =
                 homePage.clickNewItemOnLeftSidePanel()
-                        .sendItemName(randomAlphaNumericValue)
+                        .sendItemName(projectName)
                         .selectMultiConfigurationAndClickOk()
                         .scrollToEnvironmentSectionWithJS()
                         .checkEnvironmentCheckboxesAndClickOnSaveButton()
                         .getHeader()
                         .goToHomePage()
                         .clickNewItemOnLeftSidePanel()
-                        .enterValueToCopyFromInput(randomAlphaNumericValue)
+                        .sendItemName(TestUtils.generateRandomAlphanumeric())
+                        .enterValueToCopyFromInput(projectName)
                         .redirectToMultiConfigurationConfigurePage()
                         .scrollToEnvironmentSectionWithJS();
 
         Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
     }
 
-    @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
-    public void testJobCreationWithinFolder(String itemTypeName) {
-        String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
+    @Test(dependsOnMethods = "createNewFolderProject")
+    public void testJobCreationWithinFolder() {
+        String actualProjectName = homePage.clickOnNewItemLinkWithChevron()
+                        .sendItemName(projectName)
+                        .selectFolderAndClickOkWithJS()
+                        .clickSave()
+                        .getProjectName();
 
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), 4);
-
-        WebElement jobTableLink = getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"));
-        String projectName = jobTableLink.getText();
-        actions.moveToElement(jobTableLink).perform();
-
-        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
-
-        createNewJob(randomAlphaNumericValue, itemTypeName);
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("a[href='/job/%s/']", projectName))));
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("a.jenkins-table__link span")).getText(),
-                randomAlphaNumericValue
-        );
+        Assert.assertEquals(actualProjectName, projectName);
     }
 
     @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)

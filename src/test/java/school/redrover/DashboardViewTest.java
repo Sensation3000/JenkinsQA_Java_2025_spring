@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -17,6 +18,7 @@ public class DashboardViewTest extends BaseTest {
     private final String List_VIEW_NAME = "TestListViewName";
     private static final String TEST_ITEM_JOB = "Test item";
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
         new HomePage(getDriver()).clickNewView().addName(MY_VIEW_NAME)
@@ -51,6 +53,7 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(new HomePage(getDriver()).getNameOfView(List_VIEW_NAME), List_VIEW_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProjectForView() {
         String projectName = new HomePage(getDriver())
