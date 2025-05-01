@@ -296,5 +296,9 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public String getEmptyNameMessageColor() {
+        return getDriver().findElement(By.id("itemname-required")).getCssValue("color");
+    }
 }
 
