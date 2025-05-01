@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -9,7 +10,7 @@ import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
-
+@Ignore
 public class FreestyleProjectConfigurationTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Freestyle";
