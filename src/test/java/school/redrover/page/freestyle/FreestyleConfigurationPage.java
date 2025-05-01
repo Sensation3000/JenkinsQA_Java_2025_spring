@@ -211,8 +211,16 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElement(By.id("cb16")).isDisplayed();
     }
 
+    public boolean isPollSCMCheckboxDisplayed() {
+        return getDriver().findElement(By.id("cb17")).isDisplayed();
+    }
+
     public boolean isGithubHookTriggerCheckboxEnabled() {
         return getDriver().findElement(By.id("cb16")).isEnabled();
+    }
+
+    public boolean isPollSCMCheckboxEnabled() {
+        return getDriver().findElement(By.id("cb17")).isEnabled();
     }
 
     public String getGithubHookTriggerLabelText() {
@@ -455,9 +463,11 @@ public class FreestyleConfigurationPage extends BasePage {
         return new Select(getDriver().findElement(By.name("_.durationName"))).getFirstSelectedOption().getText();
     }
 
-    public void selectNoneSCM() {
+    public FreestyleConfigurationPage selectNoneSCM() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//label[text()='None']"))).perform();
+
+        return this;
     }
 }
 

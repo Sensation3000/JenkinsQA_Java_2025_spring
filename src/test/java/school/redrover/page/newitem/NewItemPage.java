@@ -1,6 +1,7 @@
 package school.redrover.page.newitem;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,7 +56,7 @@ public class NewItemPage extends BasePage {
         return new ErrorPage(getDriver());
     }
 
-    public String getAlertMessageText() {
+    public String getErrorMessageText() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
@@ -264,12 +265,10 @@ public class NewItemPage extends BasePage {
         int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
         String inputValue = randomAlphaNumericValue.substring(0, randomLength);
 
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("name")))
-                .sendKeys(TestUtils.generateRandomAlphanumeric());
+        WebElement copyFromInput = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("from")));
 
-        WebElement copyFromInput = getDriver().findElement(By.id("from"));
         TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].focus();", copyFromInput);
         copyFromInput.sendKeys(inputValue);
 
         getWait10()
@@ -283,6 +282,13 @@ public class NewItemPage extends BasePage {
         return getWait10()
                           .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
                           .getText();
+    }
+
+    public NewItemPage selectItemByName(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//span[text()='%s']".formatted(projectName)))).click();
+
+        return this;
     }
 }
 
