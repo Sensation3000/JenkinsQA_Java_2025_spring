@@ -233,8 +233,6 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
-        final String locator = "button.jenkins-dropdown__item";
-
         WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
 
         for (int i = 0; i < 5; i++) {
@@ -244,54 +242,42 @@ public class FreestyleConfigurationPage extends BasePage {
                                 getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
                         .perform();
                 buttonBuildSteps.click();
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                getDriver().findElement(
+                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                        .click();
 
                 break;
-            } catch (ElementClickInterceptedException e) {
+            } catch (Exception e) {
                 try {
                     getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
                     buttonBuildSteps.click();
-                    getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                    getDriver().findElement(
+                            By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
+                            .click();
 
                     break;
-                } catch (ElementClickInterceptedException y) {
-                    System.err.println("Элемент перекрыт, пробуем снова... " + y.getMessage());
+                } catch (Exception y) {
+                    System.err.println("Ошибка, пробуем снова... " + y.getMessage());
                 }
             }
         }
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }
 
     public List<String> getChunkHeaderList() {
-        final int MAX_ATTEMPTS = 3;
-
-        List<String> previousList = Collections.emptyList();
-        List<String> currentList;
-
-        for (int i = 0; i < MAX_ATTEMPTS; i++) {
-            currentList = getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
-                    .map(WebElement::getText)
-                    .map(text -> text.replace("?", ""))
-                    .filter(text -> !text.trim().isEmpty())
-                    .toList();
-
-            if (currentList.equals(previousList)) return currentList;
-
-            previousList = new ArrayList<>(currentList);
-
-            if (i < MAX_ATTEMPTS - 1) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Список продолжает обновляться", e);
-                }
-            }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Ошибка: sleep прерван", e);
         }
 
-        return previousList;
+        return getDriver().findElements(By.cssSelector(".repeated-chunk__header")).stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("?", ""))
+                .filter(text -> !text.trim().isEmpty())
+                .toList();
     }
 
     public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
@@ -362,23 +348,24 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
-
+        List<WebElement> elements = List.of();
         Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             try {
                 actions.sendKeys(Keys.END).perform();
                 getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+                elements = getDriver().findElements(By.cssSelector(locator));
 
-                break;
+                if (elements.size() == 11) {
+                    elements.get(--itemNumber).click();
+
+                    break;
+                }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
-        getDriver().findElements(By.cssSelector(locator)).get(--itemNumber).click();
 
         return this;
     }

@@ -64,7 +64,19 @@ public class PipelineConfigurationPage extends BasePage {
 
         return new PipelineProjectPage(getDriver());
     }
+    public String checkStatusOnToggle() {
+        WebElement statusToggle;
+        statusToggle = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__checked-title")));
 
+        return statusToggle.getText();
+    }
+
+    public String checkStatusOffToggle() {
+        WebElement statusToggle;
+        statusToggle = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__unchecked-title")));
+
+        return statusToggle.getText();
+    }
 
 
 

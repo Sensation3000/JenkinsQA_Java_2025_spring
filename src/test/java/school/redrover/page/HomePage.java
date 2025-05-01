@@ -17,6 +17,7 @@ import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
+import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "#description > div:nth-child(1)")
     private WebElement descriptionText;
+
+    @FindBy(xpath = "//span[text()='log out']")
+    private WebElement logOutButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -215,5 +219,10 @@ public class HomePage extends BasePage {
         return getWait5()
                          .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
                          .getText();
+    }
+
+    public SignInPage clickLogOutButton(){
+        logOutButton.click();
+        return new SignInPage(getDriver());
     }
 }
