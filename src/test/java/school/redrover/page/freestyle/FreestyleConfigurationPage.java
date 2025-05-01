@@ -3,6 +3,7 @@ package school.redrover.page.freestyle;
 import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
@@ -12,6 +13,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
+
+    @FindBy(css = "button[suffix='builder']")
+    private WebElement buttonAddBuildStep;
+
+    @FindBy(id = "//*[@id='tasks']/div[4]/span/button")
+    private WebElement buttonEnvironment;
+
+    @FindBy(css = "button[suffix='publisher']")
+    private WebElement buttonAddPostBuildAction;
 
     public FreestyleConfigurationPage(WebDriver driver) {
         super(driver);
@@ -233,15 +243,13 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
-        WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
-
         for (int i = 0; i < 5; i++) {
             try {
                 new Actions(getDriver())
                         .scrollToElement(
                                 getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
                         .perform();
-                buttonBuildSteps.click();
+                buttonAddBuildStep.click();
                 getDriver().findElement(
                         By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
                         .click();
@@ -249,8 +257,8 @@ public class FreestyleConfigurationPage extends BasePage {
                 break;
             } catch (Exception e) {
                 try {
-                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
-                    buttonBuildSteps.click();
+                    buttonEnvironment.click();
+                    buttonAddBuildStep.click();
                     getDriver().findElement(
                             By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
                             .click();
@@ -349,12 +357,11 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
         List<WebElement> elements = List.of();
-        Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
-                actions.sendKeys(Keys.END).perform();
-                getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
+                new Actions(getDriver()).sendKeys(Keys.END).perform();
+                buttonAddPostBuildAction.click();
                 elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
