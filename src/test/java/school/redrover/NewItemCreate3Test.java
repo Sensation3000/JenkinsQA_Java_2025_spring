@@ -8,12 +8,14 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewItemCreate3Test extends BaseTest {
 
-    static final String NEW_ITEM_NAME = "New free-style project";
+    private static final String NEW_ITEM_NAME = "New free-style project";
 
     public void goToNewItemPage() {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -49,7 +51,6 @@ public class NewItemCreate3Test extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemNameWithAppropriateCharacters() {
         goToNewItemPage();
@@ -57,22 +58,24 @@ public class NewItemCreate3Test extends BaseTest {
         List<String> names = new ArrayList<>(List.of("ABCH", "avbcj", "пренш", "НЫГШ", "125487", "_"));
         for (String element : names) {
             getDriver().findElement(By.id("name")).sendKeys(element);
-            Assert.assertFalse(getDriver().findElement(By.id("itemname-required")).isDisplayed());
+            Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("itemname-required"))));
             getDriver().findElement(By.id("name")).clear();
+
         }
     }
 
     @Test
     public void testCreateNewItemWithCorrectName() {
         final String expectedName = "New free-style project";
+        String projectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(NEW_ITEM_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .waitUntilTextNameProjectToBePresentInH1(NEW_ITEM_NAME)
+                .getProjectName();
 
-        goToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
-
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a"))).getText(), expectedName);
+        Assert.assertEquals(projectName, expectedName);
     }
 
     @Ignore// NewItemCreate3Test.testCreateNewItemWithExistingName:84 » Timeout Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on linux (3f6df20e44afd56428239aee1c5a7554)] -> id: itemname-invalid] (tried for 10 second(s) with 500 milliseconds interval) https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14734090496/job/41355612932?pr=1586
@@ -83,7 +86,6 @@ public class NewItemCreate3Test extends BaseTest {
         TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         WebElement el = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
         getWait10().until(ExpectedConditions.visibilityOf(el));
-
         Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New free-style project’");
     }
 }

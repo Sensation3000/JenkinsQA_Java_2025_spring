@@ -13,6 +13,11 @@ public class ManageJenkinsPage extends BasePage {
         super(driver);
     }
 
+    public String getManageJenkinsTitleText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                .findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")))).getText();
+    }
+
     public UsersPage clickUsers(){
         getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//a[@href='securityRealm/']"))).click();

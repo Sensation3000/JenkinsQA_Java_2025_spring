@@ -261,15 +261,11 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage enterValueToCopyFromInput(String randomAlphaNumericValue) {
-        Random random = new Random();
-        int randomLength = random.nextInt(randomAlphaNumericValue.length() + 1);
-        String inputValue = randomAlphaNumericValue.substring(0, randomLength);
-
         WebElement copyFromInput = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("from")));
 
         TestUtils.scrollAndClickWithJS(getDriver(), copyFromInput);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].focus();", copyFromInput);
-        copyFromInput.sendKeys(inputValue);
+        copyFromInput.sendKeys(randomAlphaNumericValue);
 
         getWait10()
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
@@ -289,6 +285,16 @@ public class NewItemPage extends BasePage {
                 By.xpath("//span[text()='%s']".formatted(projectName)))).click();
 
         return this;
+    }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        return this;
+    }
+
+    public String getEmptyNameMessageColor() {
+        return getDriver().findElement(By.id("itemname-required")).getCssValue("color");
     }
 }
 

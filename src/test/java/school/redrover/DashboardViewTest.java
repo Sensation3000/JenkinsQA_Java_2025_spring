@@ -14,17 +14,19 @@ import static org.testng.Assert.assertTrue;
 
 public class DashboardViewTest extends BaseTest {
 
-    private final String MY_VIEW_NAME = "TestMyViewName";
-    private final String List_VIEW_NAME = "TestListViewName";
-    private static final String TEST_ITEM_JOB = "Test item";
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
-        new HomePage(getDriver()).clickNewView().addName(MY_VIEW_NAME)
+        String view_name = "TestViewName" + genetateRandomName();
+
+        new HomePage(getDriver())
+                .clickNewView()
+                .addName(view_name)
                 .clickMyView()
                 .clickCreateButton();
 
+        String newViewName = new HomePage(getDriver()).getNameOfView(view_name);
+        assertEquals(newViewName, view_name);
         List<String> projectNameList = new HomePage(getDriver()).getProjectNameList();
         assertEquals(projectNameList.size(), 1);
         assertEquals(new HomePage(getDriver()).getNameOfView(MY_VIEW_NAME), MY_VIEW_NAME);
@@ -32,6 +34,8 @@ public class DashboardViewTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateListView() {
+        String List_VIEW_NAME = "TestListViewName";
+        String TEST_ITEM_JOB = "Test item";
         NewViewPage initialPage = new HomePage(getDriver()).clickNewView().addName(List_VIEW_NAME);
 
         EditViewPage editViewPage = (EditViewPage) initialPage
@@ -53,19 +57,26 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(new HomePage(getDriver()).getNameOfView(List_VIEW_NAME), List_VIEW_NAME);
     }
 
-    @Ignore
+
     @Test
     public void testCreateFreestyleProjectForView() {
+        String job_name = "Test item" + genetateRandomName();
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
-                .sendItemName(TEST_ITEM_JOB)
+                .sendItemName(job_name)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .waitUntilTextConfigureToBePresentInH1()
                 .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(TEST_ITEM_JOB)
+                .waitUntilTextNameProjectToBePresentInH1(job_name)
                 .getProjectName();
 
-        assertEquals(projectName, TEST_ITEM_JOB);
+        assertEquals(projectName, job_name);
     }
 
+    private static String genetateRandomName() {
+        return "Test" + System.currentTimeMillis();
+    }
 }
+
+
