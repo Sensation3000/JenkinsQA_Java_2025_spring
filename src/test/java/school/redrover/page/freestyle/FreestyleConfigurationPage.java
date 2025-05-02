@@ -7,9 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
