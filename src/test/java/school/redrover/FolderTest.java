@@ -21,6 +21,8 @@ public class FolderTest extends BaseTest {
                 .sendItemName(folderName)
                 .selectFolderAndClickOk()
                 .clickOnDashboard()
+                .getHeader()
+                .clickLogoIcon()
                 .getProjectNameList();
 
         Assert.assertEquals(jobs.size(), 1);
