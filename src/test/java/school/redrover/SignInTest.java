@@ -34,13 +34,6 @@ public class SignInTest extends BaseTest {
                 {"", "" }
         };
     }
-    @Ignore
-    @Test
-    public void testSignOutSuccessfully() {
-        JenkinsUtils.logout(getDriver());
-        List<WebElement> logoutList = getDriver().findElements(By.xpath("//a[@href='/logout']"));
-
-    }
 
     @Test
     public void testCreateNewUser() {
