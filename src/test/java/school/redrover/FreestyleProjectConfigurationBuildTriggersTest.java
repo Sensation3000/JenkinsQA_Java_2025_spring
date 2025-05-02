@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -68,7 +67,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToBuildTriggers()
+                .scrollToIgnorePostCommitHooksCheckbox()
                 .clickBuildAfterProjects()
                 .setProjectToWatch(PROJECT_NAME)
                 .clickAllReverseBuildTriggerLabels()
