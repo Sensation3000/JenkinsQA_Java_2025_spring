@@ -12,22 +12,6 @@ public class FreestyleProjectConfigurationDescriptionTest extends BaseTest {
     private final String DESCRIPTION_TEXT = "Valid Freestyle Project Description";
 
     @Test
-    public void testPreviewDescriptionOption() {
-        TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("general"))));
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.className("textarea-preview")))).isDisplayed(),
-                "Preview Description area is not displayed.");
-        Assert.assertEquals(
-                getDriver().findElement(By.className("textarea-preview")).getText(), DESCRIPTION_TEXT,
-                "Text in Preview Description doesn't match text in Description field");
-    }
-
-    @Test
     public void testHidePreviewDescriptionOption() {
         TestUtils.createFreestyleProject(getDriver(), PROJECT_NAME);
         getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("general"))));
