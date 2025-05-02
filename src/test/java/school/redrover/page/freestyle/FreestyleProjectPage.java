@@ -39,6 +39,12 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectPage deleteDescription() {
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+
+        return this;
+    }
+
     public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 

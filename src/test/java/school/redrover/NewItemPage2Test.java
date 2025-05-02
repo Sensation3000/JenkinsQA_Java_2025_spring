@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -11,6 +12,7 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
+
 
 public class NewItemPage2Test extends BaseTest {
     HomePage homePage;

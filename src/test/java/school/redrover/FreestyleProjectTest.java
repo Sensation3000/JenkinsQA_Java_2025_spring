@@ -124,6 +124,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditDescription")
+    public void testDescriptionCanBeEmpty() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .deleteDescription()
+                .clickSave()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, "");
+    }
+
+    @Test(dependsOnMethods = "testDescriptionCanBeEmpty")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
