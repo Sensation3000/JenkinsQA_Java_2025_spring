@@ -27,7 +27,6 @@ public class FreestyleConfigurationPage extends BasePage {
         webElement.click();
         getDriver().findElement(
                 By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]")).click();
-
     }
 
     public FreestyleConfigurationPage(WebDriver driver) {
