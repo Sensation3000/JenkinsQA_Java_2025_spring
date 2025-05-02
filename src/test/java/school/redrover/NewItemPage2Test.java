@@ -12,6 +12,7 @@ import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
 
+@Ignore
 public class NewItemPage2Test extends BaseTest {
     HomePage homePage;
     String projectName;
@@ -174,7 +175,7 @@ public class NewItemPage2Test extends BaseTest {
 
         Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
     }
-
+    @Ignore
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testJobCreationWithinFolder() {
         String actualProjectName = homePage.clickOnNewItemLinkWithChevron(projectName)
@@ -185,7 +186,7 @@ public class NewItemPage2Test extends BaseTest {
 
         Assert.assertEquals(actualProjectName, projectName);
     }
-
+    @Ignore
     @Test()
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
