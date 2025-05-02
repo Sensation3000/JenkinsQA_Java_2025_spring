@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,6 @@ public class NewItemCreate3Test extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testCreateItemNameWithAppropriateCharacters() {
         goToNewItemPage();
@@ -58,8 +57,9 @@ public class NewItemCreate3Test extends BaseTest {
         List<String> names = new ArrayList<>(List.of("ABCH", "avbcj", "пренш", "НЫГШ", "125487", "_"));
         for (String element : names) {
             getDriver().findElement(By.id("name")).sendKeys(element);
-            Assert.assertFalse(getDriver().findElement(By.id("itemname-required")).isDisplayed());
+            Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.id("itemname-required"))));
             getDriver().findElement(By.id("name")).clear();
+
         }
     }
 
@@ -84,7 +84,6 @@ public class NewItemCreate3Test extends BaseTest {
         TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         WebElement el = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
         getWait10().until(ExpectedConditions.visibilityOf(el));
-
         Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New free-style project’");
     }
 }
