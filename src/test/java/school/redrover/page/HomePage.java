@@ -222,10 +222,13 @@ public class HomePage extends BasePage {
     }
 
     public HomePage showDropdownOnHoverByJobName(String jobName) {
+        By dropdownLocator = By.xpath("//tr[@id='job_%s']//button".formatted(jobName));
+
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName))))
                 .perform();
-        getDriver().findElement(By.xpath("//tr[@id='job_%s']//button".formatted(jobName))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownLocator));
+        getDriver().findElement(dropdownLocator).click();
 
         return this;
     }

@@ -99,12 +99,15 @@ public class PipelineConfigurationPage extends BasePage {
 
     public PipelineConfigurationPage clickPreviewButton() {
         getDriver().findElement(By.className("textarea-show-preview")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
 
         return this;
     }
 
     public PipelineConfigurationPage clickHidePreviewButton() {
         getDriver().findElement(By.className("textarea-hide-preview")).click();
+        getWait5().until(ExpectedConditions.
+                not(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview"))));
 
         return this;
     }
