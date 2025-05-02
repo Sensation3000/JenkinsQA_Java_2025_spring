@@ -135,7 +135,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectDescriptionText, "");
     }
 
-    @Test(dependsOnMethods = "testEditDescription")
+    @Test(dependsOnMethods = "testDescriptionCanBeEmpty")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
