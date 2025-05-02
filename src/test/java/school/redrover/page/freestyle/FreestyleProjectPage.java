@@ -45,6 +45,21 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectPage clickPreviewDescription() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        return this;
+    }
+
+    public boolean isPreviewDescriptionBlockDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                .findElement(By.className("textarea-preview")))).isDisplayed();
+    }
+
+    public String getTextFromPreviewDescriptionBlock() {
+        return getDriver().findElement(By.className("textarea-preview")).getText();
+    }
+
     public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
