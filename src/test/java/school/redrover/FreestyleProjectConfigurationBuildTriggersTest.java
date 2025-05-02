@@ -100,4 +100,22 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         //Assertions
         Assert.assertEquals(actualSchedule, EXPECTED_SCHEDULE);
     }
+
+    @Test
+    public void shouldEnableGitHubHookTriggerForFreestyleProject() {
+
+        //Actions
+        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggers()
+                .checkGithubHookCheckbox()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToBuildTriggers();
+
+        //Assertions
+        Assert.assertTrue(freestyleConfigurationPage.isGithubHookCheckboxSelected());
+    }
 }
