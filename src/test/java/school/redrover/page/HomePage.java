@@ -229,7 +229,7 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(dropdownButtonLocator));
 
         actions.moveToElement(getDriver().findElement(dropdownButtonLocator)).click().perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#tippy-6 .jenkins-dropdown__item")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tippy-6 .jenkins-dropdown__item")));
 
         return this;
     }
