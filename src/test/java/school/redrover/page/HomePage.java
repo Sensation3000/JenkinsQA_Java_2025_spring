@@ -222,13 +222,14 @@ public class HomePage extends BasePage {
     }
 
     public HomePage showDropdownOnHoverByJobName(String jobName) {
-        Actions actions = new Actions(getDriver());
         By dropdownButtonLocator = By.xpath("//tr[@id='job_%s']//button".formatted(jobName));
 
-        actions.moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName)))).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownButtonLocator));
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName)))).perform();
 
-        actions.moveToElement(getDriver().findElement(dropdownButtonLocator)).click().perform();
+        WebElement dropdownButton = getWait5().until(ExpectedConditions.elementToBeClickable(dropdownButtonLocator));
+        TestUtils.moveAndClickWithJS(getDriver(), dropdownButton);
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tippy-6 .jenkins-dropdown__item")));
 
         return this;
