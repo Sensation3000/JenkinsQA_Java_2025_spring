@@ -13,6 +13,7 @@ import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
 
+
 public class NewItemPage2Test extends BaseTest {
     HomePage homePage;
     String projectName;
@@ -120,7 +121,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Ignore
+    //@Ignore
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfNoItemsMessageIsDisplayed() {
         String noItemsMessage = homePage.clickNewItemOnLeftSidePanel()

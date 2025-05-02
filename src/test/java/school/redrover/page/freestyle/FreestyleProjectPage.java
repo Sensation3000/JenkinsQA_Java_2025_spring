@@ -39,6 +39,27 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectPage deleteDescription() {
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickPreviewDescription() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        return this;
+    }
+
+    public boolean isPreviewDescriptionBlockDisplayed() {
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                .findElement(By.className("textarea-preview")))).isDisplayed();
+    }
+
+    public String getTextFromPreviewDescriptionBlock() {
+        return getDriver().findElement(By.className("textarea-preview")).getText();
+    }
+
     public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
@@ -137,7 +158,8 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public List<WebElement> getWarningMessageList() {
+    public List<WebElement> getWarningMessageList(String projectName) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar']//h1[text()='%s']".formatted(projectName))));
         return getDriver().findElements(By.xpath("//div[@class='warning']/form"));
     }
 

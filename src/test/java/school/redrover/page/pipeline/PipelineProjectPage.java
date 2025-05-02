@@ -25,6 +25,10 @@ public class PipelineProjectPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public String getProjectDisabledStatus() {
+        return getDriver().findElement(By.id("enable-project")).getText();
+    }
+
     public WebElement getDisabledProjectWarningMessageElement() {
         return getDriver().findElement(By.id("enable-project"));
     }
