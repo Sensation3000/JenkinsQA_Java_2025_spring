@@ -59,4 +59,11 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
     }
+
+    @Test(dependsOnMethods = "testListJobsAndFolders")
+    public void testColumns() {
+
+        Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
+                List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
+    }
 }
