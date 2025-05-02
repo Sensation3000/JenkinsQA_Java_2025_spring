@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
+import school.redrover.page.loginerrorpage.LogInErrorPage;
+
 
 public class SignInPage extends BasePage {
 
@@ -36,14 +38,19 @@ public class SignInPage extends BasePage {
     }
 
     public SignInPage setUserName(String username){
-       userNameField.sendKeys(username);
+        userNameField.sendKeys(username);
         return new SignInPage(getDriver());
     }
-
-    public HomePage clickSignInButton(){
+    public HomePage clickSignInButton() {
         signInButton.click();
         return new HomePage(getDriver());
     }
+    public LogInErrorPage clickSignInButtonUseWrongCredentials() {
+        signInButton.click();
+        return new LogInErrorPage(getDriver());
+    }
+
+
 
     public HomePage goToHomePage(){
          return new HomePage(getDriver());
