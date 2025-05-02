@@ -231,4 +231,8 @@ public class HomePage extends BasePage {
         return getDriver().findElements(By.xpath("//th/a")).stream()
                 .map(WebElement::getText).toList();
     }
+
+    public String getLogOutButtonText() {
+        return logOutButton.getText();
+    }
 }

@@ -27,6 +27,11 @@ public class UsersPage extends BasePage {
                 .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
 
+    public List<WebElement> getUserIdLinks() {
+        return getWait10().until(ExpectedConditions
+                .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']//a[starts-with(@href, 'user/')]")));
+    }
+
     public String getUserIdTdText() {
 
         return getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]")).getText();
