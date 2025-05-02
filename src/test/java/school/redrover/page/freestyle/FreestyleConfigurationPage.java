@@ -463,5 +463,9 @@ public class FreestyleConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public boolean isGithubHookCheckboxSelected() {
+        return getDriver().findElement(By.name("com-cloudbees-jenkins-GitHubPushTrigger")).isSelected();
+    }
 }
 
