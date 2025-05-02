@@ -205,11 +205,11 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public NewItemPage clickOnNewItemLinkWithChevron() {
-        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))));
-        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+    public NewItemPage clickOnNewItemLinkWithChevron(String projectName) {
+        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector(String.format("a[href='job/%s/'].jenkins-table__link", projectName)))));
 
-        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("button[data-href$='job/%s/']", projectName))));
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
 
         return new NewItemPage(getDriver());
@@ -248,5 +248,11 @@ public class HomePage extends BasePage {
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());
+    }
+
+    public List<String> getColumnNames() {
+
+        return getDriver().findElements(By.xpath("//th/a")).stream()
+                .map(WebElement::getText).toList();
     }
 }

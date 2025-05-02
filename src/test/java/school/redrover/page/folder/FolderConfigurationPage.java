@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
@@ -25,7 +26,7 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderProjectPage clickSave() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
 
         return new FolderProjectPage(getDriver());
     }
