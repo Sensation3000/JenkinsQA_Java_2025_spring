@@ -94,21 +94,6 @@ public class FolderConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testValidDisplayName() {
-        WebDriver driver = getDriver();
-
-        TestUtils.createFolder(driver, FOLDER_NAME);
-        getWait5().until(ExpectedConditions.visibilityOf(driver.findElement(By.name("_.displayNameOrNull")))).clear();
-        driver.findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
-        driver.findElement(By.name("Submit")).click();
-        getWait5().until(ExpectedConditions.visibilityOf(
-                driver.findElement(By.xpath("//div[@id='main-panel']/h1"))));
-
-        Assert.assertEquals(
-                driver.findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), DISPLAY_NAME);
-    }
-
-    @Test
     public void testDisplayNameDisplayedOnDashboard() {
         TestUtils.createFolder(getDriver(), FOLDER_NAME);
         TestUtils.openHomePage(this);

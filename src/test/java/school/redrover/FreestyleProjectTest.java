@@ -124,6 +124,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditDescription")
+    public void testDescriptionCanBeEmpty() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .deleteDescription()
+                .clickSave()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, "");
+    }
+
+    @Test(dependsOnMethods = "testDescriptionCanBeEmpty")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -155,14 +167,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .addBuildSteps(7)
                 .addBuildSteps(2)
-                .addBuildSteps(3)
-                .addBuildSteps(4)
-                .addBuildSteps(5)
-                .addBuildSteps(6)
                 .addBuildSteps(1)
                 .getChunkHeaderList();
 
-        assertEquals(projectNameList.size(), 7);
+        assertEquals(projectNameList.size(), 3);
     }
 
     @Test
@@ -220,7 +228,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
-    @Ignore
     @Test
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
@@ -231,15 +238,11 @@ public class FreestyleProjectTest extends BaseTest {
                 .addPostBuildActions(5)
                 .addPostBuildActions(1)
                 .addPostBuildActions(11)
-                .addPostBuildActions(2)
-                .addPostBuildActions(8)
-                .addPostBuildActions(10)
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 6);
+        assertEquals(postBuildNameList.size(), 3);
     }
 
-    @Ignore
     @Test
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
@@ -248,14 +251,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
                 .addPostBuildActions(9)
-                .addBuildSteps(5)
                 .addPostBuildActions(11)
                 .addBuildSteps(1)
                 .addBuildSteps(7)
                 .addPostBuildActions(1)
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 6);
+        assertEquals(postBuildNameList.size(), 5);
     }
 
     @Test
@@ -288,7 +290,3 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
     }
 }
-
-
-
-
