@@ -47,5 +47,30 @@ public class PipelineProjectTest extends BaseTest {
 
         Assert.assertTrue(pipelineConfigurationPage.isToggleEnabled(), "The switch is turned on after performing the actions");
     }
+
+    @Test
+    public void checkDefaultStateTestPOM() {
+        String statusToggleDefault = new HomePage(getDriver())
+            .clickNewItem()
+            .sendItemName(PROJECT_NAME)
+            .selectPipelineAndClickOk()
+            .checkStatusOnToggle();
+
+        Assert.assertEquals(statusToggleDefault, "Enabled");
+    }
+
+    @Test
+    public void changeStateNewPipelineTestPOM() {
+        String statusToggleChange = new HomePage(getDriver())
+            .clickNewItem()
+            .sendItemName(PROJECT_NAME)
+            .selectPipelineAndClickOk()
+            .switchToggle()
+            .checkStatusOffToggle();
+
+        Assert.assertEquals(statusToggleChange, "Disabled");
+
+    }
+
 }
 

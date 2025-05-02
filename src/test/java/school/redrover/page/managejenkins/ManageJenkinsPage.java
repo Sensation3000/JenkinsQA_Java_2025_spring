@@ -4,12 +4,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.plugins.PluginsPage;
 import school.redrover.page.user.UsersPage;
 
 public class ManageJenkinsPage extends BasePage {
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
+    }
+
+    public String getManageJenkinsTitleText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver()
+                .findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")))).getText();
     }
 
     public UsersPage clickUsers(){
@@ -23,6 +29,12 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='appearance']")).click();
 
         return new ManageAppearansePage(getDriver());
+    }
+
+    public PluginsPage clickPlugins() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[2]/div/div[3]/a")).click();
+
+        return new PluginsPage(getDriver());
     }
 
 }

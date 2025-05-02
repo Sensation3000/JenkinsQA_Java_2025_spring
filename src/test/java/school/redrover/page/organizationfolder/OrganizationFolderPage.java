@@ -19,8 +19,16 @@ public class OrganizationFolderPage extends BasePage {
         return this;
     }
 
-    public void clickYesOnDeletionConfirmationPopup() {
+    public OrganizationFolderPage clickYesOnDeletionConfirmationPopup() {
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        return new OrganizationFolderPage(getDriver());
+    }
+
+    public OrganizationFolderPage clickCancelOnDeletionConfirmationPopup() {
+        getDriver().findElement(By.xpath("//button[@data-id='cancel']")).click();
+
+        return new OrganizationFolderPage(getDriver());
     }
 
     public String getMDeletionPopupText() {
@@ -48,5 +56,11 @@ public class OrganizationFolderPage extends BasePage {
 
     public String getProjectName() {
         return getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+    }
+
+    public String getOrganizationFolderNameFromHeader() {
+
+        return getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")))).getText();
     }
 }
