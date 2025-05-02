@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 public class WelcomeDashboardTest extends BaseTest {
 
@@ -29,11 +30,10 @@ public class WelcomeDashboardTest extends BaseTest {
 
     @Test
     public void testOpenManageJenkinsFromDashboard() {
-        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        String manageJenkinsTitleText = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel().getManageJenkinsTitleText();
 
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")))).isDisplayed());
+        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
     }
 
     @Test
