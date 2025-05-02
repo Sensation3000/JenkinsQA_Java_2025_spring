@@ -153,6 +153,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPreviewDescriptionOption")
+    public void testHidePreviewDescriptionOption() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .clickPreviewDescription()
+                .clickHidePreviewDescription();
+
+        Assert.assertFalse(freestyleProjectPage.isHidePreviewLinkAvailable());
+        Assert.assertFalse(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testHidePreviewDescriptionOption")
     public void testDescriptionCanBeEmpty() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
