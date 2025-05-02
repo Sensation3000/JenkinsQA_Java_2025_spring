@@ -51,9 +51,20 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectPage clickHidePreviewDescription() {
+        getDriver().findElement(By.className("textarea-hide-preview")).click();
+
+        return this;
+    }
+
     public boolean isPreviewDescriptionBlockDisplayed() {
-        return getWait5().until(ExpectedConditions.visibilityOf(getDriver()
-                .findElement(By.className("textarea-preview")))).isDisplayed();
+        return getDriver().findElement(By.className("textarea-preview")).isDisplayed();
+    }
+
+    public boolean isHidePreviewLinkAvailable() {
+        getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
+
+        return getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
     }
 
     public String getTextFromPreviewDescriptionBlock() {
