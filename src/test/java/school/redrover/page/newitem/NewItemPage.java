@@ -290,5 +290,15 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        return this;
+    }
+
+    public String getEmptyNameMessageColor() {
+        return getDriver().findElement(By.id("itemname-required")).getCssValue("color");
+    }
 }
 
