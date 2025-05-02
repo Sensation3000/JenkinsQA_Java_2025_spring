@@ -124,6 +124,17 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditDescription")
+    public void testPreviewDescriptionOption() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .clickPreviewDescription();
+
+        Assert.assertTrue(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
+        Assert.assertEquals(freestyleProjectPage.getTextFromPreviewDescriptionBlock(), PROJECT_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testPreviewDescriptionOption")
     public void testDescriptionCanBeEmpty() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
