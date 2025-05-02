@@ -13,19 +13,21 @@ public class NewViewPage extends BasePage {
     }
 
     public NewViewPage addName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
 
         return this;
     }
 
     public NewViewPage clickListView() {
-        getDriver().findElement(By.cssSelector("label[for='hudson.model.ListView']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("label[for='hudson.model.ListView']"))).click();
 
         return this;
     }
 
     public NewViewPage clickMyView() {
-            getDriver().findElement(By.cssSelector("label[for='hudson.model.MyView']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("label[for='hudson.model.MyView']"))).click();
 
             return this;
     }
@@ -37,5 +39,5 @@ public class NewViewPage extends BasePage {
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok"))).click();
         return nextPage;
-    };
+    }
 }

@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -10,32 +9,41 @@ import static org.testng.Assert.assertEquals;
 
 public class DashboardViewTest extends BaseTest {
 
-    private static final String JOB_NAME = "Test item";
-    private final String VIEW_NAME = "TestViewName";
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
+        String view_name = "TestViewName" + genetateRandomName();
+
         new HomePage(getDriver())
                 .clickNewView()
-                .addName(VIEW_NAME)
+                .addName(view_name)
                 .clickMyView()
                 .clickCreateButton();
 
-        String newViewName = new HomePage(getDriver()).getNameOfView(VIEW_NAME);
-        assertEquals(newViewName, VIEW_NAME);
+        String newViewName = new HomePage(getDriver()).getNameOfView(view_name);
+        assertEquals(newViewName, view_name);
     }
+
 
     @Test
     public void testCreateFreestyleProjectForView() {
+        String job_name = "Test item" + genetateRandomName();
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
-                .sendItemName(JOB_NAME)
+                .sendItemName(job_name)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .waitUntilTextConfigureToBePresentInH1()
                 .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(JOB_NAME)
+                .waitUntilTextNameProjectToBePresentInH1(job_name)
                 .getProjectName();
 
-        assertEquals(projectName, JOB_NAME);
+        assertEquals(projectName, job_name);
+    }
+
+    private static String genetateRandomName() {
+        return "Test" + System.currentTimeMillis();
     }
 }
+
+
