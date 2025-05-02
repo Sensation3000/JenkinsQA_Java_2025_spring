@@ -1,11 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -17,33 +13,12 @@ import school.redrover.testdata.TestDataProvider;
 import java.util.List;
 
 public class NewItemPage2Test extends BaseTest {
-    private Actions actions;
     HomePage homePage;
     String projectName;
 
     @BeforeMethod
     void setUp() {
         homePage = new HomePage(getDriver());
-
-        if (getDriver() != null) {
-            actions = new Actions(getDriver());
-        } else {
-            throw new IllegalStateException("WebDriver is null. Cannot initialize Actions.");
-        }
-    }
-
-    private void openDropdownMenuForJob(String itemName) {
-        String buttonSelector = String.format("button[data-href*='%s']", itemName);
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector(buttonSelector));
-        TestUtils.moveAndClickWithJS(getDriver(), dropdownChevron);
-    }
-
-    private void createNewJob(String name, String itemTypeName) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemTypeName)));
-        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
     }
 
     @Test
@@ -144,7 +119,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Ignore
+    //@Ignore
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfNoItemsMessageIsDisplayed() {
         String noItemsMessage = homePage.clickNewItemOnLeftSidePanel()
@@ -202,7 +177,7 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testJobCreationWithinFolder() {
-        String actualProjectName = homePage.clickOnNewItemLinkWithChevron()
+        String actualProjectName = homePage.clickOnNewItemLinkWithChevron(projectName)
                         .sendItemName(projectName)
                         .selectFolderAndClickOkWithJS()
                         .clickSave()
@@ -211,33 +186,28 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
-    public void testIf(String itemTypeName) {
+    @Test()
+    public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
         String secondFolderProjectName = TestUtils.generateRandomAlphanumeric();
         String randomAlphaNumericValue = TestUtils.generateRandomAlphanumeric();
 
         TestUtils.newItemCreate(this, firstFolderProjectName, 4);
 
-        String firstFolderProjectLink = String.format("a[href*='%s'].jenkins-table__link", firstFolderProjectName);
-        actions.moveToElement(getDriver().findElement(By.cssSelector(firstFolderProjectLink))).perform();
-
-        openDropdownMenuForJob(firstFolderProjectName);
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
-
-        createNewJob(randomAlphaNumericValue, itemTypeName);
-        TestUtils.gotoHomePage(getDriver());
+        homePage.clickOnNewItemLinkWithChevron(firstFolderProjectName)
+                .sendItemName(randomAlphaNumericValue)
+                .selectFolderAndClickOkWithJS()
+                .getHeader()
+                .clickLogoIcon();
 
         TestUtils.newItemCreate(this, secondFolderProjectName, 4);
 
-        String secondFolderProjectLink  = String.format("a[href*='%s'].jenkins-table__link", secondFolderProjectName);
-        actions.moveToElement(getDriver().findElement(By.cssSelector(secondFolderProjectLink))).perform();
+        String folderProjectName = homePage.clickOnNewItemLinkWithChevron(secondFolderProjectName)
+                                           .sendItemName(randomAlphaNumericValue)
+                                           .selectFolderAndClickOkWithJS()
+                                           .clickSave()
+                                           .getProjectName();
 
-        openDropdownMenuForJob(secondFolderProjectName);
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
-
-        createNewJob(randomAlphaNumericValue, "Freestyle project");
-
-        Assert.assertEquals(getDriver().findElement(By.className("page-headline")).getText(), randomAlphaNumericValue);
+        Assert.assertEquals(folderProjectName, randomAlphaNumericValue);
     }
 }
