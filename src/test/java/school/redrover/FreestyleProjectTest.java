@@ -60,6 +60,15 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
+    public void testWarningMessageIsDisplayedAfterDisableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getWarningMessageList(PROJECT_NAME);
+
+        Assert.assertEquals(warningMessageList.size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageIsDisplayedAfterDisableProject")
     public void testEnableProject() {
         String projectIsEnabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -72,6 +81,15 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    public void testWarningMessageDisappearsAfterEnableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getWarningMessageList(PROJECT_NAME);
+
+        Assert.assertEquals(warningMessageList.size(), 0);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageDisappearsAfterEnableProject")
     public void testFreestyleProjectAddGitHubURL() {
         List<String> freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))

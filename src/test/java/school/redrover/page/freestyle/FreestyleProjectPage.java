@@ -169,7 +169,8 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public List<WebElement> getWarningMessageList() {
+    public List<WebElement> getWarningMessageList(String projectName) {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar']//h1[text()='%s']".formatted(projectName))));
         return getDriver().findElements(By.xpath("//div[@class='warning']/form"));
     }
 
