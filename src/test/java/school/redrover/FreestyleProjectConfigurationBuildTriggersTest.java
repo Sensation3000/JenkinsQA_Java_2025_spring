@@ -100,4 +100,26 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         //Assertions
         Assert.assertEquals(actualSchedule, EXPECTED_SCHEDULE);
     }
+
+
+    @Test
+    public void testPollSCMCheckboxIsDisplayed() {
+
+        //Actions
+        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .checkPollCSMCheckbox()
+                .sendScheduleTextForPollSCM(EXPECTED_SCHEDULE)
+                .checkIgnorePostCommitHooksCheckbox()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToBuildTriggers();
+
+        //Assertions
+        Assert.assertEquals(freestyleConfigurationPage.sendScheduleTextForThrottleBuilds(), EXPECTED_SCHEDULE);
+        Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxSelected());
+    }
 }

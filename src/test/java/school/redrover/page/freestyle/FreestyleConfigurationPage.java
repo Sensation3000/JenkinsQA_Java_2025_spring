@@ -108,9 +108,22 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkPollCSMCheckbox() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Poll SCM')]")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Poll SCM')]"))).click();
+       //getDriver().findElement(By.xpath("//label[contains(text(), 'Poll SCM')]")).click();
 
         return this;
+    }
+
+    public FreestyleConfigurationPage checkIgnorePostCommitHooksCheckbox() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//label[contains(text(),'Ignore post-commit hooks')]"))).click();
+        //getDriver().findElement(By.xpath("//label[contains(text(),'Ignore post-commit hooks')]")).click();
+
+        return this;
+    }
+
+    public boolean isPollSCMCheckboxSelected() {
+        return getDriver().findElement(By.name("_.ignorePostCommitHooks")).isSelected();
     }
 
     public FreestyleConfigurationPage sendScheduleText(String text) {
@@ -118,6 +131,17 @@ public class FreestyleConfigurationPage extends BasePage {
         getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).sendKeys(text);
 
         return this;
+    }
+
+    public FreestyleConfigurationPage sendScheduleTextForPollSCM(String text) {
+        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).clear();
+        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).sendKeys(text);
+
+        return this;
+    }
+
+    public String sendScheduleTextForThrottleBuilds() {
+        return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).getText();
     }
 
     public String sendScheduleActualText() {
@@ -460,6 +484,13 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage selectNoneSCM() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//label[text()='None']"))).perform();
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage scrollToIgnorePostCommitHooksCheckbox() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
+                getDriver().findElement(By.cssSelector("div.jenkins-section__title#environment")));
 
         return this;
     }
