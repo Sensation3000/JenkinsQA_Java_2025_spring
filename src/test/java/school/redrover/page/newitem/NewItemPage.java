@@ -17,11 +17,9 @@ import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
 import java.time.Duration;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
@@ -73,8 +71,8 @@ public class NewItemPage extends BasePage {
     }
 
     public FolderConfigurationPage selectFolderAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable((By.xpath("//span[text()='Folder']")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable((By.id("ok-button")))).click();
 
         return new FolderConfigurationPage(getDriver());
     }

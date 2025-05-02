@@ -50,8 +50,6 @@ public class SignInPage extends BasePage {
         return new LogInErrorPage(getDriver());
     }
 
-
-
     public HomePage goToHomePage(){
          return new HomePage(getDriver());
     }
