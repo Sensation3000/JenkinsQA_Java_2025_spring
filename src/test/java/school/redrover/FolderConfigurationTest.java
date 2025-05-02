@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 public class FolderConfigurationTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
@@ -15,11 +16,13 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testQuestionMarkIcon() {
-        TestUtils.createFolder(getDriver(),FOLDER_NAME);
-        WebElement icon = getWait5().until(ExpectedConditions.elementToBeClickable
-                (By.cssSelector("a.jenkins-help-button")));
+        boolean isButtonExist = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                        .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .isQuestionMarkIconEnabled();
 
-        Assert.assertTrue(icon.isEnabled(), "Button is not clickable");
+        Assert.assertTrue(isButtonExist);
     }
 
     @Test(dependsOnMethods = "testQuestionMarkIcon")

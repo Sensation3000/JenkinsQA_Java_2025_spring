@@ -3,7 +3,6 @@ package school.redrover.page.newitem;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
@@ -27,18 +26,12 @@ import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
 
-    @FindBy(id = "name")
-    private WebElement itemName;
-
-    @FindBy(id = "ok-button")
-    private WebElement buttonOk;
-
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
 
     public NewItemPage sendItemName(String name) {
-        itemName.sendKeys(name);
+        getDriver().findElement(By.id("name")).sendKeys(name);
 
         return this;
     }
@@ -48,17 +41,17 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isOkButtonEnabled() {
-        return buttonOk.isEnabled();
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
     public FreestyleConfigurationPage clickOkButton() {
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new FreestyleConfigurationPage(getDriver());
     }
 
     public ErrorPage clickOkButtonWithError() {
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new ErrorPage(getDriver());
     }
@@ -74,14 +67,14 @@ public class NewItemPage extends BasePage {
 
     public PipelineConfigurationPage selectPipelineAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new PipelineConfigurationPage(getDriver());
     }
 
     public FolderConfigurationPage selectFolderAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-            buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new FolderConfigurationPage(getDriver());
     }
@@ -102,7 +95,7 @@ public class NewItemPage extends BasePage {
 
     public FreestyleConfigurationPage selectFreestyleAndClickOk() {
         selectFreestyle();
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new FreestyleConfigurationPage(getDriver());
     }
@@ -135,7 +128,7 @@ public class NewItemPage extends BasePage {
 
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
@@ -143,20 +136,20 @@ public class NewItemPage extends BasePage {
     public FolderConfigurationPage selectFolderAndClickOkWithJS() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Folder']")));
-        buttonOk.click();
+        getDriver().findElement(By.id("ok-button")).click();
 
         return new FolderConfigurationPage(getDriver());
     }
 
     public MultiConfigurationConfigurePage redirectToMultiConfigurationConfigurePage() {
-        TestUtils.scrollAndClickWithJS(getDriver(), buttonOk);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         getWait5().until(ExpectedConditions.urlContains("/job"));
 
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public ErrorPage redirectToErrorPage() {
-        TestUtils.scrollAndClickWithJS(getDriver(), buttonOk);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         getWait5().until(ExpectedConditions.urlContains("/createItem"));
 
         return new ErrorPage(getDriver());

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -30,8 +31,12 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[text()='log out']")
     private WebElement logOutButton;
 
+    @FindBy(xpath ="//a[@data-task-success='Done.']")
+    private WebElement newItemButtonOnLeftSidePanel;
+
     public HomePage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public HomePage clickAddDescriptionButton() {
@@ -90,8 +95,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-task-success='Done.']"))).click();
-
+        newItemButtonOnLeftSidePanel.click();
         return new NewItemPage(getDriver());
     }
 
