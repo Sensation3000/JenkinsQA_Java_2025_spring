@@ -1,5 +1,7 @@
 package school.redrover;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -12,11 +14,12 @@ import static org.testng.Assert.assertTrue;
 
 
 public class DashboardViewTest extends BaseTest {
-    private final String JOB_NAME = "Test item" + genetateRandomName();
+    private static final Logger log = LoggerFactory.getLogger(DashboardViewTest.class);
+    private final String JOB_NAME = "Test item";
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
-        String view_name = "TestViewName" + genetateRandomName();
+        String view_name = "TestViewName";
 
         new HomePage(getDriver())
                 .clickNewView()
@@ -38,17 +41,19 @@ public class DashboardViewTest extends BaseTest {
                 .clickListView()
                 .clickCreateButton();
 
-        editViewPage
+        List<String> projectNameList = editViewPage
                 .fillDescription("Description for Test List View")
                 .JobsCheckTestItem(TEST_ITEM_JOB)
                 .clickAddJobFilter()
                 .clickStatusFilterOfJobFilter()
                 .clickAddColumn()
                 .checkProjectDescriptionColumn()
-                .clickSaveButton();
+                .clickSaveButton()
+                .getProjectNameList();
 
-        List<String> projectNameList = new HomePage(getDriver()).getProjectNameList();
-        assertEquals(projectNameList.size(), 1);
+        String projectName = projectNameList.get(0);
+
+        assertEquals(projectName, TEST_ITEM_JOB);
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
         assertEquals(new HomePage(getDriver()).getNameOfView(List_VIEW_NAME), List_VIEW_NAME);
     }

@@ -16,12 +16,13 @@ public class EditViewPage extends BasePage {
     public JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
 
     public String getName() {
-        return getDriver().findElement(By.xpath(
-                "//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[1]/div[2]/input")).getText();
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                "//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[1]/div[2]/input"))).getText();
     }
 
     public EditViewPage fillDescription(String description) {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[2]/div[3]/textarea"))
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                "//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[2]/div[3]/textarea")))
                 .sendKeys(description);
 
         return this;
@@ -63,16 +64,16 @@ public class EditViewPage extends BasePage {
     }
 
     public HomePage clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit"))).click();
 
         return new HomePage(getDriver());
     }
 
     private <T extends BasePage> void findElementContainsTextAndClick(String element, String text, Class<T> clazz) {
-        WebElement el = getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement el = getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//" + element + "[contains(text(),'" + text + "')]")));
         jsExecutor.executeScript("arguments[0].scrollIntoView({block: 'center'});", el);
-        getWait5().until(ExpectedConditions.elementToBeClickable(el));
+        getWait10().until(ExpectedConditions.elementToBeClickable(el));
         jsExecutor.executeScript("arguments[0].click();", el);
 
         try {
