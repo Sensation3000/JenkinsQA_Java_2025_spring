@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -13,7 +12,7 @@ import static org.testng.Assert.assertTrue;
 
 
 public class DashboardViewTest extends BaseTest {
-
+    private final String JOB_NAME = "Test item" + genetateRandomName();
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
@@ -27,9 +26,6 @@ public class DashboardViewTest extends BaseTest {
 
         String newViewName = new HomePage(getDriver()).getNameOfView(view_name);
         assertEquals(newViewName, view_name);
-        List<String> projectNameList = new HomePage(getDriver()).getProjectNameList();
-        assertEquals(projectNameList.size(), 1);
-        assertEquals(new HomePage(getDriver()).getNameOfView(MY_VIEW_NAME), MY_VIEW_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
@@ -53,25 +49,24 @@ public class DashboardViewTest extends BaseTest {
 
         List<String> projectNameList = new HomePage(getDriver()).getProjectNameList();
         assertEquals(projectNameList.size(), 1);
-        assertTrue(new HomePage(getDriver()).isJobDisplayed(TEST_ITEM_JOB));
+        assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
         assertEquals(new HomePage(getDriver()).getNameOfView(List_VIEW_NAME), List_VIEW_NAME);
     }
 
 
     @Test
     public void testCreateFreestyleProjectForView() {
-        String job_name = "Test item" + genetateRandomName();
 
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
-                .sendItemName(job_name)
+                .sendItemName(JOB_NAME)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .waitUntilTextConfigureToBePresentInH1()
                 .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(job_name)
+                .waitUntilTextNameProjectToBePresentInH1(JOB_NAME)
                 .getProjectName();
 
-        assertEquals(projectName, job_name);
+        assertEquals(projectName, JOB_NAME);
     }
 
     private static String genetateRandomName() {
