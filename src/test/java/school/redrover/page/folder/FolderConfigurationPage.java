@@ -2,6 +2,9 @@ package school.redrover.page.folder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -9,8 +12,12 @@ import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
 
+    @FindBy(xpath = "//div[contains(text(), 'Display Name')]/a")
+    private WebElement questionMarkButton;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public FolderConfigurationPage sendDisplayName(String text) {
@@ -44,4 +51,7 @@ public class FolderConfigurationPage extends BasePage {
         return new HomePage(getDriver());
     }
 
+    public boolean isQuestionMarkIconEnabled(){
+        return questionMarkButton.isEnabled();
+    }
 }

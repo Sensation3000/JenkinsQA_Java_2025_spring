@@ -1,18 +1,10 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.JenkinsUtils;
-import school.redrover.common.ProjectUtils;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,20 +12,10 @@ public class SignInTest extends BaseTest {
 
     private static final String USERNAME = "UserName";
     private static final String PASSWORD = "P@ssword";
+    private static final String WRONG_USERNAME = "UserName1";
+    private static final String WRONG_PASSWORD = "P@ssword1";
     private static final String EMAIL = "test@gmail.com";
     private static final String FULLNAME = "User Full Name";
-
-    @DataProvider(name = "invalidCredentials")
-    private Object[][] getData() {
-        return new Object[][]{
-                {TestUtils.generateRandomAlphanumeric(), ProjectUtils.getPassword()},
-                {ProjectUtils.getUserName(), TestUtils.generateRandomAlphanumeric()},
-                {"", ProjectUtils.getPassword()},
-                {ProjectUtils.getUserName(), "" },
-                {TestUtils.generateRandomAlphanumeric(), TestUtils.generateRandomAlphanumeric()},
-                {"", "" }
-        };
-    }
 
     @Test
     public void testCreateNewUser() {
@@ -65,19 +47,16 @@ public class SignInTest extends BaseTest {
 
         Assert.assertEquals(logOutButtonText,"log out");
     }
-    @Ignore
-    @Test(dataProvider = "invalidCredentials")
-    public void testInvalidCredentialsError(String testUserName, String testPassword) {
-        JenkinsUtils.logout(getDriver());
 
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name("login")));
-        JenkinsUtils.login(getDriver(), testUserName, testPassword);
+    @Test(dependsOnMethods = "testSignInAsExistingUser")
+    public void testErrorForInvalidCPassword() {
+        Boolean loginError = new HomePage(getDriver())
+                .clickLogOutButton()
+                .setPassword(WRONG_PASSWORD)
+                .setUserName(USERNAME)
+                .clickSignInButtonUseWrongCredentials()
+                .isErrorTextShown();
 
-        final String actualErrorText = getDriver().findElement(By.className("app-sign-in-register__error")).getText();
-
-        JenkinsUtils.login(getDriver());
-        TestUtils.waitForHomePageLoad(this);
-
-        Assert.assertEquals(actualErrorText, "Invalid username or password");
+        Assert.assertEquals(loginError,true);
     }
 }
