@@ -153,6 +153,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPreviewDescriptionOption")
+    public void testHidePreviewDescriptionOption() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .clickPreviewDescription()
+                .clickHidePreviewDescription();
+
+        Assert.assertFalse(freestyleProjectPage.isHidePreviewLinkAvailable());
+        Assert.assertFalse(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testHidePreviewDescriptionOption")
     public void testDescriptionCanBeEmpty() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -197,6 +209,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .addBuildSteps(7)
                 .addBuildSteps(2)
                 .addBuildSteps(1)
+                .clickApply()
                 .getChunkHeaderList();
 
         assertEquals(projectNameList.size(), 3);
@@ -257,19 +270,19 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddBuildSteps")
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickNewItem()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItemsOnHP(PROJECT_NAME)
+                .clickConfigure()
                 .addPostBuildActions(1)
                 .addPostBuildActions(5)
                 .addPostBuildActions(1)
                 .addPostBuildActions(11)
+                .clickApply()
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 3);
+        assertEquals(postBuildNameList.size(), 6);
     }
 
     @Test
