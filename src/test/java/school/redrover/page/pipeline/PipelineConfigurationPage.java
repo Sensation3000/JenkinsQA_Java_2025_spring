@@ -3,6 +3,7 @@ package school.redrover.page.pipeline;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -43,6 +44,22 @@ public class PipelineConfigurationPage extends BasePage {
         return tooltipText;
     }
 
+    public WebElement getToggleTooltipElementOnHover() {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
+                .perform();
+
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")));
+    }
+
+    public boolean isToggleDisplayed() {
+        By toggleLocator = By.className("jenkins-toggle-switch__label");
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleLocator));
+
+        return getDriver().findElement(toggleLocator).isDisplayed();
+    }
+
     public boolean isToggleDisabled() {
         By toggleDisabled = By.xpath("//span[@class='jenkins-toggle-switch__label__unchecked-title']");
 
@@ -60,10 +77,12 @@ public class PipelineConfigurationPage extends BasePage {
     }
 
     public PipelineProjectPage clickSave() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Status']")));
 
         return new PipelineProjectPage(getDriver());
     }
+
     public String checkStatusOnToggle() {
         WebElement statusToggle;
         statusToggle = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-toggle-switch__label__checked-title")));
@@ -78,7 +97,22 @@ public class PipelineConfigurationPage extends BasePage {
         return statusToggle.getText();
     }
 
+    public PipelineConfigurationPage clickPreviewButton() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
 
+        return this;
+    }
 
+    public PipelineConfigurationPage clickHidePreviewButton() {
+        getDriver().findElement(By.className("textarea-hide-preview")).click();
+        getWait5().until(ExpectedConditions.
+                not(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview"))));
 
+        return this;
+    }
+
+    public boolean isPreviewDisplayed() {
+        return getDriver().findElement(By.className("textarea-preview")).isDisplayed();
+    }
 }

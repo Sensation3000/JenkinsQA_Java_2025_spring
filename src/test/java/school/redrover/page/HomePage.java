@@ -31,7 +31,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[text()='log out']")
     private WebElement logOutButton;
 
-    @FindBy(xpath ="//a[@data-task-success='Done.']")
+    @FindBy(xpath ="//a[@href='/view/all/newJob']")
     private WebElement newItemButtonOnLeftSidePanel;
 
     public HomePage(WebDriver driver) {
@@ -95,7 +95,8 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        newItemButtonOnLeftSidePanel.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(newItemButtonOnLeftSidePanel)).click();
+
         return new NewItemPage(getDriver());
     }
 
@@ -227,6 +228,31 @@ public class HomePage extends BasePage {
         return getWait5()
                          .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
                          .getText();
+    }
+
+    public HomePage showDropdownOnHoverByJobName(String jobName) {
+        By dropdownButtonLocator = By.xpath("//tr[@id='job_%s']//button".formatted(jobName));
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName)))).perform();
+
+        WebElement dropdownButton = getWait5().until(ExpectedConditions.elementToBeClickable(dropdownButtonLocator));
+        TestUtils.moveAndClickWithJS(getDriver(), dropdownButton);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tippy-6 .jenkins-dropdown__item")));
+
+        return this;
+    }
+
+    public List<WebElement> getDropdownOptionsList() {
+        return getDriver().findElements(By.cssSelector("#tippy-6 .jenkins-dropdown__item"));
+    }
+
+    public boolean isOptionPresentedInDropdown(String optionName) {
+        List<WebElement> dropdownOptionsList = getDropdownOptionsList();
+
+        return dropdownOptionsList.stream()
+                .anyMatch(webElement -> webElement.getText().contains(optionName));
     }
 
     public SignInPage clickLogOutButton(){
