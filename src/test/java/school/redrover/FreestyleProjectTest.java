@@ -60,6 +60,15 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
+    public void testWarningMessageIsDisplayedAfterDisableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getWarningMessageList(PROJECT_NAME);
+
+        Assert.assertEquals(warningMessageList.size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageIsDisplayedAfterDisableProject")
     public void testEnableProject() {
         String projectIsEnabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -72,6 +81,15 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    public void testWarningMessageDisappearsAfterEnableProject() {
+        List<WebElement> warningMessageList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getWarningMessageList(PROJECT_NAME);
+
+        Assert.assertEquals(warningMessageList.size(), 0);
+    }
+
+    @Test(dependsOnMethods = "testWarningMessageDisappearsAfterEnableProject")
     public void testFreestyleProjectAddGitHubURL() {
         List<String> freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -124,6 +142,41 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditDescription")
+    public void testPreviewDescriptionOption() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .clickPreviewDescription();
+
+        Assert.assertTrue(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
+        Assert.assertEquals(freestyleProjectPage.getTextFromPreviewDescriptionBlock(), PROJECT_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testPreviewDescriptionOption")
+    public void testHidePreviewDescriptionOption() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .clickPreviewDescription()
+                .clickHidePreviewDescription();
+
+        Assert.assertFalse(freestyleProjectPage.isHidePreviewLinkAvailable());
+        Assert.assertFalse(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testHidePreviewDescriptionOption")
+    public void testDescriptionCanBeEmpty() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickEditDescriptionButton()
+                .deleteDescription()
+                .clickSave()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, "");
+    }
+
+    @Test(dependsOnMethods = "testDescriptionCanBeEmpty")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -155,14 +208,11 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .addBuildSteps(7)
                 .addBuildSteps(2)
-                .addBuildSteps(3)
-                .addBuildSteps(4)
-                .addBuildSteps(5)
-                .addBuildSteps(6)
                 .addBuildSteps(1)
+                .clickApply()
                 .getChunkHeaderList();
 
-        assertEquals(projectNameList.size(), 7);
+        assertEquals(projectNameList.size(), 3);
     }
 
     @Test
@@ -220,26 +270,21 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testAddBuildSteps")
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickNewItem()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItemsOnHP(PROJECT_NAME)
+                .clickConfigure()
                 .addPostBuildActions(1)
                 .addPostBuildActions(5)
                 .addPostBuildActions(1)
                 .addPostBuildActions(11)
-                .addPostBuildActions(2)
-                .addPostBuildActions(8)
-                .addPostBuildActions(10)
+                .clickApply()
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 6);
     }
 
-    @Ignore
     @Test
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
@@ -248,14 +293,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
                 .addPostBuildActions(9)
-                .addBuildSteps(5)
                 .addPostBuildActions(11)
                 .addBuildSteps(1)
                 .addBuildSteps(7)
                 .addPostBuildActions(1)
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 6);
+        assertEquals(postBuildNameList.size(), 5);
     }
 
     @Test
@@ -288,7 +332,3 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
     }
 }
-
-
-
-

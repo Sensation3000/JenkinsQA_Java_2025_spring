@@ -37,9 +37,20 @@ public class TestUtils {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static int generateRandomNumberWithin1And6() {
+    public static int getRandomNumberBetween1And6(int... numbers) {
+        if (numbers == null || numbers.length == 0) {
+            throw new IllegalArgumentException("Please enter at least 1 number between 1 and 6");
+        }
+
+        for (int number : numbers) {
+            if (number < 1 || number > 6) {
+                throw new IllegalArgumentException("The numbers must be between 1 and 6");
+            }
+        }
+
         Random random = new Random();
-        return random.nextInt(6) + 1;
+
+        return numbers[random.nextInt(numbers.length)];
     }
 
     public static void moveAndClickWithJS(WebDriver driver, WebElement element) {

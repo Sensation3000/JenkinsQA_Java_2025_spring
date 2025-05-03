@@ -3,15 +3,31 @@ package school.redrover.page.freestyle;
 import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
+
+    @FindBy(css = "button[suffix='builder']")
+    private WebElement buttonAddBuildStep;
+
+    @FindBy(id = "//*[@id='tasks']/div[4]/span/button")
+    private WebElement buttonEnvironment;
+
+    @FindBy(css = "button[suffix='publisher']")
+    private WebElement buttonAddPostBuildAction;
+
+    @FindBy(css = ".jenkins-button.apply-button")
+    private WebElement buttonApply;
+
+    private void clickItemNumber(WebElement webElement, int itemNumber){
+        webElement.click();
+        getDriver().findElement(
+                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]")).click();
+    }
 
     public FreestyleConfigurationPage(WebDriver driver) {
         super(driver);
@@ -233,36 +249,28 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addBuildSteps(@IntRange(from = 1, to = 7) int itemNumber) {
-        WebElement buttonBuildSteps = getDriver().findElement(By.cssSelector("button[suffix='builder']"));
-
         for (int i = 0; i < 5; i++) {
             try {
                 new Actions(getDriver())
                         .scrollToElement(
                                 getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
                         .perform();
-                buttonBuildSteps.click();
-                getDriver().findElement(
-                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
-                        .click();
+                clickItemNumber(buttonAddBuildStep, itemNumber);
 
-                break;
+                return this;
             } catch (Exception e) {
                 try {
-                    getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/button")).click();
-                    buttonBuildSteps.click();
-                    getDriver().findElement(
-                            By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
-                            .click();
+                    buttonEnvironment.click();
+                    clickItemNumber(buttonAddBuildStep, itemNumber);
 
-                    break;
+                    return this;
                 } catch (Exception y) {
                     System.err.println("Ошибка, пробуем снова... " + y.getMessage());
                 }
             }
         }
 
-        return this;
+        throw new RuntimeException("Failed to add build step");
     }
 
     public List<String> getChunkHeaderList() {
@@ -349,25 +357,24 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
         final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
         List<WebElement> elements = List.of();
-        Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
-                actions.sendKeys(Keys.END).perform();
-                getDriver().findElement(By.cssSelector("button[suffix='publisher']")).click();
+                new Actions(getDriver()).sendKeys(Keys.END).perform();
+                buttonAddPostBuildAction.click();
                 elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
                     elements.get(--itemNumber).click();
 
-                    break;
+                    return this;
                 }
             } catch (Exception e) {
                 System.err.println("Ошибка, пробуем снова..." + e.getMessage());
             }
         }
 
-        return this;
+        throw new RuntimeException("Failed to add post build actions");
     }
 
     public FreestyleConfigurationPage clickToReverseBuildTriggerAndSetUpStreamProject(String jobName) {
@@ -453,6 +460,17 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage selectNoneSCM() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//label[text()='None']"))).perform();
+
+        return this;
+    }
+
+    public boolean isGithubHookCheckboxSelected() {
+        return getDriver().findElement(By.name("com-cloudbees-jenkins-GitHubPushTrigger")).isSelected();
+    }
+
+    public FreestyleConfigurationPage clickApply(){
+        new Actions(getDriver()).sendKeys(Keys.END).perform();
+        buttonApply.click();
 
         return this;
     }

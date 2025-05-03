@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -30,8 +31,12 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[text()='log out']")
     private WebElement logOutButton;
 
+    @FindBy(xpath ="//a[@data-task-success='Done.']")
+    private WebElement newItemButtonOnLeftSidePanel;
+
     public HomePage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public HomePage clickAddDescriptionButton() {
@@ -90,8 +95,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-task-success='Done.']"))).click();
-
+        newItemButtonOnLeftSidePanel.click();
         return new NewItemPage(getDriver());
     }
 
@@ -209,11 +213,11 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public NewItemPage clickOnNewItemLinkWithChevron() {
-        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))));
-        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+    public NewItemPage clickOnNewItemLinkWithChevron(String projectName) {
+        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector(String.format("a[href='job/%s/'].jenkins-table__link", projectName)))));
 
-        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-table__link .jenkins-menu-dropdown-chevron")));
+        new Actions(getDriver()).moveToElement(jobTableLink).perform();
+        TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("button[data-href$='job/%s/']", projectName))));
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href$='/newJob'")));
 
         return new NewItemPage(getDriver());
@@ -228,5 +232,21 @@ public class HomePage extends BasePage {
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());
+    }
+
+    public List<String> getColumnNames() {
+
+        return getDriver().findElements(By.xpath("//th/a")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public String getLogOutButtonText() {
+        return logOutButton.getText();
+    }
+
+    public boolean isSvgIconDifferentBetweenProjects() {
+        List<WebElement> svgIcons = getDriver().findElements(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg"));
+
+        return (svgIcons.get(0).getDomAttribute("title")).equals(svgIcons.get(1).getDomAttribute("title"));
     }
 }
