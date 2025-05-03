@@ -195,6 +195,10 @@ public class HomePage extends BasePage {
                 By.xpath("//a[@href='/view/" + viewName + "/']"))).getText();
     }
 
+    public boolean isJobDisplayed(String jobName) {
+            return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/span"))).isDisplayed();
+    }
+
     public FreestyleConfigurationPage clickJobLink(String jobName) {
         getDriver().findElement(By.linkText(jobName)).click();
 
