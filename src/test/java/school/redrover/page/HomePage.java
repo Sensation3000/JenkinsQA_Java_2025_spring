@@ -239,4 +239,10 @@ public class HomePage extends BasePage {
     public String getLogOutButtonText() {
         return logOutButton.getText();
     }
+
+    public boolean isSvgIconDifferentBetweenProjects() {
+        List<WebElement> svgIcons = getDriver().findElements(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg"));
+
+        return (svgIcons.get(0).getDomAttribute("title")).equals(svgIcons.get(1).getDomAttribute("title"));
+    }
 }
