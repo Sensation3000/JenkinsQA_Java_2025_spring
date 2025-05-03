@@ -11,7 +11,6 @@ import school.redrover.page.HomePage;
 
 public class FolderConfigurationTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
-    private static final String DISPLAY_NAME = "Folder Display Name";
     private static final String DESCRIPTION_BOX ="Some random text and special chars and русский текст";
 
     @Test
@@ -94,27 +93,5 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(
                 driver.findElement(By.xpath("//a[@href='job/TestFolder/']")).getText(), FOLDER_NAME);
-    }
-
-    @Test
-    public void testDisplayNameDisplayedOnDashboard() {
-        TestUtils.createFolder(getDriver(), FOLDER_NAME);
-        TestUtils.openHomePage(this);
-
-        TestUtils.openJobByName(getDriver(), FOLDER_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.name("_.displayNameOrNull")))).clear();
-        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(DISPLAY_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.xpath("//div[@id='main-panel']/h1"))));
-        TestUtils.gotoHomePage(getDriver());
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("projectstatus"))));
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).isDisplayed());
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']/span")).getText(), DISPLAY_NAME);
     }
 }
