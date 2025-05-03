@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.newitem.NewItemPage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,13 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(driver.findElement(By.cssSelector("#breadcrumbs > li:nth-child(1) > a"))
                 .getText(), "Dashboard");
+    }
+
+    @Test
+    public void testPossibleToCreateJobFromDashboard() {
+        NewItemPage newItemPage = new HomePage(getDriver()).createJob();
+
+        Assert.assertTrue(newItemPage.isNewItemPageOpened());
     }
 
     @Test
