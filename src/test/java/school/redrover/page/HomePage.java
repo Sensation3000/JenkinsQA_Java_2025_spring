@@ -260,4 +260,14 @@ public class HomePage extends BasePage {
 
         return svgIconTitles.get(0).equals(svgIconTitles.get(1));
     }
+
+    public void clickColumnNameInDashboardTable(String columnName){
+        getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
+    }
+
+    public boolean ascendingSorting(String columnName) {
+    String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
+            .findElement(By.cssSelector("span.sortarrow")).getText();
+        return sign.contains("↓");
+    }
 }
