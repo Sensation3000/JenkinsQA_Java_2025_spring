@@ -11,6 +11,7 @@ import school.redrover.page.HomePage;
 
 public class FolderConfigurationTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
+    private static final String DISPLAY_NAME = "Folder Display Name";
     private static final String DESCRIPTION_BOX ="Some random text and special chars and русский текст";
 
     @Test

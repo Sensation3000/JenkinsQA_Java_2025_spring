@@ -11,19 +11,10 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
-import java.util.Random;
-
 
 public class NewItemPage2Test extends BaseTest {
     HomePage homePage;
     String projectName;
-
-    public static int getRandomNumber() {
-        int[] numbers = {1, 2, 3, 5, 6};
-        Random random = new Random();
-
-        return numbers[random.nextInt(numbers.length)];
-    }
 
     @BeforeMethod
     void setUp() {
@@ -194,7 +185,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Test()
+    @Test
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
         String secondFolderProjectName = TestUtils.generateRandomAlphanumeric();
@@ -221,7 +212,9 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfDifferentProjectsHaveDifferentSvgIcons() {
-        TestUtils.newItemCreate(this, TestUtils.generateRandomAlphanumeric(), getRandomNumber());
+        TestUtils.newItemCreate(this,
+                                         TestUtils.generateRandomAlphanumeric(),
+                                         TestUtils.getRandomNumberBetween1And6(1, 2, 3, 5, 6));
 
         Assert.assertFalse(homePage.isSvgIconDifferentBetweenProjects());
     }
