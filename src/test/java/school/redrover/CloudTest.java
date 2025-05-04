@@ -11,7 +11,7 @@ public class CloudTest extends BaseTest {
     private static final String PLUGIN_NAME = "Windows cloud";
 
     @Test
-    public void installCloudPluginTest() {
+    public void testInstallCloudPlugin() {
         String pluginStatus = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickClouds()
@@ -24,8 +24,8 @@ public class CloudTest extends BaseTest {
         Assert.assertEquals(pluginStatus, "Success");
     }
 
-    @Test(dependsOnMethods = "installCloudPluginTest")
-    public void createNewCloudTest() {
+    @Test(dependsOnMethods = "testInstallCloudPlugin")
+    public void testCreateNewCloud() {
         String createdCloud = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickClouds()
@@ -39,8 +39,8 @@ public class CloudTest extends BaseTest {
         Assert.assertEquals(createdCloud, PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "createNewCloudTest")
-    public void deleteCloudTest() {
+    @Test(dependsOnMethods = "testCreateNewCloud")
+    public void testDeleteCloud() {
         String emptyStatusText = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickClouds()
