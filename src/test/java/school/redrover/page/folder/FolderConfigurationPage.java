@@ -54,4 +54,20 @@ public class FolderConfigurationPage extends BasePage {
     public boolean isQuestionMarkIconEnabled(){
         return questionMarkButton.isEnabled();
     }
+
+    public FolderConfigurationPage clickHealthMetrics(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-section-id='health-metrics']"))).click();
+
+        return this;
+    }
+
+    public String getTitleHealthMetrics(){
+        return getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='health-metrics']"))).getText();
+    }
+    public String getTextDropdownHealthMetrics(){
+        return getWait5().until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[2]/div[1]/button"))).getText();
+    }
+
 }
+
