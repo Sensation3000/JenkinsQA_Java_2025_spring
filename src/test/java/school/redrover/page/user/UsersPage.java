@@ -41,4 +41,18 @@ public class UsersPage extends BasePage {
 
         return getDriver().findElement(By.xpath("//tbody/tr[2]/td[3]")).getText();
     }
+
+    public UsersPage clickDeleteUserButton(String userName) {
+        getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//a[@data-url='user/" + userName.toLowerCase() + "/doDelete']"))).click();
+
+        return this;
+    }
+
+    public UsersPage clickSubmitDeleteUserButton() {
+        getWait10().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
+
+        return this;
+    }
 }
