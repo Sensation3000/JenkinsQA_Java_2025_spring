@@ -33,7 +33,7 @@ public class DashboardViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
+    @Test(dependsOnMethods = {"testCreateMyView", "testCreateFreestyleProjectForView"})
     public void testCreateListView() {
         String List_VIEW_NAME = "TestListViewName";
         String TEST_ITEM_JOB = "Test item";
