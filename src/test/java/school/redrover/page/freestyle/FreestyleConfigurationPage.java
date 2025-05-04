@@ -334,6 +334,13 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleConfigurationPage setWrongProjectToWatch(String projectName) {
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(projectName);
+
+        return this;
+    }
+
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
         getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
                 .forEach(WebElement::click);
@@ -502,6 +509,19 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage clickApply(){
         new Actions(getDriver()).sendKeys(Keys.END).perform();
         buttonApply.click();
+
+        return this;
+    }
+
+    public boolean isNoSuchProjectErrorVisible() {
+        return getWait10().until(driver -> driver.findElement(
+                                By.xpath("//div[contains(@class, 'form-container')]//div[contains(@class, 'validation-error-area--visible')]//div[contains(@class, 'error') and contains(text(), 'No such project')]"))
+                        .getText()
+                        .startsWith("No such project"));
+    }
+
+    public FreestyleConfigurationPage clickOnDropdownToClose() {
+        getWait10().until(driver -> driver.findElement(By.cssSelector(".jenkins-dropdown"))).click();
 
         return this;
     }
