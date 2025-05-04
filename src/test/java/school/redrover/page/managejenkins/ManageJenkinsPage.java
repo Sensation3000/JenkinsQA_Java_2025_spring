@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.plugins.PluginsPage;
+import school.redrover.page.systeminfo.SystemInfoPage;
 import school.redrover.page.user.UsersPage;
 
 public class ManageJenkinsPage extends BasePage {
@@ -37,4 +38,9 @@ public class ManageJenkinsPage extends BasePage {
         return new PluginsPage(getDriver());
     }
 
+    public SystemInfoPage clickSystemInfo() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]/a")).click();
+
+        return new SystemInfoPage(getDriver());
+    }
 }
