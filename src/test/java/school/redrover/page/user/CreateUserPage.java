@@ -45,7 +45,6 @@ public class CreateUserPage extends BasePage {
     public <T extends BasePage> T clickCreateUserButton(Class<T> pageClass) {
         getDriver().findElement(By.name("Submit")).click();
 
-//        return new UsersPage(getDriver());
         try {
             return pageClass.getDeclaredConstructor(WebDriver.class).newInstance(getDriver());
         } catch (Exception e) {
@@ -55,6 +54,6 @@ public class CreateUserPage extends BasePage {
 
     public String getUserNameErrorMessage() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id=\"main-panel\"]/form/div[1]/div[2]"))).getText();
+                By.xpath("//*[@id='main-panel']/form/div[1]/div[2]"))).getText();
     }
 }

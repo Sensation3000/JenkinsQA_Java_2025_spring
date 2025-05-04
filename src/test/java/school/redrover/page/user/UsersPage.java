@@ -22,7 +22,6 @@ public class UsersPage extends BasePage {
     }
 
     public List<WebElement> getUsersList() {
-
         return getWait10().until(ExpectedConditions
                 .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
@@ -43,8 +42,8 @@ public class UsersPage extends BasePage {
     }
 
     public UsersPage clickDeleteUserButton(String userName) {
-        getWait5().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//a[@data-url='user/" + userName.toLowerCase() + "/doDelete']"))).click();
+        String xpath = String.format("//a[@data-url='user/%s/doDelete']", userName.toLowerCase());
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
 
         return this;
     }

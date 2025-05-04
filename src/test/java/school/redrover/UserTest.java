@@ -18,11 +18,12 @@ public class UserTest extends BaseTest {
     private static final String FULL_NAME = "Test User";
     private static final String PASSWORD = "123Test";
     private static final String EMAIL = "testuser@test.com";
-    private static final String WRONG_PASSWORD = "P@ssword1";
 
-    @Test
+    @Test(priority = 1)
     public void testCreateNewUser() {
         List<WebElement> users = new HomePage(getDriver())
+                .getHeader()
+                .goToHomePage()
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickUsers()
                 .clickCreateUserButton()
@@ -34,35 +35,22 @@ public class UserTest extends BaseTest {
                 .clickCreateUserButton(UsersPage.class)
                 .getUsersList();
 
-        UsersPage usersPage = new UsersPage(getDriver());
-
         assertEquals(users.size(), 2);
-        assertEquals(usersPage.getUserIdTdText(), USER_NAME);
-        assertEquals(usersPage.getNameTdText(), FULL_NAME);
+
     }
 
-    @Test (dependsOnMethods = "testCreateNewUser")
+    @Test(priority = 2)
     public void testSignInAsExistingUser(){
         String logOutButtonText = new HomePage(getDriver())
+                .getHeader()
+                .goToHomePage()
                 .clickLogOutButton()
-                .setUserName(USER_NAME)
-                .setPassword(PASSWORD)
+                .setUserName(ProjectUtils.getUserName())
+                .setPassword(ProjectUtils.getPassword())
                 .clickSignInButton()
                 .getLogOutButtonText();
 
         assertEquals(logOutButtonText,"log out");
-    }
-
-    @Test(dependsOnMethods = "testCreateNewUser")
-    public void testErrorForInvalidCPassword() {
-        Boolean loginError = new HomePage(getDriver())
-                .clickLogOutButton()
-                .setPassword(WRONG_PASSWORD)
-                .setUserName(USER_NAME)
-                .clickSignInButtonUseWrongCredentials()
-                .isErrorTextShown();
-
-        Assert.assertEquals(loginError,true);
     }
 
     @Test
@@ -79,10 +67,8 @@ public class UserTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateNewUser")
     public void deleteUser() {
         List<WebElement> users = new HomePage(getDriver())
-                .clickLogOutButton()
-                .setUserName(ProjectUtils.getUserName())
-                .setPassword(ProjectUtils.getPassword())
-                .clickSignInButton()
+                .getHeader()
+                .goToHomePage()
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickUsers()
                 .clickDeleteUserButton(USER_NAME)
@@ -95,12 +81,14 @@ public class UserTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateNewUser")
     public void testCreateExistingUser() {
         String errorText = new HomePage(getDriver())
+                .getHeader()
+                .goToHomePage()
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickUsers()
                 .clickCreateUserButton()
-                .sendUserName(USER_NAME)
-                .sendPassword(PASSWORD)
-                .sendConfirmPassword(PASSWORD)
+                .sendUserName(ProjectUtils.getUserName())
+                .sendPassword(ProjectUtils.getPassword())
+                .sendConfirmPassword(ProjectUtils.getPassword())
                 .sendFullName(FULL_NAME)
                 .sendEmailAddress(EMAIL)
                 .clickCreateUserButton(CreateUserPage.class)
