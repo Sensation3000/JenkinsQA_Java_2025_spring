@@ -271,8 +271,13 @@ public class HomePage extends BasePage {
     }
 
     public boolean isSvgIconDifferentBetweenProjects() {
-        List<WebElement> svgIcons = getDriver().findElements(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg"));
+        List<String> svgIconTitles =
+                 getWait5()
+                           .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg")))
+                           .stream()
+                           .map(webElement -> webElement.getDomAttribute("title"))
+                           .toList();
 
-        return (svgIcons.get(0).getDomAttribute("title")).equals(svgIcons.get(1).getDomAttribute("title"));
+        return svgIconTitles.get(0).equals(svgIconTitles.get(1));
     }
 }
