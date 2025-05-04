@@ -185,7 +185,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Test()
+    @Test
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
         String secondFolderProjectName = TestUtils.generateRandomAlphanumeric();
