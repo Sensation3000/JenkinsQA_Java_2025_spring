@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -186,7 +185,7 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(actualProjectName, projectName);
     }
 
-    @Test()
+    @Test
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String firstFolderProjectName = TestUtils.generateRandomAlphanumeric();
         String secondFolderProjectName = TestUtils.generateRandomAlphanumeric();
@@ -211,7 +210,6 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(folderProjectName, randomAlphaNumericValue);
     }
 
-    @Ignore // NewItemPage2Test.testIfDifferentProjectsHaveDifferentSvgIcons:219 expected [false] but found [true]
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfDifferentProjectsHaveDifferentSvgIcons() {
         TestUtils.newItemCreate(this,
