@@ -69,7 +69,6 @@ public class ManageJenkinsPage extends BasePage {
         }
         return new CloudsPage(getDriver());
     }
-}
 
     public SystemPage clickSystemButton(){
         buttonSystem.click();
