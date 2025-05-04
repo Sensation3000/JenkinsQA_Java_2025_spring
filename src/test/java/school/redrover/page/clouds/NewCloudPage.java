@@ -33,7 +33,7 @@ public class NewCloudPage extends BasePage {
 
     public NewCloudPage clickSaveButton() {
         getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-submit-button")))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-submit-button")))
                 .click();
 
         return this;
