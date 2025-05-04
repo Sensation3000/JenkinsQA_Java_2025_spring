@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
 import java.util.List;
@@ -24,6 +25,17 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertListContainsObject(
                 projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithEmptyName() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .selectItemByName("Organization Folder");
+
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
+        Assert.assertEquals(
+                newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolder")
