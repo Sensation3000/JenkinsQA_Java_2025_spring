@@ -26,15 +26,15 @@ public class DashboardViewTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFreestyleProjectForView"})
     public void testCreateListView() {
-        String List_VIEW_NAME = "TestListViewName";
-        String TEST_ITEM_JOB = "Test item";
+        String listViewName = "TestlistViewName";
+        String testItemJob = "Test item";
         String projectName = ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()
-                .addName(List_VIEW_NAME)
+                .addName(listViewName)
                 .clickListView()
                 .clickCreateButton())
                 .fillDescription("Description for Test List View")
-                .JobsCheckTestItem(TEST_ITEM_JOB)
+                .JobsCheckTestItem(testItemJob)
                 .clickAddJobFilter()
                 .clickStatusFilterOfJobFilter()
                 .clickAddColumn()
@@ -43,9 +43,10 @@ public class DashboardViewTest extends BaseTest {
                 .getProjectNameList()
                 .get(0);
 
-        assertEquals(projectName, TEST_ITEM_JOB);
+        assertEquals(projectName, testItemJob
+        );
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
-        assertEquals(new HomePage(getDriver()).getNameOfView(List_VIEW_NAME), List_VIEW_NAME);
+        assertEquals(new HomePage(getDriver()).getNameOfView(listViewName), listViewName);
     }
 
 
