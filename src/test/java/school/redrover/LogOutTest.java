@@ -13,7 +13,7 @@ public class LogOutTest extends BaseTest {
                 .clickLogOutButton()
                 .getSignInText();
 
-        Assert.assertEquals(signInText,"Sign in to Jenkins");
+        Assert.assertEquals(signInText,"Sign in to Jenkins" );
     }
 }
 

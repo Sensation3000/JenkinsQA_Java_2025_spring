@@ -20,6 +20,15 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(css = "button[suffix='publisher']")
     private WebElement buttonAddPostBuildAction;
 
+    @FindBy(css = ".jenkins-button.apply-button")
+    private WebElement buttonApply;
+
+    private void clickItemNumber(WebElement webElement, int itemNumber){
+        webElement.click();
+        getDriver().findElement(
+                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]")).click();
+    }
+
     public FreestyleConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -270,19 +279,13 @@ public class FreestyleConfigurationPage extends BasePage {
                         .scrollToElement(
                                 getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
                         .perform();
-                buttonAddBuildStep.click();
-                getDriver().findElement(
-                        By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
-                        .click();
+                clickItemNumber(buttonAddBuildStep, itemNumber);
 
                 return this;
             } catch (Exception e) {
                 try {
                     buttonEnvironment.click();
-                    buttonAddBuildStep.click();
-                    getDriver().findElement(
-                            By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]"))
-                            .click();
+                    clickItemNumber(buttonAddBuildStep, itemNumber);
 
                     return this;
                 } catch (Exception y) {
@@ -494,6 +497,13 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public boolean isGithubHookCheckboxSelected() {
         return getDriver().findElement(By.name("com-cloudbees-jenkins-GitHubPushTrigger")).isSelected();
+    }
+
+    public FreestyleConfigurationPage clickApply(){
+        new Actions(getDriver()).sendKeys(Keys.END).perform();
+        buttonApply.click();
+
+        return this;
     }
 }
 

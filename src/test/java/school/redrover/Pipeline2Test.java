@@ -53,4 +53,17 @@ public class Pipeline2Test extends BaseTest {
         Assert.assertFalse(newItemPage.isOkButtonEnabled());
         Assert.assertEquals(newItemPage.getEmptyNameMessageColor(), "rgba(230, 0, 31, 1)");
     }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testDisableProject() {
+
+        PipelineProjectPage disabledProject = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
+                .clickConfigure()
+                .switchToggle()
+                .clickSave();
+
+        Assert.assertEquals(disabledProject.getProjectDisabledStatus(),"This project is currently disabled\n" +
+                "Enable");
+    }
 }

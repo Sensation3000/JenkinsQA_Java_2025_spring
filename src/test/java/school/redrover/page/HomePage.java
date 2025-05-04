@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -30,8 +31,12 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[text()='log out']")
     private WebElement logOutButton;
 
+    @FindBy(xpath ="//a[@href='/view/all/newJob']")
+    private WebElement newItemButtonOnLeftSidePanel;
+
     public HomePage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public HomePage clickAddDescriptionButton() {
@@ -90,7 +95,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-task-success='Done.']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(newItemButtonOnLeftSidePanel)).click();
 
         return new NewItemPage(getDriver());
     }
@@ -191,6 +196,10 @@ public class HomePage extends BasePage {
                 By.xpath("//a[@href='/view/" + viewName + "/']"))).getText();
     }
 
+    public boolean isJobDisplayed(String jobName) {
+            return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/span"))).isDisplayed();
+    }
+
     public FreestyleConfigurationPage clickJobLink(String jobName) {
         getDriver().findElement(By.linkText(jobName)).click();
 
@@ -221,6 +230,31 @@ public class HomePage extends BasePage {
                          .getText();
     }
 
+    public HomePage showDropdownOnHoverByJobName(String jobName) {
+        By dropdownButtonLocator = By.xpath("//tr[@id='job_%s']//button".formatted(jobName));
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_%s']//a".formatted(jobName)))).perform();
+
+        WebElement dropdownButton = getWait5().until(ExpectedConditions.elementToBeClickable(dropdownButtonLocator));
+        TestUtils.moveAndClickWithJS(getDriver(), dropdownButton);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tippy-6 .jenkins-dropdown__item")));
+
+        return this;
+    }
+
+    public List<WebElement> getDropdownOptionsList() {
+        return getDriver().findElements(By.cssSelector("#tippy-6 .jenkins-dropdown__item"));
+    }
+
+    public boolean isOptionPresentedInDropdown(String optionName) {
+        List<WebElement> dropdownOptionsList = getDropdownOptionsList();
+
+        return dropdownOptionsList.stream()
+                .anyMatch(webElement -> webElement.getText().contains(optionName));
+    }
+
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());
@@ -234,5 +268,16 @@ public class HomePage extends BasePage {
 
     public String getLogOutButtonText() {
         return logOutButton.getText();
+    }
+
+    public boolean isSvgIconDifferentBetweenProjects() {
+        List<String> svgIconTitles =
+                 getWait5()
+                           .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg")))
+                           .stream()
+                           .map(webElement -> webElement.getDomAttribute("title"))
+                           .toList();
+
+        return svgIconTitles.get(0).equals(svgIconTitles.get(1));
     }
 }
