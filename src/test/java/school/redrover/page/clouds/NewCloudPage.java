@@ -22,13 +22,17 @@ public class NewCloudPage extends BasePage {
     }
 
     public NewCloudPage clickCreateButton() {
-        getDriver().findElement(By.id("ok")).click();
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.id("ok")))
+                .click();
 
         return this;
     }
 
     public NewCloudPage clickSaveButton() {
-        getDriver().findElement(By.cssSelector(".jenkins-submit-button")).click();
+        getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-submit-button")))
+                .click();
 
         return this;
     }
