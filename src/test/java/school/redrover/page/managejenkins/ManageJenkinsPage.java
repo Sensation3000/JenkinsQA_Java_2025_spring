@@ -4,18 +4,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.clouds.CloudsPage;
 import school.redrover.page.plugins.PluginsPage;
+import school.redrover.page.system.SystemPage;
 import school.redrover.page.user.UsersPage;
 
 import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
 
+    @FindBy(css = "a[href='configure']")
+    private WebElement buttonSystem;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public String getManageJenkinsTitleText() {
@@ -61,5 +68,12 @@ public class ManageJenkinsPage extends BasePage {
             }
         }
         return new CloudsPage(getDriver());
+    }
+}
+
+    public SystemPage clickSystemButton(){
+        buttonSystem.click();
+
+        return new SystemPage(getDriver());
     }
 }
