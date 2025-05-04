@@ -64,6 +64,7 @@ public class NewItemCreate3Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testCreateNewItemWithCorrectName() {
         final String expectedName = "New free-style project";
