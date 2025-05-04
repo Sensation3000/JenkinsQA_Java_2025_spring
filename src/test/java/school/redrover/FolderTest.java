@@ -12,6 +12,7 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "ProjectFolder";
+    private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
@@ -20,7 +21,6 @@ public class FolderTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(folderName)
                 .selectFolderAndClickOk()
-                .clickOnDashboard()
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
@@ -31,17 +31,15 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testCreateWithDisplayName() {
-        final String expectedDisplayName = "Folder Display Name";
-
         String actualDisplayName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
-                .sendDisplayName(expectedDisplayName)
+                .sendDisplayName(FOLDER_DISPLAY_NAME)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(actualDisplayName, expectedDisplayName);
+        Assert.assertEquals(actualDisplayName, FOLDER_DISPLAY_NAME);
     }
 
     @Test
@@ -73,5 +71,19 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(folderProjectPage.getProjectName(),FOLDER_NAME);
         Assert.assertEquals(folderProjectPage.getDescription(),descriptionName);
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDisplayName")
+    public void testDisplayNameCanBeEmpty() {
+        String displayedFolderName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_DISPLAY_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clearDisplayName()
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectName();
+
+        Assert.assertEquals(displayedFolderName, FOLDER_NAME);
     }
 }

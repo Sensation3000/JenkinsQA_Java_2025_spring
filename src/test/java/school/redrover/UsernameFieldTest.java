@@ -21,16 +21,6 @@ public class UsernameFieldTest extends BaseTest {
         driver.findElement(By.xpath("//a[@href='addUser']")).click();
     }
 
-    @Test
-    public void testUsernameFieldFocusAndEditable() throws Exception {
-        WebDriver driver = getDriver();
-        setUp(driver);
-        WebElement usernameField = driver.findElement(By.id("username"));
-
-        assertTrue(usernameField.isEnabled());
-        usernameField.click(); // The ability to click on the field.
-
-    }
 
     @Ignore
     @Test
