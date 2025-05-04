@@ -525,5 +525,11 @@ public class FreestyleConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public boolean isScheduleSpecErrorVisible() {
+        return getDriver().findElement(By.xpath(
+                    "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
+        )).isDisplayed();
+    }
 }
 

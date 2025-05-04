@@ -16,6 +16,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
         """.trim();
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
+    private static final String UNEXPECTED_SCHEDULE = "H";
 
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
@@ -159,4 +160,24 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         //Assertions
         Assert.assertTrue(isErrorMessageAppears);
     }
+
+    @Test
+    public void validateBuildTriggersBuildPeriodicallyScheduleInput() {
+
+        //Actions
+        boolean isErrorMessageAppears = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(UNEXPECTED_SCHEDULE)
+                .checkPollCSMCheckbox()
+                .isScheduleSpecErrorVisible();
+
+        //Assertions
+        Assert.assertTrue(isErrorMessageAppears);
+    }
+
+
 }
