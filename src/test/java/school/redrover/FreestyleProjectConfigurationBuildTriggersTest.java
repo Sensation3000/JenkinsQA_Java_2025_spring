@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -68,7 +67,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .scrollToBuildTriggers()
+                .scrollToIgnorePostCommitHooksCheckbox()
                 .clickBuildAfterProjects()
                 .setProjectToWatch(PROJECT_NAME)
                 .clickAllReverseBuildTriggerLabels()
@@ -117,5 +116,27 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Assertions
         Assert.assertTrue(freestyleConfigurationPage.isGithubHookCheckboxSelected());
+    }
+
+
+    @Test
+    public void testPollSCMCheckboxIsDisplayed() {
+
+        //Actions
+        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .checkPollCSMCheckbox()
+                .sendScheduleTextForPollSCM(EXPECTED_SCHEDULE)
+                .checkIgnorePostCommitHooksCheckbox()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToBuildTriggers();
+
+        //Assertions
+        Assert.assertEquals(freestyleConfigurationPage.sendScheduleTextForThrottleBuilds(), EXPECTED_SCHEDULE);
+        Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxSelected());
     }
 }
