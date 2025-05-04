@@ -1,26 +1,19 @@
 package school.redrover;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.view.EditViewPage;
-import school.redrover.page.view.NewViewPage;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
 public class DashboardViewTest extends BaseTest {
-    private static final Logger log = LoggerFactory.getLogger(DashboardViewTest.class);
     private final String JOB_NAME = "Test item";
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
         String view_name = "TestViewName";
-
         new HomePage(getDriver())
                 .clickNewView()
                 .addName(view_name)
@@ -35,13 +28,11 @@ public class DashboardViewTest extends BaseTest {
     public void testCreateListView() {
         String List_VIEW_NAME = "TestListViewName";
         String TEST_ITEM_JOB = "Test item";
-        NewViewPage initialPage = new HomePage(getDriver()).clickNewView().addName(List_VIEW_NAME);
-
-        EditViewPage editViewPage = (EditViewPage) initialPage
+        String projectName = ((EditViewPage) new HomePage(getDriver())
+                .clickNewView()
+                .addName(List_VIEW_NAME)
                 .clickListView()
-                .clickCreateButton();
-
-        List<String> projectNameList = editViewPage
+                .clickCreateButton())
                 .fillDescription("Description for Test List View")
                 .JobsCheckTestItem(TEST_ITEM_JOB)
                 .clickAddJobFilter()
@@ -49,9 +40,8 @@ public class DashboardViewTest extends BaseTest {
                 .clickAddColumn()
                 .checkProjectDescriptionColumn()
                 .clickSaveButton()
-                .getProjectNameList();
-
-        String projectName = projectNameList.get(0);
+                .getProjectNameList()
+                .get(0);
 
         assertEquals(projectName, TEST_ITEM_JOB);
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
@@ -61,7 +51,6 @@ public class DashboardViewTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectForView() {
-
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
                 .sendItemName(JOB_NAME)
@@ -74,9 +63,6 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(projectName, JOB_NAME);
     }
 
-    private static String genetateRandomName() {
-        return "Test" + System.currentTimeMillis();
-    }
 }
 
 

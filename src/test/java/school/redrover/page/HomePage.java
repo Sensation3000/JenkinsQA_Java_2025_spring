@@ -50,7 +50,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobListEmpty() {
-        return getDriver().findElement(By.id("main-panel")).getText().contains("Welcome to Jenkins!");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
     }
 
     public boolean isProjectExists(String projectName) {
