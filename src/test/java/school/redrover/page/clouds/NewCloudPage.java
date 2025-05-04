@@ -16,7 +16,9 @@ public class NewCloudPage extends BasePage {
     }
 
     public NewCloudPage selectCloudType() {
-        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-radio__label")))
+                .click();
 
         return this;
     }
