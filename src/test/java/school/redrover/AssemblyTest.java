@@ -18,7 +18,7 @@ public class AssemblyTest extends BaseTest {
         final String text2 ="No builds";
 
         new HomePage(getDriver())
-                .clickNewItem();
+                .clickNewItemOnLeftSidePanel();
 
         new NewItemPage(getDriver())
                 .sendItemName(text)

@@ -39,7 +39,9 @@ public class PipelineProjectTest extends BaseTest {
     @Test
     public void testEnableProject() {
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
-                .createNewPipeline(PROJECT_NAME)
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectPipelineAndClickOk()
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
@@ -51,7 +53,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test
     public void checkDefaultStateTestPOM() {
         String statusToggleDefault = new HomePage(getDriver())
-            .clickNewItem()
+            .clickNewItemOnLeftSidePanel()
             .sendItemName(PROJECT_NAME)
             .selectPipelineAndClickOk()
             .checkStatusOnToggle();
@@ -62,7 +64,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test
     public void changeStateNewPipelineTestPOM() {
         String statusToggleChange = new HomePage(getDriver())
-            .clickNewItem()
+            .clickNewItemOnLeftSidePanel()
             .sendItemName(PROJECT_NAME)
             .selectPipelineAndClickOk()
             .switchToggle()
