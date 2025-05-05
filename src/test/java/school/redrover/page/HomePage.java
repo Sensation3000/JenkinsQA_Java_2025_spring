@@ -75,13 +75,7 @@ public class HomePage extends BasePage {
         return descriptionText.getText();
     }
 
-    public String getWelcomeMessage() {
-
-        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//h1"))))
-                .getText();
-    }
-
-    public String getNameProject() {
+     public String getNameProject() {
 
         return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By
                         .xpath("//*[@id='job_My name']/td[3]/a"))))
@@ -108,24 +102,10 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickOnJobInListOfItems(String nameItem, T resultPage) {
-        getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']")))
-                .click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//span[text()='%s']".formatted(nameItem)))).click();
 
         return resultPage;
-    }
-
-    public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
-        getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']")))
-                .click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
-    public String getNameFreestyleProjectText() {
-
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']"))).getText();
     }
 
     public AccountSettingsPage goToAccountSettingsPage() {
@@ -279,5 +259,15 @@ public class HomePage extends BasePage {
                            .toList();
 
         return svgIconTitles.get(0).equals(svgIconTitles.get(1));
+    }
+
+    public void clickColumnNameInDashboardTable(String columnName){
+        getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
+    }
+
+    public boolean ascendingSorting(String columnName) {
+    String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
+            .findElement(By.cssSelector("span.sortarrow")).getText();
+        return sign.contains("↓");
     }
 }
