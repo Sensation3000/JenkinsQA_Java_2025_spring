@@ -10,15 +10,6 @@ import school.redrover.page.HomePage;
 public class WelcomeDashboardTest extends BaseTest {
 
     @Test
-    public void testPossibleToCreateJobFromDashboard() {
-        getDriver().findElement(By.xpath("//li/a[@href='newJob']")).click();
-
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.id("add-item-panel")))).isDisplayed());
-    }
-
-    @Test
     public void testCancelJobCreationFromDashboard() {
         getDriver().findElement(By.xpath("//li/a[@href='newJob']")).click();
         getDriver().navigate().back();

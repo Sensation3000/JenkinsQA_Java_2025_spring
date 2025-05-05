@@ -21,13 +21,17 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
 
     public NewItemPage(WebDriver driver) {
         super(driver);
+    }
+
+    public boolean isNewItemPageOpened() {
+        return getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.id("add-item-panel")))).isDisplayed();
     }
 
     public NewItemPage sendItemName(String name) {
@@ -118,7 +122,7 @@ public class NewItemPage extends BasePage {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
-// test
+
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
         getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
