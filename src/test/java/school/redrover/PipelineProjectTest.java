@@ -15,7 +15,7 @@ public class PipelineProjectTest extends BaseTest {
     @Test
     public void testCreatePipeline() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .sendDescription(PIPELINE_DESCRIPTION)

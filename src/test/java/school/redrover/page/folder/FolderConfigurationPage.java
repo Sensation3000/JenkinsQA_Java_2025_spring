@@ -26,6 +26,12 @@ public class FolderConfigurationPage extends BasePage {
         return this;
     }
 
+    public FolderConfigurationPage clearDisplayName() {
+        getDriver().findElement(By.xpath("//input[@checkdependson]")).clear();
+
+        return this;
+    }
+
     public FolderConfigurationPage sendDescription(String text) {
         getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(text);
 
@@ -41,12 +47,6 @@ public class FolderConfigurationPage extends BasePage {
     public HomePage saveAndReturnToHomePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
-
-        return new HomePage(getDriver());
-    }
-
-    public HomePage clickOnDashboard() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("jenkins-breadcrumbs__list-item"))).click();
 
         return new HomePage(getDriver());
     }
