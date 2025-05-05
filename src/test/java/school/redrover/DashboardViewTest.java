@@ -65,7 +65,7 @@ public class DashboardViewTest extends BaseTest {
     public void testCreateFreestyleProjectForView() {
 
         String projectName = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(JOB_NAME)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .waitUntilTextConfigureToBePresentInH1()
