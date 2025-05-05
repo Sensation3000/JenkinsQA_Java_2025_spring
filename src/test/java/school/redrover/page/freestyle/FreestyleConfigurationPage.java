@@ -23,6 +23,12 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(css = ".jenkins-button.apply-button")
     private WebElement buttonApply;
 
+    @FindBy(xpath = "//div[@class='setting-main']/textarea[@name='_.spec']")
+    private WebElement buildPeriodicallyScheduleInput;
+
+    @FindBy(xpath = "//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")
+    private WebElement pollSCMScheduleInput;
+
     private void clickItemNumber(WebElement webElement, int itemNumber){
         webElement.click();
         getDriver().findElement(
@@ -113,9 +119,8 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage checkPollCSMCheckbox() {
+    public FreestyleConfigurationPage checkPollSCMCheckbox() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Poll SCM')]"))).click();
-       //getDriver().findElement(By.xpath("//label[contains(text(), 'Poll SCM')]")).click();
 
         return this;
     }
@@ -123,7 +128,6 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage checkIgnorePostCommitHooksCheckbox() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//label[contains(text(),'Ignore post-commit hooks')]"))).click();
-        //getDriver().findElement(By.xpath("//label[contains(text(),'Ignore post-commit hooks')]")).click();
 
         return this;
     }
@@ -133,31 +137,29 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage sendScheduleText(String text) {
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).clear();
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).sendKeys(text);
+        buildPeriodicallyScheduleInput.clear();
+        buildPeriodicallyScheduleInput.sendKeys(text);
 
         return this;
     }
 
     public FreestyleConfigurationPage sendScheduleTextForPollSCM(String text) {
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).clear();
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).sendKeys(text);
+        pollSCMScheduleInput.clear();
+        pollSCMScheduleInput.sendKeys(text);
 
         return this;
     }
 
     public String sendScheduleTextForThrottleBuilds() {
-        return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).getText();
+        return pollSCMScheduleInput.getText();
     }
 
     public String sendScheduleActualText() {
-
-        return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).getText();
+        return buildPeriodicallyScheduleInput.getText();
     }
 
     public FreestyleConfigurationPage clickEnableDisableToggle() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-       // getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
 
         return this;
     }
@@ -334,6 +336,13 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleConfigurationPage setWrongProjectToWatch(String projectName) {
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(projectName);
+
+        return this;
+    }
+
     public FreestyleConfigurationPage clickAllReverseBuildTriggerLabels() {
         getDriver().findElements(By.xpath("//input[@name='ReverseBuildTrigger.threshold']/following-sibling::label"))
                 .forEach(WebElement::click);
@@ -504,6 +513,25 @@ public class FreestyleConfigurationPage extends BasePage {
         buttonApply.click();
 
         return this;
+    }
+
+    public boolean isNoSuchProjectErrorVisible() {
+        return getWait10().until(driver -> driver.findElement(
+                                By.xpath("//div[contains(@class, 'form-container')]//div[contains(@class, 'validation-error-area--visible')]//div[contains(@class, 'error') and contains(text(), 'No such project')]"))
+                        .getText()
+                        .startsWith("No such project"));
+    }
+
+    public FreestyleConfigurationPage clickOnDropdownToClose() {
+        getWait10().until(driver -> driver.findElement(By.cssSelector(".jenkins-dropdown"))).click();
+
+        return this;
+    }
+
+    public boolean isScheduleSpecErrorVisible() {
+        return getDriver().findElement(By.xpath(
+                    "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
+        )).isDisplayed();
     }
 }
 

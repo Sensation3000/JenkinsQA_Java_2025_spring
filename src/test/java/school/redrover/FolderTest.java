@@ -63,7 +63,7 @@ public class FolderTest extends BaseTest {
         final String descriptionName = "folder";
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .sendDescription(descriptionName)

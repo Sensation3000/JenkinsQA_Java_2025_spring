@@ -44,7 +44,7 @@ public class NewJob3Test extends BaseTest {
     @Test
     public void testCreateItemAndNavigateToConfigPage() {
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .enterProjectNameAndSelect("My name", "Pipeline");
         new HeaderComponent(getDriver())
                 .goToHomePage();
@@ -55,7 +55,7 @@ public class NewJob3Test extends BaseTest {
 
     @Test
     public void testAllItemTypesArePresent() {
-        new HomePage(getDriver()).createJob();
+        new HomePage(getDriver()).clickCreateJob();
 
         NewItemPage newItemPage = new NewItemPage(getDriver());
 
@@ -75,7 +75,7 @@ public class NewJob3Test extends BaseTest {
     @Test
     public void testNewItemCreation() {
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .enterProjectNameAndSelect("Freestyle project","Freestyle project");
 
         NewItemPage newItemPage = new HeaderComponent(getDriver())
@@ -92,7 +92,7 @@ public class NewJob3Test extends BaseTest {
     @Test
     public void testNewItemCopyFromAutocomplete() {
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .enterProjectNameAndSelect("Freestyle project","Freestyle project");
         new HeaderComponent(getDriver())
                 .goToHomePage();
@@ -109,7 +109,7 @@ public class NewJob3Test extends BaseTest {
     @Test
     public void testCopyFromNonExistingItem() {
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .enterProjectNameAndSelect("Pipeline","Pipeline");
         new HeaderComponent(getDriver())
                 .goToHomePage();
