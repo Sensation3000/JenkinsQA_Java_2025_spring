@@ -23,7 +23,7 @@ public class BuildHistoryTest extends BaseTest {
         final String projectName = "Freestyle Project";
 
         String buildStatusProjectName = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(projectName)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
