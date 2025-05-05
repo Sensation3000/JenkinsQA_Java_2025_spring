@@ -28,6 +28,16 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    public void testAvailableIconsForOrganizationFolder() {
+        List<String> availableIcons = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .clickAppearance().getAvailableIcons();
+
+        Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
+    }
+
+    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
