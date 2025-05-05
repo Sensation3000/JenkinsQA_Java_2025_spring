@@ -72,4 +72,18 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
+
+    @Test
+    public void testDeleteOrganizationFolderFromDropDownMenuOnDashboard() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon().showDropdownOnHoverByJobName(ORGANIZATION_FOLDER_NAME)
+                .clickDeleteItemFromDropdown(ORGANIZATION_FOLDER_NAME)
+                .clickYesOnDeletionConfirmationPopup().getProjectNameList();
+
+        Assert.assertFalse(projectNameList.contains(ORGANIZATION_FOLDER_NAME));
+    }
 }
