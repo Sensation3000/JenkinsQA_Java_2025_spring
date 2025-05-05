@@ -15,7 +15,7 @@ public class SelectItemTypeTest extends BaseTest {
                 ("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
 
         HomePage homePage = new HomePage(getDriver());
-        List<String> listOfJobs = homePage.createJob().getItemTypesTextList();
+        List<String> listOfJobs = homePage.clickCreateJob().getItemTypesTextList();
 
         Assert.assertNotEquals(listOfJobs.size(), 0);
         Assert.assertTrue(items.containsAll(listOfJobs));
@@ -32,7 +32,7 @@ public class SelectItemTypeTest extends BaseTest {
                 "Creates a set of multibranch project subfolders by scanning for repositories.");
 
         HomePage homePage = new HomePage(getDriver());
-        List<String> listOfJobsDisc = homePage.createJob().getJobsDescriptions();
+        List<String> listOfJobsDisc = homePage.clickCreateJob().getJobsDescriptions();
 
         Assert.assertTrue(listOfJobsDisc.containsAll(itemsDisc));
     }

@@ -20,7 +20,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testCreate() {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
                 .selectMultibranchAndClickOk()
                 .clickSaveButton();

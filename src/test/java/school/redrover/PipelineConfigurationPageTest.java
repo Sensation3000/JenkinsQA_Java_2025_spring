@@ -17,7 +17,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testDisableToggleButton() {
         boolean isDisabled = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .switchToggle()
@@ -31,7 +31,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testEnableToggleButton() {
         boolean isEnabled = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .switchToggle()
@@ -48,7 +48,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testShowTooltipMessageOnHover() {
         WebElement tooltip = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .getToggleTooltipElementOnHover();
@@ -60,7 +60,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testShowWarningMessageWhenPipelineDisabled() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .switchToggle()
@@ -73,7 +73,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test(expectedExceptions = NoSuchElementException.class)
     public void testNotShowWarningMessageWhenPipelineEnabled() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .switchToggle()
@@ -88,7 +88,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testEnableDisableToggleVisibility() {
         boolean isToggleDisplayed = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .isToggleDisplayed();
@@ -99,7 +99,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testBuildNowOptionIsHiddenForDisabledPipeline() {
         boolean isOptionPresented = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .switchToggle()
@@ -115,7 +115,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testBuildNowOptionIsShownForEnabledPipeline() {
         boolean isOptionPresented = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .clickSave()
@@ -130,7 +130,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testPreviewIsDisplayedAfterClickingPreviewButton() {
         boolean isPreviewDisplayed = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .sendDescription(DESCRIPTION)
@@ -143,7 +143,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     @Test
     public void testPreviewIsHiddenAfterClickingHidePreview() {
         boolean isPreviewDisplayed = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .sendDescription(DESCRIPTION)

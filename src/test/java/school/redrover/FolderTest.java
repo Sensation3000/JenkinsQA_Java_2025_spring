@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -14,6 +15,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "ProjectFolder";
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
 
+    @Ignore//https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/issues/1768
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
 
@@ -63,7 +65,7 @@ public class FolderTest extends BaseTest {
         final String descriptionName = "folder";
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .sendDescription(descriptionName)

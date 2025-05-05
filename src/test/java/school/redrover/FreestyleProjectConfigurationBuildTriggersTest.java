@@ -20,12 +20,15 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
+
+        //Actions
         FreestyleConfigurationPage page = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers();
 
+        //Assertions
         Assert.assertEquals(page.getSectionNameTriggers(), "Triggers");
         Assert.assertEquals(page.countHelperIconsTriggersSection(), 8);
         Assert.assertTrue(page.isTriggerBuildsRemotelyCheckboxDisplayed());
@@ -45,11 +48,11 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Actions
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers()
-                .clickTriggerBuildsRemotely()
+                .checkTriggerBuildsRemotelyCheckbox()
                 .enterAuthToken(AUTH_TOKEN)
                 .clickSaveButton()
                 .clickConfigure()
@@ -70,7 +73,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .clickBuildAfterProjects()
+                .checkBuildAfterProjectsCheckbox()
                 .setProjectToWatch(PROJECT_NAME)
                 .clickAllReverseBuildTriggerLabels()
                 .clickSaveButton()
@@ -87,7 +90,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Actions
         String actualSchedule = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers()
@@ -107,7 +110,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Actions
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers()
@@ -120,17 +123,16 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(freestyleConfigurationPage.isGithubHookCheckboxSelected());
     }
 
-
     @Test
     public void testPollSCMCheckboxIsDisplayed() {
 
         //Actions
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .checkPollCSMCheckbox()
+                .checkPollSCMCheckbox()
                 .sendScheduleTextForPollSCM(EXPECTED_SCHEDULE)
                 .checkIgnorePostCommitHooksCheckbox()
                 .clickSaveButton()
@@ -142,17 +144,16 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxSelected());
     }
 
-
     @Test
     public void validateBuildTriggersInputProjectsToWatch() {
 
         //Actions
         boolean isErrorMessageAppears = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .clickBuildAfterProjects()
+                .checkBuildAfterProjectsCheckbox()
                 .setWrongProjectToWatch(NON_EXISTENT_PROJECT_NAME)
                 .clickOnDropdownToClose()
                 .isNoSuchProjectErrorVisible();
@@ -166,18 +167,34 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Actions
         boolean isErrorMessageAppears = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToIgnorePostCommitHooksCheckbox()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(UNEXPECTED_SCHEDULE)
-                .checkPollCSMCheckbox()
+                .checkPollSCMCheckbox()
                 .isScheduleSpecErrorVisible();
 
         //Assertions
         Assert.assertTrue(isErrorMessageAppears);
     }
 
+    @Test
+    public void validateBuildTriggersPollSCMScheduleInput() {
 
+        //Actions
+        boolean isErrorMessageAppears = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .checkPollSCMCheckbox()
+                .sendScheduleTextForPollSCM(UNEXPECTED_SCHEDULE)
+                .setBuildPeriodicallyCheckbox()
+                .isScheduleSpecErrorVisible();
+
+        //Assertions
+        Assert.assertTrue(isErrorMessageAppears);
+    }
 }
