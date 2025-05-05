@@ -33,7 +33,7 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testPossibleToCreateJobFromDashboard() {
-        NewItemPage newItemPage = new HomePage(getDriver()).createJob();
+        NewItemPage newItemPage = new HomePage(getDriver()).clickCreateJob();
 
         Assert.assertTrue(newItemPage.isNewItemPageOpened());
     }
@@ -42,7 +42,7 @@ public class DashboardTest extends BaseTest {
     public void testListJobsAndFolders(){
 
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(SUPERIOR_FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSave()
