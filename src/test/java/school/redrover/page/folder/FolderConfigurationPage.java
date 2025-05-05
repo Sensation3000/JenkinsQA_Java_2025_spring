@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
@@ -53,5 +54,11 @@ public class FolderConfigurationPage extends BasePage {
 
     public boolean isQuestionMarkIconEnabled(){
         return questionMarkButton.isEnabled();
+    }
+
+    public HeaderComponent clickSaveButton() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
+
+        return new HeaderComponent(getDriver());
     }
 }
