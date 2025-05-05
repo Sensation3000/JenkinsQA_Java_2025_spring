@@ -80,7 +80,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .sendItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .getHeader()
-                .clickLogoIcon().showDropdownOnHoverByJobName(ORGANIZATION_FOLDER_NAME)
+                .clickLogoIcon()
+                .showDropdownOnHoverByJobName(ORGANIZATION_FOLDER_NAME)
                 .clickDeleteItemFromDropdown(ORGANIZATION_FOLDER_NAME)
                 .clickYesOnDeletionConfirmationPopup().getProjectNameList();
 
