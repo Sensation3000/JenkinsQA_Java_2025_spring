@@ -213,6 +213,10 @@ public class HomePage extends BasePage {
         return sign.contains("↓");
     }
 
+    public String getCurrentDisplayedName() {
+        return getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
+    }
+
     public String getJobIconTitle (String jobName) {
 
         return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
