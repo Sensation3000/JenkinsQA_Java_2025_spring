@@ -16,7 +16,6 @@ public class TestUtils {
         gotoHomePage(baseTest.getDriver());
     }
 
-
     public static void gotoHomePage(WebDriver driver) {
         ProjectUtils.get(driver);
     }
@@ -206,10 +205,5 @@ public class TestUtils {
                 throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
-    }
-
-    public static void clickOnJenkinsLogo(BaseTest baseTest){
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
-        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 }
