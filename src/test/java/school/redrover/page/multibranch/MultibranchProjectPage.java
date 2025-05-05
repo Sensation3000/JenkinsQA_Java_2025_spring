@@ -21,4 +21,8 @@ public class MultibranchProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/h1")))
                 .getText();
     }
+
+    public String getDescription() {
+        return getDriver().findElement(By.id("view-message")).getText();
+    }
 }

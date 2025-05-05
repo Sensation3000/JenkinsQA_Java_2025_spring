@@ -15,9 +15,10 @@ import school.redrover.page.multibranch.MultibranchProjectPage;
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_NAME = "Multibranch Pipeline Job Test";
+    private static final String PROJECT_DESCRIPTION = "This is a NEW MultibranchPipeline description";
 
     @Test
-    public void testCreateNewJobMultibranch() {
+    public void testCreate() {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
@@ -27,24 +28,16 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);
     }
 
-    @Test
-    public void testAddDescriptionCreatingMultibranch() {
-        final String expectedDescription = "Add description";
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddDescription() {
+        String actualDescription = new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .sendDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getDescription();
 
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("MultiBranch");
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("[name$='description']")).sendKeys(expectedDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualDescription = getDriver().findElement(By.id("view-message")).getText();
-        Assert.assertEquals(actualDescription, expectedDescription);
+        Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
     }
 
     @Test
