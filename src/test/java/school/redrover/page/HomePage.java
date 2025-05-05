@@ -166,7 +166,8 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDeleteItemFromDropdown(String itemName) {
-        getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))))).click();
 
         return this;
     }
@@ -215,5 +216,12 @@ public class HomePage extends BasePage {
 
     public String getCurrentDisplayedName() {
         return getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
+    }
+
+    public String getJobIconTitle (String jobName) {
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
+                .getDomAttribute("title");
     }
 }
