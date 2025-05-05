@@ -18,7 +18,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String PROJECT_DESCRIPTION = "This is a NEW MultibranchPipeline description";
 
     @Test
-    public void testCreateNewJobMultibranch() {
+    public void testCreate() {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
                 .createJob()
                 .sendItemName(MULTIBRANCH_NAME)
@@ -28,10 +28,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateNewJobMultibranch")
-    public void testAddDescriptionCreatingMultibranchPOM() {
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddDescription() {
         String actualDescription = new HomePage(getDriver())
-                .clickOnMultibranchJobInListOfItems(MULTIBRANCH_NAME)
+                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
                 .goToConfigurationPage()
                 .sendDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
