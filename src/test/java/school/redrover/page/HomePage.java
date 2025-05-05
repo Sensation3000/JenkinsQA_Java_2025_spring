@@ -282,4 +282,10 @@ public class HomePage extends BasePage {
             .findElement(By.cssSelector("span.sortarrow")).getText();
         return sign.contains("↓");
     }
+
+    public String getJobIconTitle (String jobName) {
+
+        return getDriver().findElement(
+                By.xpath("//*[@id='job_%s']/td[1]/div/svg".formatted(jobName))).getDomAttribute("title");
+    }
 }

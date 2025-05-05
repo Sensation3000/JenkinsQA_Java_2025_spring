@@ -27,6 +27,21 @@ public class OrganizationFolderTest extends BaseTest {
                 projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
     }
 
+    @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    public void testSelectDefaultIconForOrganizationFolder() {
+        String orgFolderIconTitle = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .clickAppearance()
+                .selectIcon("Default Icon")
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .getJobIconTitle(ORGANIZATION_FOLDER_NAME);
+
+        Assert.assertEquals(orgFolderIconTitle, "Folder");
+    }
+
     @Test
     public void testCreateOrganizationFolderWithEmptyName() {
         NewItemPage newItemPage = new HomePage(getDriver())
@@ -38,10 +53,10 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    @Test (dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
-                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel()
                 .clickCancelOnDeletionConfirmationPopup()
                 .getOrganizationFolderNameFromHeader();
@@ -58,7 +73,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
         OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
-                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel();
 
         String actualPopupText = orgFolderPage.getMDeletionPopupText();
