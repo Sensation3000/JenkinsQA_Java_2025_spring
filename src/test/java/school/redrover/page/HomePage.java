@@ -166,7 +166,8 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDeleteItemFromDropdown(String itemName) {
-        getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))))).click();
 
         return this;
     }
@@ -211,5 +212,12 @@ public class HomePage extends BasePage {
     String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
             .findElement(By.cssSelector("span.sortarrow")).getText();
         return sign.contains("↓");
+    } 
+
+    public String getJobIconTitle (String jobName) {
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
+                .getDomAttribute("title");
     }
 }

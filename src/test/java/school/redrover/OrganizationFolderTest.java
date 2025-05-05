@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -28,6 +27,21 @@ public class OrganizationFolderTest extends BaseTest {
                 projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
     }
 
+    @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    public void testSelectDefaultIconForOrganizationFolder() {
+        String orgFolderIconTitle = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .clickAppearance()
+                .selectIcon("Default Icon")
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .getJobIconTitle(ORGANIZATION_FOLDER_NAME);
+
+        Assert.assertEquals(orgFolderIconTitle, "Folder");
+    }
+
     @Test
     public void testCreateOrganizationFolderWithEmptyName() {
         NewItemPage newItemPage = new HomePage(getDriver())
@@ -39,7 +53,7 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    @Test (dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
@@ -73,7 +87,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
-    @Ignore//OrganizationFolderTest.testDeleteOrganizationFolderFromDropDownMenuOnDashboard:86 » StaleElementReference stale element reference: stale element not found
+
     @Test
     public void testDeleteOrganizationFolderFromDropDownMenuOnDashboard() {
         List<String> projectNameList = new HomePage(getDriver())
@@ -84,7 +98,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickLogoIcon()
                 .showDropdownOnHoverByJobName(ORGANIZATION_FOLDER_NAME)
                 .clickDeleteItemFromDropdown(ORGANIZATION_FOLDER_NAME)
-                .clickYesOnDeletionConfirmationPopup().getProjectNameList();
+                .clickYesOnDeletionConfirmationPopup()
+                .getProjectNameList();
 
         Assert.assertFalse(projectNameList.contains(ORGANIZATION_FOLDER_NAME));
     }
