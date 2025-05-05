@@ -2,7 +2,6 @@ package school.redrover.page.organizationfolder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
@@ -22,9 +21,8 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public OrganizationFolderConfigurePage selectIcon(String iconName) {
-        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector("select.jenkins-select__input.dropdownList"))));
-        Select select = new Select(getDriver().findElement(By.cssSelector("select.jenkins-select__input.dropdownList")));
-        select.selectByValue(iconName);
+        new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
+                .selectByVisibleText(iconName);
 
         return this;
     }

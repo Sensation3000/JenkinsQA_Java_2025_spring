@@ -215,7 +215,8 @@ public class HomePage extends BasePage {
 
     public String getJobIconTitle (String jobName) {
 
-        return getDriver().findElement(
-                By.xpath("//*[@id='job_%s']/td[1]/div/svg".formatted(jobName))).getDomAttribute("title");
+        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName)))))
+                .getDomAttribute("title");
     }
 }
