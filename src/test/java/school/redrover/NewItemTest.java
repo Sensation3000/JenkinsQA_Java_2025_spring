@@ -18,7 +18,7 @@ public class NewItemTest extends BaseTest {
         final String expectedHeaderText = "New Item";
 
         String actualHeaderText = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .getNewItemPageHeaderText();
 
         Assert.assertEquals(actualHeaderText, expectedHeaderText);
@@ -38,7 +38,7 @@ public class NewItemTest extends BaseTest {
     @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
     public void testOKButtonIsDisabledIfCreatingProjectWithEmptyName(String itemType) {
         NewItemPage newItemPage = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .selectItemByName(itemType);
 
         Assert.assertEquals(newItemPage.getErrorMessageOnEmptyField(), "» This field cannot be empty, please enter a valid name");

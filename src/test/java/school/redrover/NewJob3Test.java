@@ -80,7 +80,7 @@ public class NewJob3Test extends BaseTest {
 
         NewItemPage newItemPage = new HeaderComponent(getDriver())
                 .goToHomePage()
-                .clickNewItem();
+                .clickNewItemOnLeftSidePanel();
 
         String actualCopyFromText = newItemPage.getCopyFromText();
 
@@ -98,7 +98,7 @@ public class NewJob3Test extends BaseTest {
                 .goToHomePage();
 
         new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendTextCopyForm("Freestyle");
         String actualText = new NewItemPage(getDriver())
                 .getAutocompleteSuggestionText();
@@ -115,7 +115,7 @@ public class NewJob3Test extends BaseTest {
                 .goToHomePage();
 
         new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendTextCopyForm("NonExistingItem");
 
         String actualText = new NewItemPage(getDriver())
