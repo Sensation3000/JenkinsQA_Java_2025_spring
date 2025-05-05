@@ -56,7 +56,7 @@ public class DescriptionButton1Test extends BaseTest {
     @Test
     public void testAddDescription() {
         String description = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyle()
                 .clickOkButton()
