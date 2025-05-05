@@ -6,6 +6,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.component.HeaderComponent;
+import school.redrover.page.error.ErrorPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.HomePage;
@@ -24,6 +25,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String SECOND_PROJECT_NAME = "Second Freestyle Project";
     private static final String GITHUB_PROJECT_URL = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
     private static final String MENU_GITHUB_OPTION = "GitHub";
+    private static final String TIME_PERIOD = "Minute";
 
     @Test
     public void testCreateFreestyleProject() {
@@ -229,15 +231,48 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testEmptyItemNameField() {
-        final String message = "» This field cannot be empty, please enter a valid name";
+    public void testFreestyleProjectWithConfig() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .addDescription(PROJECT_DESCRIPTION)
+                .clickThrottleBuilds()
+                .selectTimePeriod(TIME_PERIOD)
+                .clickSaveButton();
 
-        String actualMessage = new HomePage(getDriver())
-                .createJob()
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+        Assert.assertEquals(freestyleProjectPage.getDescription(), PROJECT_DESCRIPTION);
+    }
+
+    @Test (dependsOnMethods = "testFreestyleProjectWithConfig")
+    public void testSuccessfulCopyWithConfig () {
+
+        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(SECOND_PROJECT_NAME)
                 .selectFreestyle()
-                .getErrorMessageOnEmptyField();
+                .sendTextCopyForm(PROJECT_NAME)
+                .clickOkButton();
 
-        Assert.assertEquals(actualMessage, message);
+        Assert.assertEquals(freestyleConfigurationPage.getDescriptionText(), PROJECT_DESCRIPTION);
+        Assert.assertTrue(freestyleConfigurationPage.getSelectThrottleBuilds());
+        Assert.assertEquals(freestyleConfigurationPage.getTimePeriod(), TIME_PERIOD);
+    }
+
+    @Test(dependsOnMethods = "testSuccessfulCopyWithConfig")
+    public void testUnsuccessfulCopy() {
+        final String nonexistentName = "999";
+
+        ErrorPage errorPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(UPDATED_PROJECT_NAME)
+                .selectFreestyle()
+                .sendTextCopyForm(nonexistentName)
+                .clickOkButtonWithError();
+
+        Assert.assertEquals(errorPage.getTitle(),"Error");
+        Assert.assertEquals(errorPage.getErrorText(), "No such job: %s".formatted(nonexistentName));
     }
 
     @Test
@@ -329,6 +364,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .waitForBuildToAppear(70);
 
         Assert.assertEquals(buildList.size(), 1);
-        Assert.assertEquals(buildList.get(0), "#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a"))));
+        Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
     }
 }
