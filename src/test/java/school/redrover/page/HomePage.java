@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
                 .getText();
     }
 
-    public NewItemPage createJob() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         return new NewItemPage(getDriver());
