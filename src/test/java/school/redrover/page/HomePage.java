@@ -235,6 +235,18 @@ public class HomePage extends BasePage {
                 .anyMatch(webElement -> webElement.getText().contains(optionName));
     }
 
+    public HomePage clickDeleteItemFromDropdown(String itemName) {
+        getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))).click();
+
+        return this;
+    }
+
+    public HomePage clickYesOnDeletionConfirmationPopup() {
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        return new HomePage(getDriver());
+    }
+
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());

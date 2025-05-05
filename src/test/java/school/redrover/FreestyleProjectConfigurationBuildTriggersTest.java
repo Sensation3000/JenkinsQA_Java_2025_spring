@@ -9,12 +9,14 @@ import school.redrover.page.HomePage;
 public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     private static final String PROJECT_NAME = "New project";
+    private static final String NON_EXISTENT_PROJECT_NAME = "qwerty";
     private static final String AUTH_TOKEN = "sometoken8ad01cf431d742977b8cc82";
     private static final String EXPECTED_TRIGGER_INFO_TEXT = """
         Use the following URL to trigger build remotely: JENKINS_URL/job/New%20project/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
         Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
         """.trim();
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
+    private static final String UNEXPECTED_SCHEDULE = "H";
 
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
@@ -139,4 +141,43 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(freestyleConfigurationPage.sendScheduleTextForThrottleBuilds(), EXPECTED_SCHEDULE);
         Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxSelected());
     }
+
+
+    @Test
+    public void validateBuildTriggersInputProjectsToWatch() {
+
+        //Actions
+        boolean isErrorMessageAppears = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .clickBuildAfterProjects()
+                .setWrongProjectToWatch(NON_EXISTENT_PROJECT_NAME)
+                .clickOnDropdownToClose()
+                .isNoSuchProjectErrorVisible();
+
+        //Assertions
+        Assert.assertTrue(isErrorMessageAppears);
+    }
+
+    @Test
+    public void validateBuildTriggersBuildPeriodicallyScheduleInput() {
+
+        //Actions
+        boolean isErrorMessageAppears = new HomePage(getDriver())
+                .createJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToIgnorePostCommitHooksCheckbox()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(UNEXPECTED_SCHEDULE)
+                .checkPollCSMCheckbox()
+                .isScheduleSpecErrorVisible();
+
+        //Assertions
+        Assert.assertTrue(isErrorMessageAppears);
+    }
+
+
 }
