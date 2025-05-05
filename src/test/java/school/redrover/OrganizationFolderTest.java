@@ -42,7 +42,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test (dependsOnMethods = "testCreateOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
-                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel()
                 .clickCancelOnDeletionConfirmationPopup()
                 .getOrganizationFolderNameFromHeader();
@@ -59,7 +59,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
         OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
-                .clickOnOrganizationFolderInListOfItems(ORGANIZATION_FOLDER_NAME)
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel();
 
         String actualPopupText = orgFolderPage.getMDeletionPopupText();
