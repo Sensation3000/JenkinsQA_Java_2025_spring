@@ -30,7 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton();
@@ -42,7 +42,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAccessProjectManagementPageFromDashboard() {
         String currentProjectName = new HomePage(getDriver())
-                .clickFreestyleProjectOnDashboard(PROJECT_NAME)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .getProjectName();
 
         Assert.assertEquals(currentProjectName, PROJECT_NAME);
@@ -205,7 +205,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testAddBuildSteps() {
         List<String> projectNameList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .addBuildSteps(7)
@@ -278,13 +278,13 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testTriggerBuildAfterOtherProjects() {
         new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose();
 
         new HeaderComponent(getDriver())
                 .goToHomePage()
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(SECOND_PROJECT_NAME)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
@@ -293,7 +293,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         final List<String> builds = new HeaderComponent(getDriver())
                 .goToHomePage()
-                .clickJobLink(PROJECT_NAME)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
                 .clickBuildNow()
                 .waitJobStarted(SECOND_PROJECT_NAME)
                 .getBuildList();
@@ -308,7 +308,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testAddBuildSteps")
     public void testAddPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItemsOnHP(PROJECT_NAME)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .addPostBuildActions(1)
                 .addPostBuildActions(5)
@@ -323,7 +323,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .addPostBuildActions(1)
@@ -340,7 +340,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateFreestyleProjectWithNoneSCM() {
         String projectName = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .selectNoneSCM()
@@ -355,7 +355,8 @@ public class FreestyleProjectTest extends BaseTest {
         final String everyMinuteSchedule = "* * * * *";
 
         List<String> buildList = new HomePage(getDriver())
-                .clickNewItem().sendItemName(PROJECT_NAME)
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers()
                 .setBuildPeriodicallyCheckbox()
