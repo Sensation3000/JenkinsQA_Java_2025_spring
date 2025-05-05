@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +13,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class DescriptionButton1Test extends BaseTest {
+
+    private static final String PROJECT_NAME = "Freestyle Project";
+    private static final String DESCRIPTION_NAME = "description";
 
     private void addTextToForm (String text) {
 
@@ -51,24 +53,20 @@ public class DescriptionButton1Test extends BaseTest {
         Assert.assertEquals(currentDescription, newDescription);
     }
 
-
-    @Ignore //Error:    AddDescriptionTest.testAddDescription:47 » NoSuchElement no such element: Unable to locate element: {"method":"xpath","selector":"//a[@id='description-link']"}
     @Test
-    public void testAddDescription() throws InterruptedException {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("FirstJob");
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("New description");
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    public void testAddDescription() {
+        String description = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyle()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickEditDescriptionButton()
+                .sendDescription(DESCRIPTION_NAME)
+                .clickSave()
+                .getDescription();
 
-        assertEquals(getDriver().findElement(By.xpath(
-                        "//div[@id='description']/div")).getText(),
-                "New description"
-        );
+        assertEquals(description, DESCRIPTION_NAME);
     }
 
     @Test
