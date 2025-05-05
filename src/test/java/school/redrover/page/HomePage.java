@@ -282,4 +282,8 @@ public class HomePage extends BasePage {
             .findElement(By.cssSelector("span.sortarrow")).getText();
         return sign.contains("↓");
     }
+
+    public String getCurrentDisplayedName() {
+        return getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
+    }
 }
