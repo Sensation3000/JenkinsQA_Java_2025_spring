@@ -11,6 +11,7 @@ import school.redrover.common.BasePage;
 import school.redrover.page.clouds.CloudsPage;
 import school.redrover.page.plugins.PluginsPage;
 import school.redrover.page.system.SystemPage;
+import school.redrover.page.systeminfo.SystemInfoPage;
 import school.redrover.page.user.UsersPage;
 
 import java.util.List;
@@ -74,5 +75,10 @@ public class ManageJenkinsPage extends BasePage {
         buttonSystem.click();
 
         return new SystemPage(getDriver());
+    }
+    public SystemInfoPage clickSystemInfo() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]/a")).click();
+
+        return new SystemInfoPage(getDriver());
     }
 }
