@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -14,6 +15,18 @@ import java.util.List;
 
 public class FreestyleProjectPage extends BasePage {
 
+    @FindBy(id = "description-link")
+    private WebElement descriptionBotton;
+
+    @FindBy(css = "textarea[name='description']")
+    private WebElement descriptionTextarea;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
+    @FindBy(css = "#description > div")
+    private WebElement descriptionText;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -23,18 +36,18 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getDriver().findElement(By.cssSelector("#description > div")).getText();
+        return descriptionText.getText();
     }
 
     public FreestyleProjectPage clickEditDescriptionButton() {
-        getDriver().findElement(By.id("description-link")).click();
+        descriptionBotton.click();
 
         return this;
     }
 
     public FreestyleProjectPage sendDescription(String text) {
-        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
-        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(text);
+        descriptionTextarea.clear();
+        descriptionTextarea.sendKeys(text);
 
         return this;
     }
@@ -72,7 +85,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
+        saveButton.click();
 
         return this;
     }
