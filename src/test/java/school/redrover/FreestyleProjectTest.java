@@ -28,7 +28,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton();
@@ -233,7 +233,7 @@ public class FreestyleProjectTest extends BaseTest {
         final String message = "» This field cannot be empty, please enter a valid name";
 
         String actualMessage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .selectFreestyle()
                 .getErrorMessageOnEmptyField();
 
@@ -305,7 +305,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateFreestyleProjectWithNoneSCM() {
         String projectName = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .selectNoneSCM()

@@ -23,6 +23,34 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(css = ".jenkins-button.apply-button")
     private WebElement buttonApply;
 
+    @FindBy(xpath = "//div[@class='setting-main']/textarea[@name='_.spec']")
+    private WebElement buildPeriodicallyScheduleInput;
+
+    @FindBy(xpath = "//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")
+    private WebElement pollSCMScheduleInput;
+
+    @FindBy(xpath = "//label[contains(text(), 'Trigger builds remotely')]")
+    private WebElement triggerBuildsRemotelyLabel;
+
+    @FindBy(xpath = "//label[contains(text(), 'Build after other projects are built')]")
+    private WebElement buildAfterProjectsAreBuiltLabel;
+
+    @FindBy(xpath = "//label[contains(text(), 'Build periodically')]")
+    private WebElement buildPeriodicallyLabel;
+
+    @FindBy(xpath = "//label[contains(text(), 'GitHub hook trigger for GITScm polling')]")
+    private WebElement gitHubHookTriggerForGITScmPollingLabel;
+
+    @FindBy(xpath = "//label[contains(text(), 'Poll SCM')]")
+    private WebElement pollSCMLabel;
+
+    @FindBy(xpath = "//input[@name='_.upstreamProjects']")
+    private WebElement projectsToWatchInput;
+
+
+
+
+
     private void clickItemNumber(WebElement webElement, int itemNumber){
         webElement.click();
         getDriver().findElement(
@@ -43,12 +71,6 @@ public class FreestyleConfigurationPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("button[name='Submit']")))).click();
 
         return new FreestyleProjectPage(getDriver());
-    }
-
-    public FreestyleConfigurationPage scrollToGeneralItem() {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(By.xpath("//*[@id='general']")));
-
-        return this;
     }
 
     public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
@@ -90,32 +112,31 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkTriggerBuildsRemotelyCheckbox() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely (e.g., from scripts)')]")).click();
+        triggerBuildsRemotelyLabel.click();
 
         return this;
     }
 
     public FreestyleConfigurationPage checkBuildAfterProjectsCheckbox() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
+        buildAfterProjectsAreBuiltLabel.click();
 
         return this;
     }
 
     public FreestyleConfigurationPage setBuildPeriodicallyCheckbox() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
+        buildPeriodicallyLabel.click();
 
         return this;
     }
 
     public FreestyleConfigurationPage checkGithubHookCheckbox() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'GitHub hook trigger for GITScm polling')]")).click();
+        gitHubHookTriggerForGITScmPollingLabel.click();
 
         return this;
     }
 
-    public FreestyleConfigurationPage checkPollCSMCheckbox() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), 'Poll SCM')]"))).click();
-       //getDriver().findElement(By.xpath("//label[contains(text(), 'Poll SCM')]")).click();
+    public FreestyleConfigurationPage checkPollSCMCheckbox() {
+        pollSCMLabel.click();
 
         return this;
     }
@@ -123,7 +144,6 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage checkIgnorePostCommitHooksCheckbox() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//label[contains(text(),'Ignore post-commit hooks')]"))).click();
-        //getDriver().findElement(By.xpath("//label[contains(text(),'Ignore post-commit hooks')]")).click();
 
         return this;
     }
@@ -133,31 +153,29 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage sendScheduleText(String text) {
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).clear();
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).sendKeys(text);
+        buildPeriodicallyScheduleInput.clear();
+        buildPeriodicallyScheduleInput.sendKeys(text);
 
         return this;
     }
 
     public FreestyleConfigurationPage sendScheduleTextForPollSCM(String text) {
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).clear();
-        getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).sendKeys(text);
+        pollSCMScheduleInput.clear();
+        pollSCMScheduleInput.sendKeys(text);
 
         return this;
     }
 
     public String sendScheduleTextForThrottleBuilds() {
-        return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.scmpoll_spec']")).getText();
+        return pollSCMScheduleInput.getText();
     }
 
     public String sendScheduleActualText() {
-
-        return getDriver().findElement(By.xpath("//div[@class='setting-main']/textarea[@name='_.spec']")).getText();
+        return buildPeriodicallyScheduleInput.getText();
     }
 
     public FreestyleConfigurationPage clickEnableDisableToggle() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label[for='enable-disable-project']"))).click();
-       // getDriver().findElement(By.cssSelector("label[for='enable-disable-project']")).click();
 
         return this;
     }
@@ -201,7 +219,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getTriggerBuildsRemotelyLabelText() {
-        return getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).getText();
+        return triggerBuildsRemotelyLabel.getText();
     }
 
     public int countHelperIconsTriggersSection() {
@@ -222,11 +240,11 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getBuildAfterProjectsLabelText() {
-        return getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).getText();
+        return buildAfterProjectsAreBuiltLabel.getText();
     }
 
     public String getBuildAfterProjectsHelpIconTitle() {
-        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[4]/div[1]/div/a"))
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[4]/div[1]/div/a"))
                 .getDomAttribute("title");
     }
 
@@ -239,11 +257,11 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getBuildPeriodicallyLabelText() {
-        return getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).getText();
+        return gitHubHookTriggerForGITScmPollingLabel.getText();
     }
 
     public String getBuildPeriodicallyHelpIconTitle() {
-        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[5]/div[1]/div/a"))
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[5]/div[1]/div/a"))
                 .getDomAttribute("title");
     }
 
@@ -264,11 +282,11 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getGithubHookTriggerLabelText() {
-        return getDriver().findElement(By.xpath("//label[contains(text(), 'GitHub hook trigger for GITScm polling')]")).getText();
+        return gitHubHookTriggerForGITScmPollingLabel.getText();
     }
 
     public String getGithubHookTriggerHelpIconTitle() {
-        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[3]/div[6]/div[1]/div/a"))
+        return getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[3]/div[6]/div[1]/div/a"))
                 .getDomAttribute("title");
     }
 
@@ -312,24 +330,18 @@ public class FreestyleConfigurationPage extends BasePage {
                 .toList();
     }
 
-    public FreestyleConfigurationPage clickTriggerBuildsRemotely() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Trigger builds remotely')]")).click();
-
-        return this;
-    }
-
-    public FreestyleConfigurationPage clickBuildAfterProjects() {
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build after other projects are built')]")).click();
-
-        return this;
-    }
-
     public FreestyleConfigurationPage setProjectToWatch(String projectName) {
+        projectsToWatchInput.clear();
+        projectsToWatchInput.sendKeys(projectName);
+        getWait5().until(ExpectedConditions.attributeToBe(projectsToWatchInput, "aria-expanded", "true"));
+        projectsToWatchInput.sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+
+        return this;
+    }
+
+    public FreestyleConfigurationPage setWrongProjectToWatch(String projectName) {
         getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).clear();
         getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(projectName);
-        getWait5().until(ExpectedConditions.attributeToBe(By
-                .xpath("//input[@name='_.upstreamProjects']"), "aria-expanded", "true"));
-        getDriver().findElement(By.xpath("//input[@name='_.upstreamProjects']")).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
 
         return this;
     }
@@ -504,6 +516,25 @@ public class FreestyleConfigurationPage extends BasePage {
         buttonApply.click();
 
         return this;
+    }
+
+    public boolean isNoSuchProjectErrorVisible() {
+        return getWait10().until(driver -> driver.findElement(
+                                By.xpath("//div[contains(@class, 'form-container')]//div[contains(@class, 'validation-error-area--visible')]//div[contains(@class, 'error') and contains(text(), 'No such project')]"))
+                        .getText()
+                        .startsWith("No such project"));
+    }
+
+    public FreestyleConfigurationPage clickOnDropdownToClose() {
+        getWait10().until(driver -> driver.findElement(By.cssSelector(".jenkins-dropdown"))).click();
+
+        return this;
+    }
+
+    public boolean isScheduleSpecErrorVisible() {
+        return getDriver().findElement(By.xpath(
+                    "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
+        )).isDisplayed();
     }
 }
 

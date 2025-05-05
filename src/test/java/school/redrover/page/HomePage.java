@@ -68,7 +68,7 @@ public class HomePage extends BasePage {
                 .getText();
     }
 
-    public NewItemPage createJob() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         return new NewItemPage(getDriver());
@@ -163,6 +163,18 @@ public class HomePage extends BasePage {
 
         return dropdownOptionsList.stream()
                 .anyMatch(webElement -> webElement.getText().contains(optionName));
+    }
+
+    public HomePage clickDeleteItemFromDropdown(String itemName) {
+        getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))).click();
+
+        return this;
+    }
+
+    public HomePage clickYesOnDeletionConfirmationPopup() {
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        return new HomePage(getDriver());
     }
 
     public SignInPage clickLogOutButton(){
