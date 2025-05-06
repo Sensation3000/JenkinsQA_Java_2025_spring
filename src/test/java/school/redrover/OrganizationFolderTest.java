@@ -39,7 +39,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testIconHelp")
+    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
