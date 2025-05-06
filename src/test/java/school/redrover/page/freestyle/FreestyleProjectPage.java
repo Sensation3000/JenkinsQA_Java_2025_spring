@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
@@ -38,6 +39,12 @@ public class FreestyleProjectPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'console')]")
     private WebElement consoleOutput;
+
+    @FindAll({
+            @FindBy(xpath = "//*[@id='out']/div[2]"),
+            @FindBy(xpath = "//*[@id='out']/div")
+    })
+    private WebElement consoleOutputFinished;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -291,7 +298,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public boolean isFinishedSuccess(){
         return getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='out']/div[2]")))
+                .until(ExpectedConditions.elementToBeClickable(consoleOutputFinished))
                 .getText()
                 .contains("Finished: SUCCESS");
     }
