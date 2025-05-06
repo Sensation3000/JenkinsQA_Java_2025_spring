@@ -193,15 +193,16 @@ public class HomePage extends BasePage {
         return logOutButton.getText();
     }
 
-    public boolean isSvgIconDifferentBetweenProjects() {
-        List<String> svgIconTitles =
-                 getWait5()
-                           .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg")))
-                           .stream()
-                           .map(webElement -> webElement.getDomAttribute("title"))
-                           .toList();
+    public boolean isSvgIconDifferentBetweenProjects(String firstProjectName, String secondProjectName) {
+        return getSvgTitle(firstProjectName).equals(getSvgTitle(secondProjectName));
+    }
 
-        return svgIconTitles.get(0).equals(svgIconTitles.get(1));
+    private String getSvgTitle(String projectName) {
+        String xpath = String.format("//a[@href='job/%s/']/ancestor::tr//*[name()='svg']", projectName);
+
+        return getWait5()
+                         .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)))
+                         .getDomAttribute("title");
     }
 
     public void clickColumnNameInDashboardTable(String columnName){
