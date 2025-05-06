@@ -138,11 +138,24 @@ public class DashboardTest extends BaseTest {
 
         String descriptionText = new HomePage(getDriver())
                 .clickAddDescriptionButton()
+                .clearDescription()
                 .sendDescription(newDescription)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(descriptionText, newDescription);
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testRemoveDescription() {
+
+        boolean isDescriptionDisplayed = new HomePage(getDriver())
+                .clickAddDescriptionButton()
+                .clearDescription()
+                .clickSaveDescriptionButton()
+                .isDescriptionDisplayed();
+
+        Assert.assertFalse(isDescriptionDisplayed);
     }
 
     @Test
