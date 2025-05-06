@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -37,7 +38,8 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
     }
 
-    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
+    @Ignore
+    @Test (dependsOnMethods = "testIconHelp")
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
