@@ -42,7 +42,8 @@ public class FreestyleProjectPage extends BasePage {
 
     @FindAll({
             @FindBy(xpath = "//*[@id='out']/div[2]"),
-            @FindBy(xpath = "//*[@id='out']/div")
+            @FindBy(xpath = "//*[@id='out']/div"),
+            @FindBy(id = "out")
     })
     private WebElement consoleOutputFinished;
 
