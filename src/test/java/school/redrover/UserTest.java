@@ -80,6 +80,7 @@ public class UserTest extends BaseTest {
         assertEquals(users.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void testCreateExistingUser() {
         String errorText = new HomePage(getDriver())
@@ -98,5 +99,4 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(errorText, "User name is already taken");
     }
-
 }

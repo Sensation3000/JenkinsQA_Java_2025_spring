@@ -16,7 +16,7 @@ import java.util.List;
 public class FreestyleProjectPage extends BasePage {
 
     @FindBy(id = "description-link")
-    private WebElement descriptionBotton;
+    private WebElement descriptionButton;
 
     @FindBy(css = "textarea[name='description']")
     private WebElement descriptionTextarea;
@@ -40,7 +40,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickEditDescriptionButton() {
-        descriptionBotton.click();
+        descriptionButton.click();
 
         return this;
     }
