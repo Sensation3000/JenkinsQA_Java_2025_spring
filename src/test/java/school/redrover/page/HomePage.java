@@ -29,9 +29,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath ="//a[@href='/view/all/newJob']")
     private WebElement newItemButtonOnLeftSidePanel;
 
+    @FindBy(name = "description")
+    private WebElement descriptionTextArea;
+
     public HomePage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver,this);
     }
 
     public HomePage clickAddDescriptionButton() {
@@ -41,12 +43,12 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobListEmpty() {
-        return getDriver().findElement(By.id("main-panel")).getText().contains("Welcome to Jenkins!");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
     }
 
     public HomePage sendDescription(String text) {
-        getDriver().findElement(By.cssSelector("#description > form > div.jenkins-form-item.tr > div.setting-main.help-sibling > textarea"))
-                .sendKeys(text);
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(text);
 
         return this;
     }
@@ -218,11 +220,11 @@ public class HomePage extends BasePage {
     } 
 
     public String getJobIconTitle (String jobName) {
-
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
     }
+
 
     public List<String> getListHealthReportFromDashboard() {
         if (isJobListEmpty()) {
@@ -230,5 +232,13 @@ public class HomePage extends BasePage {
         }
         return getDriver().findElements(By.cssSelector(".healthReport")).stream()
                 .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+    }
+
+    public boolean isBuildQueueDisplayed() {
+        return getDriver().findElement(By.id("buildQueue")).isDisplayed();
+    }
+
+    public String getBuildQueueBlockText() {
+        return getDriver().findElement(By.xpath("//td[@class='pane']")).getText();
     }
 }

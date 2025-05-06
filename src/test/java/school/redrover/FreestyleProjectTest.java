@@ -295,7 +295,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goToHomePage()
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
                 .clickBuildNow()
-                .waitJobStarted(SECOND_PROJECT_NAME)
+                .waitJobStarted()
                 .getBuildList();
 
         final String buildStatusText = new FreestyleConfigurationPage(getDriver()).getBuildStatusText();
