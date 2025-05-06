@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class FreestyleProjectPage extends BasePage {
 
     @FindBy(id = "description-link")
-    private WebElement descriptionBotton;
+    private WebElement descriptionButton;
 
     @FindBy(css = "textarea[name='description']")
     private WebElement descriptionTextarea;
@@ -27,12 +28,35 @@ public class FreestyleProjectPage extends BasePage {
     @FindBy(css = "#description > div")
     private WebElement descriptionText;
 
+    @FindBy(className = "page-headline")
+    private WebElement projectName;
+
+    @FindBy(xpath = "//span[text()='Rename']/..")
+    private WebElement renameButton;
+
+    @FindBy(name = "newName")
+    private WebElement newNameField;
+
+    @FindBy(name = "Submit")
+    private WebElement renameSubmitButton;
+
+    @FindBy(xpath = "//span[text()='Delete Project']")
+    private WebElement deleteButton;
+
+    @FindBy(css = "[data-id='ok']")
+    private WebElement popUpYesDeleteProjectButton;
+
+    @FindBy(xpath = "//span[text()='Build Now']/..")
+    private WebElement leftSideMenuBuildNowButton;
+
+
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public String getProjectName() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(projectName)).getText();
     }
 
     public String getDescription() {
@@ -40,7 +64,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickEditDescriptionButton() {
-        descriptionBotton.click();
+        descriptionButton.click();
 
         return this;
     }
@@ -53,7 +77,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage deleteDescription() {
-        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+        descriptionTextarea.clear();
 
         return this;
     }
@@ -91,32 +115,32 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickLeftSideMenuRename() {
-        getDriver().findElement(By.xpath("//span[text()='Rename']/..")).click();
+        renameButton.click();
 
         return this;
     }
 
     public FreestyleProjectPage sendName(String text) {
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(text);
+        newNameField.clear();
+        newNameField.sendKeys(text);
 
         return this;
     }
 
     public FreestyleProjectPage clickRename() {
-        getDriver().findElement(By.name("Submit")).click();
+        renameSubmitButton.click();
 
         return this;
     }
 
     public FreestyleProjectPage clickLeftSideMenuDelete() {
-        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+        deleteButton.click();
 
         return this;
     }
 
     public HomePage clickPopUpYesDeleteProject() {
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        popUpYesDeleteProjectButton.click();
 
         return new HomePage(getDriver());
     }
@@ -194,9 +218,16 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickLeftSideMenuBuildNow() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Build Now']/.."))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(leftSideMenuBuildNowButton)).click();
 
         return this;
+    }
+
+    public BuildHistoryPage clickOnBuildProject() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated
+                (By.className("app-builds-container__items"))).click();
+
+        return new BuildHistoryPage(getDriver());
     }
 
     public List<String> getLeftSideMenuNameList() {

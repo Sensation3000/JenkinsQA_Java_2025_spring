@@ -8,25 +8,33 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import org.openqa.selenium.JavascriptExecutor;
+import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderConfigurationPage;
+
+import java.util.List;
 
 
 public class HealthMetricsTest extends BaseTest {
 
+    private static final String HEALTH_METRICS = "Health metrics";
+    private static final String ITEM_NAME = "Test Folder";
+
     @Test
-    public void  checkAvailabilityHealthMetrics(){
-        WebDriver driver = getDriver();
+    public void  testAvailabilityHealthMetricsPOM(){
+        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOkWithJS()
+                .clickHealthMetrics();
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        driver.findElement(By.xpath("//*[@id='name']")).sendKeys("Test Folder");
-        WebElement element = driver.findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);  // Скроллим к элементу
-        element.click();
-        driver.findElement(By.xpath("//*[@id='ok-button']")).click();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='side-panel']/div[1]/div[1]/h1")));
-        driver.findElement(By.cssSelector("button[data-section-id='health-metrics']")).click();
-        WebElement titleHM = driver.findElement(By.xpath("//*[@id='health-metrics']"));
-        Assert.assertEquals(titleHM.getText(), "Health metrics");
+        List<String> titlesHealthMetrics = List.of(
+                folderConfigurationPage.getTitleHealthMetrics(),
+                folderConfigurationPage.getTextDropdownHealthMetrics()
+        );
+       for (String titleHealthMetrics : titlesHealthMetrics) {
+           Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
+       }
     }
+
 
 }
