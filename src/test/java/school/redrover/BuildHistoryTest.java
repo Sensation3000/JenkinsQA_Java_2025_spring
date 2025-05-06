@@ -4,35 +4,49 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
+
+import java.util.Properties;
 
 public class BuildHistoryTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "Freestyle Project";
+
     @Test
     public void testQuickAccessToTheBuildHistorySection() {
-        final String text = "Build History of Jenkins";
+        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
+                .clickBuildHistoryTab();
 
-        String buildHistoryPage = new HomePage(getDriver())
-                .clickBuildHistoryTab()
-                .isBuildHistoryText();
-
-        Assert.assertEquals(buildHistoryPage, text);
+        Assert.assertTrue(buildHistoryPage.getBuildHistoryText().contains("Build History of Jenkins"));
     }
 
     @Test
     public void testCheckTheBuildStatusDisplay() {
-        final String projectName = "Freestyle Project";
-
         String buildStatusProjectName = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(projectName)
+                .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLeftSideMenuBuildNow()
                 .getHeader()
                 .goToHomePage()
                 .clickBuildHistoryTab()
-                .buildProjectText(projectName);
+                .buildProjectText(PROJECT_NAME);
 
-        Assert.assertEquals(buildStatusProjectName, projectName);
+        Assert.assertEquals(buildStatusProjectName, PROJECT_NAME);
+    }
+
+    public void testBuildHistory() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickFreestyleLink(PROJECT_NAME)
+                .clickLeftSideMenuBuildNow()
+                .clickOnBuildProject()
+                .clickDeleteBuild();
+
+        Assert.assertTrue(freestyleProjectPage.getBuildNameList().isEmpty());
     }
 }
