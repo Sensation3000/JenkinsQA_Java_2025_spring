@@ -14,6 +14,7 @@ public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "ProjectFolder";
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
+    private static final String ITEM_NAME = "Item1";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
@@ -41,6 +42,36 @@ public class FolderTest extends BaseTest {
                 .getProjectName();
 
         Assert.assertEquals(actualDisplayName, FOLDER_DISPLAY_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDisplayName")
+    public void testDisplayNameCanBeEmpty() {
+        String displayedFolderName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_DISPLAY_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clearDisplayName()
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectName();
+
+        Assert.assertEquals(displayedFolderName, FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
+    public void testCreateFreestyleProjectInFolder() {
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnNewItemButton()
+                .sendItemName(ITEM_NAME)
+                .selectFreestyleAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
+
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
     @Test
@@ -74,17 +105,20 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getDescription(),descriptionName);
     }
 
-    @Test(dependsOnMethods = "testCreateWithDisplayName")
-    public void testDisplayNameCanBeEmpty() {
-        String displayedFolderName = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_DISPLAY_NAME, new FolderProjectPage(getDriver()))
-                .clickConfigure()
-                .clearDisplayName()
-                .clickSave()
+    @Test(dependsOnMethods = "testCreateWithDescription")
+    public void testCreateFolderInFolder() {
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnNewItemButton()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
                 .getHeader()
                 .clickLogoIcon()
-                .getProjectName();
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
 
-        Assert.assertEquals(displayedFolderName, FOLDER_NAME);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
+        Assert.assertEquals(folderProjectPage.getItemIconTitleByJobName(ITEM_NAME), "Folder");
     }
 }
