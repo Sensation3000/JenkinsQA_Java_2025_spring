@@ -5,12 +5,12 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
+@Ignore//CloudTest.testCreateNewCloud:36 » WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
 public class CloudTest extends BaseTest {
 
     private static final String PROJECT_NAME = "CloudCreationTestName";
     private static final String PLUGIN_NAME = "Windows cloud";
-@Ignore//CloudTest.testCreateNewCloud:36 » WebDriver unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
+
     @Test
     public void testInstallCloudPlugin() {
         String pluginStatus = new HomePage(getDriver())
