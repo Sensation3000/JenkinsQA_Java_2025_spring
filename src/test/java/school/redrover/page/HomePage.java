@@ -214,7 +214,7 @@ public class HomePage extends BasePage {
     public boolean ascendingSorting(String columnName) {
     String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
             .findElement(By.cssSelector("span.sortarrow")).getText();
-        System.out.println(sign);
+
         return sign.contains("↓");
     } 
 
