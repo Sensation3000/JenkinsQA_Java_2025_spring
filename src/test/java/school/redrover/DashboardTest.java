@@ -33,6 +33,15 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
+    public void testOpenManageJenkinsFromDashboard() {
+        String manageJenkinsTitleText = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .getManageJenkinsTitleText();
+
+        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
+    }
+
+    @Test
     public void testPossibleToCreateJobFromDashboard() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickCreateJob();
@@ -132,5 +141,13 @@ public class DashboardTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(descriptionText, newDescription);
+    }
+
+    @Test
+    public void testEmptyBuildQueue() {
+        HomePage homePage = new HomePage(getDriver());
+
+        Assert.assertTrue(homePage.isBuildQueueDisplayed());
+        Assert.assertEquals(homePage.getBuildQueueBlockText(), "No builds in the queue.");
     }
 }
