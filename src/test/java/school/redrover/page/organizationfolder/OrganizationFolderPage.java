@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemWithinFolderPage;
 
 public class OrganizationFolderPage extends BasePage {
@@ -37,7 +36,7 @@ public class OrganizationFolderPage extends BasePage {
         return new OrganizationFolderPage(getDriver());
     }
 
-    public String getMDeletionPopupText() {
+    public String getDeletionPopupText() {
 
         return getWait5().until(ExpectedConditions.visibilityOf(
                 getDriver().findElement(By.className("jenkins-dialog__contents")))).getText();
@@ -52,12 +51,6 @@ public class OrganizationFolderPage extends BasePage {
     public String getJobWithinFolderName(String jobName) {
 
         return getDriver().findElement(By.xpath(String.format("//span[text()='%s']", jobName))).getText();
-    }
-
-    public HomePage goToHomePage() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
-
-        return new HomePage(getDriver());
     }
 
     public String getProjectName() {

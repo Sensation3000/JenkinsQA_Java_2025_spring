@@ -40,7 +40,8 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobListEmpty() {
-        return getDriver().findElement(By.id("main-panel")).getText().contains("Welcome to Jenkins!");
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
     }
 
     public HomePage sendDescription(String text) {
