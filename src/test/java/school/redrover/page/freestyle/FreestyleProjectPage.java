@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
@@ -50,6 +51,25 @@ public class FreestyleProjectPage extends BasePage {
     private WebElement leftSideMenuBuildNowButton;
 
 
+
+    @FindBy(xpath = "//*[@id='notification-bar']")
+    private WebElement buildScheduled;
+
+    @FindBy(css = "a.task-link.task-link--active")
+    private WebElement status;
+
+    @FindBy(xpath = "//*[@href='lastBuild/']")
+    private WebElement lastBuild;
+
+    @FindBy(xpath = "//a[contains(@href, 'console')]")
+    private WebElement consoleOutput;
+
+    @FindAll({
+            @FindBy(xpath = "//*[@id='out']/div[2]"),
+            @FindBy(xpath = "//*[@id='out']/div"),
+            @FindBy(id = "out")
+    })
+    private WebElement consoleOutputFinished;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -281,4 +301,37 @@ public class FreestyleProjectPage extends BasePage {
         throw new AssertionError("Build did not start within expected time");
     }
 
+    public boolean isTextBuildScheduled() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return buildScheduled.getText().equals("Build scheduled");
+    }
+
+    public FreestyleProjectPage clickStatus() {
+        status.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickLastBuild() {
+        lastBuild.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickConsoleOutput() {
+        consoleOutput.click();
+
+        return this;
+    }
+
+    public boolean isFinishedSuccess(){
+        return getWait10()
+                .until(ExpectedConditions.elementToBeClickable(consoleOutputFinished))
+                .getText()
+                .contains("Finished: SUCCESS");
+    }
 }
