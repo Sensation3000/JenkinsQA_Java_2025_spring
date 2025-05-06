@@ -1,19 +1,14 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.*;
 
-public class JenkinsThemeTest extends BaseTest {
+public class AppearanceTest extends BaseTest {
 
     @Test
-    public void testDarkTheme() throws InterruptedException {
+    public void testDarkTheme() {
         HomePage homePage = new HomePage(getDriver());
         String popUpSaveButtonText = homePage
                     .clickManageJenkinsOnLeftSidePanel()
