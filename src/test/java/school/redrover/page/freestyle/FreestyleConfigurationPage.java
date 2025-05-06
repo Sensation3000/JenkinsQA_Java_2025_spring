@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+import school.redrover.page.buildhistory.BuildHistoryPage;
+
 import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
@@ -54,10 +56,7 @@ public class FreestyleConfigurationPage extends BasePage {
     private WebElement projectsToWatchInput;
 
 
-
-
-
-    private void clickItemNumber(WebElement webElement, int itemNumber){
+    private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[@class='jenkins-dropdown__item '][%d]".formatted(itemNumber)))).click();
@@ -79,7 +78,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FreestyleConfigurationPage clickDiscardOldBuilds (int buildLogLimit) {
+    public FreestyleConfigurationPage clickDiscardOldBuilds(int buildLogLimit) {
         getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]")).click();
         getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(buildLogLimit));
 
@@ -357,11 +356,10 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage clickFreestyleText() {
-        getDriver().findElement(By.xpath("//a[text()='Freestyle']")).click();
+    public FreestyleProjectPage clickFreestyleLink(String link) {
+        getDriver().findElement(By.xpath(String.format("//a[text()='%s']", link))).click();
 
-
-        return this;
+        return new FreestyleProjectPage(getDriver());
     }
 
     public FreestyleConfigurationPage enterAuthToken(String token) {
@@ -516,7 +514,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return getDriver().findElement(By.name("com-cloudbees-jenkins-GitHubPushTrigger")).isSelected();
     }
 
-    public FreestyleConfigurationPage clickApply(){
+    public FreestyleConfigurationPage clickApply() {
         new Actions(getDriver()).sendKeys(Keys.END).perform();
         buttonApply.click();
 
@@ -525,9 +523,9 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public boolean isNoSuchProjectErrorVisible() {
         return getWait10().until(driver -> driver.findElement(
-                                By.xpath("//div[contains(@class, 'form-container')]//div[contains(@class, 'validation-error-area--visible')]//div[contains(@class, 'error') and contains(text(), 'No such project')]"))
-                        .getText()
-                        .startsWith("No such project"));
+                        By.xpath("//div[contains(@class, 'form-container')]//div[contains(@class, 'validation-error-area--visible')]//div[contains(@class, 'error') and contains(text(), 'No such project')]"))
+                .getText()
+                .startsWith("No such project"));
     }
 
     public FreestyleConfigurationPage clickOnDropdownToClose() {
@@ -538,7 +536,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public boolean isScheduleSpecErrorVisible() {
         return getDriver().findElement(By.xpath(
-                    "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
+                "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
         )).isDisplayed();
     }
 }
