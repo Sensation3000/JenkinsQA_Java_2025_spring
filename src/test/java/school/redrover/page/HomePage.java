@@ -219,9 +219,16 @@ public class HomePage extends BasePage {
     } 
 
     public String getJobIconTitle (String jobName) {
-
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+    public boolean isBuildQueueDisplayed() {
+        return getDriver().findElement(By.id("buildQueue")).isDisplayed();
+    }
+
+    public String getBuildQueueBlockText() {
+        return getDriver().findElement(By.xpath("//td[@class='pane']")).getText();
     }
 }
