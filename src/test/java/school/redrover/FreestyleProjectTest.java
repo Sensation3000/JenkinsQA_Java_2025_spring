@@ -201,6 +201,10 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectNameList.size(), 0);
     }
+    @Test
+    public void testDelete(){
+
+    }
 
     @Test
     public void testAddBuildSteps() {
