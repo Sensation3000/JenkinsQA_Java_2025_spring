@@ -25,6 +25,15 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(pipelineProjectPage.getDescription(), PIPELINE_DESCRIPTION);
     }
 
+    @Test(dependsOnMethods = "testCreatePipeline")
+    public void testDeletePipeline() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
+                .deletePipeline();
+
+        Assert.assertEquals(homePage.getProjectNameList().size(), 0);
+    }
+
     @Test
     public void testDisableProject() {
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
@@ -51,24 +60,24 @@ public class PipelineProjectTest extends BaseTest {
     }
 
     @Test
-    public void checkDefaultStateTestPOM() {
+    public void testCheckDefaultState() {
         String statusToggleDefault = new HomePage(getDriver())
-            .clickNewItemOnLeftSidePanel()
-            .sendItemName(PROJECT_NAME)
-            .selectPipelineAndClickOk()
-            .checkStatusOnToggle();
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectPipelineAndClickOk()
+                .checkStatusOnToggle();
 
         Assert.assertEquals(statusToggleDefault, "Enabled");
     }
 
     @Test
-    public void changeStateNewPipelineTestPOM() {
+    public void testChangeStateNewPipeline() {
         String statusToggleChange = new HomePage(getDriver())
-            .clickNewItemOnLeftSidePanel()
-            .sendItemName(PROJECT_NAME)
-            .selectPipelineAndClickOk()
-            .switchToggle()
-            .checkStatusOffToggle();
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectPipelineAndClickOk()
+                .switchToggle()
+                .checkStatusOffToggle();
 
         Assert.assertEquals(statusToggleChange, "Disabled");
 
