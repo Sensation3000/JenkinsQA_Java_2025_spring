@@ -133,6 +133,4 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, newDescription);
     }
-
-
 }
