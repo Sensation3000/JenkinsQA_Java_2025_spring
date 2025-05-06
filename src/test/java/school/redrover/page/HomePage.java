@@ -28,6 +28,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath ="//a[@href='/view/all/newJob']")
     private WebElement newItemButtonOnLeftSidePanel;
 
+    @FindBy(name = "description")
+    private WebElement descriptionTextArea;
+
     public HomePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
@@ -45,8 +48,8 @@ public class HomePage extends BasePage {
     }
 
     public HomePage sendDescription(String text) {
-        getDriver().findElement(By.cssSelector("#description > form > div.jenkins-form-item.tr > div.setting-main.help-sibling > textarea"))
-                .sendKeys(text);
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(text);
 
         return this;
     }
@@ -194,15 +197,16 @@ public class HomePage extends BasePage {
         return logOutButton.getText();
     }
 
-    public boolean isSvgIconDifferentBetweenProjects() {
-        List<String> svgIconTitles =
-                 getWait5()
-                           .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg")))
-                           .stream()
-                           .map(webElement -> webElement.getDomAttribute("title"))
-                           .toList();
+    public boolean isSvgIconDifferentBetweenProjects(String firstProjectName, String secondProjectName) {
+        return getSvgTitle(firstProjectName).equals(getSvgTitle(secondProjectName));
+    }
 
-        return svgIconTitles.get(0).equals(svgIconTitles.get(1));
+    private String getSvgTitle(String projectName) {
+        String xpath = String.format("//a[@href='job/%s/']/ancestor::tr//*[name()='svg']", projectName);
+
+        return getWait5()
+                         .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)))
+                         .getDomAttribute("title");
     }
 
     public void clickColumnNameInDashboardTable(String columnName){
@@ -216,9 +220,16 @@ public class HomePage extends BasePage {
     } 
 
     public String getJobIconTitle (String jobName) {
-
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+    public boolean isBuildQueueDisplayed() {
+        return getDriver().findElement(By.id("buildQueue")).isDisplayed();
+    }
+
+    public String getBuildQueueBlockText() {
+        return getDriver().findElement(By.xpath("//td[@class='pane']")).getText();
     }
 }

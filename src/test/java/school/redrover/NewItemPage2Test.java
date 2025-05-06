@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -211,13 +210,13 @@ public class NewItemPage2Test extends BaseTest {
         Assert.assertEquals(folderProjectName, randomAlphaNumericValue);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfDifferentProjectsHaveDifferentSvgIcons() {
+        String secondProjectName = TestUtils.generateRandomAlphanumeric();
         TestUtils.newItemCreate(this,
-                                         TestUtils.generateRandomAlphanumeric(),
+                                         secondProjectName,
                                          TestUtils.getRandomNumberBetween1And6(1, 2, 3, 5, 6));
 
-        Assert.assertFalse(homePage.isSvgIconDifferentBetweenProjects());
+        Assert.assertFalse(homePage.isSvgIconDifferentBetweenProjects(projectName, secondProjectName));
     }
 }
