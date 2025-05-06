@@ -40,7 +40,6 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver,this);
     }
 
     public HomePage clickAddDescriptionButton() {
@@ -50,7 +49,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobListEmpty() {
-        return getDriver().findElement(By.id("main-panel")).getText().contains("Welcome to Jenkins!");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
     }
 
     public HomePage sendDescription(String text) {

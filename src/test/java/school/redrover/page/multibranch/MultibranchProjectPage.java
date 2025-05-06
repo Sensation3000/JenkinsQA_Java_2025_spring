@@ -2,10 +2,15 @@ package school.redrover.page.multibranch;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchProjectPage extends BasePage {
+
+    @FindBy(id = "view-message")
+    private WebElement descriptionText;
 
     public MultibranchProjectPage(WebDriver driver) {
         super(driver);
@@ -23,6 +28,6 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getDriver().findElement(By.id("view-message")).getText();
+        return descriptionText.getText();
     }
 }
