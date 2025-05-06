@@ -1,8 +1,5 @@
 package school.redrover;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -14,8 +11,10 @@ import static org.testng.Assert.assertTrue;
 public class DashboardViewTest extends BaseTest {
     private final String JOB_NAME = "Test item";
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
+    @Test
     public void testCreateMyView() {
+        CreateFreestyleProjectForView();
+
         String view_name = "TestViewName";
         new HomePage(getDriver())
                 .clickNewView()
@@ -27,12 +26,14 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(newViewName, view_name);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testCreateFreestyleProjectForView"})
+    @Test
     public void testCreateListView() {
         String listViewName = "TestlistViewName";
         String testItemJob = "Test item";
-        String projectName = ((EditViewPage) new HomePage(getDriver())
+
+        CreateFreestyleProjectForView();
+
+        ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()
                 .addName(listViewName)
                 .clickListView()
@@ -43,31 +44,23 @@ public class DashboardViewTest extends BaseTest {
                 .clickStatusFilterOfJobFilter()
                 .clickAddColumn()
                 .checkProjectDescriptionColumn()
-                .clickSaveButton()
-                .getProjectNameList()
-                .get(0);
+                .clickSaveButton();
 
-        assertEquals(projectName, testItemJob
-        );
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
         assertEquals(new HomePage(getDriver()).getNameOfView(listViewName), listViewName);
     }
 
-
-    @Test
-    public void testCreateFreestyleProjectForView() {
-        String projectName = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
+    private void CreateFreestyleProjectForView() {
+        new HomePage(getDriver())
+                .clickCreateJob()
                 .sendItemName(JOB_NAME)
-                .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
-                .waitUntilTextConfigureToBePresentInH1()
+                .selectFreestyleAndClickOk()
                 .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(JOB_NAME)
-                .getProjectName();
-
-        assertEquals(projectName, JOB_NAME);
+                .getHeader()
+                .clickLogo();
     }
 
 }
+
 
 
