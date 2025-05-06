@@ -180,7 +180,7 @@ public class NewItemPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(nameProject);
         String xpath = String.format("//span[text()='%s']", projectTypeText);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(buttonOk)).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
         return new NewItemPage(getDriver());
@@ -188,7 +188,7 @@ public class NewItemPage extends BasePage {
 
     public FreestyleConfigurationPage selectFreestyleClickOkAndWaitCreateItemFormIsClose() {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonOk)).click();
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
 
         return new FreestyleConfigurationPage(getDriver());

@@ -75,7 +75,7 @@ public class NewItemCreate3Test extends BaseTest {
         Assert.assertEquals(projectName, NEW_ITEM_NAME);
     }
 
-    @Ignore // NewItemCreate3Test.testCreateNewItemWithExistingName:82 » Timeout Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on linux (02cee3399c3b7e29d1c51dc7ad8087e1)] -> id: itemname-invalid] (tried for 10 second(s) with 500 milliseconds interval)
+    @Ignore //Timeout Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on linux (281670473bc60cd4bf81a432c2500cf6)] -> id: itemname-invalid] (tried for 10 second(s) with 500 milliseconds interval)
     @Test(dependsOnMethods = "testCreateNewItemWithCorrectName")
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
