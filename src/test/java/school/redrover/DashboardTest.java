@@ -32,6 +32,15 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
+    public void testOpenManageJenkinsFromDashboard() {
+        String manageJenkinsTitleText = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .getManageJenkinsTitleText();
+
+        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
+    }
+
+    @Test
     public void testPossibleToCreateJobFromDashboard() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickCreateJob();
