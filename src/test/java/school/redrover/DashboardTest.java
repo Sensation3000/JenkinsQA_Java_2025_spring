@@ -34,9 +34,21 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testPossibleToCreateJobFromDashboard() {
-        NewItemPage newItemPage = new HomePage(getDriver()).clickCreateJob();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
 
         Assert.assertTrue(newItemPage.isNewItemPageOpened());
+    }
+
+    @Test
+    public void testCancelJobCreationFromDashboard() {
+        boolean isJobListEmpty = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeader()
+                .clickLogoIcon()
+                .isJobListEmpty();
+
+        Assert.assertTrue(isJobListEmpty);
     }
 
     @Test

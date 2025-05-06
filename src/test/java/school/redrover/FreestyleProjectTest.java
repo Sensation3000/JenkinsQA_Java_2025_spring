@@ -231,7 +231,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testFreestyleProjectWithConfig() {
+    public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
@@ -245,7 +245,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getDescription(), PROJECT_DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = "testFreestyleProjectWithConfig")
+    @Test (dependsOnMethods = "testCreateWithConfig")
     public void testSuccessfulCopyWithConfig () {
 
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
@@ -295,7 +295,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goToHomePage()
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
                 .clickBuildNow()
-                .waitJobStarted(SECOND_PROJECT_NAME)
+                .waitJobStarted()
                 .getBuildList();
 
         final String buildStatusText = new FreestyleConfigurationPage(getDriver()).getBuildStatusText();
