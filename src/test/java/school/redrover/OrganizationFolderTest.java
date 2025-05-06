@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -117,7 +118,8 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(projectNameList.size(), 0);
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
-    @Ignore //Error:    OrganizationFolderTest.testDeleteOrganizationFolderFromDropDownMenuOnDashboard:114 » StaleElementReference stale element reference: stale element not found
+
+    @Ignore
     @Test
     public void testDeleteOrganizationFolderFromDropDownMenuOnDashboard() {
         List<String> projectNameList = new HomePage(getDriver())
