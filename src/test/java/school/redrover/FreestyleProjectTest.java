@@ -231,7 +231,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testFreestyleProjectWithConfig() {
+    public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
@@ -245,7 +245,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getDescription(), PROJECT_DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = "testFreestyleProjectWithConfig")
+    @Test (dependsOnMethods = "testCreateWithConfig")
     public void testSuccessfulCopyWithConfig () {
 
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
