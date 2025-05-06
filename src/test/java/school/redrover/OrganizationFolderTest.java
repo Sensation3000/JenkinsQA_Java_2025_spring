@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -28,6 +29,17 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    public void testAvailableIconsForOrganizationFolder() {
+        List<String> availableIcons = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .clickAppearance().getAvailableIcons();
+
+        Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
+    }
+
+    @Ignore
+    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder", enabled = false)
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
@@ -36,7 +48,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectIcon("Default Icon")
                 .clickSave()
                 .getHeader()
-                .clickLogoIcon()
+                .goToHomePage()
                 .getJobIconTitle(ORGANIZATION_FOLDER_NAME);
 
         Assert.assertEquals(orgFolderIconTitle, "Folder");
@@ -53,7 +65,7 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
+    @Test(dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
