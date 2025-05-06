@@ -4,12 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +61,9 @@ public class NewItemCreate3Test extends BaseTest {
         }
     }
 
-   @Test
+    @Test
     public void testCreateNewItemWithCorrectName() {
-         String projectName = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(NEW_ITEM_NAME)
                 .selectFreestyleAndClickOk()
@@ -77,14 +74,12 @@ public class NewItemCreate3Test extends BaseTest {
         Assert.assertEquals(projectName, NEW_ITEM_NAME);
     }
 
-    @Ignore// NewItemCreate3Test.testCreateNewItemWithExistingName:84 » Timeout Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on linux (3f6df20e44afd56428239aee1c5a7554)] -> id: itemname-invalid] (tried for 10 second(s) with 500 milliseconds interval) https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14734090496/job/41355612932?pr=1586
     @Test(dependsOnMethods = "testCreateNewItemWithCorrectName")
     public void testCreateNewItemWithExistingName() {
         goToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
-        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
         WebElement el = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
         getWait10().until(ExpectedConditions.visibilityOf(el));
-        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘New free-style project’");
+        Assert.assertEquals(el.getText(), "» A job already exists with the name ‘%s’" .formatted(NEW_ITEM_NAME));
     }
 }
