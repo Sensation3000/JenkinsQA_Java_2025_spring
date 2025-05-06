@@ -2,7 +2,6 @@ package school.redrover.page.folder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
 
@@ -42,5 +41,11 @@ public class FolderProjectPage extends BasePage {
         getHeader().clickLogo();
 
         return new HomePage(getDriver());
+    }
+
+    public FolderConfigurationPage clickConfigure() {
+        getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
+
+        return new FolderConfigurationPage(getDriver());
     }
 }

@@ -3,6 +3,7 @@ package school.redrover.page.newitem;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
@@ -21,17 +22,33 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
+
+    @FindBy(id = "name")
+    private WebElement itemName;
+
+    @FindBy(css = ".hudson_model_FreeStyleProject")
+    private WebElement freeStyleProject;
+
+    @FindBy(id = "ok-button")
+    private WebElement buttonOk;
+
+    @FindBy(xpath = "//span[text()='Folder']")
+    private WebElement folder;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
 
+    public boolean isNewItemPageOpened() {
+        return getWait5().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.id("add-item-panel")))).isDisplayed();
+    }
+
     public NewItemPage sendItemName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        itemName.sendKeys(name);
 
         return this;
     }
@@ -45,7 +62,7 @@ public class NewItemPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickOkButton() {
-        getDriver().findElement(By.id("ok-button")).click();
+        buttonOk.click();
 
         return new FreestyleConfigurationPage(getDriver());
     }
@@ -73,8 +90,8 @@ public class NewItemPage extends BasePage {
     }
 
     public FolderConfigurationPage selectFolderAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        folder.click();
+        buttonOk.click();
 
         return new FolderConfigurationPage(getDriver());
     }
@@ -88,7 +105,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectFreestyle() {
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        freeStyleProject.click();
 
         return this;
     }
@@ -118,7 +135,7 @@ public class NewItemPage extends BasePage {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
-// test
+
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
         getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();

@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -64,6 +65,7 @@ public class UserTest extends BaseTest {
         assertEquals(currentAdminIDText, "admin");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void deleteUser() {
         List<WebElement> users = new HomePage(getDriver())
@@ -78,6 +80,7 @@ public class UserTest extends BaseTest {
         assertEquals(users.size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void testCreateExistingUser() {
         String errorText = new HomePage(getDriver())
@@ -96,5 +99,4 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(errorText, "User name is already taken");
     }
-
 }

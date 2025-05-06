@@ -212,10 +212,11 @@ public class NewItemPage2Test extends BaseTest {
 
     @Test(dependsOnMethods = "createNewFolderProject")
     public void testIfDifferentProjectsHaveDifferentSvgIcons() {
+        String secondProjectName = TestUtils.generateRandomAlphanumeric();
         TestUtils.newItemCreate(this,
-                                         TestUtils.generateRandomAlphanumeric(),
+                                         secondProjectName,
                                          TestUtils.getRandomNumberBetween1And6(1, 2, 3, 5, 6));
 
-        Assert.assertFalse(homePage.isSvgIconDifferentBetweenProjects());
+        Assert.assertFalse(homePage.isSvgIconDifferentBetweenProjects(projectName, secondProjectName));
     }
 }

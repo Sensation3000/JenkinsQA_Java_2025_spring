@@ -18,14 +18,14 @@ public class HeaderComponent extends BaseComponent {
     public HomePage clickLogoIcon() {
         //This code make this method stable, otherwise it often fails with StaleElementReferenceException
         int attempts = 0;
-        while (attempts < 3) {
+        while (attempts < 5) {
             try {
                 WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
                 logo.click();
                 return new HomePage(getDriver());
             } catch (StaleElementReferenceException e) {
                 attempts++;
-                if (attempts == 3) throw e;
+                if (attempts == 5) throw e;
             }
         }
 
