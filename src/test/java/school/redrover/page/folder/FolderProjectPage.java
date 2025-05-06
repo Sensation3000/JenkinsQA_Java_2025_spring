@@ -2,10 +2,19 @@ package school.redrover.page.folder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
+import school.redrover.page.newitem.NewItemPage;
+
+import java.util.List;
 
 public class FolderProjectPage extends BasePage {
+
+    @FindBy(linkText = "Create a job")
+    private WebElement newItemButton;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
@@ -23,10 +32,10 @@ public class FolderProjectPage extends BasePage {
         return getDriver().findElement(By.className("h4")).getText();
     }
 
-    public FolderProjectPage createJobInFolder(){
-        getDriver().findElement(By.linkText("Create a job")).click();
+    public NewItemPage clickOnNewItemButton(){
+        newItemButton.click();
 
-        return this;
+        return new NewItemPage(getDriver());
     }
 
     public FolderProjectPage sendItemName(String name) {
@@ -47,5 +56,17 @@ public class FolderProjectPage extends BasePage {
         getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public List<String> getProjectNameList() {
+
+        return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public String getItemIconTitleByJobName(String jobName) {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
+                .getDomAttribute("title");
     }
 }
