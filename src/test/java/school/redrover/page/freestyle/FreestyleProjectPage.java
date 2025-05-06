@@ -27,12 +27,15 @@ public class FreestyleProjectPage extends BasePage {
     @FindBy(css = "#description > div")
     private WebElement descriptionText;
 
+    @FindBy(className = "page-headline")
+    private WebElement projectName;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public String getProjectName() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline"))).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(projectName)).getText();
     }
 
     public String getDescription() {
