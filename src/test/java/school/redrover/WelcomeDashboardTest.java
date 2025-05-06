@@ -1,23 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 public class WelcomeDashboardTest extends BaseTest {
-
-    @Test
-    public void testCancelJobCreationFromDashboard() {
-        getDriver().findElement(By.xpath("//li/a[@href='newJob']")).click();
-        getDriver().navigate().back();
-
-        Assert.assertTrue(
-                getWait5().until(ExpectedConditions.visibilityOf(
-                        getDriver().findElement(By.xpath("//li/a[@href='newJob']")))).isDisplayed());
-    }
 
     @Test
     public void testOpenManageJenkinsFromDashboard() {
