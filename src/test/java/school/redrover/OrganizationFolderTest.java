@@ -39,7 +39,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
+    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder", enabled = false)
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
@@ -65,7 +65,7 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
+    @Test(dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
