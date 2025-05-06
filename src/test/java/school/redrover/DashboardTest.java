@@ -109,4 +109,12 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(homePage.getProjectNameList(),expectedListOfJobs);
     }
+
+    @Test
+    public void testEmptyBuildQueue() {
+        HomePage homePage = new HomePage(getDriver());
+
+        Assert.assertTrue(homePage.isBuildQueueDisplayed());
+        Assert.assertEquals(homePage.getBuildQueueBlockText(), "No builds in the queue.");
+    }
 }

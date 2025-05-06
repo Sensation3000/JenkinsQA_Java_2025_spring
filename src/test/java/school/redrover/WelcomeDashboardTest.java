@@ -15,13 +15,4 @@ public class WelcomeDashboardTest extends BaseTest {
 
         Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
     }
-
-    @Test
-    public void testEmptyBuildQueue() {
-        Assert.assertTrue(
-                getDriver().findElement(By.id("buildQueue")).isDisplayed());
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//td[@class='pane']")).getText(), "No builds in the queue.");
-    }
-
 }
