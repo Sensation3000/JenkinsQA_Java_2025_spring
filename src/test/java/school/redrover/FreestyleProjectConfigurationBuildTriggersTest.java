@@ -6,6 +6,8 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.HomePage;
 
+import static org.testng.Assert.assertTrue;
+
 public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     private static final String PROJECT_NAME = "New project";
@@ -196,5 +198,48 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Assertions
         Assert.assertTrue(isErrorMessageAppears);
+    }
+    @Test
+    public void testAvailableBuildNowOnProjectPage() {
+        final boolean rez = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLeftSideMenuBuildNow()
+                .isTextBuildScheduled();
+        assertTrue(rez);
+    }
+
+    @Test
+    public void testAvailableBuildNowOnbreadcrumbs() {
+        final boolean rez = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickApply()
+                .getHeader()
+                .goToHomePage()
+                .clickScheduleBuild()
+                .isTextBuildScheduled();
+        assertTrue(rez);
+    }
+
+    @Test
+    public void testAvailableSuccesResult() {
+        final boolean rez = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickApply()
+                .getHeader()
+                .goToHomePage()
+                .clickProjectName(PROJECT_NAME)
+                .clickLeftSideMenuBuildNow()
+                .clickStatus()
+                .clickLastBuild()
+                .clickConsoleOutput()
+                .isFinishedSuccess();
+        assertTrue(rez,"статус не соответсвует ожидаемому Finished: SUCCESS");
     }
 }

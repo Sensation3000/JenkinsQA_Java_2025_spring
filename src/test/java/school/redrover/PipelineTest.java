@@ -8,7 +8,7 @@ import school.redrover.page.error.ErrorPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
-public class Pipeline2Test extends BaseTest {
+public class PipelineTest extends BaseTest {
 
     private static final String PROJECT_NAME = "PipelineProjectNameTest";
 
