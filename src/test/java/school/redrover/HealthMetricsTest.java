@@ -22,7 +22,7 @@ public class HealthMetricsTest extends BaseTest {
     @Test
     public void  testAvailabilityHealthMetricsPOM(){
         FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(ITEM_NAME)
                 .selectFolderAndClickOkWithJS()
                 .clickHealthMetrics();
