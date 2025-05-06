@@ -17,14 +17,17 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement deleteSubmitButton;
 
+    @FindBy(tagName = "h1")
+    private WebElement buildHistoryText;
+
 
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
 
-    public String isBuildHistoryText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
+    public String getBuildHistoryText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(buildHistoryText)).getText();
     }
 
     public String buildProjectText(String name) {
@@ -33,7 +36,6 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public String getTextNoBuilds() {
-
         return getDriver().findElement(By.xpath("//*[@id='no-builds']")).getText();
     }
 
