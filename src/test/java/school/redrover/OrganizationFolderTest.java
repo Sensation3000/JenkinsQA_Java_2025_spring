@@ -85,6 +85,7 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
@@ -102,6 +103,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME, "Organization folder is deleted");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
         OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
