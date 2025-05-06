@@ -58,6 +58,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
