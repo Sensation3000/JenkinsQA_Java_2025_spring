@@ -54,8 +54,13 @@ public class HomePage extends BasePage {
     }
 
     public HomePage sendDescription(String text) {
-        descriptionTextArea.clear();
         descriptionTextArea.sendKeys(text);
+
+        return this;
+    }
+
+    public HomePage clearDescription() {
+        descriptionTextArea.clear();
 
         return this;
     }
@@ -69,6 +74,10 @@ public class HomePage extends BasePage {
 
     public String getDescriptionText() {
         return descriptionText.getText();
+    }
+
+    public Boolean isDescriptionDisplayed() {
+        return descriptionText.isDisplayed();
     }
 
      public String getNameProject() {
