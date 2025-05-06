@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
@@ -22,6 +23,12 @@ public class FolderConfigurationPage extends BasePage {
 
     public FolderConfigurationPage sendDisplayName(String text) {
         getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys(text);
+
+        return this;
+    }
+
+    public FolderConfigurationPage clearDisplayName() {
+        getDriver().findElement(By.xpath("//input[@checkdependson]")).clear();
 
         return this;
     }
@@ -41,12 +48,6 @@ public class FolderConfigurationPage extends BasePage {
     public HomePage saveAndReturnToHomePage() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link"))).click();
-
-        return new HomePage(getDriver());
-    }
-
-    public HomePage clickOnDashboard() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("jenkins-breadcrumbs__list-item"))).click();
 
         return new HomePage(getDriver());
     }

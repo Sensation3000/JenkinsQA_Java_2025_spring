@@ -9,15 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
-import school.redrover.page.account.AccountSettingsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
-import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
-import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.newitem.NewItemPage;
-import school.redrover.page.organizationfolder.OrganizationFolderPage;
-import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
@@ -45,16 +39,8 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public boolean isDescriptionFieldDisplayed() {
-        return getDriver().findElement(By.name("description")).isDisplayed();
-    }
-
     public boolean isJobListEmpty() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
-    }
-
-    public boolean isProjectExists(String projectName) {
-        return getProjectNameList().contains(projectName);
     }
 
     public HomePage sendDescription(String text) {
@@ -75,20 +61,14 @@ public class HomePage extends BasePage {
         return descriptionText.getText();
     }
 
-    public String getWelcomeMessage() {
-
-        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//h1"))))
-                .getText();
-    }
-
-    public String getNameProject() {
+     public String getNameProject() {
 
         return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By
                         .xpath("//*[@id='job_My name']/td[3]/a"))))
                 .getText();
     }
 
-    public NewItemPage createJob() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         return new NewItemPage(getDriver());
@@ -100,38 +80,11 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public FreestyleProjectPage clickOnJobInListOfItemsOnHP(String nameItem) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td/a[@href='job/" + nameItem.replace(" ", "%20") + "/']"))).click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
     public <T> T clickOnJobInListOfItems(String nameItem, T resultPage) {
-        getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']")))
-                .click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//span[text()='%s']".formatted(nameItem)))).click();
 
         return resultPage;
-    }
-
-    public FreestyleProjectPage clickOnJobInListOfItems(String nameItem) {
-        getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']")))
-                .click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
-    public String getNameFreestyleProjectText() {
-
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']"))).getText();
-    }
-
-    public AccountSettingsPage goToAccountSettingsPage() {
-        getDriver().findElement(By.xpath("//div[@class='login page-header__hyperlinks']/a[@class='model-link']")).click();
-
-        return new AccountSettingsPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageJenkinsOnLeftSidePanel() {
@@ -139,29 +92,6 @@ public class HomePage extends BasePage {
                 .visibilityOfElementLocated(By.xpath("//a[@href='/manage']"))).click();
 
         return new ManageJenkinsPage(getDriver());
-    }
-
-    public OrganizationFolderPage clickOnOrganizationFolderInListOfItems(String nameItem) {
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver()
-                .findElement(By.xpath("//span[text()='" + nameItem + "']")))).click();
-
-        return new OrganizationFolderPage(getDriver());
-    }
-
-    public MultibranchProjectPage clickOnMultibranchJobInListOfItems(String nameItem) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + nameItem + "']"))).click();
-
-        return new MultibranchProjectPage(getDriver());
-    }
-
-    public PipelineConfigurationPage createNewPipeline(String projectName) {
-
-        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        return new PipelineConfigurationPage(getDriver());
     }
 
     public BuildHistoryPage clickBuildHistoryTab() {
@@ -179,12 +109,6 @@ public class HomePage extends BasePage {
                 .map(WebElement::getText).toList();
     }
 
-    public NewItemPage clickNewItem() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-
-        return new NewItemPage(getDriver());
-    }
-
     public NewViewPage clickNewView() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[aria-label='New View']"))).click();
 
@@ -198,20 +122,6 @@ public class HomePage extends BasePage {
 
     public boolean isJobDisplayed(String jobName) {
             return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/span"))).isDisplayed();
-    }
-
-    public FreestyleConfigurationPage clickJobLink(String jobName) {
-        getDriver().findElement(By.linkText(jobName)).click();
-
-        return new FreestyleConfigurationPage(getDriver());
-    }
-
-    public FreestyleProjectPage clickFreestyleProjectOnDashboard(String projectName) {
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//a[@class='jenkins-table__link model-link inside']/span[text()='%s']".formatted(projectName)))))
-                .click();
-
-        return new FreestyleProjectPage(getDriver());
     }
 
     public NewItemPage clickOnNewItemLinkWithChevron(String projectName) {
@@ -255,6 +165,19 @@ public class HomePage extends BasePage {
                 .anyMatch(webElement -> webElement.getText().contains(optionName));
     }
 
+    public HomePage clickDeleteItemFromDropdown(String itemName) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.xpath("//button[@href='/job/%s/doDelete']".formatted(itemName))))).click();
+
+        return this;
+    }
+
+    public HomePage clickYesOnDeletionConfirmationPopup() {
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        return new HomePage(getDriver());
+    }
+
     public SignInPage clickLogOutButton(){
         logOutButton.click();
         return new SignInPage(getDriver());
@@ -270,14 +193,32 @@ public class HomePage extends BasePage {
         return logOutButton.getText();
     }
 
-    public boolean isSvgIconDifferentBetweenProjects() {
-        List<String> svgIconTitles =
-                 getWait5()
-                           .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-table__icon:not(.healthReport) svg")))
-                           .stream()
-                           .map(webElement -> webElement.getDomAttribute("title"))
-                           .toList();
+    public boolean isSvgIconDifferentBetweenProjects(String firstProjectName, String secondProjectName) {
+        return getSvgTitle(firstProjectName).equals(getSvgTitle(secondProjectName));
+    }
 
-        return svgIconTitles.get(0).equals(svgIconTitles.get(1));
+    private String getSvgTitle(String projectName) {
+        String xpath = String.format("//a[@href='job/%s/']/ancestor::tr//*[name()='svg']", projectName);
+
+        return getWait5()
+                         .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)))
+                         .getDomAttribute("title");
+    }
+
+    public void clickColumnNameInDashboardTable(String columnName){
+        getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
+    }
+
+    public boolean ascendingSorting(String columnName) {
+    String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
+            .findElement(By.cssSelector("span.sortarrow")).getText();
+        return sign.contains("↓");
+    } 
+
+    public String getJobIconTitle (String jobName) {
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
+                .getDomAttribute("title");
     }
 }

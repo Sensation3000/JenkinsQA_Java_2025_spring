@@ -2,6 +2,7 @@ package school.redrover.page.multibranch;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchProjectPage extends BasePage {
@@ -17,8 +18,11 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public String getProjectName() {
-        return getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"))
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/h1")))
                 .getText();
+    }
 
+    public String getDescription() {
+        return getDriver().findElement(By.id("view-message")).getText();
     }
 }

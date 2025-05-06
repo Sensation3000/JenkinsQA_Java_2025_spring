@@ -19,6 +19,12 @@ public class OrganizationFolderPage extends BasePage {
         return this;
     }
 
+    public OrganizationFolderConfigurePage clickConfigureOnLeftSidePanel() {
+        getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
+
+        return new OrganizationFolderConfigurePage(getDriver());
+    }
+
     public OrganizationFolderPage clickYesOnDeletionConfirmationPopup() {
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 

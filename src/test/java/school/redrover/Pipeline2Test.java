@@ -1,11 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.error.ErrorPage;
 import school.redrover.page.newitem.NewItemPage;
@@ -18,7 +15,7 @@ public class Pipeline2Test extends BaseTest {
     @Test
     public void testCreateNewPipeline() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectPipelineAndClickOk()
                 .clickSave();
@@ -46,7 +43,7 @@ public class Pipeline2Test extends BaseTest {
     @Test
     public void testEmptyItemNamePOM() {
         NewItemPage newItemPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .selectPipeline();
 
         Assert.assertEquals(newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");

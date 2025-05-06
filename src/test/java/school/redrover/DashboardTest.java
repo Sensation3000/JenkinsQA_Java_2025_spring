@@ -6,8 +6,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.newitem.NewItemPage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class DashboardTest extends BaseTest {
     private static final String JOB_NAME = "Freestyle job";
     private static final String JOB_IN_FOLDER_NAME = "Job in folder";
 
+    private List<String> expectedListOfJobs =
+            new ArrayList<>(Arrays.asList(FOLDER_NAME,JOB_NAME,SUPERIOR_FOLDER_NAME));
 
     @Test
     public void testDashboardEnabled(){
@@ -28,10 +32,29 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
+    public void testPossibleToCreateJobFromDashboard() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
+
+        Assert.assertTrue(newItemPage.isNewItemPageOpened());
+    }
+
+    @Test
+    public void testCancelJobCreationFromDashboard() {
+        boolean isJobListEmpty = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeader()
+                .clickLogoIcon()
+                .isJobListEmpty();
+
+        Assert.assertTrue(isJobListEmpty);
+    }
+
+    @Test
     public void testListJobsAndFolders(){
 
         new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(SUPERIOR_FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSave()
@@ -51,8 +74,6 @@ public class DashboardTest extends BaseTest {
                 .clickLogo();
 
         List<String> actualListOfJobs = new ArrayList<>(new HomePage(getDriver()).getProjectNameList());
-        List<String> expectedListOfJobs =
-                List.of(FOLDER_NAME,JOB_NAME,SUPERIOR_FOLDER_NAME);
 
         if(!actualListOfJobs.isEmpty()) {
             Collections.sort(actualListOfJobs);}
@@ -65,5 +86,27 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
+    }
+
+    @Test(dependsOnMethods = {"testListJobsAndFolders","testColumns"})
+    public void testSortNameList() {
+
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickColumnNameInDashboardTable("Name");
+
+        if(homePage.ascendingSorting("Name")){
+            Collections.sort(expectedListOfJobs);
+        }
+            else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
+
+        Assert.assertEquals(homePage.getProjectNameList(),expectedListOfJobs);
+
+        homePage.clickColumnNameInDashboardTable("Name");
+        if(homePage.ascendingSorting("Name")){
+            Collections.sort(expectedListOfJobs);
+        }
+        else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
+
+        Assert.assertEquals(homePage.getProjectNameList(),expectedListOfJobs);
     }
 }

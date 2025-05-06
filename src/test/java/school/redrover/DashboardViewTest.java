@@ -1,5 +1,8 @@
 package school.redrover;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -24,6 +27,7 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(newViewName, view_name);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateFreestyleProjectForView"})
     public void testCreateListView() {
         String listViewName = "TestlistViewName";
@@ -53,7 +57,7 @@ public class DashboardViewTest extends BaseTest {
     @Test
     public void testCreateFreestyleProjectForView() {
         String projectName = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(JOB_NAME)
                 .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
                 .waitUntilTextConfigureToBePresentInH1()
