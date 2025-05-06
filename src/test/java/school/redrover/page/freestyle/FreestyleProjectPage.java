@@ -27,6 +27,18 @@ public class FreestyleProjectPage extends BasePage {
     @FindBy(css = "#description > div")
     private WebElement descriptionText;
 
+    @FindBy(xpath = "//*[@id='notification-bar']")
+    private WebElement buildScheduled;
+
+    @FindBy(css = "a.task-link.task-link--active")
+    private WebElement status;
+
+    @FindBy(xpath = "//*[@href='lastBuild/']")
+    private WebElement lastBuild;
+
+    @FindBy(xpath = "//a[contains(@href, 'console')]")
+    private WebElement consoleOutput;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -250,4 +262,37 @@ public class FreestyleProjectPage extends BasePage {
         throw new AssertionError("Build did not start within expected time");
     }
 
+    public boolean isTextBuildScheduled() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return buildScheduled.getText().equals("Build scheduled");
+    }
+
+    public FreestyleProjectPage clickStatus() {
+        status.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickLastBuild() {
+        lastBuild.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickConsoleOutput() {
+        consoleOutput.click();
+
+        return this;
+    }
+
+    public boolean isFinishedSuccess(){
+        return getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='out']/div[2]")))
+                .getText()
+                .contains("Finished: SUCCESS");
+    }
 }

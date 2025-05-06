@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
@@ -27,6 +28,12 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath ="//a[@href='/view/all/newJob']")
     private WebElement newItemButtonOnLeftSidePanel;
+
+    @FindBy(xpath ="//td//a[@tooltip][contains(@href,'build')]")
+    private WebElement scheduleBuild;
+
+    @FindBy(id ="notification-bar")
+    private WebElement buildScheduled;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -220,5 +227,26 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+    public HomePage clickScheduleBuild(){
+        scheduleBuild.click();
+
+        return this;
+    }
+
+    public boolean isTextBuildScheduled() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return buildScheduled.getText().equals("Build scheduled");
+    }
+
+    public FreestyleProjectPage clickProjectName(String projectName){
+        getDriver().findElement(By.linkText(projectName)).click();
+
+        return new FreestyleProjectPage(getDriver());
     }
 }
