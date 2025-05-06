@@ -39,4 +39,10 @@ public class MultibranchConfigurationPage extends BasePage {
     public String getEnabledDisabledToggleShownAttribute() {
         return getDriver().findElement(By.id("toggle-switch-enable-disable-project")).getDomAttribute("aria-describedby");
     }
+
+    public MultibranchConfigurationPage sendDescription(String text) {
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(text);
+
+        return this;
+    }
 }

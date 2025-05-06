@@ -23,6 +23,12 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(css = ".jenkins-button.apply-button")
     private WebElement buttonApply;
 
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement fieldDescription;
+
+    @FindBy(xpath = "//*[@id='post-build-actions']")
+    private WebElement headerPostBuildActions;
+
     @FindBy(xpath = "//div[@class='setting-main']/textarea[@name='_.spec']")
     private WebElement buildPeriodicallyScheduleInput;
 
@@ -53,8 +59,8 @@ public class FreestyleConfigurationPage extends BasePage {
 
     private void clickItemNumber(WebElement webElement, int itemNumber){
         webElement.click();
-        getDriver().findElement(
-                By.xpath("//*[@id='tippy-5']/div/div/div/div[2]/button[" + itemNumber + "]")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@class='jenkins-dropdown__item '][%d]".formatted(itemNumber)))).click();
     }
 
     public FreestyleConfigurationPage(WebDriver driver) {
@@ -62,7 +68,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addDescription(String text) {
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
+        fieldDescription.sendKeys(text);
 
         return this;
     }
@@ -294,8 +300,7 @@ public class FreestyleConfigurationPage extends BasePage {
         for (int i = 0; i < 5; i++) {
             try {
                 new Actions(getDriver())
-                        .scrollToElement(
-                                getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='post-build-actions']"))))
+                        .scrollToElement(getWait5().until(ExpectedConditions.visibilityOf(headerPostBuildActions)))
                         .perform();
                 clickItemNumber(buttonAddBuildStep, itemNumber);
 
@@ -396,8 +401,8 @@ public class FreestyleConfigurationPage extends BasePage {
 
         for (int i = 0; i < 5; i++) {
             try {
-                new Actions(getDriver()).sendKeys(Keys.END).perform();
-                buttonAddPostBuildAction.click();
+                new Actions(getDriver()).scrollToElement(buttonAddPostBuildAction).sendKeys(Keys.END).perform();
+                getWait10().until(ExpectedConditions.elementToBeClickable(buttonAddPostBuildAction)).click();
                 elements = getDriver().findElements(By.cssSelector(locator));
 
                 if (elements.size() == 11) {
@@ -437,7 +442,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage waitJobStarted(String jobName) {
+    public FreestyleConfigurationPage waitJobStarted() {
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-builds")));
         getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(" #jenkins-build-history a[title='Success']")));

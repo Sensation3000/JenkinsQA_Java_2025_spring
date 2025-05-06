@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.multibranch.MultibranchProjectPage;
 
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
@@ -49,7 +50,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testDisableMultibranchPipeline")
     public void testEnableMultibranchPipeline() {
         String toggleText = new HomePage(getDriver())
-                .clickOnMultibranchJobInListOfItems(projectName)
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
                 .goToConfigurationPage()
                 .clickEnabledDisabledToggle()
                 .clickSaveButton()
