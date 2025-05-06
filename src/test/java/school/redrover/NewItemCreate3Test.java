@@ -64,11 +64,9 @@ public class NewItemCreate3Test extends BaseTest {
         }
     }
 
-    @Ignore
-    @Test
+   @Test
     public void testCreateNewItemWithCorrectName() {
-        final String expectedName = "New free-style project";
-        String projectName = new HomePage(getDriver())
+         String projectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(NEW_ITEM_NAME)
                 .selectFreestyleAndClickOk()
@@ -76,7 +74,7 @@ public class NewItemCreate3Test extends BaseTest {
                 .waitUntilTextNameProjectToBePresentInH1(NEW_ITEM_NAME)
                 .getProjectName();
 
-        Assert.assertEquals(projectName, expectedName);
+        Assert.assertEquals(projectName, NEW_ITEM_NAME);
     }
 
     @Ignore// NewItemCreate3Test.testCreateNewItemWithExistingName:84 » Timeout Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on linux (3f6df20e44afd56428239aee1c5a7554)] -> id: itemname-invalid] (tried for 10 second(s) with 500 milliseconds interval) https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/actions/runs/14734090496/job/41355612932?pr=1586
