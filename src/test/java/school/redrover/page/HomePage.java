@@ -15,7 +15,6 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -211,7 +210,7 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
     }
 
-    public boolean ascendingSorting(String columnName) {
+    public boolean verifyAscendingSortingSign(String columnName) {
     String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
             .findElement(By.cssSelector("span.sortarrow")).getText();
 
@@ -231,18 +230,5 @@ public class HomePage extends BasePage {
         }
         return getDriver().findElements(By.cssSelector(".healthReport")).stream()
                 .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
-    }
-
-    public boolean verifySorting(List<String> actualList,
-                               List<String> expectedSortedList, String columnName) {
-        clickColumnNameInDashboardTable(columnName);
-
-        if (ascendingSorting(columnName)) {
-            expectedSortedList.sort(Comparator.naturalOrder());
-        } else {
-            expectedSortedList.sort(Comparator.reverseOrder());
-        }
-
-        return actualList.equals(expectedSortedList);
     }
 }
