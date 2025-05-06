@@ -442,7 +442,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleConfigurationPage waitJobStarted(String jobName) {
+    public FreestyleConfigurationPage waitJobStarted() {
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-builds")));
         getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(" #jenkins-build-history a[title='Success']")));
