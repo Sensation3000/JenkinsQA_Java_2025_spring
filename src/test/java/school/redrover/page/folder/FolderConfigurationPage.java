@@ -55,10 +55,4 @@ public class FolderConfigurationPage extends BasePage {
     public boolean isQuestionMarkIconEnabled(){
         return questionMarkButton.isEnabled();
     }
-
-    public HeaderComponent clickSaveButton() {
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
-
-        return new HeaderComponent(getDriver());
-    }
 }
