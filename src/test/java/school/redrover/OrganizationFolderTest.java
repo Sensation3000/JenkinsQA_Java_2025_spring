@@ -48,7 +48,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectIcon("Default Icon")
                 .clickSave()
                 .getHeader()
-                .clickLogoIcon()
+                .goToHomePage()
                 .getJobIconTitle(ORGANIZATION_FOLDER_NAME);
 
         Assert.assertEquals(orgFolderIconTitle, "Folder");
