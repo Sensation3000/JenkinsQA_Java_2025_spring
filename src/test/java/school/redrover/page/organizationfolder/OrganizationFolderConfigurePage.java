@@ -1,6 +1,7 @@
 package school.redrover.page.organizationfolder;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,6 +22,7 @@ public class OrganizationFolderConfigurePage extends BasePage {
 
     public OrganizationFolderConfigurePage clickAppearance() {
         getDriver().findElement(By.xpath("//button[@data-section-id='appearance']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='appearance']")));
 
         return this;
     }
@@ -37,5 +39,24 @@ public class OrganizationFolderConfigurePage extends BasePage {
                 By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).selectByVisibleText(iconName);
 
         return this;
+    }
+
+    public String getIconHelpTooltip() {
+        return getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("a.jenkins-help-button[tooltip*='Icon']"))).getDomAttribute("tooltip");
+    }
+
+    public OrganizationFolderConfigurePage clickIconHelp() {
+        WebElement helpButton = getWait10().until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("a.jenkins-help-button[tooltip*='Icon']"))
+        );
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", helpButton);
+
+        return this;
+    }
+
+    public String getIconHelpBlockText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[2]/div/div[1]"))).getText();
     }
 }

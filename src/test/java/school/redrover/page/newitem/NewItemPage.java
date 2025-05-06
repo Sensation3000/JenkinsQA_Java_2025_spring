@@ -38,10 +38,8 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//span[text()='Folder']")
     private WebElement folder;
 
-    @FindBy(id = "ok-button")
-    private WebElement okButton;
-
-
+    @FindBy(id = "itemname-invalid")
+    private WebElement itemNameInvalidMessage;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -63,7 +61,7 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isOkButtonEnabled() {
-        return getDriver().findElement(By.id("ok-button")).isEnabled();
+        return buttonOk.isEnabled();
     }
 
     public FreestyleConfigurationPage clickOkButton() {
@@ -73,14 +71,9 @@ public class NewItemPage extends BasePage {
     }
 
     public ErrorPage clickOkButtonWithError() {
-        getDriver().findElement(By.id("ok-button")).click();
+        buttonOk.click();
 
         return new ErrorPage(getDriver());
-    }
-
-    public String getErrorMessageText() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
     }
 
     public String getEmptyNameMessage() {
@@ -89,7 +82,7 @@ public class NewItemPage extends BasePage {
 
     public PipelineConfigurationPage selectPipelineAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        buttonOk.click();
 
         return new PipelineConfigurationPage(getDriver());
     }
@@ -117,7 +110,7 @@ public class NewItemPage extends BasePage {
 
     public FreestyleConfigurationPage selectFreestyleAndClickOk() {
         selectFreestyle();
-        okButton.click();
+        buttonOk.click();
 
         return new FreestyleConfigurationPage(getDriver());
     }
@@ -133,7 +126,7 @@ public class NewItemPage extends BasePage {
 
     public String getItemNameInvalidMessage() {
 
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage)).getText();
     }
 
     public String getCopyFromFieldText() {
@@ -141,16 +134,22 @@ public class NewItemPage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 
+    public NewItemPage selectMultiConfiguration() {
+        getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
+
+        return this;
+    }
+
     public MultiConfigurationConfigurePage selectMultiConfigurationAndClickOk() {
         getDriver().findElement(By.cssSelector(".hudson_matrix_MatrixProject")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonOk)).click();
 
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        buttonOk.click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
@@ -158,27 +157,23 @@ public class NewItemPage extends BasePage {
     public FolderConfigurationPage selectFolderAndClickOkWithJS() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Folder']")));
-        getDriver().findElement(By.id("ok-button")).click();
+        buttonOk.click();
 
         return new FolderConfigurationPage(getDriver());
     }
 
     public MultiConfigurationConfigurePage redirectToMultiConfigurationConfigurePage() {
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+        TestUtils.scrollAndClickWithJS(getDriver(), buttonOk);
         getWait5().until(ExpectedConditions.urlContains("/job"));
 
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
     public ErrorPage redirectToErrorPage() {
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+        TestUtils.scrollAndClickWithJS(getDriver(), buttonOk);
         getWait5().until(ExpectedConditions.urlContains("/createItem"));
 
         return new ErrorPage(getDriver());
-    }
-
-    public String getItemTypeText(String itemType) {
-        return getDriver().findElement(By.xpath("//span[text()='" + itemType + "']")).getText();
     }
 
     public List<String> getAllItemsTypesLabels() {
@@ -191,7 +186,7 @@ public class NewItemPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(nameProject);
         String xpath = String.format("//span[text()='%s']", projectTypeText);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
-        getWait5().until(ExpectedConditions.visibilityOf(okButton)).click();
+        getWait5().until(ExpectedConditions.visibilityOf(buttonOk)).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
         return new NewItemPage(getDriver());
@@ -199,7 +194,7 @@ public class NewItemPage extends BasePage {
 
     public FreestyleConfigurationPage selectFreestyleClickOkAndWaitCreateItemFormIsClose() {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(okButton)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonOk)).click();
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
 
         return new FreestyleConfigurationPage(getDriver());
@@ -319,5 +314,10 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("itemname-required")).getCssValue("color");
     }
 
+    public String getItemNameInvalidMessageColor() {
+
+        return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage))
+                .getCssValue("color");
+    }
 }
 

@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
+import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
 import java.util.List;
@@ -29,17 +30,35 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolder")
+    public void testIconHelp() {
+        OrganizationFolderConfigurePage organizationFolderConfigurePage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .clickAppearance();
+        String helpIconTooltip = organizationFolderConfigurePage
+                .getIconHelpTooltip();
+        String helpBlockText = organizationFolderConfigurePage
+                .clickIconHelp()
+                .getIconHelpBlockText();
+
+        Assert.assertEquals(helpIconTooltip, "Help for feature: Icon");
+        Assert.assertEquals(helpBlockText, "A folder can have an icon of your choosing. Aside from static " +
+                "icons that can be used to visually distinguish different folders, plugins can implement more " +
+                "sophisticated icons that change their graphics depending on what the folder contains.");
+    }
+
+    @Test (dependsOnMethods = "testIconHelp")
     public void testAvailableIconsForOrganizationFolder() {
         List<String> availableIcons = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
-                .clickAppearance().getAvailableIcons();
+                .clickAppearance()
+                .getAvailableIcons();
 
         Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
     }
 
-    @Ignore
-    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder", enabled = false)
+    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testSelectDefaultIconForOrganizationFolder() {
         String orgFolderIconTitle = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
@@ -65,7 +84,7 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test(dependsOnMethods = "testAvailableIconsForOrganizationFolder")
+    @Test(dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
@@ -88,7 +107,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel();
 
-        String actualPopupText = orgFolderPage.getMDeletionPopupText();
+        String actualPopupText = orgFolderPage.getDeletionPopupText();
 
         List<String> projectNameList = orgFolderPage
                 .clickYesOnDeletionConfirmationPopup()

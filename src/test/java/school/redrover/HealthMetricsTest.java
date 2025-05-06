@@ -1,13 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import org.openqa.selenium.JavascriptExecutor;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 
