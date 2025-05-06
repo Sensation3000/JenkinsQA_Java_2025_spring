@@ -29,6 +29,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath ="//a[@href='/view/all/newJob']")
     private WebElement newItemButtonOnLeftSidePanel;
 
+    @FindBy(name = "description")
+    private WebElement descriptionTextArea;
+
     @FindBy(xpath ="//td//a[@tooltip][contains(@href,'build')]")
     private WebElement scheduleBuild;
 
@@ -51,8 +54,8 @@ public class HomePage extends BasePage {
     }
 
     public HomePage sendDescription(String text) {
-        getDriver().findElement(By.cssSelector("#description > form > div.jenkins-form-item.tr > div.setting-main.help-sibling > textarea"))
-                .sendKeys(text);
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(text);
 
         return this;
     }
