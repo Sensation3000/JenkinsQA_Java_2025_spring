@@ -15,7 +15,6 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "ProjectFolder";
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
 
-    @Ignore//https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring/issues/1768
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
 
