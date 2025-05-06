@@ -35,6 +35,9 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement buttonOk;
 
+    @FindBy(xpath = "//span[text()='Folder']")
+    private WebElement folder;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -87,8 +90,8 @@ public class NewItemPage extends BasePage {
     }
 
     public FolderConfigurationPage selectFolderAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        folder.click();
+        buttonOk.click();
 
         return new FolderConfigurationPage(getDriver());
     }
