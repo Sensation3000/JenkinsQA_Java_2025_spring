@@ -8,10 +8,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class DashboardTest extends BaseTest {
 
@@ -22,6 +19,19 @@ public class DashboardTest extends BaseTest {
 
     private List<String> expectedListOfJobs =
             new ArrayList<>(Arrays.asList(FOLDER_NAME,JOB_NAME,SUPERIOR_FOLDER_NAME));
+
+    private void verifySorting(HomePage homePage,List<String> actualList,
+                               List<String> expectedSortedList, String columnName) {
+        homePage.clickColumnNameInDashboardTable(columnName);
+
+        if (homePage.ascendingSorting(columnName)) {
+            expectedSortedList.sort(String::compareTo);
+        } else {
+            expectedSortedList.sort(Comparator.reverseOrder());
+        }
+
+        Assert.assertEquals(actualList, expectedSortedList);
+    }
 
     @Test
     public void testDashboardEnabled(){
@@ -108,5 +118,14 @@ public class DashboardTest extends BaseTest {
         else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
 
         Assert.assertEquals(homePage.getProjectNameList(),expectedListOfJobs);
+    }
+
+    @Test(dependsOnMethods = "testListJobsAndFolders")
+    public void testSortHealthReportColumnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+        List<String> expectedSortedList = new ArrayList<>(homePage.getListHealthReportFromDashboard());
+
+        verifySorting(homePage, homePage.getListHealthReportFromDashboard(), expectedSortedList, "W");
+        verifySorting(homePage, homePage.getListHealthReportFromDashboard(), expectedSortedList, "W");
     }
 }

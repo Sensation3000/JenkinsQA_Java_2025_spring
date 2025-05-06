@@ -16,6 +16,7 @@ import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
 
@@ -220,5 +221,13 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+    public List<String> getListHealthReportFromDashboard() {
+        if (isJobListEmpty()) {
+            return List.of();
+        }
+        return getDriver().findElements(By.cssSelector(".healthReport")).stream()
+                .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
     }
 }
