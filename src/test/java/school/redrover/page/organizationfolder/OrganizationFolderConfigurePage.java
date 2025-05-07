@@ -37,6 +37,12 @@ public class OrganizationFolderConfigurePage extends BasePage {
     public OrganizationFolderConfigurePage selectIcon(String iconName) {
         new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).selectByVisibleText(iconName);
+        getWait5().until(driver -> {
+            Select s = new Select(getDriver().findElement(
+                    By.xpath("(//select[contains(@class, 'dropdownList')])[2]")));
+            String selected = s.getFirstSelectedOption().getText().trim();
+
+            return selected.equals(iconName);});
 
         return this;
     }
