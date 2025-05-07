@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -19,6 +20,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         """.trim();
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
     private static final String UNEXPECTED_SCHEDULE = "H";
+    private static final String EXPECTED_TOOLTIP_TEXT = "Help for feature: ";
 
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
@@ -241,5 +243,31 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickConsoleOutput()
                 .isFinishedSuccess();
         assertTrue(rez,"статус не соответсвует ожидаемому Finished: SUCCESS");
+    }
+
+    @DataProvider(name = "tooltipFeatures")
+    public Object[][] provideTooltipFeatures() {
+        return new Object[][]{
+                {"Trigger builds remotely (e.g., from scripts)"},
+                {"Build after other projects are built"},
+                {"Build periodically"},
+                {"GitHub hook trigger for GITScm polling"},
+                {"Poll SCM"}
+        };
+    }
+
+    @Test(dataProvider = "tooltipFeatures")
+    public void testTooltipsAppearForBuildTriggers(String featureName) {
+
+        //Actions
+        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggers()
+                .hoverHelpIcon(featureName);
+
+        //Assertions
+        Assert.assertTrue(freestyleConfigurationPage.isTooltipVisibleWithText(EXPECTED_TOOLTIP_TEXT+featureName));
     }
 }
