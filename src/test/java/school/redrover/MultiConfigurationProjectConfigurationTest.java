@@ -3,7 +3,9 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
 
 public class MultiConfigurationProjectConfigurationTest extends BaseTest {
@@ -59,5 +61,25 @@ public class MultiConfigurationProjectConfigurationTest extends BaseTest {
                 .messageNotDisplayedCheck();
 
         Assert.assertTrue(projectDisabledMessageInvisible);
+    }
+
+    @Test
+    public void testIfOriginalItemConfigurationIsCopied() {
+
+        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .scrollToEnvironmentSectionWithJS()
+                .checkEnvironmentCheckboxesAndClickOnSaveButton()
+                .getHeader()
+                .goToHomePage()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .enterValueToCopyFromInput(PROJECT_NAME)
+                .redirectToMultiConfigurationConfigurePage()
+                .scrollToEnvironmentSectionWithJS();
+
+        Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
     }
 }
