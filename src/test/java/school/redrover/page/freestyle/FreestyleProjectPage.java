@@ -119,7 +119,6 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public boolean isHidePreviewLinkAvailable() {
-        getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
 
         return getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
     }
