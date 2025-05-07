@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
@@ -13,6 +14,7 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "ProjectFolder";
+    private static final String FOLDER_SECOND_NAME = "ProjectFolder2";
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
     private static final String HEALTH_METRICS = "Health metrics";
     private static final String ITEM_NAME = "Test Folder";
@@ -73,6 +75,24 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
+    public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
+
+        String folderProjectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FOLDER_SECOND_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnNewItemLinkWithChevron(FOLDER_SECOND_NAME)
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(folderProjectName, ITEM_NAME);
     }
 
     @Test

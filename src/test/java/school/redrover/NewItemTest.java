@@ -15,6 +15,7 @@ import java.util.List;
 public class NewItemTest extends BaseTest {
 
     private static final String ITEM_NAME = "ItemName";
+    private static final String ITEM_NAME_NEXT = "ItemName2";
     private static final String RED_COLOR_ERROR = "rgba(230, 0, 31, 1)";
 
     @Test
@@ -119,5 +120,61 @@ public class NewItemTest extends BaseTest {
                 .getJobsDescriptions();
 
         Assert.assertTrue(listOfJobsDisc.containsAll(itemsDisc));
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsDisplayed() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getCopyFromFieldText(), "Copy from");
+        Assert.assertTrue(newItemPage.isCopyFromOptionInputDisplayed());
+    }
+
+    @Test
+    public void testIfCopyFromOptionInputIsNotDisplayed() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertFalse(newItemPage.isCopyFromOptionInputDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testAutocompleteOption() {
+        String actualProjectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME_NEXT)
+                .enterValueToCopyFromInput(ITEM_NAME)
+                .getDropdownItemText();
+
+        Assert.assertEquals(actualProjectName, ITEM_NAME);
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testIfNoItemsMessageIsDisplayed() {
+        String noItemsMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .enterValueToCopyFromInput(ITEM_NAME_NEXT.concat("a"))
+                .getDropdownItemText();
+
+        Assert.assertEquals(noItemsMessage, "No items");
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testIfUserRedirectedToErrorPage() {
+        String errorPageHeading = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .enterValueToCopyFromInput(ITEM_NAME_NEXT.concat("a"))
+                .clickOkButtonWithError()
+                .getTitle();
+
+        Assert.assertEquals(errorPageHeading, "Error");
     }
 }
