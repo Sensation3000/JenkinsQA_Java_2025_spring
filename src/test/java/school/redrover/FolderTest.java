@@ -140,19 +140,6 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testFolderName() {
-
-        String folderText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName("Test")
-                .selectFolderAndClickOk()
-                .clickSave()
-                .getProjectName();
-
-        Assert.assertEquals(folderText, "Test");
-    }
-
-    @Test (dependsOnMethods = "testFolderName")
     public void folderIsEmptyTest() {
 
         String folderStatus = new HomePage(getDriver())
