@@ -148,11 +148,11 @@ public class NewItemTest extends BaseTest {
     public void testAutocompleteOption() {
         String actualProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ITEM_NAME)
-                .enterValueToCopyFromInput(ITEM_NAME_NEXT)
+                .sendItemName(ITEM_NAME_NEXT)
+                .enterValueToCopyFromInput(ITEM_NAME)
                 .getDropdownItemText();
 
-        Assert.assertEquals(actualProjectName, ITEM_NAME_NEXT);
+        Assert.assertEquals(actualProjectName, ITEM_NAME);
     }
 
     @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")

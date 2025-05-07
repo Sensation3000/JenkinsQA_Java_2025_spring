@@ -10,6 +10,7 @@ import school.redrover.page.newitem.NewItemPage;
 public class MultiConfigurationProjectConfigurationTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Project name";
+    private static final String PROJECT_SECOND_NAME = "Project name 2";
 
     @Test
     public void testErrorForProjectWithoutName() {
@@ -74,7 +75,7 @@ public class MultiConfigurationProjectConfigurationTest extends BaseTest {
                 .getHeader()
                 .goToHomePage()
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .sendItemName(PROJECT_SECOND_NAME)
                 .enterValueToCopyFromInput(PROJECT_NAME)
                 .redirectToMultiConfigurationConfigurePage()
                 .scrollToEnvironmentSectionWithJS();
