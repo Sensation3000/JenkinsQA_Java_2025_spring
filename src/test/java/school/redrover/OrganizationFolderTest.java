@@ -100,7 +100,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertEquals(orgFolderPageHeader, ORGANIZATION_FOLDER_NAME);
-        Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME, "Organization folder is deleted");
+        Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME,
+                "Organization folder is deleted");
     }
 
     @Ignore
