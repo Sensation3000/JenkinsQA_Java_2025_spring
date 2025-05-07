@@ -8,10 +8,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class DashboardTest extends BaseTest {
 
@@ -23,6 +20,14 @@ public class DashboardTest extends BaseTest {
 
     private List<String> expectedListOfJobs =
             new ArrayList<>(Arrays.asList(FOLDER_NAME, JOB_NAME, SUPERIOR_FOLDER_NAME));
+
+    private void setExpectedList(List<String> expectedSortedList, boolean ascendingSort) {
+        if (ascendingSort) {
+            expectedSortedList.sort(Comparator.naturalOrder());
+        } else {
+            expectedSortedList.sort(Comparator.reverseOrder());
+        }
+    }
 
     @Test
     public void testDashboardEnabled() {
@@ -107,14 +112,18 @@ public class DashboardTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.clickColumnNameInDashboardTable("Name");
 
-        if (homePage.ascendingSorting("Name")) {
+
+        if(homePage.verifyAscendingSortingSign("Name")){
+
             Collections.sort(expectedListOfJobs);
         } else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
 
         Assert.assertEquals(homePage.getProjectNameList(), expectedListOfJobs);
 
         homePage.clickColumnNameInDashboardTable("Name");
-        if (homePage.ascendingSorting("Name")) {
+
+        if(homePage.verifyAscendingSortingSign("Name")){
+
             Collections.sort(expectedListOfJobs);
         } else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
 
@@ -165,4 +174,22 @@ public class DashboardTest extends BaseTest {
         Assert.assertTrue(homePage.isBuildQueueDisplayed());
         Assert.assertEquals(homePage.getBuildQueueBlockText(), "No builds in the queue.");
     }
+
+    @Test(dependsOnMethods = "testListJobsAndFolders")
+    public void testSortHealthReportColumnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+        List<String> expectedSortedList = new ArrayList<>(homePage.getListHealthReportFromDashboard());
+
+        homePage.clickColumnNameInDashboardTable("W");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
+
+        //check the sorting in one direction
+        Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
+
+        homePage.clickColumnNameInDashboardTable("W");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
+
+        //change the direction of sorting and test again
+        Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
+        }
 }
