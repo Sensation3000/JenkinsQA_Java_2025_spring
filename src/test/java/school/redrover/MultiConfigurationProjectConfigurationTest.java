@@ -3,7 +3,6 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
