@@ -123,7 +123,6 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
 
-    @Ignore
     @Test
     public void testDeleteOrganizationFolderFromDropDownMenuOnDashboard() {
         List<String> projectNameList = new HomePage(getDriver())
