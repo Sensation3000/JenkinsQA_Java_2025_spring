@@ -539,5 +539,21 @@ public class FreestyleConfigurationPage extends BasePage {
                 "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
         )).isDisplayed();
     }
+
+    public FreestyleConfigurationPage hoverHelpIcon(String featureName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                        .findElement(By.cssSelector("a[tooltip='Help for feature: " + featureName + "']")))
+                .perform();
+
+        return this;
+    }
+
+    public boolean isTooltipVisibleWithText(String expectedText) {
+        return getWait10()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
+                .getText()
+                .equals(expectedText);
+    }
 }
 
