@@ -84,4 +84,3 @@ public class PipelineProjectTest extends BaseTest {
     }
 
 }
-
