@@ -44,6 +44,13 @@ public class OrganizationFolderConfigurePage extends BasePage {
 
             return selected.equals(iconName);});
 
+        String actual = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).getFirstSelectedOption()
+                .getText().trim();
+        if (!actual.equals(iconName)) {
+            throw new IllegalStateException("Expected icon '" + iconName + "', but selected '" + actual + "'");
+        }
+
         return this;
     }
 
