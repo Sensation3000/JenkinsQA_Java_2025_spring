@@ -15,6 +15,7 @@ public class OrganizationFolderConfigurePage extends BasePage {
     public OrganizationFolderConfigurePage(WebDriver driver) { super(driver); }
 
     public OrganizationFolderPage clickSave() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[name='Submit']")));
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         return new OrganizationFolderPage(getDriver());
