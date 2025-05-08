@@ -58,7 +58,6 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(xpath = "//div/input[@name='_.projectUrlStr']")
     private WebElement gitHubProjectURL;
 
-
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -558,5 +557,29 @@ public class FreestyleConfigurationPage extends BasePage {
                 .getText()
                 .contains(expectedText);
     }
-}
 
+    public int numberTrueTooltipVisibleWithText(String expectedText) {
+        int numberTrueTooltipVisibleWithText = 0;
+
+        List<WebElement> visibleButtonsHelp = getDriver().findElements(By.cssSelector(".jenkins-help-button"))
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .toList();
+
+        Actions actions = new Actions(getDriver());
+
+        for (int i = 0; i < visibleButtonsHelp.size(); i++) {
+            actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+
+            if(isTooltipVisibleWithText(expectedText)) numberTrueTooltipVisibleWithText++;
+
+            try {
+                actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
+            }catch (Exception e){
+                new Actions(getDriver()).sendKeys(Keys.END).perform();;
+            }
+        }
+
+        return numberTrueTooltipVisibleWithText;
+    }
+}

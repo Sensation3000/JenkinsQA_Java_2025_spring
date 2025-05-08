@@ -38,8 +38,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
     public void testAccessProjectManagementPageFromDashboard() {
         String currentProjectName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -320,18 +319,18 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(postBuildNameList.size(), 6);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .addPostBuildActions(1)
                 .addPostBuildActions(9)
                 .addPostBuildActions(11)
                 .addBuildSteps(1)
                 .addBuildSteps(7)
                 .addPostBuildActions(1)
+                .clickApply()
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 5);
@@ -366,5 +365,15 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(buildList.size(), 1);
         Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
+    }
+
+    @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
+    public void testNumberActualVisibleHelpButtons(){
+        int numberHelpButtons = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .numberTrueTooltipVisibleWithText("Help");
+
+        assertEquals(numberHelpButtons, 28);
     }
 }
