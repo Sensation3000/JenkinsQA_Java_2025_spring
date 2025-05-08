@@ -39,6 +39,8 @@ public class HomePage extends BasePage {
     @FindBy(id ="notification-bar")
     private WebElement buildScheduled;
 
+    private final static String JOB_PATTERN = "//tr[@id='job_%s']";
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -278,5 +280,23 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.linkText(projectName)).click();
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public String getJobLastSuccess (String jobName) {
+
+
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[4]")).getText()
+                + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
+                .findElement(By.xpath(".//a")).getText();
+    }
+
+    public String getJobLastFailure (String jobName) {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[5]")).getText()
+                + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
+                .findElement(By.xpath(".//a")).getText();
     }
 }

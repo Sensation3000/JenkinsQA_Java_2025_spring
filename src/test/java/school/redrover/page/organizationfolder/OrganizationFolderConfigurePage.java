@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+import school.redrover.common.ProjectUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,9 +16,17 @@ public class OrganizationFolderConfigurePage extends BasePage {
     public OrganizationFolderConfigurePage(WebDriver driver) { super(driver); }
 
     public OrganizationFolderPage clickSave() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[name='Submit']")));
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         return new OrganizationFolderPage(getDriver());
+    }
+
+    public OrganizationFolderConfigurePage clickApply() {
+        getDriver().findElement(By.cssSelector("button[name='Apply']")).click();
+
+
+        return new OrganizationFolderConfigurePage(getDriver());
     }
 
     public OrganizationFolderConfigurePage clickAppearance() {
@@ -35,8 +44,11 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public OrganizationFolderConfigurePage selectIcon(String iconName) {
-        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).selectByVisibleText(iconName);
+        Select select = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//select[contains(@class, 'dropdownList')])[2]"))));
+
+        select.selectByVisibleText(iconName);
+        ProjectUtils.log(select.getFirstSelectedOption().getText());
 
         return this;
     }
@@ -55,8 +67,8 @@ public class OrganizationFolderConfigurePage extends BasePage {
         return this;
     }
 
-    public String getIconHelpBlockText() {
+    public boolean isIconHelpBlockDisplayed() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[2]/div/div[1]"))).getText();
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[2]/div/div[1]"))).isDisplayed();
     }
 }
