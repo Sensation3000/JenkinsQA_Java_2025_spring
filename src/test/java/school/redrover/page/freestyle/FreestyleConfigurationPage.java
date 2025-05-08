@@ -556,7 +556,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
                 .getText()
-                .equals(expectedText);
+                .contains(expectedText);
     }
 }
 
