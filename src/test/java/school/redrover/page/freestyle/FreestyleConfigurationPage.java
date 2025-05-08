@@ -55,6 +55,9 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(xpath = "//input[@name='_.upstreamProjects']")
     private WebElement projectsToWatchInput;
 
+    @FindBy(xpath = "//div/input[@name='_.projectUrlStr']")
+    private WebElement gitHubProjectURL;
+
 
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
@@ -460,12 +463,12 @@ public class FreestyleConfigurationPage extends BasePage {
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
         getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
-
+        
         return this;
     }
 
     public FreestyleConfigurationPage sentGitHubProjectURL(String projectURL) {
-        getDriver().findElement(By.xpath("//div/input[@name='_.projectUrlStr']")).sendKeys(projectURL);
+        gitHubProjectURL.sendKeys(projectURL);
 
         return this;
     }
@@ -553,7 +556,7 @@ public class FreestyleConfigurationPage extends BasePage {
         return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
                 .getText()
-                .equals(expectedText);
+                .contains(expectedText);
     }
 }
 

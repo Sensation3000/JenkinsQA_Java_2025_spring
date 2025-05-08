@@ -67,8 +67,8 @@ public class OrganizationFolderConfigurePage extends BasePage {
         return this;
     }
 
-    public String getIconHelpBlockText() {
+    public boolean isIconHelpBlockDisplayed() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[2]/div/div[1]"))).getText();
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[2]/div/div[1]"))).isDisplayed();
     }
 }

@@ -99,16 +99,14 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
     }
-    @Ignore //Error:    DashboardTest.testColumns:105 Lists differ at element [1]: W != W
-//  ↓ expected [W] but found [W
-//  ↓]
+
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
 
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
-    @Ignore
+
     @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
     public void testSortNameList() {
 
