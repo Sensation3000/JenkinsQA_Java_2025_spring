@@ -1,11 +1,14 @@
 package school.redrover;
 
+import com.sun.source.tree.AssertTree;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.HomePage;
+
+import java.util.List;
 
 import static org.testng.Assert.assertTrue;
 
@@ -21,7 +24,9 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
     private static final String UNEXPECTED_SCHEDULE = "H";
     private static final String EXPECTED_TOOLTIP_TEXT = "Help for feature: ";
-
+    private static final String GIT_HUB_PROJECT_LINK = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
+    private static final String GIR_HUB = "GitHub";
+    
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
 
@@ -269,5 +274,19 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         //Assertions
         Assert.assertTrue(freestyleConfigurationPage.isTooltipVisibleWithText(EXPECTED_TOOLTIP_TEXT+featureName));
+    }
+
+    @Test
+    public void testAddGitHubProject() {
+        List<String> leftMenuList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .checkGitHubProjectCheckbox()
+                .sentGitHubProjectURL(GIT_HUB_PROJECT_LINK)
+                .clickSaveButton()
+                .getLeftSideMenuNameList();
+
+        Assert.assertTrue(leftMenuList.contains(GIR_HUB));
     }
 }
