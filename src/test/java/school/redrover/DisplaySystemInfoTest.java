@@ -61,4 +61,3 @@ public class DisplaySystemInfoTest extends BaseTest {
         Assert.assertNotNull(plugin2);
     }
 }
-

@@ -52,13 +52,18 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobListEmpty() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("main-panel"))).getText().contains("Welcome to Jenkins!");
+        return getWait5().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfElementLocated(
+                By.id("main-panel")))).getText().contains("Welcome to Jenkins!");
     }
 
     public HomePage sendDescription(String text) {
-        descriptionTextArea.clear();
         descriptionTextArea.sendKeys(text);
+
+        return this;
+    }
+
+    public HomePage clearDescription() {
+        descriptionTextArea.clear();
 
         return this;
     }
@@ -72,6 +77,10 @@ public class HomePage extends BasePage {
 
     public String getDescriptionText() {
         return descriptionText.getText();
+    }
+
+    public Boolean isDescriptionDisplayed() {
+        return descriptionText.isDisplayed();
     }
 
      public String getNameProject() {
@@ -233,6 +242,15 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+
+    public List<String> getListHealthReportFromDashboard() {
+        if (isJobListEmpty()) {
+            return List.of();
+        }
+        return getDriver().findElements(By.cssSelector(".healthReport")).stream()
+                .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
     }
 
     public boolean isBuildQueueDisplayed() {

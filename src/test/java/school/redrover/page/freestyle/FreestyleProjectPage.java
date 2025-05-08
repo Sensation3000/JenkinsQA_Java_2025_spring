@@ -71,6 +71,9 @@ public class FreestyleProjectPage extends BasePage {
     })
     private WebElement consoleOutputFinished;
 
+    @FindBy(xpath = "//div[@id='tasks']/div/span/a/span[2]")
+    private List<WebElement> leftMenuElementsList;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -119,7 +122,6 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public boolean isHidePreviewLinkAvailable() {
-        getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
 
         return getDriver().findElement(By.className("textarea-hide-preview")).isDisplayed();
     }
@@ -252,7 +254,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public List<String> getLeftSideMenuNameList() {
         getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
-        return getDriver().findElements(By.xpath("//div[@id='tasks']/div/span/a/span[2]")).stream()
+        return leftMenuElementsList.stream()
                 .map(WebElement::getText).toList();
     }
 

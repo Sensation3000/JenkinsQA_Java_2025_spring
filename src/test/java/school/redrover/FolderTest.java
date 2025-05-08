@@ -1,10 +1,11 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
 import school.redrover.testdata.TestDataProvider;
 
@@ -13,8 +14,10 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "ProjectFolder";
+    private static final String FOLDER_SECOND_NAME = "ProjectFolder2";
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
-    private static final String ITEM_NAME = "Item1";
+    private static final String HEALTH_METRICS = "Health metrics";
+    private static final String ITEM_NAME = "Test Folder";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
@@ -74,6 +77,24 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
+    @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
+    public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
+
+        String folderProjectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FOLDER_SECOND_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnNewItemLinkWithChevron(FOLDER_SECOND_NAME)
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(folderProjectName, ITEM_NAME);
+    }
+
     @Test
     public void testIfCopyFromFieldAppears() {
         final String expectedText = "Copy from";
@@ -120,5 +141,34 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
         Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
         Assert.assertEquals(folderProjectPage.getItemIconTitleByJobName(ITEM_NAME), "Folder");
+    }
+
+    @Test
+    public void  testAvailabilityHealthMetrics(){
+        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOkWithJS()
+                .clickHealthMetrics();
+
+        List<String> titlesHealthMetrics = List.of(
+                folderConfigurationPage.getTitleHealthMetrics(),
+                folderConfigurationPage.getTextDropdownHealthMetrics()        );
+        for (String titleHealthMetrics : titlesHealthMetrics) {
+            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
+        }
+    }
+
+    @Test
+    public void folderIsEmptyTest() {
+
+        String folderStatus = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName("Test1")
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getFolderStatus();
+
+        Assert.assertEquals(folderStatus, "This folder is empty");
     }
 }

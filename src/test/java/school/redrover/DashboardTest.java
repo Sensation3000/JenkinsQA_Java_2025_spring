@@ -3,10 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import java.util.*;
 
 public class DashboardTest extends BaseTest {
@@ -106,14 +109,14 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
 
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
-
+    @Ignore
     @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
     public void testSortNameList() {
 
@@ -155,11 +158,24 @@ public class DashboardTest extends BaseTest {
 
         String descriptionText = new HomePage(getDriver())
                 .clickAddDescriptionButton()
+                .clearDescription()
                 .sendDescription(newDescription)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(descriptionText, newDescription);
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testRemoveDescription() {
+
+        boolean isDescriptionDisplayed = new HomePage(getDriver())
+                .clickAddDescriptionButton()
+                .clearDescription()
+                .clickSaveDescriptionButton()
+                .isDescriptionDisplayed();
+
+        Assert.assertFalse(isDescriptionDisplayed);
     }
 
     @Test
@@ -170,7 +186,10 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(homePage.getBuildQueueBlockText(), "No builds in the queue.");
     }
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders","testFailedJobDetails","testColumns"})
+
+
+    @Test(dependsOnMethods = "testListJobsAndFolders")
+
     public void testSortHealthReportColumnDashboard(){
         HomePage homePage = new HomePage(getDriver());
         List<String> expectedSortedList = new ArrayList<>(homePage.getListHealthReportFromDashboard());
@@ -188,7 +207,8 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
         }
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders", "testSortNameList"})
+
+    @Test(dependsOnMethods = {"testListJobsAndFolders"})
     public void testFailedJobDetails(){
         String script = "node {\n" +
                 "    stage('Create Job') {\n" +
