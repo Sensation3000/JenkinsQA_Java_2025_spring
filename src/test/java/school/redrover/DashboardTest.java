@@ -120,7 +120,6 @@ public class DashboardTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.clickColumnNameInDashboardTable("Name");
 
-
         if(homePage.verifyAscendingSortingSign("Name")){
 
             Collections.sort(expectedListOfJobs);
@@ -204,7 +203,7 @@ public class DashboardTest extends BaseTest {
         }
 
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders"})
+    @Test(dependsOnMethods = {"testListJobsAndFolders","testSortNameList"})
     public void testFailedJobDetails(){
         String script = "node {\n" +
                 "    stage('Create Job') {\n" +
