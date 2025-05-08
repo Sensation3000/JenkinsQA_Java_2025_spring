@@ -17,6 +17,7 @@ import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
 
@@ -37,6 +38,8 @@ public class HomePage extends BasePage {
 
     @FindBy(id ="notification-bar")
     private WebElement buildScheduled;
+
+    private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -219,9 +222,10 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
     }
 
-    public boolean ascendingSorting(String columnName) {
+    public boolean verifyAscendingSortingSign(String columnName) {
     String sign = getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName)))
             .findElement(By.cssSelector("span.sortarrow")).getText();
+
         return sign.contains("↓");
     } 
 
@@ -258,5 +262,31 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.linkText(projectName)).click();
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public List<String> getListHealthReportFromDashboard() {
+        if (isJobListEmpty()) {
+            return List.of();
+        }
+        return getDriver().findElements(By.cssSelector(".healthReport")).stream()
+                .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+    }
+
+    public String getJobLastSuccess (String jobName) {
+
+
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[4]")).getText()
+                + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
+                .findElement(By.xpath(".//a")).getText();
+    }
+
+    public String getJobLastFailure (String jobName) {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[5]")).getText()
+                + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
+                .findElement(By.xpath(".//a")).getText();
     }
 }
