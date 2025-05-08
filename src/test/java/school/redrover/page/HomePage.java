@@ -282,14 +282,6 @@ public class HomePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public List<String> getListHealthReportFromDashboard() {
-        if (isJobListEmpty()) {
-            return List.of();
-        }
-        return getDriver().findElements(By.cssSelector(".healthReport")).stream()
-                .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
-    }
-
     public String getJobLastSuccess (String jobName) {
 
 
