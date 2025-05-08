@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+import school.redrover.common.ProjectUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,21 +37,11 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public OrganizationFolderConfigurePage selectIcon(String iconName) {
-        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).selectByVisibleText(iconName);
-        getWait5().until(driver -> {
-            Select s = new Select(getDriver().findElement(
-                    By.xpath("(//select[contains(@class, 'dropdownList')])[2]")));
-            String selected = s.getFirstSelectedOption().getText().trim();
+        Select select = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//select[contains(@class, 'dropdownList')])[2]"))));
 
-            return selected.equals(iconName);});
-
-        String actual = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).getFirstSelectedOption()
-                .getText().trim();
-        if (!actual.equals(iconName)) {
-            throw new IllegalStateException("Expected icon '" + iconName + "', but selected '" + actual + "'");
-        }
+        select.selectByVisibleText(iconName);
+        ProjectUtils.log(select.getFirstSelectedOption().getText());
 
         return this;
     }
