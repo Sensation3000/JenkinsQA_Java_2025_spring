@@ -246,7 +246,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         Assert.assertTrue(freestyleConfigurationPage.isTooltipVisibleWithText(EXPECTED_TOOLTIP_TEXT+featureName));
     }
-    @Ignore // Error:    FreestyleProjectConfigurationBuildTriggersTest.testAddGitHubProject:255 » StaleElementReference stale element reference: stale element not found
+    @Ignore
     @Test
     public void testAddGitHubProject() {
         List<String> leftMenuList = new HomePage(getDriver())
