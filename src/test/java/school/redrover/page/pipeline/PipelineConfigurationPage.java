@@ -4,10 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class PipelineConfigurationPage extends BasePage {
+
+    @FindBy(css = "textarea.ace_text-input")
+    private WebElement pipelineScript;
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -114,5 +118,11 @@ public class PipelineConfigurationPage extends BasePage {
 
     public boolean isPreviewDisplayed() {
         return getDriver().findElement(By.className("textarea-preview")).isDisplayed();
+    }
+
+    public PipelineConfigurationPage setScript(String script) {
+        pipelineScript.sendKeys(script);
+
+        return this;
     }
 }

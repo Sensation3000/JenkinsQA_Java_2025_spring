@@ -16,6 +16,9 @@ public class PipelineProjectPage extends BasePage {
     @FindBy(css = "[data-id='ok']")
     private WebElement buttonConfirmDeletion;
 
+    @FindBy(xpath = "//a[@data-build-success='Build scheduled']")
+    private WebElement buildNow;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -55,5 +58,10 @@ public class PipelineProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(buttonConfirmDeletion)).click();
 
         return new HomePage(getDriver());
+    }
+
+    public PipelineProjectPage clickBuildNow() {
+        buildNow.click();
+        return this;
     }
 }
