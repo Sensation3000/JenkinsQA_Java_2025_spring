@@ -21,31 +21,31 @@ public class InfoJenkinsTest extends BaseTest {
 
     @Test
     public void checkMavenizedDependenciesListIsNotEmpty() {
-        List<String> MavenizedDependenciesList = new HomePage(getDriver())
+        List<String> mavenizedDependenciesList = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickAboutJenkins()
                 .getMavenizedDependenciesList();
 
-        Assert.assertFalse(MavenizedDependenciesList.isEmpty());
+        Assert.assertFalse(mavenizedDependenciesList.isEmpty());
     }
 
     @Test
     public void checkStaticResourcesListIsNotEmpty() {
-        List<String> StaticResourcesList = new HomePage(getDriver())
+        List<String> staticResourcesList = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickAboutJenkins()
                 .getStaticResourcesList();
 
-        Assert.assertFalse(StaticResourcesList.isEmpty());
+        Assert.assertFalse(staticResourcesList.isEmpty());
     }
 
     @Test
     public void checkLicenseAndDependencyInformationForPluginsListIsNotEmpty() {
-        List<String> LicenseAndDependencyList = new HomePage(getDriver())
+        List<String> licenseAndDependencyList = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickAboutJenkins()
                 .getLicenseAndDependencyInformationForPluginsList();
 
-        Assert.assertFalse(LicenseAndDependencyList.isEmpty());
+        Assert.assertFalse(licenseAndDependencyList.isEmpty());
     }
 }
