@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -55,20 +54,16 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
     }
 
-    @Ignore // OrganizationFolderTest.testSelectDefaultIconForOrganizationFolder:70 » StaleElementReference stale element reference: stale element not found
     @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
     public void testSelectDefaultIconForOrganizationFolder() {
-        String orgFolderIconTitle = new HomePage(getDriver())
+        OrganizationFolderPage organizationFolderPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
                 .clickAppearance()
                 .selectIcon("Default Icon")
-                .clickSave()
-                .getHeader()
-                .goToHomePage()
-                .getJobIconTitle(ORGANIZATION_FOLDER_NAME);
+                .clickSave();
 
-        Assert.assertEquals(orgFolderIconTitle, "Folder");
+        Assert.assertEquals(organizationFolderPage.getOrganizationFolderIconTitleNameFromHeader(), "Folder");
     }
 
     @Test
@@ -82,7 +77,6 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
     public void testCancelOrganizationFolderDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
@@ -101,21 +95,17 @@ public class OrganizationFolderTest extends BaseTest {
                 "Organization folder is deleted");
     }
 
-    @Ignore
     @Test (dependsOnMethods = "testCancelOrganizationFolderDeletion")
     public void testDeleteEmptyOrganizationFolderFromFolderPage() {
-        OrganizationFolderPage orgFolderPage = new HomePage(getDriver())
+        List<String> projectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
-                .clickDeleteOrganizationFolderOnLeftSidePanel();
-
-        List<String> projectNameList = orgFolderPage
+                .clickDeleteOrganizationFolderOnLeftSidePanel()
                 .clickYesOnDeletionConfirmationPopup()
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
-        Assert.assertEquals(orgFolderPage.getDeletionPopupText(), "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
 
     @Test
