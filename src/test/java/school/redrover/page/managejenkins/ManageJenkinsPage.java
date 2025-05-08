@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.aboutjenkins.AboutJenkinsPage;
 import school.redrover.page.clouds.CloudsPage;
 import school.redrover.page.plugins.PluginsPage;
 import school.redrover.page.system.SystemPage;
@@ -76,9 +77,16 @@ public class ManageJenkinsPage extends BasePage {
 
         return new SystemPage(getDriver());
     }
+
     public SystemInfoPage clickSystemInfo() {
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[4]/div/div[1]/a")).click();
 
         return new SystemInfoPage(getDriver());
+    }
+
+    public AboutJenkinsPage clickAboutJenkins() {
+        getDriver().findElement(By.xpath("//a[@href='about']")).click();
+
+        return new AboutJenkinsPage(getDriver());
     }
 }
