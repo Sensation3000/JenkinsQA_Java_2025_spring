@@ -18,14 +18,25 @@ public class AboutJenkinsPage extends BasePage {
 
     public AboutJenkinsPage(WebDriver driver) {super(driver);}
 
-    public String getTextInAltLogoImg() {
-        return logoImg.getAttribute("alt");
-    }
     public String getCurrentVersion() {
         return version.getText();
     }
+
     public List<String> getMavenizedDependenciesList() {
         return getDriver().findElements(By.xpath("//h2[text()='Mavenized dependencies']/following-sibling::table/tbody")).stream()
                 .map(WebElement::getText).toList();
     }
+
+    public List<String> getStaticResourcesList() {
+        getDriver().findElement(By.xpath("//a[text()='Static resources']")).click();
+        return getDriver().findElements(By.xpath("//h2[text()='Static resources']/following-sibling::table/tbody")).stream()
+                .map(WebElement::getText).toList();
+    }
+
+    public List<String> getLicenseAndDependencyInformationForPluginsList() {
+        getDriver().findElement(By.xpath("//a[text()='License and dependency information for plugins']")).click();
+        return getDriver().findElements(By.xpath("//h2[text()='License and dependency information for plugins']/following-sibling::table/tbody")).stream()
+                .map(WebElement::getText).toList();
+    }
+
 }
