@@ -36,6 +36,6 @@ public class InfoJenkinsTest extends BaseTest {
                 .clickAboutJenkins()
                 .getMavenizedDependenciesList();
 
-        Assert.assertFalse(MavenizedDependenciesList.isEmpty(), "Mavenized Dependencies List is empty");
+        Assert.assertFalse(MavenizedDependenciesList.isEmpty());
     }
 }
