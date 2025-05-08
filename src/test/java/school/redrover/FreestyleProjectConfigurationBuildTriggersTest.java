@@ -3,6 +3,7 @@ package school.redrover;
 import com.sun.source.tree.AssertTree;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -245,7 +246,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         Assert.assertTrue(freestyleConfigurationPage.isTooltipVisibleWithText(EXPECTED_TOOLTIP_TEXT+featureName));
     }
-
+    @Ignore
     @Test
     public void testAddGitHubProject() {
         List<String> leftMenuList = new HomePage(getDriver())

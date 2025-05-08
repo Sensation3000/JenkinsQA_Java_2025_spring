@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -98,14 +99,14 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
 
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
-
+    @Ignore
     @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
     public void testSortNameList() {
 

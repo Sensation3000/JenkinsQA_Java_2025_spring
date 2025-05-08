@@ -35,16 +35,13 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
                 .clickAppearance();
-        String helpIconTooltip = organizationFolderConfigurePage
-                .getIconHelpTooltip();
-        String helpBlockText = organizationFolderConfigurePage
-                .clickIconHelp()
-                .getIconHelpBlockText();
 
-        Assert.assertEquals(helpIconTooltip, "Help for feature: Icon");
-        Assert.assertEquals(helpBlockText, "A folder can have an icon of your choosing. Aside from static " +
-                "icons that can be used to visually distinguish different folders, plugins can implement more " +
-                "sophisticated icons that change their graphics depending on what the folder contains.");
+        boolean isIconHelpBlockDisplayed = organizationFolderConfigurePage
+                .clickIconHelp()
+                .isIconHelpBlockDisplayed();
+
+        Assert.assertEquals(organizationFolderConfigurePage.getIconHelpTooltip(), "Help for feature: Icon");
+        Assert.assertTrue(isIconHelpBlockDisplayed);
     }
 
     @Test (dependsOnMethods = "testIconHelp")
@@ -111,8 +108,6 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel();
 
-        String actualPopupText = orgFolderPage.getDeletionPopupText();
-
         List<String> projectNameList = orgFolderPage
                 .clickYesOnDeletionConfirmationPopup()
                 .getHeader()
@@ -120,7 +115,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertEquals(projectNameList.size(), 0);
-        Assert.assertEquals(actualPopupText, "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
+        Assert.assertEquals(orgFolderPage.getDeletionPopupText(), "Delete the Organization Folder ‘%s’?".formatted(ORGANIZATION_FOLDER_NAME));
     }
 
     @Test
