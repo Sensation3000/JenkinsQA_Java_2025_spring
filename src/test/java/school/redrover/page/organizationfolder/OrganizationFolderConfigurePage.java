@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+import school.redrover.common.ProjectUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,9 +16,17 @@ public class OrganizationFolderConfigurePage extends BasePage {
     public OrganizationFolderConfigurePage(WebDriver driver) { super(driver); }
 
     public OrganizationFolderPage clickSave() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[name='Submit']")));
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         return new OrganizationFolderPage(getDriver());
+    }
+
+    public OrganizationFolderConfigurePage clickApply() {
+        getDriver().findElement(By.cssSelector("button[name='Apply']")).click();
+
+
+        return new OrganizationFolderConfigurePage(getDriver());
     }
 
     public OrganizationFolderConfigurePage clickAppearance() {
@@ -35,8 +44,11 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public OrganizationFolderConfigurePage selectIcon(String iconName) {
-        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))).selectByVisibleText(iconName);
+        Select select = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("(//select[contains(@class, 'dropdownList')])[2]"))));
+
+        select.selectByVisibleText(iconName);
+        ProjectUtils.log(select.getFirstSelectedOption().getText());
 
         return this;
     }
