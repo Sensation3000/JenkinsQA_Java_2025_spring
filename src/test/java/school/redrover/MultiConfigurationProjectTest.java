@@ -4,11 +4,16 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
 
-public class MultiConfigurationProjectConfigurationTest extends BaseTest {
+import java.util.List;
+
+public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Project name";
+    private static final String PROJECT_SECOND_NAME = "Project name 2";
 
     @Test
     public void testErrorForProjectWithoutName() {
@@ -59,5 +64,38 @@ public class MultiConfigurationProjectConfigurationTest extends BaseTest {
                 .messageNotDisplayedCheck();
 
         Assert.assertTrue(projectDisabledMessageInvisible);
+    }
+
+    @Test
+    public void testIfOriginalItemConfigurationIsCopied() {
+
+        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .scrollToEnvironmentSectionWithJS()
+                .checkEnvironmentCheckboxesAndClickOnSaveButton()
+                .getHeader()
+                .goToHomePage()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_SECOND_NAME)
+                .enterValueToCopyFromInput(PROJECT_NAME)
+                .redirectToMultiConfigurationConfigurePage()
+                .scrollToEnvironmentSectionWithJS();
+
+        Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
+    }
+
+    @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
+    public void createWithValidName(String projectName) {
+        List<String> projects= new HomePage(getDriver()).clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultiConfigurationAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertEquals(projects.size(), 1);
+        Assert.assertEquals(projects.get(0), projectName);
     }
 }
