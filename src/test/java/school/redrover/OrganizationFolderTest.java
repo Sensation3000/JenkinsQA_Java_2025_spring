@@ -64,7 +64,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickConfigureOnLeftSidePanel()
                 .clickAppearance()
                 .selectIcon("Default Icon")
-                .clickSave()
+                .clickApply()
                 .getHeader()
                 .goToHomePage()
                 .getJobIconTitle(ORGANIZATION_FOLDER_NAME);

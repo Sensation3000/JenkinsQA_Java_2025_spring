@@ -22,6 +22,13 @@ public class OrganizationFolderConfigurePage extends BasePage {
         return new OrganizationFolderPage(getDriver());
     }
 
+    public OrganizationFolderConfigurePage clickApply() {
+        getDriver().findElement(By.cssSelector("button[name='Apply']")).click();
+
+
+        return new OrganizationFolderConfigurePage(getDriver());
+    }
+
     public OrganizationFolderConfigurePage clickAppearance() {
         getDriver().findElement(By.xpath("//button[@data-section-id='appearance']")).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='appearance']")));
