@@ -6,8 +6,11 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.newitem.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
 
-public class MultiConfigurationProjectConfigurationTest extends BaseTest {
+import java.util.List;
+
+public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Project name";
     private static final String PROJECT_SECOND_NAME = "Project name 2";
@@ -81,5 +84,18 @@ public class MultiConfigurationProjectConfigurationTest extends BaseTest {
                 .scrollToEnvironmentSectionWithJS();
 
         Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
+    }
+
+    @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
+    public void createWithValidName(String projectName) {
+        List<String> projects= new HomePage(getDriver()).clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultiConfigurationAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertEquals(projects.size(), 1);
+        Assert.assertEquals(projects.get(0), projectName);
     }
 }
