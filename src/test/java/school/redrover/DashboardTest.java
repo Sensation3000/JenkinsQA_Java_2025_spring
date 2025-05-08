@@ -3,13 +3,10 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -109,20 +106,19 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
 
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
-    @Ignore
+
     @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
     public void testSortNameList() {
 
         HomePage homePage = new HomePage(getDriver());
         homePage.clickColumnNameInDashboardTable("Name");
-
 
         if(homePage.verifyAscendingSortingSign("Name")){
 
@@ -187,8 +183,7 @@ public class DashboardTest extends BaseTest {
     }
 
 
-
-    @Test(dependsOnMethods = "testListJobsAndFolders")
+    @Test(dependsOnMethods = {"testSortNameList", "testFailedJobDetails"})
 
     public void testSortHealthReportColumnDashboard(){
         HomePage homePage = new HomePage(getDriver());
@@ -208,7 +203,7 @@ public class DashboardTest extends BaseTest {
         }
 
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders"})
+    @Test(dependsOnMethods = {"testListJobsAndFolders","testSortNameList"})
     public void testFailedJobDetails(){
         String script = "node {\n" +
                 "    stage('Create Job') {\n" +
