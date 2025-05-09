@@ -93,4 +93,10 @@ public class OrganizationFolderConfigurePage extends BasePage {
 
         return this;
     }
+
+    public OrganizationFolderConfigurePage clearOrganizationFolderDisplayName() {
+        getWait10().until(ExpectedConditions.visibilityOf(displayNameField)).clear();
+
+        return this;
+    }
 }

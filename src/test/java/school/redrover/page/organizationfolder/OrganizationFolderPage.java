@@ -36,7 +36,7 @@ public class OrganizationFolderPage extends BasePage {
     }
 
     public OrganizationFolderConfigurePage clickConfigureOnLeftSidePanel() {
-        configureOnLeftSidePanel.click();
+        getWait10().until(ExpectedConditions.visibilityOf(configureOnLeftSidePanel)).click();
 
         return new OrganizationFolderConfigurePage(getDriver());
     }
@@ -62,6 +62,5 @@ public class OrganizationFolderPage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOf(header));
 
         return headerIcon.getDomAttribute("title");
-
     }
 }
