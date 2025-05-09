@@ -21,34 +21,6 @@ public class ManageJenkinsTabTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyLogoAboutJenkins() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        WebElement logoElement = getDriver().findElement(By.xpath("//img[@alt='logo']"));
-
-        Assert.assertTrue(logoElement.isDisplayed(), "logo with alt='logo' is not displayed");
-    }
-
-    @Test
-    public void testVerifyVersionAboutJenkinsPage() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        WebElement versionElement = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
-
-        Assert.assertTrue(versionElement.isDisplayed(), "About Jenkins' version  is not displayed");
-    }
-
-    @Test
     public void testReviewListOfDependenciesAboutJenkinsPage() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();

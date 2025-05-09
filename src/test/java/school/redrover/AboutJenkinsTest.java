@@ -78,6 +78,16 @@ public class AboutJenkinsTest extends BaseTest {
     }
 
     @Test
+    public void testLogoIsDisplayed() {
+        boolean isLogoDisplayed = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickAboutJenkins()
+                .isLogoDisplayed();
+
+        Assert.assertTrue(isLogoDisplayed);
+    }
+
+    @Test
     public void checkMavenizedDependenciesListIsNotEmpty() {
         List<String> mavenizedDependenciesList = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
