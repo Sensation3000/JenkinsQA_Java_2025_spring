@@ -154,6 +154,13 @@ public class NewItemPage extends BasePage {
         return new MultibranchConfigurationPage(getDriver());
     }
 
+    public MultibranchConfigurationPage selectMultibranchPipelineAndClickOkWithJS() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")));
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
+
+        return new MultibranchConfigurationPage(getDriver());
+    }
+
     public FolderConfigurationPage selectFolderAndClickOkWithJS() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Folder']")));

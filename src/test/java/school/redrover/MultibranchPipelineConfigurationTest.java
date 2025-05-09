@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
 
@@ -58,5 +59,17 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .getEnableToggleText();
 
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
+    }
+
+    @Test
+    public void testIfBranchSourceSectionIsPresent() {
+      String branchSourcesSectionText =
+              new HomePage(getDriver())
+                      .clickNewItemOnLeftSidePanel()
+                      .sendItemName(TestUtils.generateRandomAlphanumeric())
+                      .selectMultibranchPipelineAndClickOkWithJS()
+                      .getBranchSourcesSectionText();
+
+      Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 }

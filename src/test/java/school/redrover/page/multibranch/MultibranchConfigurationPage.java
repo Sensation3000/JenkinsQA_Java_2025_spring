@@ -3,6 +3,7 @@ package school.redrover.page.multibranch;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchConfigurationPage extends BasePage {
@@ -44,5 +45,9 @@ public class MultibranchConfigurationPage extends BasePage {
         getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(text);
 
         return this;
+    }
+
+    public String getBranchSourcesSectionText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("branch-sources"))).getText().trim();
     }
 }
