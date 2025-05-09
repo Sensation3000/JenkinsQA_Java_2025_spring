@@ -17,7 +17,7 @@ public class OrganizationFolderTest extends BaseTest {
     private static final String DISPLAY_NAME = "Display Name";
 
     @Test
-    public void testCreateOrganizationFolder() {
+    public void testCreate() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(ORGANIZATION_FOLDER_NAME)
@@ -30,8 +30,8 @@ public class OrganizationFolderTest extends BaseTest {
                 projectNameList, ORGANIZATION_FOLDER_NAME, "Organization Folder is not created");
     }
 
-    @Test(dependsOnMethods = "testCreateOrganizationFolder")
-    public void testCreateOrganizationFolderWithDisplayName() {
+    @Test(dependsOnMethods = "testCreate")
+    public void testCreateWithDisplayName() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(ORGANIZATION_FOLDER_NAME_2)
@@ -46,7 +46,7 @@ public class OrganizationFolderTest extends BaseTest {
                 projectNameList, DISPLAY_NAME, "Organization Folder is not created");
     }
 
-    @Test(dependsOnMethods = "testCreateOrganizationFolderWithDisplayName")
+    @Test(dependsOnMethods = "testCreateWithDisplayName")
     public void testEmptyDisplayName() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(DISPLAY_NAME, new OrganizationFolderPage(getDriver()))
@@ -58,11 +58,39 @@ public class OrganizationFolderTest extends BaseTest {
                 .getProjectNameList();
 
         Assert.assertListNotContainsObject(projectNameList, DISPLAY_NAME,
+                "Organization folder still available by Display Name");
+        Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME_2,
                 "Organization folder is not available");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolder")
-    public void testIconHelp() {
+    @Test(dependsOnMethods = "testEmptyDisplayName")
+    public void testDisplayNameFieldHelp() {
+        OrganizationFolderConfigurePage organizationFolderConfigurePage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel();
+        boolean isDisplayNameHelpBlockDisplayed = organizationFolderConfigurePage
+                .clickDisplayNameHelpButton()
+                .isDisplayNameHelpBlockDisplayed();
+        boolean isDisplayNameHelpBlockNotDisplayed = organizationFolderConfigurePage
+                .clickDisplayNameHelpButton()
+                .isDisplayNameHelpBlockDisplayed();
+
+        Assert.assertTrue(isDisplayNameHelpBlockDisplayed);
+        Assert.assertFalse(isDisplayNameHelpBlockNotDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testDisplayNameFieldHelp")
+    public void testDisplayNameHelpButtonTooltip() {
+        String displayNameHelpButtonTooltip = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
+                .getDisplayNameHelpButtonTooltip();
+
+        Assert.assertEquals(displayNameHelpButtonTooltip, "Help for feature: Display Name");
+    }
+
+    @Test (dependsOnMethods = "testCreate")
+    public void testIconFieldHelp() {
         OrganizationFolderConfigurePage organizationFolderConfigurePage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
@@ -76,8 +104,8 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(isIconHelpBlockDisplayed);
     }
 
-    @Test (dependsOnMethods = "testIconHelp")
-    public void testAvailableIconsForOrganizationFolder() {
+    @Test (dependsOnMethods = "testIconFieldHelp")
+    public void testAvailableIcons() {
         List<String> availableIcons = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
@@ -87,8 +115,8 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(availableIcons, List.of("Default Icon", "Metadata Folder Icon"));
     }
 
-    @Test (dependsOnMethods = "testAvailableIconsForOrganizationFolder")
-    public void testSelectDefaultIconForOrganizationFolder() {
+    @Test (dependsOnMethods = "testAvailableIcons")
+    public void testSelectDefaultIcon() {
         OrganizationFolderPage organizationFolderPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
@@ -100,7 +128,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testTryToCreateOrganizationFolderWithEmptyName() {
+    public void testTryToCreateWithEmptyName() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .selectItemByName("Organization Folder");
@@ -110,8 +138,8 @@ public class OrganizationFolderTest extends BaseTest {
                 newItemPage.getEmptyNameMessage(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test(dependsOnMethods = "testSelectDefaultIconForOrganizationFolder")
-    public void testCancelOrganizationFolderDeletion(){
+    @Test(dependsOnMethods = "testSelectDefaultIcon")
+    public void testCancelDeletion(){
         String orgFolderPageHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel()
@@ -127,8 +155,8 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME,"Organization folder is deleted");
     }
 
-    @Test (dependsOnMethods = "testEmptyDisplayName")
-    public void testDeleteEmptyOrganizationFolderFromFolderPage() {
+    @Test (dependsOnMethods = "testDisplayNameFieldHelp")
+    public void testDeleteFromOrganizationFolderPage() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))
                 .clickDeleteOrganizationFolderOnLeftSidePanel()
@@ -141,8 +169,8 @@ public class OrganizationFolderTest extends BaseTest {
                 "Organization folder is NOT deleted");
     }
 
-    @Test(dependsOnMethods = "testCancelOrganizationFolderDeletion")
-    public void testDeleteOrganizationFolderFromDropDownMenuOnDashboard() {
+    @Test(dependsOnMethods = "testCancelDeletion")
+    public void testDeleteFromDropDownMenuOnDashboard() {
         List<String> projectNameList = new HomePage(getDriver())
                 .showDropdownOnHoverByJobName(ORGANIZATION_FOLDER_NAME)
                 .clickDeleteItemFromDropdown(ORGANIZATION_FOLDER_NAME)
