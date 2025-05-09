@@ -33,6 +33,12 @@ public class OrganizationFolderConfigurePage extends BasePage {
     @FindBy(name = "_.displayNameOrNull")
     private WebElement displayNameField;
 
+    @FindBy(xpath = "//a[@title='Help for feature: Display Name']")
+    private WebElement displayNameHelpButton;
+
+    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/div[2]/div/div[4]/div/div[1]")
+    private WebElement displayNameHelpBlock;
+
     public OrganizationFolderConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -98,5 +104,22 @@ public class OrganizationFolderConfigurePage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOf(displayNameField)).clear();
 
         return this;
+    }
+
+    public OrganizationFolderConfigurePage clickDisplayNameHelpButton() {
+        getWait5().until(ExpectedConditions.visibilityOf(displayNameHelpButton)).click();
+
+        return this;
+    }
+
+    public boolean isDisplayNameHelpBlockDisplayed() {
+
+        return displayNameHelpBlock.isDisplayed();
+    }
+
+    public String getDisplayNameHelpButtonTooltip() {
+        getWait5().until(ExpectedConditions.visibilityOf(displayNameHelpButton));
+
+        return displayNameHelpButton.getDomAttribute("tooltip");
     }
 }
