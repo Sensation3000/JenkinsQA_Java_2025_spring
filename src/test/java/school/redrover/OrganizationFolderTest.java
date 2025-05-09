@@ -155,7 +155,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertListContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME,"Organization folder is deleted");
     }
 
-    @Test (dependsOnMethods = "testDisplayNameFieldHelp")
+    @Test (dependsOnMethods = "testDisplayNameHelpButtonTooltip")
     public void testDeleteFromOrganizationFolderPage() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))

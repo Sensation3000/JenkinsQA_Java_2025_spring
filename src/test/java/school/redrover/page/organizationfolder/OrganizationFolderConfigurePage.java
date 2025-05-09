@@ -118,6 +118,7 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public String getDisplayNameHelpButtonTooltip() {
+        getWait5().until(ExpectedConditions.visibilityOf(displayNameHelpButton));
 
         return displayNameHelpButton.getDomAttribute("tooltip");
     }
