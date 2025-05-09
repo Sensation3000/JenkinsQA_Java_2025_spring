@@ -1,6 +1,5 @@
 package school.redrover.page.aboutjenkins;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +15,24 @@ public class AboutJenkinsPage extends BasePage {
     @FindBy(className = "app-about-version")
     private WebElement version;
 
+    @FindBy(xpath = "//img[@alt='logo']")
+    private WebElement logo;
+
+    @FindBy(xpath = "//h2[text()='Mavenized dependencies']/following-sibling::table/tbody")
+    private List<WebElement> mavenizedDependenciesTable;
+
+    @FindBy(xpath = "//a[text()='Static resources']")
+    private WebElement staticResourcesTab;
+
+    @FindBy(xpath = "//h2[text()='Static resources']/following-sibling::table/tbody")
+    private List<WebElement> staticResourcesTable;
+
+    @FindBy(xpath = "//a[text()='License and dependency information for plugins']")
+    private WebElement getLicenseAndDependencyInformationForPluginsTab;
+
+    @FindBy(xpath = "//h2[text()='License and dependency information for plugins']/following-sibling::table/tbody")
+    private List<WebElement> getLicenseAndDependencyInformationForPluginsTable;
+
     public AboutJenkinsPage(WebDriver driver) {super(driver);}
 
     public String getCurrentVersion() {
@@ -23,20 +40,23 @@ public class AboutJenkinsPage extends BasePage {
     }
 
     public List<String> getMavenizedDependenciesList() {
-        return getDriver().findElements(By.xpath("//h2[text()='Mavenized dependencies']/following-sibling::table/tbody")).stream()
-                .map(WebElement::getText).toList();
+        return mavenizedDependenciesTable.stream().map(WebElement::getText).toList();
     }
 
     public List<String> getStaticResourcesList() {
-        getDriver().findElement(By.xpath("//a[text()='Static resources']")).click();
-        return getDriver().findElements(By.xpath("//h2[text()='Static resources']/following-sibling::table/tbody")).stream()
-                .map(WebElement::getText).toList();
+        staticResourcesTab.click();
+
+        return staticResourcesTable.stream().map(WebElement::getText).toList();
     }
 
     public List<String> getLicenseAndDependencyInformationForPluginsList() {
-        getDriver().findElement(By.xpath("//a[text()='License and dependency information for plugins']")).click();
-        return getDriver().findElements(By.xpath("//h2[text()='License and dependency information for plugins']/following-sibling::table/tbody")).stream()
-                .map(WebElement::getText).toList();
+        getLicenseAndDependencyInformationForPluginsTab.click();
+
+        return getLicenseAndDependencyInformationForPluginsTable.stream().map(WebElement::getText).toList();
     }
 
+    public boolean isLogoDisplayed () {
+
+        return logo.isDisplayed();
+    }
 }
