@@ -16,7 +16,9 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
@@ -244,13 +246,25 @@ public class HomePage extends BasePage {
                 .getDomAttribute("title");
     }
 
-
     public List<String> getListHealthReportFromDashboard() {
         if (isJobListEmpty()) {
             return List.of();
         }
         return getDriver().findElements(By.cssSelector(".healthReport")).stream()
                 .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+    }
+
+    public List<String> getListStatusLastBuildFromDashboard() {
+        if (isJobListEmpty()) {
+            return List.of();
+        }
+
+        List<String> list= getDriver()
+                .findElements(By.xpath("//tbody//td[@class='jenkins-table__cell--tight jenkins-table__icon']"))
+                .stream().map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+        list.removeIf(Objects::isNull);
+
+        return list;
     }
 
     public boolean isBuildQueueDisplayed() {
@@ -283,8 +297,6 @@ public class HomePage extends BasePage {
     }
 
     public String getJobLastSuccess (String jobName) {
-
-
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[4]")).getText()
