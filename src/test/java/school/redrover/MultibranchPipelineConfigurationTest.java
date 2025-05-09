@@ -5,11 +5,24 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
+
+import java.util.List;
 
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     final String projectName = "New Multibranch Pipeline Project";
+
+    @Test
+    public void createMultibranchPipelineProject() {
+        MultibranchConfigurationPage multiBranchConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultibranchPipelineAndClickOkWithJS();
+
+        Assert.assertTrue(multiBranchConfigurationPage.isBranchSourceButtonDisplayed());
+    }
 
     @Test
     public void testEnableDisablePipeline() {
@@ -63,13 +76,25 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testIfBranchSourceSectionIsPresent() {
-      String branchSourcesSectionText =
+        String branchSourcesSectionText =
               new HomePage(getDriver())
                       .clickNewItemOnLeftSidePanel()
                       .sendItemName(TestUtils.generateRandomAlphanumeric())
                       .selectMultibranchPipelineAndClickOkWithJS()
                       .getBranchSourcesSectionText();
 
-      Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
+        Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
+    }
+
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    public void testTheTypesOfBranchSources() {
+        List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
+
+        List<String> actualBranchSourceTypeNames = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .getBranchSourcesTypeNames();
+
+        Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
     }
 }
