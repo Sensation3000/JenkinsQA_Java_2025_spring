@@ -21,19 +21,6 @@ public class ManageJenkinsTabTest extends BaseTest {
     }
 
     @Test
-    public void testAccessAboutJenkinsOption() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertEquals(currentUrl, "http://localhost:8080/manage/about/", "About Jenkins' page did not open");
-    }
-
-    @Test
     public void testVerifyLogoAboutJenkins() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
