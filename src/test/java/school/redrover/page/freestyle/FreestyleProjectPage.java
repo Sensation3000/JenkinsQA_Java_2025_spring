@@ -288,7 +288,8 @@ public class FreestyleProjectPage extends BasePage {
 
     public List<String> getBuildNameList() {
         return getDriver().findElements(By.className("app-builds-container__item")).stream()
-                .map(WebElement::getText).toList();
+                .map(WebElement::getText)
+                .toList();
     }
 
     public List<String> waitForBuildToAppear( int timeoutSeconds) {
