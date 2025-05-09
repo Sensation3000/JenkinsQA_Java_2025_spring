@@ -62,6 +62,5 @@ public class OrganizationFolderPage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOf(header));
 
         return headerIcon.getDomAttribute("title");
-
     }
 }
