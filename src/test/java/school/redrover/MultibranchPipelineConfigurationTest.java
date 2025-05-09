@@ -3,7 +3,6 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
@@ -74,14 +73,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testIfBranchSourceSectionIsPresent() {
-        String branchSourcesSectionText =
-              new HomePage(getDriver())
-                      .clickNewItemOnLeftSidePanel()
-                      .sendItemName(TestUtils.generateRandomAlphanumeric())
-                      .selectMultibranchPipelineAndClickOkWithJS()
-                      .getBranchSourcesSectionText();
+        String branchSourcesSectionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .getBranchSourcesSectionText();
 
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
