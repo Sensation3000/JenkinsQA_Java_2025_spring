@@ -41,6 +41,9 @@ public class HomePage extends BasePage {
     @FindBy(id ="notification-bar")
     private WebElement buildScheduled;
 
+    @FindBy(css = "a[aria-label='New View']")
+    private WebElement newViewPlus;
+
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
     public HomePage(WebDriver driver) {
@@ -134,14 +137,14 @@ public class HomePage extends BasePage {
     }
 
     public NewViewPage clickNewView() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[aria-label='New View']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(newViewPlus)).click();
 
         return new NewViewPage(getDriver());
     }
 
-    public String getNameOfView(String viewName) {
+    public String getNameOfView() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[@href='/view/" + viewName + "/']"))).getText();
+                By.cssSelector(".tab.active"))).getText();
     }
 
     public boolean isJobDisplayed(String jobName) {
