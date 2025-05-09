@@ -10,7 +10,7 @@ import school.redrover.page.HomePage;
 public class BreadCrumbsDropDownMenuTest extends BaseTest {
 
     @Test
-    public void testVerifyDropDownMenu() {
+    public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName("New Freestyle Project")

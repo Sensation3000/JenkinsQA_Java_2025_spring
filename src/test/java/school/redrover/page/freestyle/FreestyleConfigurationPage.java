@@ -13,6 +13,9 @@ import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
 
+    @FindBy(name = "Submit")
+    private WebElement buttonSave;
+
     @FindBy(css = "button[suffix='builder']")
     private WebElement buttonAddBuildStep;
 
@@ -75,7 +78,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("button[name='Submit']")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonSave)).click();
 
         return new FreestyleProjectPage(getDriver());
     }

@@ -4,11 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
 
 public class EditViewPage extends BasePage {
+
+    @FindBy(name = "_.description")
+    private WebElement textAreaDescription;
 
     public EditViewPage(WebDriver driver) {
         super(driver);
@@ -21,9 +25,7 @@ public class EditViewPage extends BasePage {
     }
 
     public EditViewPage fillDescription(String description) {
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-                "//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[2]/div[3]/textarea")))
-                .sendKeys(description);
+        getWait5().until(ExpectedConditions.visibilityOf(textAreaDescription)).sendKeys(description);
 
         return this;
     }
