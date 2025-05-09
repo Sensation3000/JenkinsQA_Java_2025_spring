@@ -11,17 +11,16 @@ public class BreadCrumbsDropDownMenuTest extends BaseTest {
 
     @Test
     public void testVerifyDropDownMenu() {
-        String[] dropDownMenuItems = new HomePage(getDriver())
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName("New Freestyle Project")
                 .selectFreestyleAndClickOk()
                 .addDescription("Freestyle Project Description")
                 .clickSaveButton()
-                .clickProjectBreadcrumbsDropDownMenu()
-                .getDropDownMenuItemsText();
+                .clickProjectBreadcrumbsDropDownMenu();
 
-        String[] mainMenuItems = new FreestyleProjectPage(getDriver()).getMainMenuItemsText();
-
-        Assert.assertEquals(mainMenuItems, dropDownMenuItems);
+        Assert.assertEquals(
+                freestyleProjectPage.getDropDownMenuItemsText(),
+                freestyleProjectPage.getLeftSideMenuWithoutStatus());
     }
 }

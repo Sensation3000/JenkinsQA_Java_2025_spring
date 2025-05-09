@@ -187,17 +187,14 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public String[] getDropDownMenuItemsText() {
+    public List<String> getDropDownMenuItemsText() {
         List<WebElement> menuItems = getWait5()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jenkins-dropdown__item")));
 
-        String[] menuItemsText = new String[menuItems.size()];
-
-        for (int i = 0; i < menuItems.size(); i++) {
-            menuItemsText[i] = menuItems.get(i).getText();
-        }
-
-        return menuItemsText;
+        return menuItems.stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .toList();
     }
 
     public String[] getMainMenuItemsText() {
@@ -254,8 +251,14 @@ public class FreestyleProjectPage extends BasePage {
 
     public List<String> getLeftSideMenuNameList() {
         getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
+
         return leftMenuElementsList.stream()
                 .map(WebElement::getText).toList();
+    }
+
+    public List<String> getLeftSideMenuWithoutStatus() {
+        List<String> fullLeftMenu = getLeftSideMenuNameList();
+        return fullLeftMenu.subList(1, fullLeftMenu.size());
     }
 
     public FreestyleProjectPage clickBuildNowButton(int expectedClicks) {
