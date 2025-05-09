@@ -14,7 +14,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
     private static final String ORGANIZATION_FOLDER_NAME_2 = "OrganizationFolder2";
-    private static final String DISPLAY_NAME = "OrganizationFolderDisplayName";
+    private static final String DISPLAY_NAME = "Display Name";
 
     @Test
     public void testCreateOrganizationFolder() {
@@ -49,15 +49,15 @@ public class OrganizationFolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateOrganizationFolderWithDisplayName")
     public void testEmptyDisplayName() {
         List<String> projectNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(DISPLAY_NAME, new OrganizationFolderPage(getDriver())
-                .clickConfigureOnLeftSidePanel())
+                .clickOnJobInListOfItems(DISPLAY_NAME, new OrganizationFolderPage(getDriver()))
+                .clickConfigureOnLeftSidePanel()
                 .clearOrganizationFolderDisplayName()
                 .clickApply()
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
 
-        Assert.assertListNotContainsObject(projectNameList, ORGANIZATION_FOLDER_NAME_2,
+        Assert.assertListNotContainsObject(projectNameList, DISPLAY_NAME,
                 "Organization folder is not available");
     }
 
