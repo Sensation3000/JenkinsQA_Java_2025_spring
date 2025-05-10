@@ -248,4 +248,15 @@ public class DashboardTest extends BaseTest {
         //change the direction of sorting and test again
         Assert.assertEquals(homePage.getListStatusLastBuildFromDashboard(),expectedSortedList);
     }
+
+    @Test
+    public void testCheckOptionsOfJenkinsVersionDropDown() {
+        List<String> expectedTitles = Arrays.asList("About Jenkins", "Get involved", "Website");
+
+        List<String> jenkinsVersionDropDownOptions = new HomePage(getDriver())
+                .clickJenkinsVersionButton()
+                .getJenkinsVersionDropDownOptions();
+
+        Assert.assertEquals(jenkinsVersionDropDownOptions, expectedTitles);
+    }
 }
