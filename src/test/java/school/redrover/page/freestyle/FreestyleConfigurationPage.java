@@ -558,10 +558,10 @@ public class FreestyleConfigurationPage extends BasePage {
         return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
                 .getText()
-                .contains(expectedText);
+                .equals(expectedText);
     }
 
-    public int numberTrueTooltipVisibleWithText(String expectedText) {
+    public int numberHelpTooltips() {
         int numberTrueTooltipVisibleWithText = 0;
 
         List<WebElement> visibleButtonsHelp = getDriver().findElements(By.cssSelector(".jenkins-help-button"))
@@ -574,7 +574,12 @@ public class FreestyleConfigurationPage extends BasePage {
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
             actions.moveToElement(visibleButtonsHelp.get(i)).perform();
 
-            if(isTooltipVisibleWithText(expectedText)) numberTrueTooltipVisibleWithText++;
+            boolean isVisibleText = getWait10()
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
+                    .getText()
+                    .contains("Help");
+
+            if(isVisibleText) numberTrueTooltipVisibleWithText++;
 
             try {
                 actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
