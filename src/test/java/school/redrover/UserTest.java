@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -20,7 +19,7 @@ public class UserTest extends BaseTest {
     private static final String PASSWORD = "123Test";
     private static final String EMAIL = "testuser@test.com";
 
-    @Test(priority = 1)
+    @Test
     public void testCreateNewUser() {
         List<WebElement> users = new HomePage(getDriver())
                 .getHeader()
@@ -40,7 +39,7 @@ public class UserTest extends BaseTest {
 
     }
 
-    @Test(priority = 2)
+    @Test
     public void testSignInAsExistingUser(){
         String logOutButtonText = new HomePage(getDriver())
                 .getHeader()
@@ -65,7 +64,6 @@ public class UserTest extends BaseTest {
         assertEquals(currentAdminIDText, "admin");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void deleteUser() {
         List<WebElement> users = new HomePage(getDriver())
@@ -80,7 +78,6 @@ public class UserTest extends BaseTest {
         assertEquals(users.size(), 1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void testCreateExistingUser() {
         String errorText = new HomePage(getDriver())
