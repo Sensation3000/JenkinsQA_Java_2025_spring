@@ -12,6 +12,7 @@ import java.util.List;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     final String projectName = "New Multibranch Pipeline Project";
+    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo";
 
     @Test
     public void createMultibranchPipelineProject() {
@@ -90,8 +91,22 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         List<String> actualBranchSourceTypeNames = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
                 .goToConfigurationPage()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
                 .getBranchSourcesTypeNames();
 
         Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
+    }
+
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    public void testGitBranchSourceWithValidUrl() {
+        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
+                .clickOnBranchSourcesSectionText("Git")
+                .enterValueIntoGitProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL)
+                .isSuccessSubstringAppeared();
+
+        Assert.assertTrue(isSuccessSubstringAppeared);
     }
 }
