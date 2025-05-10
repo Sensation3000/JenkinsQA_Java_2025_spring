@@ -372,7 +372,7 @@ public class FreestyleProjectTest extends BaseTest {
         int numberHelpButtons = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
-                .numberTrueTooltipVisibleWithText("Help");
+                .numberHelpTooltips();
 
         assertEquals(numberHelpButtons, 28);
     }
