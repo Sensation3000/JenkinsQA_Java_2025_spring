@@ -50,8 +50,6 @@ public class FreestyleProjectPage extends BasePage {
     @FindBy(xpath = "//span[text()='Build Now']/..")
     private WebElement leftSideMenuBuildNowButton;
 
-
-
     @FindBy(xpath = "//*[@id='notification-bar']")
     private WebElement buildScheduled;
 
@@ -63,6 +61,12 @@ public class FreestyleProjectPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'console')]")
     private WebElement consoleOutput;
+
+    @FindBy (xpath = "//a[contains(@href, 'confirmDelete')]")
+    private WebElement deleteBuild;
+
+    @FindBy (xpath = "//a[contains(@href,'changes')]")
+    private WebElement changes;
 
     @FindAll({
             @FindBy(xpath = "//*[@id='out']/div[2]"),
@@ -342,8 +346,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickDeleteBuild() {
-        getDriver().findElement(
-                By.xpath("//a[contains(@href, 'confirmDelete')]")).click();
+        deleteBuild.click();
         return this;
     }
 
@@ -353,12 +356,12 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickChanges() {
-        getDriver().findElement(By.xpath("//a[contains(@href,'changes')]")).click();
+        changes.click();
         return this;
     }
 
     public boolean isBuildDeleted() {
-        return getWait5()
+        return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
                 .getText()
                 .contains("No builds");
