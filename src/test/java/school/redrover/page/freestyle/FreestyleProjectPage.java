@@ -340,4 +340,27 @@ public class FreestyleProjectPage extends BasePage {
                 .getText()
                 .contains("Finished: SUCCESS");
     }
+
+    public FreestyleProjectPage clickDeleteBuild() {
+        getDriver().findElement(
+                By.xpath("//a[contains(@href, 'confirmDelete')]")).click();
+        return this;
+    }
+
+    public FreestyleProjectPage clickSubmitDeleteBuild() {
+        getDriver().findElement(By.name("Submit")).click();
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickChanges() {
+        getDriver().findElement(By.xpath("//a[contains(@href,'changes')]")).click();
+        return this;
+    }
+
+    public boolean isBuildDeleted() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
+                .getText()
+                .contains("No builds");
+    }
 }
