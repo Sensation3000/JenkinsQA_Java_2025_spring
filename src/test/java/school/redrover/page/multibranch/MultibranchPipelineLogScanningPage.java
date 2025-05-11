@@ -17,9 +17,13 @@ public class MultibranchPipelineLogScanningPage extends BasePage {
     }
 
     public boolean isSuccessSubstringAppeared() {
-        getWait10().until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("pre a"), 6));
-        getWait10().until(ExpectedConditions.textToBePresentInElement(preElement, "Finished"));
+        try {
+            getWait10().until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("pre a"), 6));
+            getWait10().until(ExpectedConditions.textToBePresentInElement(preElement, "Finished"));
 
-        return preElement.getText().contains("SUCCESS");
+            return preElement.getText().contains("SUCCESS");
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
