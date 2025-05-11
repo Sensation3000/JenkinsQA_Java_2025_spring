@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     final String projectName = "New Multibranch Pipeline Project";
-    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo";
+    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo/";
 
     @Test
     public void createMultibranchPipelineProject() {
@@ -108,5 +109,21 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .isSuccessSubstringAppeared();
 
         Assert.assertTrue(isSuccessSubstringAppeared);
+    }
+
+    @Test
+    public void testGitBranchSourceWithInvalidUrl() {
+        String multibranchPipelineProjectName = "projectTitle";
+
+        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(multibranchPipelineProjectName)
+                .selectMultibranchPipelineAndClickOkWithJS()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
+                .clickOnBranchSourcesSectionText("Git")
+                .enterValueIntoGitProjectRepositoryInputAndClickSubmit(TestUtils.generateRandomAlphanumeric())
+                .isSuccessSubstringAppeared();
+
+        Assert.assertFalse(isSuccessSubstringAppeared);
     }
 }

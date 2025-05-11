@@ -2,6 +2,7 @@ package school.redrover.page.multibranch;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
@@ -88,8 +89,13 @@ public class MultibranchConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineLogScanningPage enterValueIntoGitProjectRepositoryInputAndClickSubmit(String gitRepositoryUrl) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.remote"))).sendKeys(gitRepositoryUrl);
+        WebElement GitProjectRepositoryInput = getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.remote")));
+
+        GitProjectRepositoryInput.clear();
+        GitProjectRepositoryInput.sendKeys(gitRepositoryUrl);
+
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar h1")));
 
         return new MultibranchPipelineLogScanningPage(getDriver());
     }
