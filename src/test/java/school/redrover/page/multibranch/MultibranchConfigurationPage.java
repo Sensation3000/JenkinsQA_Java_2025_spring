@@ -88,11 +88,11 @@ public class MultibranchConfigurationPage extends BasePage {
                 .toList();
     }
 
-    public MultibranchPipelineLogScanningPage enterValueIntoGitProjectRepositoryInputAndClickSubmit(String gitRepositoryUrl) {
-        WebElement GitProjectRepositoryInput = getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.remote")));
+    public MultibranchPipelineLogScanningPage enterValueIntoProjectRepositoryInputAndClickSubmit(String repositoryUrl, By locator) {
+        WebElement GitProjectRepositoryInput = getWait5().until(ExpectedConditions.elementToBeClickable(locator));
 
         GitProjectRepositoryInput.clear();
-        GitProjectRepositoryInput.sendKeys(gitRepositoryUrl);
+        GitProjectRepositoryInput.sendKeys(repositoryUrl);
 
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar h1")));

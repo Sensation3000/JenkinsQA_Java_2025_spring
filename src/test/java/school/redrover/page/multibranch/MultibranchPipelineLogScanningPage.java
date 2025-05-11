@@ -16,9 +16,11 @@ public class MultibranchPipelineLogScanningPage extends BasePage {
         super(driver);
     }
 
-    public boolean isSuccessSubstringAppeared() {
+    public boolean isSuccessSubstringAppeared(String branchSourceType) {
         try {
-            getWait10().until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("pre a"), 6));
+            int expectedCount = branchSourceType.equals("Git") ? 6 : 3;
+
+            getWait10().until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("pre a"), expectedCount));
             getWait10().until(ExpectedConditions.textToBePresentInElement(preElement, "Finished"));
 
             return preElement.getText().contains("SUCCESS");
