@@ -201,29 +201,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isTextBuildScheduled);
     }
 
-    @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
-    public void testAvailableBuildNowOnbreadcrumbs() {
-        boolean isTextBuildScheduled = new HomePage(getDriver())
-                .clickScheduleBuild()
-                .isTextBuildScheduled();
-
-        assertTrue(isTextBuildScheduled);
-    }
-
-    @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
-    public void testAvailableSuccessResult() {
-        boolean isFinishedSuccess = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickLeftSideMenuBuildNow()
-                .clickStatus()
-                .clickLastBuild()
-                .clickConsoleOutput()
-                .isFinishedSuccess();
-
-        assertTrue(isFinishedSuccess);
-    }
-
-    @Test(dependsOnMethods = "testAvailableSuccessResult")
+    @Test(dependsOnMethods = "testAvailableBuildNowOnProjectPage")
     public void testDeleteBuild() {
         boolean isDeleteSuccess = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -234,6 +212,28 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .isBuildDeleted();
 
         assertTrue(isDeleteSuccess);
+    }
+
+    @Test(dependsOnMethods = "testDeleteBuild")
+    public void testAvailableBuildNowOnbreadcrumbs() {
+        boolean isTextBuildScheduled = new HomePage(getDriver())
+                .clickScheduleBuild()
+                .isTextBuildScheduled();
+
+        assertTrue(isTextBuildScheduled);
+    }
+
+    @Test(dependsOnMethods = "testAvailableBuildNowOnbreadcrumbs")
+    public void testAvailableSuccessResult() {
+        boolean isFinishedSuccess = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickLeftSideMenuBuildNow()
+                .clickStatus()
+                .clickLastBuild()
+                .clickConsoleOutput()
+                .isFinishedSuccess();
+
+        assertTrue(isFinishedSuccess);
     }
 
     @DataProvider(name = "tooltipFeatures")

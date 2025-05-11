@@ -327,7 +327,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickLastBuild() {
-        lastBuild.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(lastBuild)).click();
 
         return this;
     }
