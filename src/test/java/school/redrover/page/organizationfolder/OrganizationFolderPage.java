@@ -1,10 +1,12 @@
 package school.redrover.page.organizationfolder;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.folder.FolderProjectPage;
 
 public class OrganizationFolderPage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']/h1")
@@ -62,5 +64,13 @@ public class OrganizationFolderPage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOf(header));
 
         return headerIcon.getDomAttribute("title");
+    }
+
+    public FolderProjectPage clickProjectName() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
+                .click();
+
+        return new FolderProjectPage(getDriver());
     }
 }
