@@ -9,8 +9,7 @@ public class AppearanceTest extends BaseTest {
 
     @Test
     public void testDarkTheme() {
-        HomePage homePage = new HomePage(getDriver());
-        String popUpSaveButtonText = homePage
+        String popUpSaveButtonText = new HomePage(getDriver())
                     .clickManageJenkinsOnLeftSidePanel()
                     .clickAppearanse()
                     .clickDarkSistemTheme()

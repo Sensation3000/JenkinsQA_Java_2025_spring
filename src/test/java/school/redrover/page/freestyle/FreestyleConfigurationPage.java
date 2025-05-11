@@ -13,6 +13,9 @@ import java.util.List;
 
 public class FreestyleConfigurationPage extends BasePage {
 
+    @FindBy(name = "Submit")
+    private WebElement buttonSave;
+
     @FindBy(css = "button[suffix='builder']")
     private WebElement buttonAddBuildStep;
 
@@ -58,7 +61,6 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(xpath = "//div/input[@name='_.projectUrlStr']")
     private WebElement gitHubProjectURL;
 
-
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -76,7 +78,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleProjectPage clickSaveButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("button[name='Submit']")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonSave)).click();
 
         return new FreestyleProjectPage(getDriver());
     }
@@ -556,7 +558,36 @@ public class FreestyleConfigurationPage extends BasePage {
         return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
                 .getText()
-                .contains(expectedText);
+                .equals(expectedText);
+    }
+
+    public int numberHelpTooltips() {
+        int numberTrueTooltipVisibleWithText = 0;
+
+        List<WebElement> visibleButtonsHelp = getDriver().findElements(By.cssSelector(".jenkins-help-button"))
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .toList();
+
+        Actions actions = new Actions(getDriver());
+
+        for (int i = 0; i < visibleButtonsHelp.size(); i++) {
+            actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+
+            boolean isVisibleText = getWait10()
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
+                    .getText()
+                    .contains("Help");
+
+            if(isVisibleText) numberTrueTooltipVisibleWithText++;
+
+            try {
+                actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
+            }catch (Exception e){
+                new Actions(getDriver()).sendKeys(Keys.END).perform();;
+            }
+        }
+
+        return numberTrueTooltipVisibleWithText;
     }
 }
-

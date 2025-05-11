@@ -3,7 +3,11 @@ package school.redrover.page.multibranch;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
+
+import java.util.List;
 
 public class MultibranchConfigurationPage extends BasePage {
 
@@ -44,5 +48,49 @@ public class MultibranchConfigurationPage extends BasePage {
         getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(text);
 
         return this;
+    }
+
+    public MultibranchConfigurationPage scrollAndClickOnBranchSourcesSectionWithJs() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[suffix='sources']")));
+
+        return this;
+    }
+
+    public String getBranchSourcesSectionText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("branch-sources"))).getText().trim();
+    }
+
+    public MultibranchConfigurationPage clickOnBranchSourcesSectionText(String branchSourceName) {
+        try { getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item ') and contains(text(), '%s')]"
+                .formatted(branchSourceName.trim()))))
+                .click();
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Please enter the valid branch source name", e);
+        }
+
+        return this;
+    }
+
+    public boolean isBranchSourceButtonDisplayed() {
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-section-id='branch-sources']")))
+                .isDisplayed();
+    }
+
+    public List<String> getBranchSourcesTypeNames() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")));
+
+        return getDriver().findElements(By.cssSelector("button[class*='jenkins-dropdown__item']"))
+                .stream()
+                .map(webelement -> webelement.getText().trim())
+                .toList();
+    }
+
+    public MultibranchPipelineLogScanningPage enterValueIntoGitProjectRepositoryInputAndClickSubmit(String gitRepositoryUrl) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.remote"))).sendKeys(gitRepositoryUrl);
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+
+        return new MultibranchPipelineLogScanningPage(getDriver());
     }
 }

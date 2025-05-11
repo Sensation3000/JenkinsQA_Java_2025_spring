@@ -12,4 +12,9 @@ public abstract class BasePage extends BaseModel {
     public HeaderComponent getHeader() {
         return new HeaderComponent(getDriver());
     }
+
+    public String getCurrentUrl() {
+
+        return getDriver().getCurrentUrl();
+    }
 }
