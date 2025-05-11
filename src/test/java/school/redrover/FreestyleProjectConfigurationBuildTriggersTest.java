@@ -211,7 +211,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
-    public void testAvailableSuccesResult() {
+    public void testAvailableSuccessResult() {
         boolean isFinishedSuccess = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuBuildNow()
@@ -221,6 +221,19 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .isFinishedSuccess();
 
         assertTrue(isFinishedSuccess);
+    }
+
+    @Test(dependsOnMethods = "testAvailableSuccessResult")
+    public void testDeleteBuild() {
+        boolean isDeleteSuccess = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickLastBuild()
+                .clickDeleteBuild()
+                .clickSubmitDeleteBuild()
+                .clickChanges()
+                .isBuildDeleted();
+
+        assertTrue(isDeleteSuccess);
     }
 
     @DataProvider(name = "tooltipFeatures")
