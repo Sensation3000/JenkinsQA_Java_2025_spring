@@ -1,5 +1,6 @@
 package school.redrover.testdata;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 
 import java.util.Arrays;
@@ -53,6 +54,14 @@ public class TestDataProvider {
                         "Creates a set of Pipeline projects according to detected branches in one SCM repository.",
                         "Creates a set of multibranch project subfolders by scanning for repositories."
                 )}
+        };
+    }
+
+    @DataProvider(name = "branchSourceTypes")
+    public Object[][] branchSourceTypes() {
+        return new Object[][]{
+                {"Git", By.name("_.remote")},
+                {"GitHub", By.name("_.repositoryUrl")}
         };
     }
 }
