@@ -65,9 +65,6 @@ public class FreestyleProjectPage extends BasePage {
     @FindBy (xpath = "//a[contains(@href, 'confirmDelete')]")
     private WebElement deleteBuild;
 
-    @FindBy (xpath = "//a[contains(@href,'changes')]")
-    private WebElement changes;
-
     @FindAll({
             @FindBy(xpath = "//*[@id='out']/div[2]"),
             @FindBy(xpath = "//*[@id='out']/div"),
@@ -352,11 +349,11 @@ public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage clickSubmitDeleteBuild() {
         getDriver().findElement(By.name("Submit")).click();
-        return new FreestyleProjectPage(getDriver());
+        return this;
     }
 
     public FreestyleProjectPage clickChanges() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated((By)changes)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'changes')]"))).click();
         return this;
     }
 
