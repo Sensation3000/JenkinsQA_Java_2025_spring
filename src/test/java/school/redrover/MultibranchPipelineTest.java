@@ -51,8 +51,7 @@ public class MultibranchPipelineTest extends BaseTest {
         NewItemPage newItemPage  = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(MULTIBRANCH_NAME.concat(invalidSymbol))
-                .selectMultibranchPipeline()
-                .scrollToItemNameWithJS();
+                .selectMultibranchPipeline();
 
         Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
