@@ -9,7 +9,11 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
+
+import static org.testng.Assert.assertEquals;
 
 
 public class MultibranchPipelineTest extends BaseTest {
@@ -64,54 +68,29 @@ public class MultibranchPipelineTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testVerifySectionHasTooltip() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("MultiBranchPipeline");
+        new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
+                .clickAdvanced();
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        String actualTooltip = getDriver().
-                findElement(By.xpath("//*[contains(text(), '" + "Display Name" + "')]//a"))
-                .getAttribute("tooltip");
-
-        Assert.assertEquals(actualTooltip, "Help for feature: Display Name");
+        assertEquals(new FreestyleConfigurationPage(getDriver()).numberHelpTooltips(), 22);
     }
 
-    @Ignore
     @Test
-    public void testTryCreateProjectExistName() throws InterruptedException {
+    public void testTryCreateProjectExistName() {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(MULTIBRANCH_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .getHeader()
+                .clickLogo()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(MULTIBRANCH_NAME).selectMultiConfiguration()
+                .getItemNameInvalidMessage();
 
-        final String projectName = "MultiBuild";
-        final String errorMessage = "» A job already exists with the name " + "‘" + projectName + "’";
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        JavascriptExecutor js1 = (JavascriptExecutor) getDriver();
-        js1.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='jenkins-name-icon']"))).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
-        JavascriptExecutor js2 = (JavascriptExecutor) getDriver();
-        js2.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-
-        String actualMessage = getDriver().findElement(By.xpath("//*[@id='itemname-invalid']")).getText();
-        Assert.assertEquals(actualMessage, errorMessage);
+        assertEquals(errorMessage, "» A job already exists with the name " + "‘" + MULTIBRANCH_NAME + "’");
     }
 }
