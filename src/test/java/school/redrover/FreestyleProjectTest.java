@@ -376,4 +376,19 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertEquals(numberHelpButtons, 28);
     }
+
+    @Test
+    public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName("New Freestyle Project")
+                .selectFreestyleAndClickOk()
+                .addDescription("Freestyle Project Description")
+                .clickSaveButton()
+                .clickProjectBreadcrumbsDropDownMenu();
+
+        Assert.assertEquals(
+                freestyleProjectPage.getDropDownMenuItemsText(),
+                freestyleProjectPage.getLeftSideMenuWithoutStatus());
+    }
 }
