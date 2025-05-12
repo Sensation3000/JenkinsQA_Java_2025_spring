@@ -124,6 +124,10 @@ public class NewItemPage extends BasePage {
         return itemTypesTextList;
     }
 
+    public String getItemNameErrorMessage(){
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+    }
+
     public String getItemNameInvalidMessage() {
 
         return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage)).getText();

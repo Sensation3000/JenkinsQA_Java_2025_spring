@@ -52,7 +52,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(MULTIBRANCH_NAME.concat(invalidSymbol))
                 .selectMultibranchPipeline()
-                .getItemNameInvalidMessage();
+                .getItemNameErrorMessage();
 
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
