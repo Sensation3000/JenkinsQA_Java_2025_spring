@@ -48,14 +48,13 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
     public void testCreateWithSpecialSymbols(String invalidSymbol) {
-        String errorMessage = new HomePage(getDriver())
+        NewItemPage newItemPage  = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(MULTIBRANCH_NAME.concat(invalidSymbol))
                 .selectMultibranchPipeline()
-                .scrollToItemNameWithJS()
-                .getItemNameInvalidMessage();
+                .scrollToItemNameWithJS();
 
-        Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
 
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
