@@ -1,37 +1,48 @@
 package school.redrover;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.view.EditViewPage;
+import school.redrover.page.view.NewViewPage;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
 public class DashboardViewTest extends BaseTest {
-    private final String JOB_NAME = "Test item";
+    private final static String JOB_NAME = "Test item";
 
     @Test
-    public void testCreateMyView() {
-        CreateFreestyleProjectForView();
+    public void CreateFreestyleProjectForView() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton();
 
-        String view_name = "TestViewName";
-        new HomePage(getDriver())
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), JOB_NAME);
+    }
+
+    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
+    public void testCreateMyView() {
+        final String view_name = "TestViewName";
+
+        HomePage homePage = (HomePage) new HomePage(getDriver())
                 .clickNewView()
                 .addName(view_name)
                 .clickMyView()
                 .clickCreateButton();
 
-        String newViewName = new HomePage(getDriver()).getNameOfView(view_name);
-        assertEquals(newViewName, view_name);
+        assertEquals(homePage.getNameOfView(), view_name);
     }
 
-    @Test
+    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
     public void testCreateListView() {
         String listViewName = "TestlistViewName";
         String testItemJob = "Test item";
-
-        CreateFreestyleProjectForView();
 
         ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()
@@ -47,17 +58,6 @@ public class DashboardViewTest extends BaseTest {
                 .clickSaveButton();
 
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
-        assertEquals(new HomePage(getDriver()).getNameOfView(listViewName), listViewName);
+        assertEquals(new HomePage(getDriver()).getNameOfView(), listViewName);
     }
-
-    private void CreateFreestyleProjectForView() {
-        new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .getHeader()
-                .clickLogo();
-    }
-
 }

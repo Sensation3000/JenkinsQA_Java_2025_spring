@@ -201,7 +201,20 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isTextBuildScheduled);
     }
 
-    @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
+    @Test(dependsOnMethods = "testAvailableBuildNowOnProjectPage")
+    public void testDeleteBuild() {
+        boolean isDeleteSuccess = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickLastBuild()
+                .clickDeleteBuild()
+                .clickSubmitDeleteBuild()
+                .clickChanges()
+                .isBuildDeleted();
+
+        assertTrue(isDeleteSuccess);
+    }
+
+    @Test(dependsOnMethods = "testDeleteBuild")
     public void testAvailableBuildNowOnbreadcrumbs() {
         boolean isTextBuildScheduled = new HomePage(getDriver())
                 .clickScheduleBuild()
@@ -210,8 +223,8 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isTextBuildScheduled);
     }
 
-    @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
-    public void testAvailableSuccesResult() {
+    @Test(dependsOnMethods = "testAvailableBuildNowOnbreadcrumbs")
+    public void testAvailableSuccessResult() {
         boolean isFinishedSuccess = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickLeftSideMenuBuildNow()
