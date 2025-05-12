@@ -10,7 +10,7 @@ public class ScriptConsoleTest extends BaseTest {
     private static final String ERROR_SCRIPT_CONSOLE = "123$*";
 
     @Test
-    public void СheckScriptExecutionInConsole() {
+    public void testСheckScriptExecutionInConsole() {
         String scriptResult = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickScriptConsole()
@@ -20,7 +20,7 @@ public class ScriptConsoleTest extends BaseTest {
     }
 
     @Test
-    public void СheckErrorScriptExecutionInConsole() {
+    public void testСheckErrorScriptExecutionInConsole() {
         String errorScriptResult = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickScriptConsole()
