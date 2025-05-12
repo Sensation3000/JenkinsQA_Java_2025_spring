@@ -12,6 +12,8 @@ import school.redrover.page.HomePage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
+import school.redrover.page.newitem.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
 
 import static org.testng.Assert.assertEquals;
 
@@ -44,28 +46,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
     }
 
-    @Test
-    public void testCreateWithSpecialSymbols() {
-        String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+    @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
+    public void testCreateWithSpecialSymbols(String invalidSymbol) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(MULTIBRANCH_NAME.concat(invalidSymbol))
+                .selectMultibranchPipeline()
+                .getItemNameInvalidMessage();
 
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
-
-        for (String specChar : specialCharacters) {
-            nameField.clear();
-            nameField.sendKeys("Mult" + specChar + "branch");
-
-            WebElement actualMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
-                    xpath("//div[@id='itemname-invalid']")));
-
-            String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
-            Assert.assertEquals(actualMessage.getText(), expectMessage, "Message is not displayed");
-        }
+        Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
 
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
