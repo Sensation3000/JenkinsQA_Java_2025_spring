@@ -356,7 +356,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickChanges() {
-        changes.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(changes)).click();
         return this;
     }
 
