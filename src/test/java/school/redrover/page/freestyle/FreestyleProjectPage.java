@@ -352,7 +352,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage clickSubmitDeleteBuild() {
         getDriver().findElement(By.name("Submit")).click();
-        return this;
+        return new FreestyleProjectPage(getDriver());
     }
 
     public FreestyleProjectPage clickChanges() {
