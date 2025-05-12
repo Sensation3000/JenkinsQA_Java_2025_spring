@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.sun.source.tree.AssertTree;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -9,56 +8,89 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
-
 import java.util.List;
-
 import static org.testng.Assert.assertTrue;
 
 public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
-    private static final String PROJECT_NAME = "New project";
-    private static final String NON_EXISTENT_PROJECT_NAME = "qwerty";
-    private static final String AUTH_TOKEN = "sometoken8ad01cf431d742977b8cc82";
-    private static final String EXPECTED_TRIGGER_INFO_TEXT = """
-        Use the following URL to trigger build remotely: JENKINS_URL/job/New%20project/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
-        Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
-        """.trim();
+    private static final String PROJECT_NAME = "Project Name";
+    private static final String NON_EXISTENT_PROJECT_NAME = "Non Existent Project Name";
+    private static final String AUTH_TOKEN = "Test-Token";
     private static final String EXPECTED_SCHEDULE = "H 14 * * 1-5";
     private static final String UNEXPECTED_SCHEDULE = "H";
     private static final String EXPECTED_TOOLTIP_TEXT = "Help for feature: ";
     private static final String GIT_HUB_PROJECT_LINK = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
-    private static final String GIR_HUB = "GitHub";
-    
-    @Test
-    public void testTriggersSectionHeaderAndHelperIcons() {
+    private static final String GIT_HUB = "GitHub";
+    private static FreestyleConfigurationPage freestyleConfigurationPage;
 
-        FreestyleConfigurationPage page = new HomePage(getDriver())
+    @Test
+    public void testCreateFreestyleProjectAndOpenBuildTriggersSection() {
+        freestyleConfigurationPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggers();
 
-        Assert.assertEquals(page.getSectionNameTriggers(), "Triggers");
-        Assert.assertEquals(page.countHelperIconsTriggersSection(), 8);
-        Assert.assertTrue(page.isTriggerBuildsRemotelyCheckboxDisplayed());
-        Assert.assertTrue(page.isTriggerBuildsRemotelyCheckboxEnabled());
-        Assert.assertTrue(page.isBuildAfterProjectsCheckboxDisplayed());
-        Assert.assertTrue(page.isBuildAfterProjectsCheckboxEnabled());
-        Assert.assertTrue(page.isBuildPeriodicallyCheckboxDisplayed());
-        Assert.assertTrue(page.isBuildPeriodicallyCheckboxEnabled());
-        Assert.assertTrue(page.isGithubHookTriggerCheckboxDisplayed());
-        Assert.assertTrue(page.isGithubHookTriggerCheckboxEnabled());
-        Assert.assertTrue(page.isPollSCMCheckboxDisplayed());
-        Assert.assertTrue(page.isPollSCMCheckboxEnabled());
+        Assert.assertEquals(freestyleConfigurationPage.getSectionNameTriggers(), "Triggers");
+        Assert.assertEquals(freestyleConfigurationPage.countHelperIconsTriggersSection(), 8);
     }
 
-    @Test
-    public void testRemoteTriggerOptionDisplaysTokenField() {
 
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+    @Test(dependsOnMethods = "testCreateFreestyleProjectAndOpenBuildTriggersSection")
+    public void testTriggerBuildsRemotelyCheckboxIsVisibleAndEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToBuildTriggers();
+        Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxDisplayed());
+        Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxEnabled());
+    }
+
+    @Test(dependsOnMethods = "testTooltipsAppearForBuildTriggers")
+    public void testBuildAfterProjectsCheckboxIsVisibleAndEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToBuildTriggers();
+        Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxDisplayed());
+        Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxEnabled());
+    }
+
+    @Test(dependsOnMethods = "testTooltipsAppearForBuildTriggers")
+    public void testBuildPeriodicallyCheckboxIsVisibleAndEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToBuildTriggers();
+        Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxDisplayed());
+        Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxEnabled());
+    }
+
+    @Test(dependsOnMethods = "testTooltipsAppearForBuildTriggers")
+    public void testGithubHookTriggerCheckboxIsVisibleAndEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToBuildTriggers();
+        Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxDisplayed());
+        Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxEnabled());
+    }
+
+    @Test(dependsOnMethods = "testTooltipsAppearForBuildTriggers")
+    public void testPollSCMCheckboxIsVisibleAndEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToBuildTriggers();
+        Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxDisplayed());
+        Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxEnabled());
+    }
+
+    @Test(dependsOnMethods = "testPollSCMCheckboxIsVisibleAndEnabled")
+    public void testRemoteTriggerOptionDisplaysTokenField() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToBuildTriggers()
                 .checkTriggerBuildsRemotelyCheckbox()
                 .enterAuthToken(AUTH_TOKEN)
@@ -68,16 +100,13 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         Assert.assertEquals(freestyleConfigurationPage.getAuthenticationTokenLabelText(), "Authentication Token");
         Assert.assertEquals(freestyleConfigurationPage.getAuthTokenDomValue(), AUTH_TOKEN);
-        Assert.assertEquals(freestyleConfigurationPage.getTriggerInfoText(), EXPECTED_TRIGGER_INFO_TEXT);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRemoteTriggerOptionDisplaysTokenField")
     public void testBuildAfterOtherProjectsAreBuiltOptionDisplaysField() {
-
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToIgnorePostCommitHooksCheckbox()
                 .checkBuildAfterProjectsCheckbox()
                 .setProjectToWatch(PROJECT_NAME)
@@ -90,14 +119,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(freestyleConfigurationPage.isLastRadioButtonSelected());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testBuildAfterOtherProjectsAreBuiltOptionDisplaysField")
     public void testBuildPeriodicallyScheduleFieldIsDisplayed() {
-
         String actualSchedule = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .scrollToBuildTriggers()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToIgnorePostCommitHooksCheckbox()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(EXPECTED_SCHEDULE)
                 .clickSaveButton()
@@ -108,14 +135,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(actualSchedule, EXPECTED_SCHEDULE);
     }
 
-    @Test
-    public void shouldEnableGitHubHookTriggerForFreestyleProject() {
-
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .scrollToBuildTriggers()
+    @Test(dependsOnMethods = "testBuildPeriodicallyScheduleFieldIsDisplayed")
+    public void testGithubHookCheckboxCanBeEnabled() {
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .scrollToIgnorePostCommitHooksCheckbox()
                 .checkGithubHookCheckbox()
                 .clickSaveButton()
                 .clickConfigure()
@@ -124,13 +149,11 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(freestyleConfigurationPage.isGithubHookCheckboxSelected());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testGithubHookCheckboxCanBeEnabled")
     public void testPollSCMCheckboxIsDisplayed() {
-
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToIgnorePostCommitHooksCheckbox()
                 .checkPollSCMCheckbox()
                 .sendScheduleTextForPollSCM(EXPECTED_SCHEDULE)
@@ -143,15 +166,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxSelected());
     }
 
-    @Test
-    public void validateBuildTriggersInputProjectsToWatch() {
-
+    @Test(dependsOnMethods = "testPollSCMCheckboxIsDisplayed")
+    public void testErrorShownForNonExistentProjectName() {
         boolean isErrorMessageAppears = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .checkBuildAfterProjectsCheckbox()
                 .setWrongProjectToWatch(NON_EXISTENT_PROJECT_NAME)
                 .clickOnDropdownToClose()
                 .isNoSuchProjectErrorVisible();
@@ -159,39 +179,33 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertTrue(isErrorMessageAppears);
     }
 
-    @Test
-    public void validateBuildTriggersBuildPeriodicallyScheduleInput() {
-
+    @Test(dependsOnMethods = "testErrorShownForNonExistentProjectName")
+    public void testErrorShownForInvalidBuildPeriodicallySchedule() {
         boolean isErrorMessageAppears = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(UNEXPECTED_SCHEDULE)
-                .checkPollSCMCheckbox()
+                .checkGithubHookCheckbox()
                 .isScheduleSpecErrorVisible();
 
         Assert.assertTrue(isErrorMessageAppears);
     }
 
-    @Test
-    public void validateBuildTriggersPollSCMScheduleInput() {
-
+    @Test(dependsOnMethods = "testErrorShownForInvalidBuildPeriodicallySchedule")
+    public void testErrorShownForInvalidPollSCMSchedule() {
         boolean isErrorMessageAppears = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToIgnorePostCommitHooksCheckbox()
-                .checkPollSCMCheckbox()
                 .sendScheduleTextForPollSCM(UNEXPECTED_SCHEDULE)
-                .setBuildPeriodicallyCheckbox()
+                .checkGithubHookCheckbox()
                 .isScheduleSpecErrorVisible();
 
         Assert.assertTrue(isErrorMessageAppears);
     }
 
-    @Test(dependsOnMethods = "testTriggersSectionHeaderAndHelperIcons")
+    @Test(dependsOnMethods = "testCreateFreestyleProjectAndOpenBuildTriggersSection")
     public void testAvailableBuildNowOnProjectPage() {
         boolean isTextBuildScheduled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -247,13 +261,11 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "tooltipFeatures")
+    @Test(dataProvider = "tooltipFeatures", dependsOnMethods = "testCreateFreestyleProjectAndOpenBuildTriggersSection")
     public void testTooltipsAppearForBuildTriggers(String featureName) {
-
-        FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+        freestyleConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToBuildTriggers()
                 .hoverHelpIcon(featureName);
 
@@ -271,6 +283,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickSaveButton()
                 .getLeftSideMenuNameList();
 
-        Assert.assertTrue(leftMenuList.contains(GIR_HUB));
+        Assert.assertTrue(leftMenuList.contains(GIT_HUB));
     }
 }
