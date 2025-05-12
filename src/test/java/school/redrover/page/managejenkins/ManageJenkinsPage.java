@@ -10,7 +10,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
 import school.redrover.page.clouds.CloudsPage;
+import school.redrover.page.credentials.CredentialsPage;
 import school.redrover.page.plugins.PluginsPage;
+import school.redrover.page.script.ScriptConsolePage;
 import school.redrover.page.system.SystemPage;
 import school.redrover.page.systeminfo.SystemInfoPage;
 import school.redrover.page.user.UsersPage;
@@ -21,6 +23,12 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(css = "a[href='configure']")
     private WebElement buttonSystem;
+
+    @FindBy(xpath = "//a[@href='script']")
+    private WebElement buttonScriptConsole;
+
+    @FindBy(xpath = "//a[@href='credentials']")
+    private WebElement buttonCredentials;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -88,5 +96,16 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='about']")).click();
 
         return new AboutJenkinsPage(getDriver());
+    }
+
+    public ScriptConsolePage clickScriptConsole() {
+        buttonScriptConsole.click();
+
+        return new ScriptConsolePage(getDriver());
+    }
+    public CredentialsPage clickCredentials(){
+        buttonCredentials.click();
+
+        return new CredentialsPage(getDriver());
     }
 }

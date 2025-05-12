@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
+import school.redrover.page.credentials.CredentialsPage;
 import school.redrover.page.newitem.NewItemPage;
 
 import java.util.List;
@@ -68,5 +69,13 @@ public class FolderProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
+    }
+
+    public CredentialsPage clickLeftSideCredentials() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/TestFolder/credentials']")))
+                .click();
+
+        return new CredentialsPage(getDriver());
     }
 }

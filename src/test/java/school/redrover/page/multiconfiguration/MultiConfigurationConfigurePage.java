@@ -5,12 +5,21 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 
 import java.util.List;
 
 public class MultiConfigurationConfigurePage extends BasePage {
+
+    @FindBy(css = "a[href*='configure']")
+    private WebElement buttonConfigure;
+
+    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/section[2]/div[2]/div[1]/button")
+    private WebElement buttonAdvanced;
 
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
@@ -64,34 +73,15 @@ public class MultiConfigurationConfigurePage extends BasePage {
         return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
     }
 
-    public MultiConfigurationConfigurePage clickAdvancedProjectOptions() {
-        getDriver().findElement(By.xpath("//button[@data-section-id='advanced-project-options']"));
+    public MultiConfigurationConfigurePage clickAdvanced(){
+        buttonAdvanced.click();
 
         return this;
     }
 
-    public MultiConfigurationConfigurePage clickAdvancedButton() {
-        getDriver().findElement(By.cssSelector(".jenkins-button.advanced-button"));
+    public MultiConfigurationConfigurePage clickConfigure() {
+        buttonConfigure.click();
 
-        return this;
-    }
-
-    public MultiConfigurationConfigurePage clickQuietPeriodCheckbox() {
-        getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-
-        return this;
-    }
-
-    public MultiConfigurationConfigurePage clickQuietPeriodField() {
-        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='quiet_period']"));
-        inputField.sendKeys(Keys.ARROW_UP);
-
-        return this;
-    }
-
-    public String checkQuietPeriodDefaultValue() {
-        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='quiet_period']"));
-
-        return inputField.getDomAttribute("value");
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 }

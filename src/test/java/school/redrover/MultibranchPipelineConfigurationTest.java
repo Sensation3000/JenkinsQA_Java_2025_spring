@@ -1,8 +1,10 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     final String projectName = "New Multibranch Pipeline Project";
-    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo";
+    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo/";
 
     @Test
     public void createMultibranchPipelineProject() {
@@ -97,15 +99,44 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test
     public void testGitBranchSourceWithValidUrl() {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
-                .goToConfigurationPage()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .scrollAndClickOnBranchSourcesSectionWithJs()
                 .clickOnBranchSourcesSectionText("Git")
-                .enterValueIntoGitProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL)
-                .isSuccessSubstringAppeared();
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.remote"))
+                .isSuccessSubstringAppeared("Git");
+
+        Assert.assertTrue(isSuccessSubstringAppeared);
+    }
+
+    @Test
+    public void testGitBranchSourceWithInvalidUrl() {
+        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .selectMultibranchPipelineAndClickOkWithJS()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
+                .clickOnBranchSourcesSectionText("Git")
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(TestUtils.generateRandomAlphanumeric(), By.name("_.remote"))
+                .isSuccessSubstringAppeared("Git");
+
+        Assert.assertFalse(isSuccessSubstringAppeared);
+    }
+
+    @Test
+    public void testGitHubBranchSourceWithValidUrl() {
+        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .selectMultibranchPipelineAndClickOkWithJS()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
+                .clickOnBranchSourcesSectionText("GitHub")
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.repositoryUrl"))
+                .isSuccessSubstringAppeared("GitHub");
 
         Assert.assertTrue(isSuccessSubstringAppeared);
     }
