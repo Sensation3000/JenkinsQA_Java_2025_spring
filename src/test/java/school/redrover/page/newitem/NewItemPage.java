@@ -124,12 +124,6 @@ public class NewItemPage extends BasePage {
         return itemTypesTextList;
     }
 
-    public NewItemPage scrollToItemNameWithJS() {
-        TestUtils.scrollToItemWithJS(getDriver(), itemName);
-
-        return this;
-    }
-
     public String getItemNameInvalidMessage() {
 
         return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage)).getText();
@@ -154,7 +148,8 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectMultibranchPipeline() {
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")));
+        getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")).click();
+
         return this;
     }
 
