@@ -52,7 +52,7 @@ public class SystemConfigureTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testModifyGlobalSystemParameters")
-    public void test() {
+    public void testUndoChangeBeforeSave() {
         final String actualExecutorsValue = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemButton()

@@ -562,7 +562,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public int numberHelpTooltips() {
-        int numberTrueTooltipVisibleWithText = 0;
+        int numberHelpTooltips = 0;
 
         List<WebElement> visibleButtonsHelp = getDriver().findElements(By.cssSelector(".jenkins-help-button"))
                 .stream()
@@ -579,7 +579,7 @@ public class FreestyleConfigurationPage extends BasePage {
                     .getText()
                     .contains("Help");
 
-            if(isVisibleText) numberTrueTooltipVisibleWithText++;
+            if(isVisibleText) numberHelpTooltips++;
 
             try {
                 actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
@@ -588,6 +588,6 @@ public class FreestyleConfigurationPage extends BasePage {
             }
         }
 
-        return numberTrueTooltipVisibleWithText;
+        return numberHelpTooltips;
     }
 }
