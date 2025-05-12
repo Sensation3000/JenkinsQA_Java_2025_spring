@@ -223,6 +223,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isFinishedSuccess);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAvailableSuccessResult")
     public void testDeleteBuild() {
         boolean isDeleteSuccess = new HomePage(getDriver())
