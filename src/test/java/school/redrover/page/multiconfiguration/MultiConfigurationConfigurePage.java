@@ -1,6 +1,7 @@
 package school.redrover.page.multiconfiguration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -61,5 +62,36 @@ public class MultiConfigurationConfigurePage extends BasePage {
         );
 
         return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
+    }
+
+    public MultiConfigurationConfigurePage clickAdvancedProjectOptions() {
+        getDriver().findElement(By.xpath("//button[@data-section-id='advanced-project-options']"));
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickAdvancedButton() {
+        getDriver().findElement(By.cssSelector(".jenkins-button.advanced-button"));
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickQuietPeriodCheckbox() {
+        getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickQuietPeriodField() {
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='quiet_period']"));
+        inputField.sendKeys(Keys.ARROW_UP);
+
+        return this;
+    }
+
+    public String checkQuietPeriodDefaultValue() {
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='quiet_period']"));
+
+        return inputField.getDomAttribute("value");
     }
 }
