@@ -37,13 +37,10 @@ public class BuildHistoryTest extends BaseTest {
         Assert.assertEquals(buildStatusProjectName, PROJECT_NAME);
     }
 
-    public void testBuildHistory() {
+    @Test(dependsOnMethods = "testCheckTheBuildStatusDisplay")
+    public void testVerifyDeleteBuildHistory() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .clickFreestyleLink(PROJECT_NAME)
-                .clickLeftSideMenuBuildNow()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickOnBuildProject()
                 .clickDeleteBuild();
 

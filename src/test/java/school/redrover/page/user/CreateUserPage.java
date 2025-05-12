@@ -54,6 +54,6 @@ public class CreateUserPage extends BasePage {
 
     public String getUserNameErrorMessage() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']/form/div[1]/div[2]"))).getText();
+                By.className("error"))).getText();
     }
 }

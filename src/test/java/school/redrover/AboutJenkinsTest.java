@@ -1,13 +1,40 @@
 package school.redrover;
 
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class InfoJenkinsTest extends BaseTest {
+public class AboutJenkinsTest extends BaseTest {
+
+    @Test
+    public void testOpenViaJenkinsVersionOnHomePage() {
+
+        final  List<String> expectedOptions = Arrays.asList("Dashboard", "Manage Jenkins", "About Jenkins");
+
+        List<String> breadcrumbNavigation = new HomePage(getDriver())
+                .clickJenkinsVersionButton()
+                .clickAboutJenkinsInJenkinsVersionDropDownMenu()
+                .getBreadcrumbsNavigationList();
+
+        Assert.assertEquals(breadcrumbNavigation, expectedOptions);
+    }
+
+    @Test
+    public void testOpenAboutJenkinsPage() {
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickAboutJenkins()
+                .getCurrentUrl();
+
+        Assert.assertEquals(currentUrl, "http://localhost:8080/manage/about/");
+    }
 
     @Test
     public void checkJenkinsVersion() {
@@ -17,6 +44,16 @@ public class InfoJenkinsTest extends BaseTest {
                 .getCurrentVersion();
 
         Assert.assertEquals(version, "Version 2.492.2");
+    }
+
+    @Test
+    public void testLogoIsDisplayed() {
+        boolean isLogoDisplayed = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickAboutJenkins()
+                .isLogoDisplayed();
+
+        Assert.assertTrue(isLogoDisplayed);
     }
 
     @Test

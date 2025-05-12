@@ -23,7 +23,7 @@ public class UsersPage extends BasePage {
 
     public List<WebElement> getUsersList() {
         return getWait10().until(ExpectedConditions
-                .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
+                .presenceOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
 
     public List<WebElement> getUserIdLinks() {
