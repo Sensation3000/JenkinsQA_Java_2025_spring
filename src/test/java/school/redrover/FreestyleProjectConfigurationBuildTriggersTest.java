@@ -28,7 +28,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     private static final String EXPECTED_TOOLTIP_TEXT = "Help for feature: ";
     private static final String GIT_HUB_PROJECT_LINK = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_spring";
     private static final String GIR_HUB = "GitHub";
-    
+
     @Test
     public void testTriggersSectionHeaderAndHelperIcons() {
 
@@ -110,7 +110,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void shouldEnableGitHubHookTriggerForFreestyleProject() {
-
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
@@ -126,7 +125,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void testPollSCMCheckboxIsDisplayed() {
-
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
@@ -145,7 +143,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void validateBuildTriggersInputProjectsToWatch() {
-
         boolean isErrorMessageAppears = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
@@ -161,7 +158,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void validateBuildTriggersBuildPeriodicallyScheduleInput() {
-
         boolean isErrorMessageAppears = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
@@ -177,7 +173,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
     @Test
     public void validateBuildTriggersPollSCMScheduleInput() {
-
         boolean isErrorMessageAppears = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(PROJECT_NAME)
@@ -201,7 +196,6 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isTextBuildScheduled);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAvailableBuildNowOnProjectPage")
     public void testDeleteBuild() {
         boolean isDeleteSuccess = new HomePage(getDriver())
@@ -215,7 +209,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isDeleteSuccess);
     }
 
-    @Test(dependsOnMethods = "testAvailableBuildNowOnProjectPage")
+    @Test(dependsOnMethods = "testDeleteBuild")
     public void testAvailableBuildNowOnbreadcrumbs() {
         boolean isTextBuildScheduled = new HomePage(getDriver())
                 .clickScheduleBuild()
