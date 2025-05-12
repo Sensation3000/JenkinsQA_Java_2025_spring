@@ -327,7 +327,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickLastBuild() {
-        lastBuild.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(lastBuild)).click();
 
         return this;
     }
@@ -346,17 +346,17 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleProjectPage clickDeleteBuild() {
-        deleteBuild.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(deleteBuild)).click();
         return this;
     }
 
     public FreestyleProjectPage clickSubmitDeleteBuild() {
         getDriver().findElement(By.name("Submit")).click();
-        return new FreestyleProjectPage(getDriver());
+        return this;
     }
 
     public FreestyleProjectPage clickChanges() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(changes)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(changes)).click();
         return this;
     }
 
