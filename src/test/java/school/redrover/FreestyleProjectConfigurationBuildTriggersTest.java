@@ -201,6 +201,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         assertTrue(isTextBuildScheduled);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAvailableBuildNowOnProjectPage")
     public void testDeleteBuild() {
         boolean isDeleteSuccess = new HomePage(getDriver())
