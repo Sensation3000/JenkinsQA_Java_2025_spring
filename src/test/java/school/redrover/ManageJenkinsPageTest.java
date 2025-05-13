@@ -7,20 +7,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.*;
 
 public class ManageJenkinsPageTest extends BaseTest {
-
-    private List<String> getExpectedSectionTitles() {
-        return Arrays.asList(
-                "System Configuration",
-                "Security",
-                "Status Information",
-                "Troubleshooting",
-                "Tools and Actions"
-        );
-    }
 
     private Map<String, List<String>> getExpectedSectionButtons() {
         Map<String, List<String>> sectionButtons = new HashMap<>();
@@ -43,20 +34,20 @@ public class ManageJenkinsPageTest extends BaseTest {
     }
 
     @Test
-    public void MajorSectionsPresentOnManageJenkinsPage() {
-        WebDriver driver = getDriver();
+    public void testIfMainSectionsAreDisplayedOnManageJenkinsPage() {
+        List<String> actualSectionTitles = new HomePage(getDriver())
+                .clickOnManageJenkinsLink()
+                .getMainSectionTitlesOnManageJenkinsPage();
 
-        driver.findElement(By.cssSelector("a[href='/manage']")).click();
+        List<String> expectedSectionTitles = List.of(
+                "System Configuration",
+                "Security",
+                "Status Information",
+                "Troubleshooting",
+                "Tools and Actions"
+        );
 
-        List<WebElement> sections = driver.findElements(By.cssSelector(".jenkins-section__title"));
-        List<String> actualTitles = sections.stream().map(WebElement::getText).toList();
-
-        List<String> expectedTitles = getExpectedSectionTitles();
-
-        for (String title : expectedTitles) {
-            Assert.assertTrue(actualTitles.contains(title),
-                    "Expected section title not found: " + title);
-        }
+        Assert.assertEquals(actualSectionTitles, expectedSectionTitles);
     }
 
     @Test

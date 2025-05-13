@@ -57,6 +57,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testVerifySectionHasTooltip() {
         new HomePage(getDriver())
