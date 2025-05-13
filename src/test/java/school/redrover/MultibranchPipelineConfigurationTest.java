@@ -100,16 +100,20 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
     }
 
-    @Test
-    public void testGitBranchSourceWithValidUrl() {
+    @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
+    public void testGitBranchSourceWithValidUrl(String branchSourceType, By repositoryInputLocator) {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickOnManageJenkinsLink()
+                .clickSystemButton()
+                .selectAnOptionAtGitHubApiUsageDropdownMenu("Throttle at/near rate limit")
+                .clickOnSubmitButton()
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(TestUtils.generateRandomAlphanumeric())
                 .selectMultibranchPipelineAndClickOkWithJS()
                 .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText("Git")
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.remote"))
-                .isSuccessSubstringAppeared("Git");
+                .clickOnBranchSourcesSectionText(branchSourceType)
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, repositoryInputLocator)
+                .isSuccessSubstringAppeared(branchSourceType);
 
         Assert.assertTrue(isSuccessSubstringAppeared);
     }
@@ -126,19 +130,5 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .isSuccessSubstringAppeared(branchSourceType);
 
         Assert.assertFalse(isSuccessSubstringAppeared);
-    }
-
-    @Test
-    public void testGitHubBranchSourceWithValidUrl() {
-        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(TestUtils.generateRandomAlphanumeric())
-                .selectMultibranchPipelineAndClickOkWithJS()
-                .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText("GitHub")
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.repositoryUrl"))
-                .isSuccessSubstringAppeared("GitHub");
-
-        Assert.assertTrue(isSuccessSubstringAppeared);
     }
 }

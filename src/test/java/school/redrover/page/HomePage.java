@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
@@ -46,6 +47,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='/manage/about']")
     private WebElement jenkinsAboutOptionInJenkinsVersionDropDownMenu;
+
+    @FindBy(xpath = "//a[@href='/manage']")
+    private WebElement manageJenkinsLink;
 
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
@@ -316,5 +320,11 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(jenkinsAboutOptionInJenkinsVersionDropDownMenu)).click();
 
         return new AboutJenkinsPage(getDriver());
+    }
+
+    public ManageJenkinsPage clickOnManageJenkinsLink() {
+        getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
+
+        return new ManageJenkinsPage(getDriver());
     }
 }

@@ -1,5 +1,6 @@
 package school.redrover.page.system;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 
 public class SystemPage extends BasePage {
@@ -52,5 +56,22 @@ public class SystemPage extends BasePage {
 
     public String getOfExecutors(){
         return ofExecutors.getDomProperty("value");
+    }
+
+    public SystemPage selectAnOptionAtGitHubApiUsageDropdownMenu(String visibleText) {
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("github-api-usage")));
+
+        Select GitHubApiUsageDropdown = new Select(getDriver().findElement(By.name("_.apiRateLimitChecker")));
+        GitHubApiUsageDropdown.selectByVisibleText(visibleText);
+
+        return this;
+    }
+
+    public HomePage clickOnSubmitButton() {
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.name("Submit")));
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/view/all/newJob']")));
+
+        return new HomePage(getDriver());
     }
 }
