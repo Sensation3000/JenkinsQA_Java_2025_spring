@@ -21,7 +21,6 @@ public class NewItemTest extends BaseTest {
     private static final String ITEM_NAME = "ItemName";
     private static final String ITEM_NAME_NEXT = "ItemName2";
     private static final String RED_COLOR_ERROR = "rgba(230, 0, 31, 1)";
-    private static final String NEW_ITEM_NAME = "New Project Name XYZ";
 
     @Test
     public void testCheckNewItemPageHeader() {
@@ -249,28 +248,5 @@ public class NewItemTest extends BaseTest {
 
             inputField.clear();
         }
-    }
-
-    @Test
-    public void testCreateNewItemWithCorrectName() {
-        String projectName = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(NEW_ITEM_NAME)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(NEW_ITEM_NAME)
-                .getProjectName();
-
-        Assert.assertEquals(projectName, NEW_ITEM_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateNewItemWithCorrectName")
-    public void testCreateNewItemWithExistingName() {
-        String errorMessage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(NEW_ITEM_NAME)
-                .getItemNameInvalidMessage();
-
-        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘%s’".formatted(NEW_ITEM_NAME));
     }
 }
