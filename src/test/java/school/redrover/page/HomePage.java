@@ -6,11 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
-import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
@@ -47,6 +47,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='/manage/about']")
     private WebElement jenkinsAboutOptionInJenkinsVersionDropDownMenu;
+
+    @FindBy(xpath = "//a[@href='/manage']")
+    private WebElement manageJenkinsLink;
 
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
@@ -92,13 +95,6 @@ public class HomePage extends BasePage {
         return descriptionText.isDisplayed();
     }
 
-    public String getNameProject() {
-
-        return getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By
-                        .xpath("//*[@id='job_My name']/td[3]/a"))))
-                .getText();
-    }
-
     public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -125,7 +121,7 @@ public class HomePage extends BasePage {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public BuildHistoryPage clickBuildHistoryTab() {
+    public BuildHistoryPage clickBuildHistoryOnLeftSidePanel() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
 
         return new BuildHistoryPage(getDriver());
@@ -152,7 +148,8 @@ public class HomePage extends BasePage {
     }
 
     public boolean isJobDisplayed(String jobName) {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/span"))).isDisplayed();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/span"))).isDisplayed();
     }
 
     public NewItemPage clickOnNewItemLinkWithChevron(String projectName) {
@@ -167,8 +164,8 @@ public class HomePage extends BasePage {
 
     public String getProjectName() {
         return getWait5()
-                .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
-                .getText();
+                .until(ExpectedConditions.elementToBeClickable(
+                        getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link")))).getText();
     }
 
     public HomePage showDropdownOnHoverByJobName(String jobName) {
@@ -247,12 +244,6 @@ public class HomePage extends BasePage {
         return sign.contains("↓");
     }
 
-    public String getJobIconTitle(String jobName) {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
-                .getDomAttribute("title");
-    }
-
     public List<String> getListHealthReportFromDashboard() {
         if (isJobListEmpty()) {
             return List.of();
@@ -297,12 +288,6 @@ public class HomePage extends BasePage {
         return buildScheduled.getText().equals("Build scheduled");
     }
 
-    public FreestyleProjectPage clickProjectName(String projectName) {
-        getDriver().findElement(By.linkText(projectName)).click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
     public String getJobLastSuccess(String jobName) {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
@@ -335,5 +320,11 @@ public class HomePage extends BasePage {
         getWait10().until(ExpectedConditions.elementToBeClickable(jenkinsAboutOptionInJenkinsVersionDropDownMenu)).click();
 
         return new AboutJenkinsPage(getDriver());
+    }
+
+    public ManageJenkinsPage clickOnManageJenkinsLink() {
+        getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
+
+        return new ManageJenkinsPage(getDriver());
     }
 }
