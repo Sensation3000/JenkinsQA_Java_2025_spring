@@ -130,7 +130,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void checkAvaliableTriggerBoxTestPOM() {
+    public void checkAvaliableTriggerBoxTest() {
         List<WebElement> BoxAvaliable = new HomePage(getDriver())
             .clickNewItemOnLeftSidePanel()
             .sendItemName(PROJECT_NAME)
@@ -141,6 +141,4 @@ public class PipelineTest extends BaseTest {
             Assert.assertTrue(checkbox.isSelected());
         }
     }
-
-
 }
