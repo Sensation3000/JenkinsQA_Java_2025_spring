@@ -134,4 +134,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertFalse(isSuccessSubstringAppeared);
     }
+
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    public void testDeleteMultibranchPipelineProject(){
+        HomePage homePage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .deleteMultiBranchPipeline();
+
+        Assert.assertEquals(homePage.getProjectNameList().size(), 0);
+    }
 }
