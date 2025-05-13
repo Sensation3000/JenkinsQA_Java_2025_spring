@@ -1,10 +1,18 @@
 package school.redrover.page.systeminfo;
 
+import com.sun.jna.Structure;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
+
+import java.io.IOException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.spi.SelectorProvider;
+import java.util.Set;
 
 public class SystemInfoPage extends BasePage {
 
@@ -15,6 +23,24 @@ public class SystemInfoPage extends BasePage {
     public String getSystemInfoTitleText() {
         return getDriver().findElement(By.xpath("//h1"))
                 .getText();
+    }
+
+    public SystemInfoPage clickEnvironmentalVariablesSubpage() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[2]/a"))
+                .click();
+        return this;
+    }
+
+    public SystemInfoPage clickPluginsSubpage() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[3]/a"))
+                .click();
+        return this;
+    }
+
+    public SystemInfoPage clickMemoryUsageSubpage() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[4]/a"))
+                .click();
+        return this;
     }
 
     public SystemInfoPage clickShowValuesButtonSP() {
@@ -34,12 +60,6 @@ public class SystemInfoPage extends BasePage {
         return getDriver().findElement(By.xpath("//*[.='java.specification.vendor']/following-sibling::td/div[2]")).getText();
     }
 
-    public SystemInfoPage clickEnviromentalVariablesSubpage() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[2]/a"))
-                .click();
-        return this;
-    }
-
     public String getElementClass() {
         WebElement example = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/table/tbody/tr/td/div[1]"));
 
@@ -48,12 +68,6 @@ public class SystemInfoPage extends BasePage {
 
     public SystemInfoPage clickShowValuesButtonEV() {
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[4]/div/button[1]"))
-                .click();
-        return this;
-    }
-
-    public SystemInfoPage clickPluginsSubpage() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[3]/a"))
                 .click();
         return this;
     }
@@ -68,4 +82,21 @@ public class SystemInfoPage extends BasePage {
                 .getText();
     }
 
+    public String getTimespanGraph() {
+        return getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[6]/div[2]/img"))
+                .getAttribute("src");
+    }
+
+    public SystemInfoPage setShortTimespan() {
+        WebElement s = getDriver().findElement(By.id("timespan-select"));
+        Select timespanSelector = new Select(s);
+        timespanSelector.selectByVisibleText("Short");
+        return this;
+    }
+
+    public SystemInfoPage setLongTimespan() {
+        Select selector = new Select(getDriver().findElement(By.id("timespan-select")));
+        selector.selectByVisibleText("Long");
+        return this;
+    }
 }
