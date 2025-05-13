@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import java.io.IOException;
@@ -97,6 +98,24 @@ public class SystemInfoPage extends BasePage {
     public SystemInfoPage setLongTimespan() {
         Select selector = new Select(getDriver().findElement(By.id("timespan-select")));
         selector.selectByVisibleText("Long");
+        return this;
+    }
+    public SystemInfoPage clickShowValuesButton(String tabName, String buttonName) {
+        getDriver().findElement(By.xpath("//h2[text()='%s']/following-sibling::div/button[normalize-space(text() = '%s')]"
+                .formatted(tabName, buttonName))).click();
+
+        return this;
+    }
+
+    public String getClassFirstElementInList() {
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='app-hidden-info-hide']"))).getDomAttribute("class");
+
+    }
+
+    public SystemInfoPage clickTab(String tabName) {
+        getDriver().findElement(By.xpath("//a[normalize-space()='%s']".formatted(tabName))).click();
+
         return this;
     }
 }
