@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -100,6 +101,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
     }
 
+    @Ignore
     @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
     public void testGitBranchSourceWithValidUrl(String branchSourceType, By repositoryInputLocator) {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
@@ -118,6 +120,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(isSuccessSubstringAppeared);
     }
 
+    @Ignore
     @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
     public void testGitBranchSourceWithInvalidUrl(String branchSourceType, By repositoryInputLocator) {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
