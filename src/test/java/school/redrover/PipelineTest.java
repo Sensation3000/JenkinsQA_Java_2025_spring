@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.error.ErrorPage;
-import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
