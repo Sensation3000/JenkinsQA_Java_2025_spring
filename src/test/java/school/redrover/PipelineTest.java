@@ -1,5 +1,8 @@
 package school.redrover;
 
+import java.util.List;
+
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -124,6 +127,18 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(statusToggleChange, "Disabled");
 
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCheckTriggesPipeline() {
+        List<WebElement> Trigger = new HomePage(getDriver())
+            .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
+            .clickConfigure()
+            .clickTriggerMenu()
+            .getTrigger();
+        for (WebElement checkbox : Trigger) {
+            Assert.assertFalse(checkbox.isSelected());
+        }
     }
 
 

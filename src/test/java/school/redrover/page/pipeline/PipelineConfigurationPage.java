@@ -1,5 +1,7 @@
 package school.redrover.page.pipeline;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -124,5 +126,21 @@ public class PipelineConfigurationPage extends BasePage {
         pipelineScript.sendKeys(script);
 
         return this;
+    }
+
+    public PipelineConfigurationPage clickTriggerMenu() {
+        getDriver().findElement(By.className("task-link-wrapper")).click();
+        return this;
+    }
+
+    public List<WebElement> getTrigger() {
+        List<WebElement> checkbox = List.of(
+            getDriver().findElement(By.id("cb8")),
+            getDriver().findElement(By.id("cb9")),
+            getDriver().findElement(By.id("cb10")),
+            getDriver().findElement(By.id("cb11")),
+            getDriver().findElement(By.id("cb12")));
+
+        return checkbox;
     }
 }
