@@ -6,8 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BuildHistoryPage extends BasePage {
 
@@ -20,7 +22,14 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement buildHistoryText;
 
+    @FindBy(xpath = "//table[@id='projectStatus']/tbody")
+    private WebElement buildHistoryTable;
 
+    @FindBy(xpath = "//table[@id='projectStatus']/tbody/tr")
+    private List<WebElement> buildHistoryTableRows;
+
+    @FindBy(xpath = "//table[@id='projectStatus']/thead/tr/th")
+    private List<WebElement> buildHistoryTableHeaders;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -52,5 +61,19 @@ public class BuildHistoryPage extends BasePage {
         deleteSubmitButton.click();
 
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public boolean isBuildHistoryEmpty() {
+
+        return buildHistoryTableRows.isEmpty();
+    }
+
+    public List<String> getBuildHistoryHeaders() {
+
+        return buildHistoryTableHeaders.stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("↑", "").trim())  // remove sort arrow
+                .filter(text -> !text.isEmpty())
+                .collect(Collectors.toList());
     }
 }
