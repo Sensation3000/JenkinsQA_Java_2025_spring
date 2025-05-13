@@ -61,6 +61,9 @@ public class FreestyleConfigurationPage extends BasePage {
     @FindBy(xpath = "//div/input[@name='_.projectUrlStr']")
     private WebElement gitHubProjectURL;
 
+    @FindBy(css = "div[data-tippy-root] .tippy-content")
+    private WebElement buttonHelp;
+
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -572,19 +575,19 @@ public class FreestyleConfigurationPage extends BasePage {
         Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
-            actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+            for (int j = 2; j < 5; j++) {
+                try{
+                    actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+                    if(buttonHelp.getText().contains("Help")) numberHelpTooltips++;
 
-            boolean isVisibleText = getWait10()
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
-                    .getText()
-                    .contains("Help");
-
-            if(isVisibleText) numberHelpTooltips++;
-
-            try {
-                actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
-            }catch (Exception e){
-                new Actions(getDriver()).sendKeys(Keys.END).perform();;
+                    break;
+                }catch (Exception e){
+                    try {
+                        actions.scrollToElement(visibleButtonsHelp.get(i + j)).perform();
+                    }catch (Exception y){
+                        actions.sendKeys(Keys.END).perform();;
+                    }
+                }
             }
         }
 
