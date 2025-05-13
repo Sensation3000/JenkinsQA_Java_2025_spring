@@ -1,5 +1,8 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -31,11 +34,11 @@ public class DisplaySystemInfoTest extends BaseTest {
     }
 
     @Test
-    public void testHiddenEnviromentalVariables() {
+    public void testHiddenEnvironmentalVariables() {
         String infoHiddenClass = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemInfo()
-                .clickEnviromentalVariablesSubpage()
+                .clickEnvironmentalVariablesSubpage()
                 .getElementClass();
 
         String infoShownClass = new SystemInfoPage(getDriver())
@@ -59,5 +62,24 @@ public class DisplaySystemInfoTest extends BaseTest {
 
         Assert.assertNotNull(plugin1);
         Assert.assertNotNull(plugin2);
+    }
+
+    @Test
+    public void testMemoryUsageDataSelectTimespan() {
+        String defaultMediumTimespanGraph = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickSystemInfo()
+                .clickMemoryUsageSubpage()
+                .getTimespanGraph();
+
+        String shortTimespanGraph = new SystemInfoPage(getDriver())
+                .setShortTimespan()
+                .getTimespanGraph();
+
+        String longTimespanGraph = new SystemInfoPage(getDriver())
+                .setLongTimespan()
+                .getTimespanGraph();
+
+        Assert.assertNotEquals(defaultMediumTimespanGraph, shortTimespanGraph, longTimespanGraph);
     }
 }
