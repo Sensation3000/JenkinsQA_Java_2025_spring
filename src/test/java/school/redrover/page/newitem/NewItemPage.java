@@ -147,6 +147,12 @@ public class NewItemPage extends BasePage {
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")).click();
+
+        return this;
+    }
+
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
         buttonOk.click();
