@@ -108,4 +108,11 @@ public class ManageJenkinsPage extends BasePage {
 
         return new CredentialsPage(getDriver());
     }
+
+    public List<String> getMainSectionTitlesOnManageJenkinsPage() {
+        return getDriver().findElements(By.cssSelector(".jenkins-section__title"))
+                          .stream()
+                          .map(WebElement::getText)
+                          .toList();
+    }
 }
