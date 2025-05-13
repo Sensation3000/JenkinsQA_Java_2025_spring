@@ -42,9 +42,18 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public UsersPage clickCreateUserButton(){
+    public <T extends BasePage> T clickCreateUserButton(Class<T> pageClass) {
         getDriver().findElement(By.name("Submit")).click();
 
-        return new UsersPage(getDriver());
+        try {
+            return pageClass.getDeclaredConstructor(WebDriver.class).newInstance(getDriver());
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot instantiate page: " + pageClass.getName(), e);
+        }
+    }
+
+    public String getUserNameErrorMessage() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("error"))).getText();
     }
 }

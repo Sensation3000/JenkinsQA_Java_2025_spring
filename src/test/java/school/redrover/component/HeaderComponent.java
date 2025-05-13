@@ -2,6 +2,7 @@ package school.redrover.component;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseComponent;
 import school.redrover.page.HomePage;
@@ -11,6 +12,9 @@ import java.time.Duration;
 
 public class HeaderComponent extends BaseComponent {
 
+    @FindBy(id = "jenkins-home-link")
+    private WebElement logo;
+
     public HeaderComponent(WebDriver driver) {
         super(driver);
     }
@@ -18,14 +22,14 @@ public class HeaderComponent extends BaseComponent {
     public HomePage clickLogoIcon() {
         //This code make this method stable, otherwise it often fails with StaleElementReferenceException
         int attempts = 0;
-        while (attempts < 3) {
+        while (attempts < 5) {
             try {
-                WebElement logo = getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-home-link")));
-                logo.click();
+                getWait10().until(ExpectedConditions.elementToBeClickable(logo)).click();
+
                 return new HomePage(getDriver());
             } catch (StaleElementReferenceException e) {
                 attempts++;
-                if (attempts == 3) throw e;
+                if (attempts == 5) throw e;
             }
         }
 

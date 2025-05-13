@@ -1,27 +1,101 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
+import school.redrover.page.newitem.NewItemPage;
+import school.redrover.testdata.TestDataProvider;
+
+import java.util.List;
 
 public class MultiConfigurationProjectTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "Project name";
+    private static final String PROJECT_SECOND_NAME = "Project name 2";
+
     @Test
-    public void testCreateProjectWithoutName() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+    public void testErrorForProjectWithoutName() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .selectMultiConfiguration();
 
-        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+        Assert.assertTrue(newItemPage.getErrorMessageOnEmptyField().contains("This field cannot be empty, please enter a valid name"));
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
+    }
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    @Test
+    public void testTooltipIsVisible() {
 
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        String tooltipIsVisible = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .checkTooltipVisibility();
 
-        Assert.assertTrue(actualErrorMessage.contains("This field cannot be empty"));
-        Assert.assertFalse(okButton.isEnabled());
+        Assert.assertTrue(tooltipIsVisible.contains("tippy"));
+    }
+
+    @Test
+    public void testProjectDisabledMessageIsVisible() {
+
+        boolean projectDisabledMessageIsVisible = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickEnableToggle()
+                .clickSaveButton()
+                .projectDisabledMessageCheck();
+
+        Assert.assertTrue(projectDisabledMessageIsVisible);
+    }
+
+    @Test
+    public void testProjectDisabledMessageInvisible() {
+
+        boolean projectDisabledMessageInvisible = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickEnableToggle()
+                .clickSaveButton()
+                .clickEnableButton()
+                .messageNotDisplayedCheck();
+
+        Assert.assertTrue(projectDisabledMessageInvisible);
+    }
+
+    @Test
+    public void testIfOriginalItemConfigurationIsCopied() {
+
+        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .scrollToEnvironmentSectionWithJS()
+                .checkEnvironmentCheckboxesAndClickOnSaveButton()
+                .getHeader()
+                .goToHomePage()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_SECOND_NAME)
+                .enterValueToCopyFromInput(PROJECT_NAME)
+                .redirectToMultiConfigurationConfigurePage()
+                .scrollToEnvironmentSectionWithJS();
+
+        Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
+    }
+
+    @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
+    public void createWithValidName(String projectName) {
+        List<String> projects= new HomePage(getDriver()).clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultiConfigurationAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectNameList();
+
+        Assert.assertEquals(projects.size(), 1);
+        Assert.assertEquals(projects.get(0), projectName);
     }
 }

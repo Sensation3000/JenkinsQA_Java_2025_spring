@@ -1,43 +1,63 @@
 package school.redrover;
 
-import org.testng.annotations.Ignore;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
+import school.redrover.page.view.EditViewPage;
+import school.redrover.page.view.NewViewPage;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class DashboardViewTest extends BaseTest {
+    private final static String JOB_NAME = "Test item";
 
-    private static final String JOB_NAME = "Test item";
-    private final String VIEW_NAME = "TestViewName";
+    @Test
+    public void CreateFreestyleProjectForView() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton();
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), JOB_NAME);
+    }
+
+    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
     public void testCreateMyView() {
-        new HomePage(getDriver())
+        final String view_name = "TestViewName";
+
+        HomePage homePage = (HomePage) new HomePage(getDriver())
                 .clickNewView()
-                .addName(VIEW_NAME)
+                .addName(view_name)
                 .clickMyView()
                 .clickCreateButton();
 
-        String newViewName = new HomePage(getDriver()).getNameOfView(VIEW_NAME);
-        assertEquals(newViewName, VIEW_NAME);
+        assertEquals(homePage.getNameOfView(), view_name);
     }
 
-    @Ignore
-    @Test
-    public void testCreateFreestyleProjectForView() {
-        String projectName = new HomePage(getDriver())
-                .clickNewItem()
-                .sendItemName(JOB_NAME)
-                .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
-                .waitUntilTextConfigureToBePresentInH1()
-                .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(JOB_NAME)
-                .getProjectName();
+    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
+    public void testCreateListView() {
+        String listViewName = "TestlistViewName";
+        String testItemJob = "Test item";
 
-        assertEquals(projectName, JOB_NAME);
+        ((EditViewPage) new HomePage(getDriver())
+                .clickNewView()
+                .addName(listViewName)
+                .clickListView()
+                .clickCreateButton())
+                .fillDescription("Description for Test List View")
+                .JobsCheckTestItem(testItemJob)
+                .clickAddJobFilter()
+                .clickStatusFilterOfJobFilter()
+                .clickAddColumn()
+                .checkProjectDescriptionColumn()
+                .clickSaveButton();
+
+        assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
+        assertEquals(new HomePage(getDriver()).getNameOfView(), listViewName);
     }
 }

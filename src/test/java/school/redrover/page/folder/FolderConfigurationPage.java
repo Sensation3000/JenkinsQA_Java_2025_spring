@@ -2,18 +2,33 @@ package school.redrover.page.folder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
+import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
 
+    @FindBy(xpath = "//div[contains(text(), 'Display Name')]/a")
+    private WebElement questionMarkButton;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver,this);
     }
 
     public FolderConfigurationPage sendDisplayName(String text) {
         getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys(text);
+
+        return this;
+    }
+
+    public FolderConfigurationPage clearDisplayName() {
+        getDriver().findElement(By.xpath("//input[@checkdependson]")).clear();
 
         return this;
     }
@@ -25,7 +40,7 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderProjectPage clickSave() {
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
 
         return new FolderProjectPage(getDriver());
     }
@@ -37,10 +52,23 @@ public class FolderConfigurationPage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public HomePage clickOnDashboard() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.className("jenkins-breadcrumbs__list-item"))).click();
+    public boolean isQuestionMarkIconEnabled(){
+        return questionMarkButton.isEnabled();
+    }
 
-        return new HomePage(getDriver());
+    public FolderConfigurationPage clickHealthMetrics(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-section-id='health-metrics']"))).click();
+
+        return this;
+    }
+
+    public String getTitleHealthMetrics(){
+        return getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='health-metrics']"))).getText();
+    }
+    public String getTextDropdownHealthMetrics(){
+        return getWait5().until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[2]/div[1]/button"))).getText();
     }
 
 }
+

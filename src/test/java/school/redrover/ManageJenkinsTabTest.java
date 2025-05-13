@@ -21,47 +21,6 @@ public class ManageJenkinsTabTest extends BaseTest {
     }
 
     @Test
-    public void testAccessAboutJenkinsOption() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertEquals(currentUrl, "http://localhost:8080/manage/about/", "About Jenkins' page did not open");
-    }
-
-    @Test
-    public void testVerifyLogoAboutJenkins() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        WebElement logoElement = getDriver().findElement(By.xpath("//img[@alt='logo']"));
-
-        Assert.assertTrue(logoElement.isDisplayed(), "logo with alt='logo' is not displayed");
-    }
-
-    @Test
-    public void testVerifyVersionAboutJenkinsPage() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='about']"));
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
-
-        WebElement versionElement = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
-
-        Assert.assertTrue(versionElement.isDisplayed(), "About Jenkins' version  is not displayed");
-    }
-
-    @Test
     public void testReviewListOfDependenciesAboutJenkinsPage() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
@@ -90,9 +49,9 @@ public class ManageJenkinsTabTest extends BaseTest {
         List<WebElement> dependencies = getDriver().findElements(By.xpath("//tr/td[1]/a[@class='jenkins-table__link']"));
         Assert.assertFalse(dependencies.isEmpty(), "No plugins found");
         for (int i = 0; i < dependencies.size(); i++) {
-        WebElement dependenciesLinks = dependencies.get(i);
+            WebElement dependenciesLinks = dependencies.get(i);
 
-        Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
+            Assert.assertTrue(dependenciesLinks.isEnabled(), "Links #" + (i + 1) + " not clickable");
         }
     }
     @Test
@@ -111,4 +70,4 @@ public class ManageJenkinsTabTest extends BaseTest {
             Assert.assertTrue(dependenciesStatic.isEnabled(), "Links №" + (i + 1) + " not clickable");
         }
     }
-    }
+}

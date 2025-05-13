@@ -4,12 +4,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 
 import java.util.List;
 
 public class MultiConfigurationConfigurePage extends BasePage {
+
+    @FindBy(css = "a[href*='configure']")
+    private WebElement buttonConfigure;
+
+    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/section[2]/div[2]/div[1]/button")
+    private WebElement buttonAdvanced;
 
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
@@ -61,5 +70,17 @@ public class MultiConfigurationConfigurePage extends BasePage {
         );
 
         return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
+    }
+
+    public MultiConfigurationConfigurePage clickAdvanced(){
+        buttonAdvanced.click();
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickConfigure() {
+        buttonConfigure.click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 }

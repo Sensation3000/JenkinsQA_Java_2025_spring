@@ -11,12 +11,12 @@ import static org.testng.Assert.assertTrue;
 
 
 public class MainPathTest extends BaseTest {
-    private final String message = "Path is wrong"; 
+    private final String message = "Path is wrong";
     @Test
     public void MyViewsShouldBeLinkToAllViewTest() {
-       getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-       assertTrue(getDriver().getCurrentUrl().contains("/me/my-views/view/all/"),
-               message);
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+        assertTrue(getDriver().getCurrentUrl().contains("/me/my-views/view/all/"),
+                message);
     }
     @Test
     public void ManageShouldBeLinkToManage() {

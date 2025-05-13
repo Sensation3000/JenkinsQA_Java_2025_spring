@@ -8,12 +8,11 @@ import school.redrover.page.HomePage;
 public class LogOutTest extends BaseTest {
 
     @Test
-        void testLogOutFunctionalityWork() {
+       public void testLogOutFunctionalityWork() {
         String signInText = new HomePage(getDriver())
                 .clickLogOutButton()
-                .getSignIn();
+                .getSignInText();
 
-        Assert.assertEquals(signInText,"Sign in to Jenkins");
+        Assert.assertEquals(signInText,"Sign in to Jenkins" );
     }
 }
-

@@ -6,10 +6,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
+import school.redrover.page.newitem.NewItemPage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import java.util.*;
 
 public class DashboardTest extends BaseTest {
 
@@ -18,9 +23,22 @@ public class DashboardTest extends BaseTest {
     private static final String JOB_NAME = "Freestyle job";
     private static final String JOB_IN_FOLDER_NAME = "Job in folder";
 
+    private static final String FAILED_JOB = "Pipeline job to fail";
+    private static final String DESCRIPTION = "Dashboard description";
+
+    private List<String> expectedListOfJobs =
+            new ArrayList<>(Arrays.asList(FOLDER_NAME, JOB_NAME, SUPERIOR_FOLDER_NAME));
+
+    private void setExpectedList(List<String> expectedSortedList, boolean ascendingSort) {
+        if (ascendingSort) {
+            expectedSortedList.sort(Comparator.naturalOrder());
+        } else {
+            expectedSortedList.sort(Comparator.reverseOrder());
+        }
+    }
 
     @Test
-    public void testDashboardEnabled(){
+    public void testDashboardEnabled() {
         WebDriver driver = getDriver();
 
         Assert.assertEquals(driver.findElement(By.cssSelector("#breadcrumbs > li:nth-child(1) > a"))
@@ -28,16 +46,91 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
-    public void testListJobsAndFolders(){
+    public void testOpenManageJenkinsFromDashboard() {
+        String manageJenkinsTitleText = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .getManageJenkinsTitleText();
+
+        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
+    }
+
+    @Test
+    public void testPossibleToCreateJobFromDashboard() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
+
+        Assert.assertTrue(newItemPage.isNewItemPageOpened());
+    }
+
+    @Test
+    public void testCancelJobCreationFromDashboard() {
+        boolean isJobListEmpty = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeader()
+                .clickLogoIcon()
+                .isJobListEmpty();
+
+        Assert.assertTrue(isJobListEmpty);
+    }
+
+    @Test
+    public void testAddDescription() {
+        String descriptionText = new HomePage(getDriver())
+                .clickAddDescriptionButton()
+                .sendDescription(DESCRIPTION)
+                .clickSaveDescriptionButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String newDescription = "New dashboard description";
+
+        String descriptionText = new HomePage(getDriver())
+                .clickAddDescriptionButton()
+                .clearDescription()
+                .sendDescription(newDescription)
+                .clickSaveDescriptionButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, newDescription);
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testRemoveDescription() {
+
+        boolean isDescriptionDisplayed = new HomePage(getDriver())
+                .clickAddDescriptionButton()
+                .clearDescription()
+                .clickSaveDescriptionButton()
+                .isDescriptionDisplayed();
+
+        Assert.assertFalse(isDescriptionDisplayed);
+    }
+
+    @Test
+    public void testEmptyBuildQueue() {
+        HomePage homePage = new HomePage(getDriver());
+
+        Assert.assertTrue(homePage.isBuildQueueDisplayed());
+        Assert.assertEquals(homePage.getBuildQueueBlockText(), "No builds in the queue.");
+    }
+
+    @Test
+    public void testListJobsAndFolders() {
 
         new HomePage(getDriver())
-                .createJob()
+                .clickNewItemOnLeftSidePanel()
                 .sendItemName(SUPERIOR_FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSave()
-                .createJobInFolder()
+                .clickOnNewItemButton()
                 .sendItemName(JOB_IN_FOLDER_NAME)
-                .selectFreestyleClickOkAndReturnToHomePage()
+                .selectFreestyle()
+                .getHeader()
+                .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
@@ -51,12 +144,119 @@ public class DashboardTest extends BaseTest {
                 .clickLogo();
 
         List<String> actualListOfJobs = new ArrayList<>(new HomePage(getDriver()).getProjectNameList());
-        List<String> expectedListOfJobs =
-                List.of(FOLDER_NAME,JOB_NAME,SUPERIOR_FOLDER_NAME);
 
-        if(!actualListOfJobs.isEmpty()) {
-            Collections.sort(actualListOfJobs);}
+        if (!actualListOfJobs.isEmpty()) {
+            Collections.sort(actualListOfJobs);
+        }
 
         Assert.assertEquals(actualListOfJobs, expectedListOfJobs);
+    }
+
+    @Test(dependsOnMethods = "testListJobsAndFolders")
+    public void testColumns() {
+
+        Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
+                List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
+    }
+
+    @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
+    public void testSortNameList() {
+
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickColumnNameInDashboardTable("Name");
+
+        if(homePage.verifyAscendingSortingSign("Name")){
+
+            Collections.sort(expectedListOfJobs);
+        } else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
+
+        Assert.assertEquals(homePage.getProjectNameList(), expectedListOfJobs);
+
+        homePage.clickColumnNameInDashboardTable("Name");
+
+        if(homePage.verifyAscendingSortingSign("Name")){
+
+            Collections.sort(expectedListOfJobs);
+        } else Collections.sort(expectedListOfJobs, Collections.reverseOrder());
+
+        Assert.assertEquals(homePage.getProjectNameList(), expectedListOfJobs);
+    }
+
+    @Test(dependsOnMethods = {"testListJobsAndFolders","testSortNameList","testColumns"})
+    public void testFailedJobDetails(){
+        String script = "node {\n" +
+                "    stage('Create Job') {\n" +
+                "        echo \"Job is being created...\"\n" +
+                "    }\n" +
+                "    stage('Fail Job') {\n" +
+                "        error(\"Forcing failure in the pipeline\") // Гарантированно рушим билд\n" +
+                "    }\n" +
+                "}";
+        String lastFailure = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FAILED_JOB)
+                .selectPipelineAndClickOk()
+                .setScript(script)
+                .clickSave()
+                .clickBuildNow()
+                .getHeader()
+                .clickLogo()
+                .getJobLastFailure(FAILED_JOB);
+        String lastSuccess = new HomePage(getDriver()).getJobLastSuccess(FAILED_JOB);
+
+        Pattern pattern = Pattern.compile("#\\d+");
+        Matcher matcher = pattern.matcher(lastFailure);
+
+        Assert.assertTrue(lastFailure.contains("sec"));
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals(lastSuccess, "N/A");
+    }
+
+    @Test(dependsOnMethods = {"testFailedJobDetails","testListJobsAndFolders","testSortNameList","testColumns"})
+    public void testSortHealthReportColumnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+        List<String> expectedSortedList = new ArrayList<>(homePage.getListHealthReportFromDashboard());
+
+        homePage.clickColumnNameInDashboardTable("W");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
+
+        //check the sorting in one direction
+        Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
+
+        homePage.clickColumnNameInDashboardTable("W");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
+
+        //change the direction of sorting and test again
+        Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
+        }
+
+    @Test(dependsOnMethods = {"testFailedJobDetails","testListJobsAndFolders","testSortNameList","testColumns",
+            "testSortHealthReportColumnDashboard"})
+    public void testSortStatusLastBuildColumnDashboard() {
+        HomePage homePage = new HomePage(getDriver());
+        List<String> expectedSortedList = new ArrayList<>(homePage.getListStatusLastBuildFromDashboard());
+
+        homePage.clickColumnNameInDashboardTable("S");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("S"));
+
+        //check the sorting in one direction
+        Assert.assertEquals(homePage.getListStatusLastBuildFromDashboard(),expectedSortedList);
+
+        homePage.clickColumnNameInDashboardTable("S");
+        setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("S"));
+
+        //change the direction of sorting and test again
+        Assert.assertEquals(homePage.getListStatusLastBuildFromDashboard(),expectedSortedList);
+    }
+
+    @Test
+    public void testCheckOptionsOfJenkinsVersionDropDown() {
+        List<String> expectedTitles = Arrays.asList("About Jenkins", "Get involved", "Website");
+
+        List<String> jenkinsVersionDropDownOptions = new HomePage(getDriver())
+                .clickJenkinsVersionButton()
+                .getJenkinsVersionDropDownOptions();
+
+        Assert.assertEquals(jenkinsVersionDropDownOptions, expectedTitles);
     }
 }

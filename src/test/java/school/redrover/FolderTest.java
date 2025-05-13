@@ -3,7 +3,9 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
 import school.redrover.testdata.TestDataProvider;
 
@@ -12,6 +14,10 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "ProjectFolder";
+    private static final String FOLDER_SECOND_NAME = "ProjectFolder2";
+    private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
+    private static final String HEALTH_METRICS = "Health metrics";
+    private static final String ITEM_NAME = "Test Folder";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
@@ -20,7 +26,8 @@ public class FolderTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(folderName)
                 .selectFolderAndClickOk()
-                .clickOnDashboard()
+                .getHeader()
+                .clickLogoIcon()
                 .getProjectNameList();
 
         Assert.assertEquals(jobs.size(), 1);
@@ -29,17 +36,63 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testCreateWithDisplayName() {
-        final String expectedDisplayName = "Folder Display Name";
-
         String actualDisplayName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
-                .sendDisplayName(expectedDisplayName)
+                .sendDisplayName(FOLDER_DISPLAY_NAME)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(actualDisplayName, expectedDisplayName);
+        Assert.assertEquals(actualDisplayName, FOLDER_DISPLAY_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDisplayName")
+    public void testDisplayNameCanBeEmpty() {
+        String displayedFolderName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_DISPLAY_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clearDisplayName()
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .getProjectName();
+
+        Assert.assertEquals(displayedFolderName, FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
+    public void testCreateFreestyleProjectInFolder() {
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnNewItemButton()
+                .sendItemName(ITEM_NAME)
+                .selectFreestyleAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
+
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
+    public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
+
+        String folderProjectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FOLDER_SECOND_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnNewItemLinkWithChevron(FOLDER_SECOND_NAME)
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(folderProjectName, ITEM_NAME);
     }
 
     @Test
@@ -63,7 +116,7 @@ public class FolderTest extends BaseTest {
         final String descriptionName = "folder";
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .createJob()
+                .clickCreateJob()
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .sendDescription(descriptionName)
@@ -71,5 +124,51 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(folderProjectPage.getProjectName(),FOLDER_NAME);
         Assert.assertEquals(folderProjectPage.getDescription(),descriptionName);
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDescription")
+    public void testCreateFolderInFolder() {
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnNewItemButton()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
+
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
+        Assert.assertEquals(folderProjectPage.getItemIconTitleByJobName(ITEM_NAME), "Folder");
+    }
+
+    @Test
+    public void  testAvailabilityHealthMetrics(){
+        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOkWithJS()
+                .clickHealthMetrics();
+
+        List<String> titlesHealthMetrics = List.of(
+                folderConfigurationPage.getTitleHealthMetrics(),
+                folderConfigurationPage.getTextDropdownHealthMetrics()        );
+        for (String titleHealthMetrics : titlesHealthMetrics) {
+            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
+        }
+    }
+
+    @Test
+    public void folderIsEmptyTest() {
+
+        String folderStatus = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName("Test1")
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getFolderStatus();
+
+        Assert.assertEquals(folderStatus, "This folder is empty");
     }
 }

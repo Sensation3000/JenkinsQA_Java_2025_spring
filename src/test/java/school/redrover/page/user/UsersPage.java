@@ -22,9 +22,13 @@ public class UsersPage extends BasePage {
     }
 
     public List<WebElement> getUsersList() {
-
         return getWait10().until(ExpectedConditions
-                .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
+                .presenceOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
+    }
+
+    public List<WebElement> getUserIdLinks() {
+        return getWait10().until(ExpectedConditions
+                .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']//a[starts-with(@href, 'user/')]")));
     }
 
     public String getUserIdTdText() {
@@ -35,5 +39,19 @@ public class UsersPage extends BasePage {
     public String getNameTdText() {
 
         return getDriver().findElement(By.xpath("//tbody/tr[2]/td[3]")).getText();
+    }
+
+    public UsersPage clickDeleteUserButton(String userName) {
+        String xpath = String.format("//a[@data-url='user/%s/doDelete']", userName.toLowerCase());
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
+
+        return this;
+    }
+
+    public UsersPage clickSubmitDeleteUserButton() {
+        getWait10().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
+
+        return this;
     }
 }

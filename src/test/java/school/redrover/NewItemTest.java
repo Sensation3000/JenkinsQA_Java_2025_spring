@@ -1,24 +1,33 @@
 package school.redrover;
 
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import school.redrover.page.HomePage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class NewItemTest extends BaseTest {
 
     private static final String ITEM_NAME = "ItemName";
+    private static final String ITEM_NAME_NEXT = "ItemName2";
+    private static final String RED_COLOR_ERROR = "rgba(230, 0, 31, 1)";
 
     @Test
     public void testCheckNewItemPageHeader() {
         final String expectedHeaderText = "New Item";
 
         String actualHeaderText = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .getNewItemPageHeaderText();
 
         Assert.assertEquals(actualHeaderText, expectedHeaderText);
@@ -31,27 +40,213 @@ public class NewItemTest extends BaseTest {
                 .sendItemName(ITEM_NAME.concat(invalidCharacter))
                 .selectFreestyle();
 
-        Assert.assertEquals(newItemPage.getErrorMessageText(), String.format("» ‘%s’ is an unsafe character", invalidCharacter));
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), String.format("» ‘%s’ is an unsafe character", invalidCharacter));
         Assert.assertFalse(newItemPage.isOkButtonEnabled());
     }
 
     @Test(dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
-    public void testOKButtonIsDisabledIfCreatingProjectWithEmptyName(String itemType) {
+    public void testCreatingWithEmptyName(String itemType) {
         NewItemPage newItemPage = new HomePage(getDriver())
-                .clickNewItem()
+                .clickNewItemOnLeftSidePanel()
                 .selectItemByName(itemType);
 
         Assert.assertEquals(newItemPage.getErrorMessageOnEmptyField(), "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(newItemPage.isOkButtonEnabled(), "Expected OK button to be disabled.");
     }
 
-    @Test (dataProvider = "itemTypes", dataProviderClass = TestDataProvider.class)
-    public void testCheckItemsTypes(String expectedItemTypeText) {
-
-        String actualItemTypeText = new HomePage(getDriver())
+    @Test
+    public void testCheckNameDotError() {
+        NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .getItemTypeText(expectedItemTypeText);
+                .sendItemName(".")
+                .selectFreestyle();
 
-        Assert.assertEquals(actualItemTypeText, expectedItemTypeText, "Error!");
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), "» “.” is not an allowed name");
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessageColor(), RED_COLOR_ERROR);
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
+    }
+
+    @Test
+    public void testCheckItemNameWithDotEndError() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME.concat("."))
+                .selectFreestyle();
+
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), "» A name cannot end with ‘.’");
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessageColor(), RED_COLOR_ERROR);
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
+    }
+
+    @Test
+    public void testDoubleItemNameError() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFreestyleAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFreestyle();
+
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessage(), "» A job already exists with the name ‘%s’".formatted(ITEM_NAME));
+        Assert.assertEquals(newItemPage.getItemNameInvalidMessageColor(), RED_COLOR_ERROR);
+    }
+
+    @Test
+    public void testItemsTypeList() {
+        final List<String> items = Arrays.asList
+                ("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
+
+        HomePage homePage = new HomePage(getDriver());
+        List<String> listOfJobs = homePage
+                .clickCreateJob()
+                .getItemTypesTextList();
+
+        Assert.assertNotEquals(listOfJobs.size(), 0);
+        Assert.assertTrue(items.containsAll(listOfJobs));
+    }
+
+    @Test
+    public void testItemsTypeDescriptionExist() {
+        final List<String> itemsDisc = Arrays.asList
+                ("Classic, general-purpose job type that checks out from up to one SCM, executes build steps serially, followed by post-build steps like archiving artifacts and sending email notifications.",
+                        "Orchestrates long-running activities that can span multiple build agents. Suitable for building pipelines (formerly known as workflows) and/or organizing complex activities that do not easily fit in free-style job type.",
+                        "Suitable for projects that need a large number of different configurations, such as testing on multiple environments, platform-specific builds, etc.",
+                        "Creates a container that stores nested items in it. Useful for grouping things together. Unlike view, which is just a filter, a folder creates a separate namespace, so you can have multiple things of the same name as long as they are in different folders.",
+                        "Creates a set of Pipeline projects according to detected branches in one SCM repository.",
+                        "Creates a set of multibranch project subfolders by scanning for repositories.");
+
+        HomePage homePage = new HomePage(getDriver());
+        List<String> listOfJobsDisc = homePage
+                .clickCreateJob()
+                .getJobsDescriptions();
+
+        Assert.assertTrue(listOfJobsDisc.containsAll(itemsDisc));
+    }
+
+    @Test
+    public void testIfCopyFromOptionIsDisplayed() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .selectFolderAndClickOk()
+                .getHeader()
+                .clickLogoIcon()
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getCopyFromFieldText(), "Copy from");
+        Assert.assertTrue(newItemPage.isCopyFromOptionInputDisplayed());
+    }
+
+    @Test
+    public void testIfCopyFromOptionInputIsNotDisplayed() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertFalse(newItemPage.isCopyFromOptionInputDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testAutocompleteOption() {
+        String actualProjectName = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME_NEXT)
+                .enterValueToCopyFromInput(ITEM_NAME)
+                .getDropdownItemText();
+
+        Assert.assertEquals(actualProjectName, ITEM_NAME);
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testIfNoItemsMessageIsDisplayed() {
+        String noItemsMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .enterValueToCopyFromInput(ITEM_NAME_NEXT.concat("a"))
+                .getDropdownItemText();
+
+        Assert.assertEquals(noItemsMessage, "No items");
+    }
+
+    @Test(dependsOnMethods = "testIfCopyFromOptionIsDisplayed")
+    public void testIfUserRedirectedToErrorPage() {
+        String errorPageHeading = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(ITEM_NAME)
+                .enterValueToCopyFromInput(ITEM_NAME_NEXT.concat("a"))
+                .clickOkButtonWithError()
+                .getTitle();
+
+        Assert.assertEquals(errorPageHeading, "Error");
+    }
+
+    @Test
+    public void testNewItemPageAvailableFromDashboard() {
+        final String PAGE_HEADER_TEXT = "New Item";
+        final String NEW_ITEM_PAGE_URL = "http://localhost:8080/view/all/newJob";
+
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel();
+
+        Assert.assertEquals(newItemPage.getNewItemPageHeaderText(), PAGE_HEADER_TEXT);
+        Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
+    }
+
+    @Test
+    public void testInputFieldLabelAndAvailability() {
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        boolean isInputFieldDisplayed = getDriver().findElement(By.xpath("//div[@class='add-item-name']/input")).isDisplayed();
+        String inputFieldLabelText = getDriver().findElement(By.xpath("//div[@class='add-item-name']/label")).getText();
+
+        Assert.assertTrue(isInputFieldDisplayed, "Input Field isn't displayed");
+        Assert.assertEquals(inputFieldLabelText, "Enter an item name");
+    }
+
+    @Test
+    public void testItemsList() {
+        final List<String> EXPECTED_ITEM_TYPES_TEXT_LIST = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder");
+
+        List<String> actualItemTypesTextList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .getItemTypesTextList();
+
+        Assert.assertEquals(actualItemTypesTextList, EXPECTED_ITEM_TYPES_TEXT_LIST);
+    }
+
+    @Ignore
+    @Test(dataProvider = "safeCharacters", dataProviderClass = TestDataProvider.class)
+    public void testCreateItemNameWithSafeCharacters(String safeCharacter) {
+        boolean isUnsafeCharacterMessageDisplayed = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(safeCharacter)
+                .isUnsafeCharacterMessageDisplayed();
+
+        Assert.assertFalse(isUnsafeCharacterMessageDisplayed);
+    }
+
+    @Test
+    public void testItemNameWithUnsafeSpecialCharacterNotAllowed() {
+        final List<String> UNSAFE_CHARACTERS_LIST = List.of("!", "@", "#", "$", "%", "^", "&", "*", "[", "]", "|", "<", ">", "?", "/", ":", ";");
+
+        getDriver().findElement(By.xpath("//span[text()='New Item']/ancestor::span[@class='task-link-wrapper ']")).click();
+        WebElement unsafeCharacterMessage = getDriver().findElement(By.id("itemname-invalid"));
+        WebElement inputField = getDriver().findElement(By.cssSelector(".jenkins-input#name"));
+
+        for (String character: UNSAFE_CHARACTERS_LIST) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(inputField)).sendKeys(character);
+
+            Assert.assertTrue(getWait5().until(ExpectedConditions.visibilityOf(unsafeCharacterMessage)).isDisplayed(), "An unsafe character error message is NOT displayed");
+            Assert.assertEquals(unsafeCharacterMessage.getText(), "» ‘" + character + "’ is an unsafe character");
+
+            inputField.clear();
+        }
     }
 }
