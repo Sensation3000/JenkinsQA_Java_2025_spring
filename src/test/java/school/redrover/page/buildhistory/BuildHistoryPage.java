@@ -9,6 +9,7 @@ import school.redrover.common.BasePage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class BuildHistoryPage extends BasePage {
@@ -30,6 +31,12 @@ public class BuildHistoryPage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectStatus']/thead/tr/th")
     private List<WebElement> buildHistoryTableHeaders;
+
+    @FindBy (xpath = "//div[@class='jenkins-icon-size']/div/ol/li")
+    private List<WebElement> iconSizeSwitch;
+
+    @FindBy (id = "blue")
+    private WebElement statusIcon;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -72,8 +79,23 @@ public class BuildHistoryPage extends BasePage {
 
         return buildHistoryTableHeaders.stream()
                 .map(WebElement::getText)
-                .map(text -> text.replace("↑", "").trim())  // remove sort arrow
+                .map(text -> text.replace("↑", "")
+                .trim())
                 .filter(text -> !text.isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    public BuildHistoryPage selectIconSize(String size) {
+        iconSizeSwitch.stream()
+                .filter(el -> el.getText().trim().toLowerCase().startsWith(size.toLowerCase()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Icon size not found: " + size))
+                .click();
+
+        return this;
+    }
+
+    public String getCurrentIconSize() {
+        return statusIcon.getCssValue("height");
     }
 }

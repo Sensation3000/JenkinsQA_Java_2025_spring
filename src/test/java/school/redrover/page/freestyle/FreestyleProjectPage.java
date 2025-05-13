@@ -239,6 +239,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage clickLeftSideMenuBuildNow() {
         getWait5().until(ExpectedConditions.elementToBeClickable(leftSideMenuBuildNowButton)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar")));
 
         return this;
     }
