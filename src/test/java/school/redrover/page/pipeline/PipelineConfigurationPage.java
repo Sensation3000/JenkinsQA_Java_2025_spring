@@ -136,11 +136,11 @@ public class PipelineConfigurationPage extends BasePage {
 
     public List<WebElement> clickTriggerCheckbox() {
         List<WebElement> Trigger = List.of(
-            getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/section[1]/section/div[4]/div[1]/div/span/label")),
-            getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/section[1]/section/div[5]/div[1]/div/span/label")),
-            getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/section[1]/section/div[6]/div[1]/div/span/label")),
-            getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/section[1]/section/div[7]/div[1]/div/span/label")),
-            getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div[5]/div[1]/div/span/label")));
+            getDriver().findElement(By.xpath("//div[4]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[5]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//section[1]/section/div[6]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[7]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[1]/div[5]/div[1]/div/span/label")));
 
         List<WebElement> checkboxes = List.of(
             getDriver().findElement(By.id("cb8")),
