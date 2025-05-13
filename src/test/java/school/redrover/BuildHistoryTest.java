@@ -48,6 +48,24 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckTheBuildStatusDisplay")
+    public void testChangeIconSize() {
+        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
+                .clickBuildHistoryOnLeftSidePanel()
+                .selectIconSize("S");
+        String smallIcon = buildHistoryPage.getCurrentIconSize();
+
+        buildHistoryPage.selectIconSize("M");
+        String mediumIcon = buildHistoryPage.getCurrentIconSize();
+
+        buildHistoryPage.selectIconSize("L");
+        String largeIcon = buildHistoryPage.getCurrentIconSize();
+
+        Assert.assertEquals(smallIcon, "16px");
+        Assert.assertEquals(mediumIcon, "20.7969px");
+        Assert.assertEquals(largeIcon, "24px");
+    }
+
+    @Test(dependsOnMethods = "testChangeIconSize")
     public void testVerifyDeleteBuildHistory() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
