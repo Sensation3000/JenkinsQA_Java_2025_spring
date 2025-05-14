@@ -22,7 +22,14 @@ public class UsersPage extends BasePage {
     }
 
     public List<WebElement> getUsersList() {
-        return getWait10().until(ExpectedConditions
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Ошибка: sleep прерван", e);
+        }
+
+        return getWait5().until(ExpectedConditions
                 .presenceOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
 

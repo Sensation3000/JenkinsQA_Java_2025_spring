@@ -65,12 +65,9 @@ public class UserTest extends BaseTest {
         assertEquals(currentAdminIDText, "admin");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateNewUser")
     public void deleteUser() {
         List<WebElement> users = new HomePage(getDriver())
-                .getHeader()
-                .goToHomePage()
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickUsers()
                 .clickDeleteUserButton(USER_NAME)
