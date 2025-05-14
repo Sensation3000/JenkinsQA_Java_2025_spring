@@ -149,8 +149,8 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         List<String> existingProject = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
                 .cancelDeletionMultiBranchPipeline()
-                .getHeader().
-                goToHomePage()
+                .getHeader()
+                .goToHomePage()
                 .getProjectNameList();
 
         Assert.assertEquals(existingProject.get(0), projectName);
