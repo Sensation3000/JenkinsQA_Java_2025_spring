@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.error.ErrorPage;
-import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
@@ -129,6 +128,19 @@ public class PipelineTest extends BaseTest {
 
     }
 
+    @Test
+    public void checkAvaliableTriggerBoxTest() {
+        List<WebElement> BoxAvaliable = new HomePage(getDriver())
+            .clickNewItemOnLeftSidePanel()
+            .sendItemName(PROJECT_NAME)
+            .selectPipelineAndClickOk()
+            .clickTriggerMenu()
+            .clickTriggerCheckbox();
+        for (WebElement checkbox: BoxAvaliable) {
+            Assert.assertTrue(checkbox.isSelected());
+        }
+    }
+  
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCheckTriggesPipeline() {
         List<WebElement> Trigger = new HomePage(getDriver())
@@ -140,6 +152,5 @@ public class PipelineTest extends BaseTest {
             Assert.assertFalse(checkbox.isSelected());
         }
     }
-
 
 }
