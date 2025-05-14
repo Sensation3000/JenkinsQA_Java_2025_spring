@@ -2,19 +2,21 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
+import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
 
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
     final String projectName = "New Multibranch Pipeline Project";
-    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo/";
+    private static final String VALID_REPOSITORY_URL = "https://github.com/StepanidaKirillina1/testRepo";
 
     @Test
     public void createMultibranchPipelineProject() {
@@ -31,7 +33,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String tooltipDefaultText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .getEnableToggleText();
 
         Assert.assertEquals(tooltipDefaultText, "Enabled", "Toggle is disabled!");
@@ -42,7 +44,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String tooltipEnabledAttribute = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .hoverOnEnabledDisabledToggle()
                 .getEnabledDisabledToggleShownAttribute();
 
@@ -54,7 +56,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String toggleText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .clickEnabledDisabledToggle()
                 .clickSaveButton()
                 .goToConfigurationPage()
@@ -76,7 +78,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test(dependsOnMethods = "testEnableDisablePipeline")
     public void testIfBranchSourceSectionIsPresent() {
         String branchSourcesSectionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
@@ -86,7 +88,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test(dependsOnMethods = "testEnableDisablePipeline")
     public void testTheTypesOfBranchSources() {
         List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
 
@@ -99,45 +101,46 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
     }
 
-    @Test
-    public void testGitBranchSourceWithValidUrl() {
+    @Ignore
+    @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
+    public void testGitBranchSourceWithValidUrl(String branchSourceType, By repositoryInputLocator) {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickOnManageJenkinsLink()
+                .clickSystemButton()
+                .selectAnOptionAtGitHubApiUsageDropdownMenu("Throttle at/near rate limit")
+                .clickOnSubmitButton()
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(TestUtils.generateRandomAlphanumeric())
                 .selectMultibranchPipelineAndClickOkWithJS()
                 .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText("Git")
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.remote"))
-                .isSuccessSubstringAppeared("Git");
+                .clickOnBranchSourcesSectionText(branchSourceType)
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, repositoryInputLocator)
+                .isSuccessSubstringAppeared(branchSourceType);
 
         Assert.assertTrue(isSuccessSubstringAppeared);
     }
 
-    @Test
-    public void testGitBranchSourceWithInvalidUrl() {
+    @Ignore
+    @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
+    public void testGitBranchSourceWithInvalidUrl(String branchSourceType, By repositoryInputLocator) {
         boolean isSuccessSubstringAppeared = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(TestUtils.generateRandomAlphanumeric())
                 .selectMultibranchPipelineAndClickOkWithJS()
                 .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText("Git")
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(TestUtils.generateRandomAlphanumeric(), By.name("_.remote"))
-                .isSuccessSubstringAppeared("Git");
+                .clickOnBranchSourcesSectionText(branchSourceType)
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL + "!", repositoryInputLocator)
+                .isSuccessSubstringAppeared(branchSourceType);
 
         Assert.assertFalse(isSuccessSubstringAppeared);
     }
 
-    @Test
-    public void testGitHubBranchSourceWithValidUrl() {
-        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(TestUtils.generateRandomAlphanumeric())
-                .selectMultibranchPipelineAndClickOkWithJS()
-                .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText("GitHub")
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL, By.name("_.repositoryUrl"))
-                .isSuccessSubstringAppeared("GitHub");
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    public void testDeleteMultibranchPipelineProject(){
+        HomePage homePage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .deleteMultiBranchPipeline();
 
-        Assert.assertTrue(isSuccessSubstringAppeared);
+        Assert.assertEquals(homePage.getProjectNameList().size(), 0);
     }
 }

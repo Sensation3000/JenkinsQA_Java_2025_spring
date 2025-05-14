@@ -1,56 +1,37 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
-
+import school.redrover.page.HomePage;
 
 public class ManageSystemInformationTest extends BaseTest {
-
+    private static final String TAB_SYSTEM_PROPERTIES = "System Properties";
+    private static final String TAB_ENVIRONMENT_VARIABLES = "Environment Variables";
+    private static final String BUTTON_SHOW_VALUES = "Show Values";
 
     @Test
     public void testSystemPropertiesHiddenClassAfterClick() {
 
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement systemInformation = getDriver().findElement(By.xpath("//a[@href='systemInfo']"));
-        TestUtils.scrollAndClickWithJS(getDriver(), systemInformation);
+        String classAttribute = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickSystemInfo()
+                .clickShowValuesButton(TAB_SYSTEM_PROPERTIES, BUTTON_SHOW_VALUES)
+                .getClassFirstElementInList();
 
-        WebElement showValuesBtn = getDriver().findElement(By.xpath("//button[normalize-space()='Show values'][1]"));
-        showValuesBtn.click();
-
-        WebElement hiddenContent = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//div[@class='app-hidden-info-hide']")));
-
-        String classAttr = hiddenContent.getDomAttribute("class");
-
-        Assert.assertEquals(classAttr, "app-hidden-info-hide");
+        Assert.assertEquals(classAttribute, "app-hidden-info-hide");
     }
 
     @Test
     public void testEnvironmentVariablesHiddenClassAfterClick() {
 
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        WebElement systemInformation = getDriver().findElement(By.xpath("//a[@href='systemInfo']"));
-        TestUtils.scrollAndClickWithJS(getDriver(), systemInformation);
+        String classAttribute = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickSystemInfo()
+                .clickTab(TAB_ENVIRONMENT_VARIABLES)
+                .clickShowValuesButton(TAB_ENVIRONMENT_VARIABLES, BUTTON_SHOW_VALUES)
+                .getClassFirstElementInList();
 
-
-        getDriver().findElement(By.xpath("//a[normalize-space()='Environment Variables']")).click();
-        WebElement showValuesBtn = getDriver().findElement(By.xpath("(//button[normalize-space()='Show values'])[2]"));
-
-        showValuesBtn.click();
-
-        WebElement hiddenContent = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//div[@class='app-hidden-info-hide']")));
-
-        String classAttr = hiddenContent.getDomAttribute("class");
-
-        Assert.assertEquals(classAttr, "app-hidden-info-hide");
-
+        Assert.assertEquals(classAttribute, "app-hidden-info-hide");
     }
 }

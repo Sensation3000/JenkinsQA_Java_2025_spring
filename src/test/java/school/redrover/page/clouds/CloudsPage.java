@@ -3,46 +3,48 @@ package school.redrover.page.clouds;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 import school.redrover.page.plugins.PluginsPage;
 
-import java.time.Duration;
-import java.util.List;
 
 public class CloudsPage extends BasePage {
 
-    public CloudsPage(WebDriver driver) {super(driver);}
+    @FindBy(css = "a[href*='/manage/pluginManager']")
+    private WebElement installPluginButton;
+
+    @FindBy(css = "a[href='new']")
+    private WebElement newCloudButton;
+
+    @FindBy(css = ".jenkins-table__link")
+    private WebElement cloudName;
+
+
+    public CloudsPage(WebDriver driver) {
+        super(driver);
+    }
 
     public ExistingCloudPage clickCloudName() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement cloudLink = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-table__link")));
-        cloudLink.click();
+        getWait10()
+                .until(ExpectedConditions.visibilityOf(cloudName))
+                .click();
 
         return new ExistingCloudPage(getDriver());
     }
 
-    public PluginsPage clickInstallAPlugin() {
-        List<WebElement> buttons1 = getDriver().findElements(By.cssSelector(".empty-state-section-list li a"));
-        for (WebElement button : buttons1) {
-            if (button.getText().equals("Install a plugin")) {
-                button.click();
-                break;
-            }
-        }
+    public PluginsPage clickInstallPlugin() {
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(installPluginButton))
+                .click();
 
         return new PluginsPage(getDriver());
     }
 
     public NewCloudPage clickCreateNewCloud() {
-        List<WebElement> buttons2 = getDriver().findElements(By.cssSelector(".empty-state-section-list li a"));
-        for (WebElement button : buttons2) {
-            if (button.getText().equals("New cloud")) {
-                button.click();
-                break;
-            }
-        }
+        getWait10()
+                .until(ExpectedConditions.visibilityOf(newCloudButton))
+                .click();
 
         return new NewCloudPage(getDriver());
     }

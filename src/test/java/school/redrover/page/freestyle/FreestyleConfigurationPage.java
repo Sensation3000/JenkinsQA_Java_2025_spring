@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
-import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.List;
 
@@ -60,6 +59,9 @@ public class FreestyleConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div/input[@name='_.projectUrlStr']")
     private WebElement gitHubProjectURL;
+
+    @FindBy(css = "div[data-tippy-root] .tippy-content")
+    private WebElement buttonHelp;
 
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
@@ -140,7 +142,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGithubHookCheckbox() {
-        gitHubHookTriggerForGITScmPollingLabel.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(gitHubHookTriggerForGITScmPollingLabel)).click();
 
         return this;
     }
@@ -540,9 +542,9 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public boolean isScheduleSpecErrorVisible() {
-        return getDriver().findElement(By.xpath(
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
-        )).isDisplayed();
+        ))).isDisplayed();
     }
 
     public FreestyleConfigurationPage hoverHelpIcon(String featureName) {
@@ -572,19 +574,19 @@ public class FreestyleConfigurationPage extends BasePage {
         Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
-            actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+            for (int j = 2; j < 5; j++) {
+                try{
+                    actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+                    if(buttonHelp.getText().contains("Help")) numberHelpTooltips++;
 
-            boolean isVisibleText = getWait10()
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-tippy-root] .tippy-content")))
-                    .getText()
-                    .contains("Help");
-
-            if(isVisibleText) numberHelpTooltips++;
-
-            try {
-                actions.scrollToElement(visibleButtonsHelp.get(i + 3)).perform();
-            }catch (Exception e){
-                new Actions(getDriver()).sendKeys(Keys.END).perform();;
+                    break;
+                }catch (Exception e){
+                    try {
+                        actions.scrollToElement(visibleButtonsHelp.get(i + j)).perform();
+                    }catch (Exception y){
+                        actions.sendKeys(Keys.END).perform();;
+                    }
+                }
             }
         }
 

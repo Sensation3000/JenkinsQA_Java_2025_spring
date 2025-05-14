@@ -1,6 +1,9 @@
 package school.redrover.page.pipeline;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -124,5 +127,44 @@ public class PipelineConfigurationPage extends BasePage {
         pipelineScript.sendKeys(script);
 
         return this;
+    }
+
+    public PipelineConfigurationPage clickTriggerMenu() {
+        getDriver().findElement(By.className("task-link-wrapper")).click();
+        return this;
+    }
+  
+   public List<WebElement> getTrigger() {
+        List<WebElement> checkbox = List.of(
+            getDriver().findElement(By.id("cb8")),
+            getDriver().findElement(By.id("cb9")),
+            getDriver().findElement(By.id("cb10")),
+            getDriver().findElement(By.id("cb11")),
+            getDriver().findElement(By.id("cb12")));
+     return checkbox;
+ }    
+  
+   public List<WebElement> clickTriggerCheckbox() {
+        List<WebElement> Trigger = List.of(
+            getDriver().findElement(By.xpath("//div[4]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[5]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//section[1]/section/div[6]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[7]/div[1]/div/span/label")),
+            getDriver().findElement(By.xpath("//div[1]/div[5]/div[1]/div/span/label")));
+
+        List<WebElement> checkboxes = List.of(
+            getDriver().findElement(By.id("cb8")),
+            getDriver().findElement(By.id("cb9")),
+            getDriver().findElement(By.id("cb10")),
+            getDriver().findElement(By.id("cb11")),
+            getDriver().findElement(By.id("cb12")));
+        for (WebElement webElement : Trigger) {
+            ((JavascriptExecutor) getDriver()).executeScript(
+                "const rect = arguments[0].getBoundingClientRect();" +
+                    "window.scrollBy({ top: rect.top - 100 });",
+                webElement);
+            getWait5().until(ExpectedConditions.elementToBeClickable(webElement)).click();
+        }
+        return checkboxes;
     }
 }

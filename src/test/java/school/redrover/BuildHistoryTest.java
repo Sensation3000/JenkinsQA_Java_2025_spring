@@ -7,7 +7,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 
-import java.util.Properties;
+import java.util.List;
 
 public class BuildHistoryTest extends BaseTest {
 
@@ -16,9 +16,19 @@ public class BuildHistoryTest extends BaseTest {
     @Test
     public void testQuickAccessToTheBuildHistorySection() {
         BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
-                .clickBuildHistoryTab();
+                .clickBuildHistoryOnLeftSidePanel();
 
         Assert.assertTrue(buildHistoryPage.getBuildHistoryText().contains("Build History of Jenkins"));
+    }
+
+    @Test
+    public void testEmptyBuildHistory() {
+        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
+                .clickBuildHistoryOnLeftSidePanel();
+        List<String> expectedBuildHistoryTableHeaders = List.of("S", "Build", "Time Since", "Status");
+
+        Assert.assertTrue(buildHistoryPage.isBuildHistoryEmpty());
+        Assert.assertEquals(buildHistoryPage.getBuildHistoryHeaders(), expectedBuildHistoryTableHeaders);
     }
 
     @Test
@@ -31,13 +41,31 @@ public class BuildHistoryTest extends BaseTest {
                 .clickLeftSideMenuBuildNow()
                 .getHeader()
                 .goToHomePage()
-                .clickBuildHistoryTab()
+                .clickBuildHistoryOnLeftSidePanel()
                 .buildProjectText(PROJECT_NAME);
 
         Assert.assertEquals(buildStatusProjectName, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCheckTheBuildStatusDisplay")
+    public void testChangeIconSize() {
+        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
+                .clickBuildHistoryOnLeftSidePanel()
+                .selectIconSize("S");
+        String smallIcon = buildHistoryPage.getCurrentIconSize();
+
+        buildHistoryPage.selectIconSize("M");
+        String mediumIcon = buildHistoryPage.getCurrentIconSize();
+
+        buildHistoryPage.selectIconSize("L");
+        String largeIcon = buildHistoryPage.getCurrentIconSize();
+
+        Assert.assertEquals(smallIcon, "16px");
+        Assert.assertEquals(mediumIcon, "20.7969px");
+        Assert.assertEquals(largeIcon, "24px");
+    }
+
+    @Test(dependsOnMethods = "testChangeIconSize")
     public void testVerifyDeleteBuildHistory() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))

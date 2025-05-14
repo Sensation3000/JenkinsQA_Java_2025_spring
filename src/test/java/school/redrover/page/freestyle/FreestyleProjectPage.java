@@ -169,7 +169,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public FreestyleConfigurationPage clickConfigure() {
-        getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href*='configure']"))).click();
 
         return new FreestyleConfigurationPage(getDriver());
     }
@@ -198,21 +198,6 @@ public class FreestyleProjectPage extends BasePage {
                 .toList();
     }
 
-    public String[] getMainMenuItemsText() {
-        List<WebElement> menuItems = getDriver().findElements(By.cssSelector(".task span:nth-of-type(2)"));
-
-        // the first element found with the locator above is Status which is not in the drop-down menu
-        // (and is not technically a menu item) so we need to reduce size by one
-        String[] menuItemsText = new String[menuItems.size() - 1];
-
-        // start with i = 1 since the first element found is Status (which is not a menu item)
-        for (int i = 1; i < menuItems.size(); i++) {
-            menuItemsText[i - 1] = menuItems.get(i).getText();
-        }
-
-        return menuItemsText;
-    }
-
     public String getDisabledWarningMessageText() {
         String fullText = getDriver().findElement(By.xpath("//div[@class='warning']/form")).getText();
 
@@ -239,6 +224,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage clickLeftSideMenuBuildNow() {
         getWait5().until(ExpectedConditions.elementToBeClickable(leftSideMenuBuildNowButton)).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar")));
 
         return this;
     }
@@ -259,6 +245,7 @@ public class FreestyleProjectPage extends BasePage {
 
     public List<String> getLeftSideMenuWithoutStatus() {
         List<String> fullLeftMenu = getLeftSideMenuNameList();
+
         return fullLeftMenu.subList(1, fullLeftMenu.size());
     }
 

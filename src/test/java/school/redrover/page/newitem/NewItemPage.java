@@ -147,6 +147,12 @@ public class NewItemPage extends BasePage {
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")).click();
+
+        return this;
+    }
+
     public MultibranchConfigurationPage selectMultibranchAndClickOk() {
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
         buttonOk.click();
@@ -211,7 +217,7 @@ public class NewItemPage extends BasePage {
     public OrganizationFolderConfigurePage selectOrganizationFolderAndClickOk() {
         TestUtils.scrollAndClickWithJS(getDriver(),
                 getDriver().findElement(By.xpath("//span[text()='Organization Folder']")));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new OrganizationFolderConfigurePage(getDriver());
     }

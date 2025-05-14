@@ -1,5 +1,6 @@
 package school.redrover.testdata;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 
 import java.util.Arrays;
@@ -53,6 +54,25 @@ public class TestDataProvider {
                         "Creates a set of Pipeline projects according to detected branches in one SCM repository.",
                         "Creates a set of multibranch project subfolders by scanning for repositories."
                 )}
+        };
+    }
+
+    @DataProvider(name = "branchSourceTypes")
+    public Object[][] branchSourceTypes() {
+        return new Object[][]{
+                {"Git", By.name("_.remote")},
+                {"GitHub", By.name("_.repositoryUrl")}
+        };
+    }
+
+    @DataProvider(name = "subSectionTitles")
+    public Object[][] subSectionTitles() {
+        return new Object[][]{
+                {0, new String[] {"System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance"}},
+                {1, new String[] {"Security", "Credentials", "Credential Providers", "Users"}},
+                {2, new String[] {"System Information", "System Log", "Load Statistics", "About Jenkins"}},
+                {3, new String[] {"Manage Old Data"}},
+                {4, new String[] {"Reload Configuration from Disk", "Jenkins CLI", "Script Console", "Prepare for Shutdown"}}
         };
     }
 }
