@@ -1,7 +1,6 @@
 package school.redrover.page.managejenkins;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,6 +28,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "//a[@href='credentials']")
     private WebElement buttonCredentials;
+
+    @FindBy(css = "a[href='cloud']")
+    private WebElement buttonClouds;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -60,23 +62,8 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public CloudsPage clickClouds() {
-        List<WebElement> buttons = getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                By.xpath("//*[@id=\"main-panel\"]/section[2]/div/div/a/dl/dt")
-        ));
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonClouds)).click();
 
-        for (int i = 0; i < buttons.size(); i++) {
-            try {
-                WebElement button = getDriver().findElements(
-                        By.xpath("//*[@id=\"main-panel\"]/section[2]/div/div/a/dl/dt")
-                ).get(i);
-                if (button.getText().equals("Clouds")) {
-                    button.click();
-                    return new CloudsPage(getDriver());
-                }
-            } catch (StaleElementReferenceException e) {
-                i--;
-            }
-        }
         return new CloudsPage(getDriver());
     }
 

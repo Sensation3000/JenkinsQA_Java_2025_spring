@@ -44,7 +44,7 @@ public class OrganizationFolderConfigurePage extends BasePage {
     }
 
     public OrganizationFolderPage clickSave() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(saveButton));
+        getWait10().until(ExpectedConditions.elementToBeClickable(saveButton));
         saveButton.click();
 
         return new OrganizationFolderPage(getDriver());

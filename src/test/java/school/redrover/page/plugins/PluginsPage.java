@@ -1,16 +1,29 @@
 package school.redrover.page.plugins;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 
+import java.time.Duration;
 import java.util.List;
 
 public class PluginsPage extends BasePage {
+
+    @FindBy(id = "filter-box")
+    private WebElement searchField;
+
+    @FindBy(css = "[data-plugin-id='windows-cloud'] .jenkins-checkbox")
+    private WebElement checkBoxWindowsCloud;
+
+    @FindBy(id = "button-install")
+    private WebElement installButton;
+
+    @FindBy(css = "tr[id='row4'] td[id]")
+    private WebElement statusEl;
 
     public PluginsPage(WebDriver driver) {
         super(driver);
@@ -30,8 +43,7 @@ public class PluginsPage extends BasePage {
     }
 
     public PluginsPage clickInstallButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("button-install")));
-        getDriver().findElement(By.id("button-install")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(installButton)).click();
 
         return this;
     }
@@ -59,56 +71,27 @@ public class PluginsPage extends BasePage {
         return getDriver().findElements(By.xpath("//tr[@data-plugin-name=\"" + pluginName + "\"]"));
     }
 
-    public PluginsPage typePluginName(String text) {
-        WebElement searchInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector(".jenkins-search--app-bar input")
-        ));
-        searchInput.clear();
-        searchInput.sendKeys(text);
-        searchInput.sendKeys(Keys.ENTER);
-        getDriver().navigate().refresh();
+    public String getSearchFieldText() {
+        return getWait10().until(ExpectedConditions.visibilityOf(searchField)).getDomAttribute("value");
+    }
 
-        boolean pluginVisible = false;
-        int retryCount = 0;
-        while (!pluginVisible && retryCount < 10) {
-            try {
-                WebElement pluginLink = this.getWait10().until(
-                        ExpectedConditions.visibilityOfElementLocated(
-                                By.xpath("//a[@href='https://plugins.jenkins.io/windows-cloud']")
-                        )
-                );
-                pluginVisible = pluginLink != null && pluginLink.isDisplayed();
-            } catch (Exception e) {
-                Assert.fail("Waiting for plugin to appear... Retry #" + retryCount);
-            }
-            retryCount++;
-        }
+    public PluginsPage sendWindowCloudPlugin() {
+        getWait10().until(ExpectedConditions.visibilityOf(searchField)).clear();
+        getWait10().until(ExpectedConditions.visibilityOf(searchField)).sendKeys("Windows cloud");
 
         return this;
     }
 
-    public PluginsPage clickSelectedPluginCheckbox(String pluginName) {
-        List<WebElement> pluginRows = getDriver().findElements(By.cssSelector("tbody tr"));
-        for (WebElement row : pluginRows) {
-            WebElement tableLink = row.findElement(By.cssSelector(".jenkins-table__link"));
-            if (tableLink.getText().contains(pluginName)) {
-                WebElement checkbox = row.findElement(By.cssSelector(".jenkins-checkbox label"));
-                if (!checkbox.isSelected()) {
-                    this.getWait10().until(ExpectedConditions.elementToBeClickable(checkbox));
-                    checkbox.click();
-                    break;
-                }
-            }
-        }
+    public PluginsPage clickCheckBoxWindowsCloud() {
+        getWait10().until(ExpectedConditions.visibilityOf(checkBoxWindowsCloud)).click();
 
         return this;
     }
 
-    public String getDownloadProgressStatus() {
-        this.getWait10().until(ExpectedConditions.textToBePresentInElementLocated(
-                By.cssSelector("[id^='status']"), "Success"
-        ));
+    public String getSuccessInstallStatus() {
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+        wait60.until(ExpectedConditions.textToBePresentInElement(statusEl, "Success"));
 
-        return getDriver().findElement(By.cssSelector("[id^='status']")).getText();
+        return statusEl.getText();
     }
 }

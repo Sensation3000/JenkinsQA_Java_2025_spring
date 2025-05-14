@@ -58,7 +58,7 @@ public class MultibranchConfigurationPage extends BasePage {
     }
 
     public String getBranchSourcesSectionText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("branch-sources"))).getText().trim();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("branch-sources"))).getText().trim();
     }
 
     public MultibranchConfigurationPage clickOnBranchSourcesSectionText(String branchSourceName) {
@@ -82,7 +82,7 @@ public class MultibranchConfigurationPage extends BasePage {
     public List<String> getBranchSourcesTypeNames() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")));
 
-        return getDriver().findElements(By.cssSelector("button[class*='jenkins-dropdown__item']"))
+        return getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("button[class*='jenkins-dropdown__item']")))
                 .stream()
                 .map(webelement -> webelement.getText().trim())
                 .toList();

@@ -18,7 +18,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public MultibranchConfigurationPage goToConfigurationPage() {
-        getDriver().findElement(By.xpath("//a[@href='./configure']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='./configure']"))).click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
