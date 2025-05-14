@@ -6,8 +6,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 
-import static org.testng.Assert.assertEquals;
-
 public class MultiConfigurationProjectConfigureTest extends BaseTest {
 
     private static final String PROJECT_NAME = "Project name";
