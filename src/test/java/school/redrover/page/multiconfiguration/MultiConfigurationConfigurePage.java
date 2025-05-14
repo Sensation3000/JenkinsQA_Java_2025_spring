@@ -1,15 +1,11 @@
 package school.redrover.page.multiconfiguration;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
-import school.redrover.page.freestyle.FreestyleConfigurationPage;
 
 import java.util.List;
 
@@ -20,6 +16,12 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
     @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/section[2]/div[2]/div[1]/button")
     private WebElement buttonAdvanced;
+
+    @FindBy(xpath = "//input[@name='blockBuildWhenUpstreamBuilding']")
+    private WebElement checkboxBlockBuildWhenUpstreamBuilding;
+
+    @FindBy(xpath = "//input[@name='blockBuildWhenDownstreamBuilding']")
+    private WebElement checkboxBlockBuildWhenDownstreamBuilding;
 
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
@@ -84,4 +86,111 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
         return new MultiConfigurationConfigurePage(getDriver());
     }
+
+    public MultiConfigurationConfigurePage clickAdvancedProjectOptions() {
+        WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='advanced-project-options']")));
+
+        TestUtils.scrollAndClickWithJS(getDriver(), button);
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickQuietPeriodCheckbox() {
+        getDriver().findElement(By.xpath("//label[text()='Quiet period']")).click();
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage increaseQuietPeriodValue() {
+        WebElement inputField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='quiet_period']")));
+        inputField.click();
+        inputField.sendKeys(Keys.ARROW_UP);
+
+        return this;
+    }
+
+    public String checkQuietPeriodValue() {
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='quiet_period']"));
+
+        return inputField.getDomAttribute("value");
+    }
+
+    public MultiConfigurationConfigurePage clickRetryCountCheckbox() {
+        getDriver().findElement(By.xpath("//label[text()='Retry Count']")).click();
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage enterRetryCountValue() {
+        WebElement inputField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='scmCheckoutRetryCount']")));
+        inputField.click();
+        inputField.sendKeys("2");
+
+        return this;
+    }
+
+    public String checkRetryCountValue() {
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@name='scmCheckoutRetryCount']"));
+
+        return inputField.getDomAttribute("value");
+    }
+
+    public MultiConfigurationConfigurePage clickBlockBuildWhenUpstreamBuildingCheckbox() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Block build when upstream project')]")).click();
+        //getWait5().until(ExpectedConditions.elementToBeSelected(By.xpath("//input[@name='blockBuildWhenUpstreamBuilding']")));
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage clickBlockBuildWhenDownstreamBuildingCheckbox() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Block build when downstream project')]")).click();
+
+        return this;
+    }
+
+    public boolean isCheckboxBlockBuildWhenUpstreamBuildingSelected() {
+        return checkboxBlockBuildWhenUpstreamBuilding.isSelected();
+    }
+
+    public boolean isCheckboxBlockBuildWhenDownstreamBuildingSelected() {
+        return checkboxBlockBuildWhenDownstreamBuilding.isSelected();
+    }
+
+    public MultiConfigurationConfigurePage clickUseCustomWorkspaceCheckbox() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom workspace')]")).click();
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage enterCustomWorkspaceDirectoryValue(String directory) {
+        getDriver().findElement(By.name("_.customWorkspace")).sendKeys(directory);
+
+        return this;
+    }
+
+    public String checkCustomWorkspaceDirectoryValue() {
+        WebElement inputField = getDriver().findElement(By.name("_.customWorkspace"));
+
+        return inputField.getDomAttribute("value");
+    }
+
+    public MultiConfigurationConfigurePage clickUseCustomChildWorkspaceCheckbox() {
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom child workspace')]")).click();
+
+        return this;
+    }
+
+    public MultiConfigurationConfigurePage enterCustomChildWorkspaceDirectoryValue(String directory) {
+        WebElement inputField = getDriver().findElement(By.name("_.childCustomWorkspace"));
+        inputField.clear();
+        inputField.sendKeys(directory);
+
+        return this;
+    }
+
+    public String checkCustomChildWorkspaceDirectoryValue() {
+        WebElement inputField = getDriver().findElement(By.name("_.childCustomWorkspace"));
+
+        return inputField.getDomAttribute("value");
+    }
+
 }
