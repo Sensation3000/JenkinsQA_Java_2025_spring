@@ -33,7 +33,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String tooltipDefaultText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .getEnableToggleText();
 
         Assert.assertEquals(tooltipDefaultText, "Enabled", "Toggle is disabled!");
@@ -44,7 +44,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String tooltipEnabledAttribute = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .hoverOnEnabledDisabledToggle()
                 .getEnabledDisabledToggleShownAttribute();
 
@@ -56,7 +56,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String toggleText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectName)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .clickEnabledDisabledToggle()
                 .clickSaveButton()
                 .goToConfigurationPage()
@@ -78,8 +78,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test(dependsOnMethods = "testEnableDisablePipeline")
     public void testIfBranchSourceSectionIsPresent() {
         String branchSourcesSectionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
