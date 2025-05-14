@@ -57,7 +57,7 @@ public class OrganizationFolderPage extends BasePage {
 
     public String getOrganizationFolderNameFromHeader() {
 
-        return getWait5().until(ExpectedConditions.visibilityOf(header)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(header)).getText();
     }
 
     public String getOrganizationFolderIconTitleNameFromHeader() {

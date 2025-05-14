@@ -140,4 +140,17 @@ public class PipelineTest extends BaseTest {
             Assert.assertTrue(checkbox.isSelected());
         }
     }
+  
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCheckTriggesPipeline() {
+        List<WebElement> Trigger = new HomePage(getDriver())
+            .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
+            .clickConfigure()
+            .clickTriggerMenu()
+            .getTrigger();
+        for (WebElement checkbox : Trigger) {
+            Assert.assertFalse(checkbox.isSelected());
+        }
+    }
+
 }

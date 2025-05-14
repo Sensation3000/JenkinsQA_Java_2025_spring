@@ -133,8 +133,18 @@ public class PipelineConfigurationPage extends BasePage {
         getDriver().findElement(By.className("task-link-wrapper")).click();
         return this;
     }
-
-    public List<WebElement> clickTriggerCheckbox() {
+  
+   public List<WebElement> getTrigger() {
+        List<WebElement> checkbox = List.of(
+            getDriver().findElement(By.id("cb8")),
+            getDriver().findElement(By.id("cb9")),
+            getDriver().findElement(By.id("cb10")),
+            getDriver().findElement(By.id("cb11")),
+            getDriver().findElement(By.id("cb12")));
+     return checkbox;
+ }    
+  
+   public List<WebElement> clickTriggerCheckbox() {
         List<WebElement> Trigger = List.of(
             getDriver().findElement(By.xpath("//div[4]/div[1]/div/span/label")),
             getDriver().findElement(By.xpath("//div[5]/div[1]/div/span/label")),
@@ -148,7 +158,6 @@ public class PipelineConfigurationPage extends BasePage {
             getDriver().findElement(By.id("cb10")),
             getDriver().findElement(By.id("cb11")),
             getDriver().findElement(By.id("cb12")));
-
         for (WebElement webElement : Trigger) {
             ((JavascriptExecutor) getDriver()).executeScript(
                 "const rect = arguments[0].getBoundingClientRect();" +

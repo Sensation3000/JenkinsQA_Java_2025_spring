@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
-import school.redrover.page.buildhistory.BuildHistoryPage;
 
 import java.util.List;
 
@@ -143,7 +142,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage checkGithubHookCheckbox() {
-        gitHubHookTriggerForGITScmPollingLabel.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(gitHubHookTriggerForGITScmPollingLabel)).click();
 
         return this;
     }
@@ -543,9 +542,9 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public boolean isScheduleSpecErrorVisible() {
-        return getDriver().findElement(By.xpath(
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//div[contains(@class, 'validation-error-area') and contains(., 'Invalid input')]"
-        )).isDisplayed();
+        ))).isDisplayed();
     }
 
     public FreestyleConfigurationPage hoverHelpIcon(String featureName) {

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.HomePage;
 
 public class MultibranchProjectPage extends BasePage {
 
@@ -17,7 +18,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public MultibranchConfigurationPage goToConfigurationPage() {
-        getDriver().findElement(By.xpath("//a[@href='./configure']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='./configure']"))).click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
@@ -29,5 +30,12 @@ public class MultibranchProjectPage extends BasePage {
 
     public String getDescription() {
         return descriptionText.getText();
+    }
+
+    public HomePage deleteMultiBranchPipeline(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-title='Delete Multibranch Pipeline']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-id='ok']"))).click();
+
+        return new HomePage(getDriver());
     }
 }

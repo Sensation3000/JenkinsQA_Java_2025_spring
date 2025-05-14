@@ -1,30 +1,32 @@
 package school.redrover.page.clouds;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-import java.util.List;
 
 public class ExistingCloudPage extends BasePage {
 
-    public ExistingCloudPage (WebDriver driver) {super(driver);}
+    @FindBy(css = "[data-title='Delete Cloud']")
+    private WebElement deleteCloud;
+
+    @FindBy(css = "[data-id='ok']")
+    private WebElement yesDeleteButton;
+
+    public ExistingCloudPage(WebDriver driver) {
+        super(driver);
+    }
 
     public ExistingCloudPage clickDeleteCloud() {
-        List<WebElement> buttons2 = getDriver().findElements(By.cssSelector(".task"));
-        for (WebElement button : buttons2) {
-            if (button.getText().equals("Delete Cloud")) {
-               button.click();
-               break;
-            }
-        }
+        getWait10().until(ExpectedConditions.visibilityOf(deleteCloud)).click();
 
         return new ExistingCloudPage(getDriver());
     }
 
     public CloudsPage clickYesButton() {
-        getDriver().findElement(By.cssSelector(".jenkins-button--primary")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(yesDeleteButton)).click();
 
         return new CloudsPage(getDriver());
     }
