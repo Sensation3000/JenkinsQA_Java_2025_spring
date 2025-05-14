@@ -88,8 +88,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test(dependsOnMethods = "testEnableDisablePipeline")
     public void testTheTypesOfBranchSources() {
         List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
 
