@@ -33,7 +33,7 @@ public class UsersPage extends BasePage {
                 .presenceOfAllElementsLocatedBy(By.xpath("//table[@id='people']/tbody/tr")));
     }
 
-    public List<WebElement> getUserIdLinks() {
+    public List<WebElement> getUserIdList() {
         return getWait10().until(ExpectedConditions
                 .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']//a[starts-with(@href, 'user/')]")));
     }
