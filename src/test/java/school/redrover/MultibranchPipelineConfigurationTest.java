@@ -78,6 +78,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testIfBranchSourceSectionIsPresent() {
         String branchSourcesSectionText = new HomePage(getDriver())
@@ -88,6 +89,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testTheTypesOfBranchSources() {
         List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");

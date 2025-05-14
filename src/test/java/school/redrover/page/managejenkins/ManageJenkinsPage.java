@@ -102,4 +102,14 @@ public class ManageJenkinsPage extends BasePage {
                           .map(WebElement::getText)
                           .toList();
     }
+
+    public List<String> getSubSectionTitlesOnManageJenkinsPage(int index) {
+        List<WebElement> sections = getDriver().findElements(By.cssSelector(".jenkins-section"));
+        WebElement section = sections.get(index);
+
+        return section.findElements(By.cssSelector(".jenkins-section__item dt"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
 }

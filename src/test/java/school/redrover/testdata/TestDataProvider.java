@@ -64,4 +64,15 @@ public class TestDataProvider {
                 {"GitHub", By.name("_.repositoryUrl")}
         };
     }
+
+    @DataProvider(name = "subSectionTitles")
+    public Object[][] subSectionTitles() {
+        return new Object[][]{
+                {0, new String[] {"System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance"}},
+                {1, new String[] {"Security", "Credentials", "Credential Providers", "Users"}},
+                {2, new String[] {"System Information", "System Log", "Load Statistics", "About Jenkins"}},
+                {3, new String[] {"Manage Old Data"}},
+                {4, new String[] {"Reload Configuration from Disk", "Jenkins CLI", "Script Console", "Prepare for Shutdown"}}
+        };
+    }
 }
