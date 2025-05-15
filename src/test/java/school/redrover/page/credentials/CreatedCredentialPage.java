@@ -7,8 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-import java.util.List;
-
 public class CreatedCredentialPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement credentialName;
@@ -24,16 +22,13 @@ public class CreatedCredentialPage extends BasePage {
     }
 
     public CreatedCredentialPage clickDeleteCredentialButton() {
-        List<WebElement> buttons = getDriver().findElements(By.cssSelector(".task"));
-        for (WebElement button : buttons) {
-            if (button.getText().equals("Delete")) {
-                button.click();
-                break;
-            }
-        }
+        getDriver().findElements(By.cssSelector(".task")).stream()
+                .filter(button -> "Delete".equals(button.getText()))
+                .findFirst()
+                .ifPresent(WebElement::click);
+
         return new CreatedCredentialPage(getDriver());
     }
-
     public GlobalCredentialsPage clickYesButton() {
         yesButton.click();
 
