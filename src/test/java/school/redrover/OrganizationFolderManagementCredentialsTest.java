@@ -1,13 +1,13 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
+
     private static final String ORGANIZATION_FOLDER_NAME = "TestFolder";
     private static final String TEST_CREDENTIALS_NAME = "TestName";
     private static final String TEST_PASSWORD = "password";

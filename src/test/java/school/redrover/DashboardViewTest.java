@@ -25,7 +25,7 @@ public class DashboardViewTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), JOB_NAME);
     }
 
-    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
+    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
         final String view_name = "TestViewName";
 
@@ -38,7 +38,7 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(homePage.getNameOfView(), view_name);
     }
 
-    @Test(dependsOnMethods = "CreateFreestyleProjectForView")
+    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateListView() {
         String listViewName = "TestlistViewName";
         String testItemJob = "Test item";

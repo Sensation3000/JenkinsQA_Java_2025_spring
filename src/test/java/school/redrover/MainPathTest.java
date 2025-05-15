@@ -9,50 +9,52 @@ import java.util.ArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
 public class MainPathTest extends BaseTest {
-    private final String message = "Path is wrong";
+
+    private final String MESSAGE = "Path is wrong";
+
     @Test
     public void MyViewsShouldBeLinkToAllViewTest() {
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+
         assertTrue(getDriver().getCurrentUrl().contains("/me/my-views/view/all/"),
-                message);
+                MESSAGE);
     }
     @Test
     public void ManageShouldBeLinkToManage() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/manage"),
-                message);
+                MESSAGE);
     }
     @Test
     public void BuildHistoryShouldBeLinkToAllBuildsTest() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/view/all/builds"),
-                message);
+                MESSAGE);
     }
     @Test
     public void NewItemShouldBeLinkToAllNewJobTest() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/view/all/newJob"),
-                message);
+                MESSAGE);
     }
     @Test
     public void CreateAJobShouldBeLinkToAllNewJobTest() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/newJob"),
-                message);
+                MESSAGE);
     }
     @Test
     public void SetupaAgentShouldBeLinkToNewJobTest() {
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/computer/new"),
-                message);
+                MESSAGE);
     }
     @Test
     public void ConfugureACloudShouldBeLinkToCloudTest() {
         getDriver().findElement(By.xpath("//a[@href='cloud/']")).click();
         assertTrue(getDriver().getCurrentUrl().contains("/cloud"),
-                message);
+                MESSAGE);
     }
     @Test
     public void LearnShouldBeLinkToLearn()  {
