@@ -20,7 +20,6 @@ public class HeaderComponent extends BaseComponent {
     }
 
     public HomePage clickLogoIcon() {
-        //This code make this method stable, otherwise it often fails with StaleElementReferenceException
         int attempts = 0;
         while (attempts < 5) {
             try {
