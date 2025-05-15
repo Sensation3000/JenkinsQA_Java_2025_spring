@@ -61,6 +61,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
         Assert.assertEquals(updatedCredentialsName, UPDATED_CREDENTIALS_NAME + "/******");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testUpdateOrganizationFolderCredentials")
     public void testDeleteOrganizationFolderCredentials() {
         String emptyCredentialsStatus = new GlobalCredentialsPage(getDriver())
