@@ -143,4 +143,19 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(homePage.getProjectNameList().size(), 0);
     }
+
+    @Test
+    public void testCancelDeletionProject(){
+        String homePage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(projectName)
+                .selectMultibranchPipelineAndClickOkWithJS()
+                .clickSaveButton()
+                .cancelDeletionMultiBranchPipeline()
+                .getHeader()
+                .goToHomePage()
+                .getProjectName();
+
+        Assert.assertEquals(homePage, projectName);
+    }
 }

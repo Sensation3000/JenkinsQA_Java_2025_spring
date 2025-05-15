@@ -15,6 +15,9 @@ import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -326,5 +329,11 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public <T extends BasePage> T clickOnLink(String linkText, T resultPage) {
+        getDriver().findElement(By.linkText(linkText)).click();
+
+        return resultPage;
     }
 }
