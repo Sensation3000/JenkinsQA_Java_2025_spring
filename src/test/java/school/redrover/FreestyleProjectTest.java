@@ -117,7 +117,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(leftMenuList.contains("GitHub"));
     }
 
-    @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
+    @Test(dependsOnMethods = "testRemoveGitHubProject")
     public void testDiscardOldBuilds() {
         int buildLogLimit = 5;
 
