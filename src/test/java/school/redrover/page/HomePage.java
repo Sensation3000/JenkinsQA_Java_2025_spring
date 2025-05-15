@@ -331,15 +331,9 @@ public class HomePage extends BasePage {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public <T> T clickOnSideMenuTaskLink(String linkText, T resultPage) {
+    public <T extends BasePage> T clickOnLink(String linkText, T resultPage) {
         getDriver().findElement(By.linkText(linkText)).click();
 
         return resultPage;
-    }
-
-    public <T> T getInstanceOfClass(Class<T> pageClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
-
-        return constructor.newInstance(getDriver());
     }
 }

@@ -3,6 +3,9 @@ package school.redrover.testdata;
 import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.clouds.CloudsPage;
+import school.redrover.page.computer.ComputerPage;
+import school.redrover.page.computer.NewComputerPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.view.NewViewPage;
@@ -86,7 +89,11 @@ public class TestDataProvider {
                 {"New Item", "/view/all/newJob", NewItemPage.class},
                 {"Build History", "/view/all/builds", BuildHistoryPage.class},
                 {"Manage Jenkins", "/manage/", ManageJenkinsPage.class},
-                {"My Views", "/my-views/view/all/", NewViewPage.class}
+                {"My Views", "/my-views/view/all/", NewViewPage.class},
+                {"Create a job", "/newJob", NewItemPage.class},
+                {"Configure a cloud", "/cloud/", CloudsPage.class},
+                {"Set up an agent", "/computer/new", NewComputerPage.class},
+                {"Build Executor Status", "/computer/", ComputerPage.class}
         };
     }
 }
