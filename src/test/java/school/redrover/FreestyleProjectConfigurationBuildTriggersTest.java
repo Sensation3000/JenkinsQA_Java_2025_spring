@@ -271,13 +271,12 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
 
         Assert.assertTrue(freestyleConfigurationPage.isTooltipVisibleWithText(EXPECTED_TOOLTIP_TEXT+featureName));
     }
-    @Ignore
+
     @Test
     public void testAddGitHubProject() {
         List<String> leftMenuList = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .checkGitHubProjectCheckbox()
                 .sentGitHubProjectURL(GIT_HUB_PROJECT_LINK)
                 .clickSaveButton()

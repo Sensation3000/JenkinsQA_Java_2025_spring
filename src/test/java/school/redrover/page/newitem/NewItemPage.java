@@ -7,21 +7,25 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.DataProvider;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.error.ErrorPage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NewItemPage extends BasePage {
@@ -40,6 +44,18 @@ public class NewItemPage extends BasePage {
 
     @FindBy(id = "itemname-invalid")
     private WebElement itemNameInvalidMessage;
+
+    private String projectPageClass(Class<?> pageClass) {
+        Map<Class<?>, String> pageProjectType = Map.of(
+                FreestyleConfigurationPage.class, "Freestyle project",
+                PipelineConfigurationPage.class, "Pipeline",
+                MultiConfigurationConfigurePage.class, "Multi-configuration project",
+                FolderConfigurationPage.class, "Folder",
+                MultibranchConfigurationPage.class, "Multibranch Pipeline",
+                OrganizationFolderConfigurePage.class, "Organization Folder");
+
+        return pageProjectType.get(pageClass);
+    }
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -333,5 +349,17 @@ public class NewItemPage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage))
                 .getCssValue("color");
     }
-}
 
+    public <T> T createNewItem(String name, Class<T> Page) {
+        itemName.sendKeys(name);
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath(String.format("//span[@class][text()='%s']", projectPageClass(Page))))).click();
+        buttonOk.click();
+
+        try {
+            return Page.getConstructor(WebDriver.class).newInstance(getDriver());
+        } catch (Exception e) {
+            throw new RuntimeException("Page instantiation failed for: " + Page.getSimpleName(), e);
+        }
+    }
+}

@@ -205,8 +205,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testAddBuildSteps() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .addBuildSteps(7)
                 .addBuildSteps(2)
                 .addBuildSteps(1)

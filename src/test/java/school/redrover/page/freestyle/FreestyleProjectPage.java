@@ -237,7 +237,12 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public List<String> getLeftSideMenuNameList() {
-        getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("side-panel")));
 
         return leftMenuElementsList.stream()
                 .map(WebElement::getText).toList();
