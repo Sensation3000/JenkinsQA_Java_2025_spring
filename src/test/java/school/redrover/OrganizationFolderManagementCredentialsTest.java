@@ -7,6 +7,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.credentials.GlobalCredentialsPage;
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
+
     private static final String ORGANIZATION_FOLDER_NAME = "TestFolder";
     private static final String TEST_CREDENTIALS_NAME = "TestName";
     private static final String UPDATED_CREDENTIALS_NAME = "UpdatedTestName";

@@ -6,6 +6,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 public class ScriptConsoleTest extends BaseTest {
+
     private static final String SCRIPT_CONSOLE = "println('Hello from Selenium')";
     private static final String ERROR_SCRIPT_CONSOLE = "123$*";
 

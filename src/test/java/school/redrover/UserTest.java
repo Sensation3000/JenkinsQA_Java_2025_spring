@@ -15,6 +15,7 @@ import static org.testng.Assert.assertEquals;
 
 
 public class UserTest extends BaseTest {
+
     private static final String USER_NAME = "testUser";
     private static final String FULL_NAME = "Test User";
     private static final String PASSWORD = "123Test";
@@ -37,7 +38,6 @@ public class UserTest extends BaseTest {
                 .getUsersList();
 
         assertEquals(users.size(), 2);
-
     }
 
     @Test
