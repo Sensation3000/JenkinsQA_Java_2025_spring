@@ -11,7 +11,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class DashboardViewTest extends BaseTest {
+
     private final static String JOB_NAME = "Test item";
+    private final static String LIST_VIEW_NAME = "TestlistViewName";
+    private final static String TEST_ITEM_JOB = "Test item";
+    private final static String VIEW_NAME = "TestViewName";
 
     @Test
     public void testCreateFreestyleProjectForView() {
@@ -26,29 +30,24 @@ public class DashboardViewTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateMyView() {
-        final String view_name = "TestViewName";
-
         HomePage homePage = (HomePage) new HomePage(getDriver())
                 .clickNewView()
-                .addName(view_name)
+                .addName(VIEW_NAME)
                 .clickMyView()
                 .clickCreateButton();
 
-        assertEquals(homePage.getNameOfView(), view_name);
+        assertEquals(homePage.getNameOfView(), VIEW_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
     public void testCreateListView() {
-        String listViewName = "TestlistViewName";
-        String testItemJob = "Test item";
-
         ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()
-                .addName(listViewName)
+                .addName(LIST_VIEW_NAME)
                 .clickListView()
                 .clickCreateButton())
                 .fillDescription("Description for Test List View")
-                .JobsCheckTestItem(testItemJob)
+                .JobsCheckTestItem(TEST_ITEM_JOB)
                 .clickAddJobFilter()
                 .clickStatusFilterOfJobFilter()
                 .clickAddColumn()
@@ -56,6 +55,6 @@ public class DashboardViewTest extends BaseTest {
                 .clickSaveButton();
 
         assertTrue(new HomePage(getDriver()).isJobDisplayed(JOB_NAME));
-        assertEquals(new HomePage(getDriver()).getNameOfView(), listViewName);
+        assertEquals(new HomePage(getDriver()).getNameOfView(), LIST_VIEW_NAME);
     }
 }
