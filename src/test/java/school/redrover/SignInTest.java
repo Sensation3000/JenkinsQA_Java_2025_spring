@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 
-public class LoginTest extends BaseTest {
+public class SignInTest extends BaseTest {
 
     private static final String USERNAME = "UserName";
     private static final String PASSWORD = "P@ssword";
