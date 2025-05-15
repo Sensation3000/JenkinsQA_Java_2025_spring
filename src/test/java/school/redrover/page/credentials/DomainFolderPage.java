@@ -7,7 +7,7 @@ import school.redrover.common.BasePage;
 
 public class DomainFolderPage extends BasePage {
 
-    @FindBy(css = "a[href*='domain']")
+    @FindBy(css = "tr:nth-child(1) .model-link")
     private WebElement domainName;
 
     @FindBy(xpath = "//*[@id='main-panel']/div[1]/div[2]/a")
