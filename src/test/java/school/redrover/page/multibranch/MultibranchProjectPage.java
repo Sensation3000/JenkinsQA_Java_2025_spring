@@ -38,4 +38,11 @@ public class MultibranchProjectPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public MultibranchProjectPage cancelDeletionMultiBranchPipeline(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-title='Delete Multibranch Pipeline']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-id='cancel']"))).click();
+
+        return this;
+    }
 }
