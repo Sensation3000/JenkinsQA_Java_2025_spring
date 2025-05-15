@@ -105,6 +105,19 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
+    public void testRemoveGitHubProject() {
+        List<String> leftMenuList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .waitUntilTextNameProjectToBePresentInH1(PROJECT_NAME)
+                .clickConfigure()
+                .checkGitHubProjectCheckbox()
+                .clickSaveButton()
+                .getLeftSideMenuNameList();
+
+        Assert.assertFalse(leftMenuList.contains("GitHub"));
+    }
+
+    @Test(dependsOnMethods = "testFreestyleProjectAddGitHubURL")
     public void testDiscardOldBuilds() {
         int buildLogLimit = 5;
 
