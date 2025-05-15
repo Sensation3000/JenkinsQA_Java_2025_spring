@@ -1,15 +1,9 @@
 package school.redrover.page.credentials;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
-
-import java.time.Duration;
 
 public class NewCredentialsPage extends BasePage {
     @FindBy(name = "_.username")
@@ -39,12 +33,6 @@ public class NewCredentialsPage extends BasePage {
 
     public GlobalCredentialsPage clickCreateButton() {
         createButton.click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            alert.accept();
-        } catch (TimeoutException e) {
-        }
 
         return new GlobalCredentialsPage(getDriver());
     }
