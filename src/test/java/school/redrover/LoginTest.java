@@ -53,7 +53,7 @@ public class LoginTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testSignInAsExistingUser")
-    public void testErrorForInvalidCPassword() {
+    public void testErrorForInvalidPassword() {
         Boolean loginError = new HomePage(getDriver())
                 .clickLogOutButton()
                 .setPassword(WRONG_PASSWORD)
@@ -62,5 +62,17 @@ public class LoginTest extends BaseTest {
                 .isErrorTextShown();
 
         assertEquals(loginError,true);
+    }
+
+    @Test(dependsOnMethods = "testErrorForInvalidPassword")
+    public void testErrorForInvalidUser() {
+        Boolean loginError = new HomePage(getDriver())
+                .clickLogOutButton()
+                .setPassword(PASSWORD)
+                .setUserName(WRONG_USERNAME)
+                .clickSignInButtonUseWrongCredentials()
+                .isErrorTextShown();
+
+        assertEquals(loginError, true);
     }
 }

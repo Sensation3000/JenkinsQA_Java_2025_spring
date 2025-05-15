@@ -6,7 +6,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.view.EditViewPage;
-import school.redrover.page.view.NewViewPage;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -16,7 +15,7 @@ public class DashboardViewTest extends BaseTest {
     private final static String JOB_NAME = "Test item";
 
     @Test
-    public void CreateFreestyleProjectForView() {
+    public void testCreateFreestyleProjectForView() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(JOB_NAME)

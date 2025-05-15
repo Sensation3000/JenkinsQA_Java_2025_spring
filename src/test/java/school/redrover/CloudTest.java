@@ -10,7 +10,6 @@ public class CloudTest extends BaseTest {
 
     private static final String PROJECT_NAME = "CloudCreationTestName";
 
-
     @Test
     public void installWindowsCloudPlugin() {
         PluginsPage pluginsPage = new HomePage(getDriver())
