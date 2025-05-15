@@ -466,7 +466,8 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public FreestyleConfigurationPage checkGitHubProjectCheckbox() {
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("main-panel")));
-        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
+        getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[1]/div/span/label")).click();
         
         return this;
     }
