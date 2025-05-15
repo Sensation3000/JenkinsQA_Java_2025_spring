@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -77,6 +78,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
 

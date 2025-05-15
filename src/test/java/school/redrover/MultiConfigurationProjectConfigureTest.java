@@ -18,13 +18,13 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced()
                 .clickQuietPeriodCheckbox()
                 .increaseQuietPeriodValue()
                 .clickSaveButton()
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced();
 
         Assert.assertEquals(multiConfigurationConfigurePage.checkQuietPeriodValue(), "6");
@@ -35,13 +35,13 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced()
                 .clickRetryCountCheckbox()
                 .enterRetryCountValue()
                 .clickSaveButton()
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced();
 
         Assert.assertEquals(multiConfigurationConfigurePage.checkRetryCountValue(), "2");
@@ -52,13 +52,13 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced()
                 .clickBlockBuildWhenUpstreamBuildingCheckbox()
                 .clickBlockBuildWhenDownstreamBuildingCheckbox()
                 .clickSaveButton()
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced();
 
         Assert.assertTrue(multiConfigurationConfigurePage.isCheckboxBlockBuildWhenUpstreamBuildingSelected());
@@ -70,13 +70,13 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced()
                 .clickUseCustomWorkspaceCheckbox()
                 .enterCustomWorkspaceDirectoryValue(CUSTOM_DIRECTORY)
                 .clickSaveButton()
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced();
 
         Assert.assertEquals(multiConfigurationConfigurePage.checkCustomWorkspaceDirectoryValue(), CUSTOM_DIRECTORY);
@@ -87,13 +87,13 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced()
                 .clickUseCustomChildWorkspaceCheckbox()
                 .enterCustomChildWorkspaceDirectoryValue(CUSTOM_CHILD_DIRECTORY)
                 .clickSaveButton()
                 .clickConfigure()
-                .clickAdvancedProjectOptions()
+                .scrollToAdvancedProjectOptions()
                 .clickAdvanced();
 
         Assert.assertEquals(multiConfigurationConfigurePage.checkCustomChildWorkspaceDirectoryValue(), CUSTOM_CHILD_DIRECTORY);

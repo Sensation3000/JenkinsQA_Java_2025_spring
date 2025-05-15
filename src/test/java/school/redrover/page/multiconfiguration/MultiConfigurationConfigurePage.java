@@ -23,6 +23,9 @@ public class MultiConfigurationConfigurePage extends BasePage {
     @FindBy(xpath = "//input[@name='blockBuildWhenDownstreamBuilding']")
     private WebElement checkboxBlockBuildWhenDownstreamBuilding;
 
+    @FindBy(name = "_.displayNameOrNull")
+    private WebElement displayNameField;
+
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -87,10 +90,10 @@ public class MultiConfigurationConfigurePage extends BasePage {
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
-    public MultiConfigurationConfigurePage clickAdvancedProjectOptions() {
-        WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='advanced-project-options']")));
+    public MultiConfigurationConfigurePage scrollToAdvancedProjectOptions() {
+        WebElement header = getDriver().findElement(By.xpath("//div[@id='advanced-project-options']"));
 
-        TestUtils.scrollAndClickWithJS(getDriver(), button);
+        TestUtils.scrollToItemWithJS(getDriver(), header);
 
         return this;
     }
@@ -156,6 +159,7 @@ public class MultiConfigurationConfigurePage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage clickUseCustomWorkspaceCheckbox() {
+
         getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom workspace')]")).click();
 
         return this;
@@ -174,6 +178,7 @@ public class MultiConfigurationConfigurePage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage clickUseCustomChildWorkspaceCheckbox() {
+
         getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom child workspace')]")).click();
 
         return this;
