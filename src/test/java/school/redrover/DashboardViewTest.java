@@ -10,7 +10,6 @@ import school.redrover.page.view.EditViewPage;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
 public class DashboardViewTest extends BaseTest {
     private final static String JOB_NAME = "Test item";
 
