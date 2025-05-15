@@ -12,9 +12,13 @@ import school.redrover.common.TestUtils;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
+import school.redrover.page.myViews.MyViewsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,6 +54,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='/manage']")
     private WebElement manageJenkinsLink;
+
+    @FindBy(xpath ="//a[@href='/me/my-views']")
+    private WebElement  myViewsButton;
 
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
@@ -112,6 +119,13 @@ public class HomePage extends BasePage {
                 By.xpath("//span[text()='%s']".formatted(nameItem)))).click();
 
         return resultPage;
+    }
+
+    public MyViewsPage clickMyViewsButton(){
+        myViewsButton.click();
+
+        return new MyViewsPage(getDriver());
+
     }
 
     public ManageJenkinsPage clickManageJenkinsOnLeftSidePanel() {
@@ -326,5 +340,11 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.cssSelector("a[href='/manage']")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public <T extends BasePage> T clickOnLink(String linkText, T resultPage) {
+        getDriver().findElement(By.linkText(linkText)).click();
+
+        return resultPage;
     }
 }

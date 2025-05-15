@@ -5,6 +5,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -205,5 +207,13 @@ public class TestUtils {
                 throw new IllegalArgumentException("Item name '" + itemName + "' already exists");
             }
         }
+    }
+
+    public static <T> T getInstanceOfClass(WebDriver driver, Class<T> pageClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
+
+        return constructor.newInstance(driver);
     }
 }
