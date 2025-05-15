@@ -64,7 +64,7 @@ public class SignInTest extends BaseTest {
         assertEquals(loginError,true);
     }
 
-    @Test(dependsOnMethods = "testErrorForInvalidPassword")
+    @Test
     public void testErrorForInvalidUser() {
         Boolean loginError = new HomePage(getDriver())
                 .clickLogOutButton()
