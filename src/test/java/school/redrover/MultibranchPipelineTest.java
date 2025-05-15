@@ -71,8 +71,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testTryCreateProjectExistName() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(MULTIBRANCH_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(MULTIBRANCH_NAME, MultiConfigurationConfigurePage.class)
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()

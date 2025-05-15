@@ -117,8 +117,7 @@ public class FolderTest extends BaseTest {
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .sendDescription(descriptionName)
                 .clickSave();
 
