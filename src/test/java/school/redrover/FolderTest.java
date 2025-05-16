@@ -1,9 +1,11 @@
 package school.redrover;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
+
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
@@ -18,10 +20,11 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_DISPLAY_NAME = "Folder Display Name";
     private static final String HEALTH_METRICS = "Health metrics";
     private static final String ITEM_NAME = "Test Folder";
+    private static final String DESCRIPTION = "Test description";
+    private static final Logger log = LoggerFactory.getLogger(FolderTest.class);
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
-
         List<String> jobs = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(folderName)
@@ -63,7 +66,6 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
     public void testCreateFreestyleProjectInFolder() {
-
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
@@ -79,7 +81,6 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
-
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(FOLDER_SECOND_NAME)
@@ -113,21 +114,19 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testCreateWithDescription () {
-        final String descriptionName = "folder";
-
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
-                .sendDescription(descriptionName)
+                .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .sendDescription(DESCRIPTION)
                 .clickSave();
 
         Assert.assertEquals(folderProjectPage.getProjectName(),FOLDER_NAME);
-        Assert.assertEquals(folderProjectPage.getDescription(),descriptionName);
+        Assert.assertEquals(folderProjectPage.getDescription(),DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateWithDescription")
     public void testCreateFolderInFolder() {
-
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
@@ -152,22 +151,34 @@ public class FolderTest extends BaseTest {
 
         List<String> titlesHealthMetrics = List.of(
                 folderConfigurationPage.getTitleHealthMetrics(),
-                folderConfigurationPage.getTextDropdownHealthMetrics()        );
+                folderConfigurationPage.getTextDropdownHealthMetrics());
+
         for (String titleHealthMetrics : titlesHealthMetrics) {
+
             Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
         }
     }
 
     @Test
-    public void folderIsEmptyTest() {
-
+    public void testFolderIsEmpty() {
         String folderStatus = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName("Test1")
+                .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSave()
                 .getFolderStatus();
 
         Assert.assertEquals(folderStatus, "This folder is empty");
+    }
+
+    @Test
+    public void testQuestionMarkIcon() {
+        boolean isButtonExist = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .isQuestionMarkIconEnabled();
+
+        Assert.assertTrue(isButtonExist);
     }
 }
