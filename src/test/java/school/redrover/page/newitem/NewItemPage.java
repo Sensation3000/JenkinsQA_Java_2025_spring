@@ -104,6 +104,7 @@ public class NewItemPage extends BasePage {
     }
 
     public FolderConfigurationPage selectFolderAndClickOk() {
+        TestUtils.scrollAndClickWithJS(getDriver(),folder);
         folder.click();
         buttonOk.click();
 
