@@ -31,8 +31,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
@@ -232,8 +231,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateWithDescription() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .addDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescription();
@@ -245,8 +243,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .addDescription(PROJECT_DESCRIPTION)
                 .clickThrottleBuilds()
                 .selectTimePeriod(TIME_PERIOD)
@@ -288,22 +285,18 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testTriggerBuildAfterOtherProjects() {
-        new HomePage(getDriver())
+        final List<String> builds = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleClickOkAndWaitCreateItemFormIsClose();
-
-        new HeaderComponent(getDriver())
-                .goToHomePage()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .getHeader()
+                .clickLogo()
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(SECOND_PROJECT_NAME)
-                .selectFreestyleClickOkAndWaitCreateItemFormIsClose()
+                .createNewItem(SECOND_PROJECT_NAME, FreestyleConfigurationPage.class)
                 .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
                 .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(SECOND_PROJECT_NAME);
-
-        final List<String> builds = new HeaderComponent(getDriver())
-                .goToHomePage()
+                .waitUntilTextNameProjectToBePresentInH1(SECOND_PROJECT_NAME)
+                .getHeader()
+                .clickLogo()
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
                 .clickBuildNow()
                 .waitJobStarted()
@@ -352,8 +345,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateFreestyleProjectWithNoneSCM() {
         String projectName = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .selectNoneSCM()
                 .clickSaveButton()
                 .getProjectName();
@@ -367,8 +359,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> buildList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .scrollToBuildTriggers()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(everyMinuteSchedule)
@@ -393,8 +384,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName("New Freestyle Project")
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .addDescription("Freestyle Project Description")
                 .clickSaveButton()
                 .clickProjectBreadcrumbsDropDownMenu();
