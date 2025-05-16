@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
@@ -17,8 +16,6 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -52,11 +49,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/manage/about']")
     private WebElement jenkinsAboutOptionInJenkinsVersionDropDownMenu;
 
-    @FindBy(xpath = "//a[@href='/manage']")
-    private WebElement manageJenkinsLink;
-
     @FindBy(xpath ="//a[@href='/me/my-views']")
     private WebElement  myViewsButton;
+
+    @FindBy(css ="a[href$='/distributed-builds'")
+    private WebElement  learnMoreAboutDistributedBuildsLink;
 
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
@@ -346,5 +343,13 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.linkText(linkText)).click();
 
         return resultPage;
+    }
+
+    public boolean isLearnMoreAboutDistributedBuildsLinkEnabled() {
+        return learnMoreAboutDistributedBuildsLink.isEnabled();
+    }
+
+    public String getLearnMoreAboutDistributedBuildsLinkText() {
+        return learnMoreAboutDistributedBuildsLink.getText();
     }
 }

@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
@@ -9,7 +8,6 @@ import school.redrover.page.HomePage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -30,16 +28,10 @@ public class MainPathTest extends BaseTest {
     }
 
     @Test
-    public void LearnShouldBeLinkToLearn()  {
-        getDriver().findElement(By.xpath("//a[@target='_blank']")).click();
-        getDriver().switchTo().window(new ArrayList<>(getDriver()
-                .getWindowHandles())
-                .get((new ArrayList<>(getDriver()
-                        .getWindowHandles()).indexOf(getDriver()
-                        .getWindowHandle()) + 1) % getDriver().getWindowHandles().size()));
-        assertEquals(getDriver().getCurrentUrl(),
-                "https://www.jenkins.io/doc/book/scaling/architecting-for-scale/#distributed-builds-architecture");
+    public void testLearnMoreAboutDistributedBuildsLink()  {
+        HomePage homePage = new HomePage(getDriver());
+
+        assertTrue(homePage.isLearnMoreAboutDistributedBuildsLinkEnabled());
+        assertEquals(homePage.getLearnMoreAboutDistributedBuildsLinkText(), "Learn more about distributed builds");
     }
-
-
 }
