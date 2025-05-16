@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class CreatedCredentialPage extends BasePage {
-    @FindBy(tagName = "h1")
-    private WebElement credentialName;
 
     @FindBy(name = "Submit")
     private WebElement yesButton;
@@ -18,7 +16,9 @@ public class CreatedCredentialPage extends BasePage {
 
     public String getCreatedCredentialName() {
 
-        return getWait10().until(ExpectedConditions.visibilityOf(credentialName)).getText();
+        return getWait10()
+                .until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"))))
+                .getText();
     }
 
     public CreatedCredentialPage clickDeleteCredentialButton() {
