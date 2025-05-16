@@ -181,4 +181,16 @@ public class FolderTest extends BaseTest {
 
         Assert.assertTrue(isButtonExist);
     }
+
+    @Test(dependsOnMethods = "testQuestionMarkIcon")
+    public void testAddDescriptionButton() {
+        String descriptionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME,new FolderProjectPage(getDriver()))
+                .clickAddDescriptionButton()
+                .fillInDescriptionBox(DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionSecondLine();
+
+       Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
 }
