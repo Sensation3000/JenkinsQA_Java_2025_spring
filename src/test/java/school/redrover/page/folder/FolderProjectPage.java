@@ -106,4 +106,14 @@ public class FolderProjectPage extends BasePage {
 
         return new CredentialsPage(getDriver());
     }
+
+    public NewItemPage findNewItemAndClick() {
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getSubFolderName() {
+        return getDriver().findElement(By.className("jenkins-table__link")).getText();
+    }
 }
