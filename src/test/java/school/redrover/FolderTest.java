@@ -121,13 +121,14 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateWithDescription")
     public void testRenameFolder() {
-        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+        String folderName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickRenameOnLeftSidePanel(FOLDER_NAME)
                 .sendNewName(RENAMED_FOLDER_NAME)
-                .clickRenameButton();
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertEquals(folderProjectPage.getProjectName(), RENAMED_FOLDER_NAME);
+        Assert.assertEquals(folderName, RENAMED_FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testRenameFolder")
