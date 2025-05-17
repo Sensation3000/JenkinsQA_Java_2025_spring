@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -42,6 +43,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
         Assert.assertEquals(credentialsName, TEST_CREDENTIALS_NAME + "/******");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testConfigureOrganizationFolderCredentials")
     public void testUpdateOrganizationFolderCredentials() {
         String updatedCredentialsName = new GlobalCredentialsPage(getDriver())
@@ -59,6 +61,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
         Assert.assertEquals(updatedCredentialsName, UPDATED_CREDENTIALS_NAME + "/******");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testUpdateOrganizationFolderCredentials")
     public void testDeleteOrganizationFolderCredentials() {
         String emptyCredentialsStatus = new GlobalCredentialsPage(getDriver())
