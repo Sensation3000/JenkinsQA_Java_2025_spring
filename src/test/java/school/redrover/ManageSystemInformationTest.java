@@ -12,7 +12,6 @@ public class ManageSystemInformationTest extends BaseTest {
 
     @Test
     public void testSystemPropertiesHiddenClassAfterClick() {
-
         String classAttribute = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemInfo()
@@ -24,7 +23,6 @@ public class ManageSystemInformationTest extends BaseTest {
 
     @Test
     public void testEnvironmentVariablesHiddenClassAfterClick() {
-
         String classAttribute = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemInfo()

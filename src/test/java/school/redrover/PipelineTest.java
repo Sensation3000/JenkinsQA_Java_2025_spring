@@ -118,7 +118,6 @@ public class PipelineTest extends BaseTest {
                 .checkStatusOffToggle();
 
         Assert.assertEquals(statusToggleChange, "Disabled");
-
     }
 
     @Test

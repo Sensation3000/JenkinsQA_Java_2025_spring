@@ -66,9 +66,11 @@ public class OrganizationFolderTest extends BaseTest {
         OrganizationFolderConfigurePage organizationFolderConfigurePage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel();
+
         boolean isDisplayNameHelpBlockDisplayed = organizationFolderConfigurePage
                 .clickDisplayNameHelpButton()
                 .isDisplayNameHelpBlockDisplayed();
+
         boolean isDisplayNameHelpBlockNotDisplayed = organizationFolderConfigurePage
                 .clickDisplayNameHelpButton()
                 .isDisplayNameHelpBlockDisplayed();

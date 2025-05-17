@@ -26,10 +26,9 @@ public class BuildHistoryTest extends BaseTest {
     public void testEmptyBuildHistory() {
         BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
                 .clickBuildHistoryOnLeftSidePanel();
-        List<String> expectedBuildHistoryTableHeaders = List.of("S", "Build", "Time Since", "Status");
 
         Assert.assertTrue(buildHistoryPage.isBuildHistoryEmpty());
-        Assert.assertEquals(buildHistoryPage.getBuildHistoryHeaders(), expectedBuildHistoryTableHeaders);
+        Assert.assertEquals(buildHistoryPage.getBuildHistoryHeaders(), List.of("S", "Build", "Time Since", "Status"));
     }
 
     @Test

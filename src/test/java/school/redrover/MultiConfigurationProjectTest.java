@@ -27,7 +27,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testTooltipIsVisible() {
-
         String tooltipIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
@@ -38,7 +37,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testProjectDisabledMessageIsVisible() {
-
         boolean projectDisabledMessageIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
@@ -51,7 +49,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testProjectDisabledMessageInvisible() {
-
         boolean projectDisabledMessageInvisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
@@ -65,7 +62,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testIfOriginalItemConfigurationIsCopied() {
-
         MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
