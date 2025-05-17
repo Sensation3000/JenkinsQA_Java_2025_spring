@@ -34,13 +34,13 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
         Assert.assertEquals(freestyleConfigurationPage.countHelperIconsTriggersSection(), 8);
     }
 
-
     @Test(dependsOnMethods = "testCreateFreestyleProjectAndOpenBuildTriggersSection")
     public void testTriggerBuildsRemotelyCheckboxIsVisibleAndEnabled() {
         freestyleConfigurationPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToBuildTriggers();
+
         Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxDisplayed());
         Assert.assertTrue(freestyleConfigurationPage.isTriggerBuildsRemotelyCheckboxEnabled());
     }
@@ -51,6 +51,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToBuildTriggers();
+
         Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxDisplayed());
         Assert.assertTrue(freestyleConfigurationPage.isBuildAfterProjectsCheckboxEnabled());
     }
@@ -61,6 +62,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToBuildTriggers();
+
         Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxDisplayed());
         Assert.assertTrue(freestyleConfigurationPage.isBuildPeriodicallyCheckboxEnabled());
     }
@@ -71,6 +73,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToBuildTriggers();
+
         Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxDisplayed());
         Assert.assertTrue(freestyleConfigurationPage.isGithubHookTriggerCheckboxEnabled());
     }
@@ -81,6 +84,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToBuildTriggers();
+
         Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxDisplayed());
         Assert.assertTrue(freestyleConfigurationPage.isPollSCMCheckboxEnabled());
     }
