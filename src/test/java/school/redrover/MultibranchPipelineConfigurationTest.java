@@ -22,8 +22,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void createMultibranchPipelineProject() {
         MultibranchConfigurationPage multiBranchConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultibranchPipelineAndClickOkWithJS();
+                .createNewItem(projectName, MultibranchConfigurationPage.class);
 
         Assert.assertTrue(multiBranchConfigurationPage.isBranchSourceButtonDisplayed());
     }
@@ -32,8 +31,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testEnableDisablePipeline() {
         String tooltipDefaultText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultibranchPipelineAndClickOkWithJS()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
                 .getEnableToggleText();
 
         Assert.assertEquals(tooltipDefaultText, "Enabled", "Toggle is disabled!");
@@ -43,8 +41,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testEnabledDisabledToggleTooltip() {
         String tooltipEnabledAttribute = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultibranchPipelineAndClickOkWithJS()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
                 .hoverOnEnabledDisabledToggle()
                 .getEnabledDisabledToggleShownAttribute();
 
@@ -55,8 +52,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testDisableMultibranchPipeline() {
         String toggleText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultibranchPipelineAndClickOkWithJS()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
                 .clickEnabledDisabledToggle()
                 .clickSaveButton()
                 .goToConfigurationPage()
@@ -148,8 +144,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testCancelDeletionProject(){
         String homePage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultibranchPipelineAndClickOkWithJS()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
                 .clickSaveButton()
                 .cancelDeletionMultiBranchPipeline()
                 .getHeader()

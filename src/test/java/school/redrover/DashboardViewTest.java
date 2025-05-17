@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.view.EditViewPage;
 
@@ -21,8 +22,7 @@ public class DashboardViewTest extends BaseTest {
     public void testCreateFreestyleProjectForView() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(JOB_NAME, FreestyleConfigurationPage.class)
                 .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), JOB_NAME);
