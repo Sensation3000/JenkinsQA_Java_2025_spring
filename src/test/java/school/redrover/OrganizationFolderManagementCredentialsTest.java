@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.credentials.GlobalCredentialsPage;
+import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
@@ -19,8 +20,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
     public void testCreateNewOrganizationFolder() {
         String testFolderName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .createNewItem(ORGANIZATION_FOLDER_NAME, OrganizationFolderConfigurePage.class)
                 .clickSave()
                 .getOrganizationFolderNameFromHeader();
 
