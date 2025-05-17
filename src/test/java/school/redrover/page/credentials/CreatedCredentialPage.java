@@ -1,6 +1,7 @@
 package school.redrover.page.credentials;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,8 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class CreatedCredentialPage extends BasePage {
-    @FindBy(tagName = "h1")
-    private WebElement credentialName;
 
     @FindBy(name = "Submit")
     private WebElement yesButton;
@@ -17,8 +16,18 @@ public class CreatedCredentialPage extends BasePage {
     public CreatedCredentialPage(WebDriver driver) {super(driver);}
 
     public String getCreatedCredentialName() {
-
-        return getWait10().until(ExpectedConditions.visibilityOf(credentialName)).getText();
+        By credentialNameLocator = By.xpath("//*[@id='main-panel']/h1");
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                return getWait10()
+                        .until(ExpectedConditions.visibilityOfElementLocated(credentialNameLocator))
+                        .getText();
+            } catch (StaleElementReferenceException e) {
+                attempts++;
+            }
+        }
+        throw new RuntimeException();
     }
 
     public CreatedCredentialPage clickDeleteCredentialButton() {

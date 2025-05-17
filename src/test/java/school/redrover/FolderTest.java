@@ -22,6 +22,7 @@ public class FolderTest extends BaseTest {
     private static final String HEALTH_METRICS = "Health metrics";
     private static final String ITEM_NAME = "Test Folder";
     private static final String DESCRIPTION = "Test description";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final Logger log = LoggerFactory.getLogger(FolderTest.class);
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
@@ -194,5 +195,33 @@ public class FolderTest extends BaseTest {
                 .getDescriptionSecondLine();
 
        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test
+    public void testCreateNewFolder() {
+        String currentName = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(currentName, FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void testCreatingSubFolder() {
+        String subFolder = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .findNewItemAndClick()
+                .sendItemName(SUB_FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+               .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .getSubFolderName();
+
+        Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
     }
 }
