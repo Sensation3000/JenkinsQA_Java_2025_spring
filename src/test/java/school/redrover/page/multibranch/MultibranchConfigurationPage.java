@@ -21,6 +21,11 @@ public class MultibranchConfigurationPage extends BasePage {
         return this;
     }
 
+    public MultibranchConfigurationPage sendMultibranchName (String name) {
+        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(name);
+        return this;
+    }
+
     public MultibranchConfigurationPage clickEnabledDisabledToggle() {
         getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
 

@@ -1,18 +1,12 @@
 package school.redrover;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
-import school.redrover.page.newitem.NewItemPage;
+
 import school.redrover.testdata.TestDataProvider;
 
 import static org.testng.Assert.assertEquals;
@@ -22,13 +16,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_NAME = "Multibranch Pipeline Job Test";
     private static final String PROJECT_DESCRIPTION = "This is a NEW MultibranchPipeline description";
+    private static final String MULTIBRANCH_NEW_NAME = "New Multibranch Name";
 
     @Test
     public void testCreate() {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
-                .selectMultibranchAndClickOk()
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .clickSaveButton();
 
         Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);
@@ -44,6 +39,18 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testChangeDisplayName() {
+        String actualName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .sendMultibranchName(MULTIBRANCH_NEW_NAME)
+                .clickSaveButton()
+                .getProjectName();
+
+        Assert.assertEquals(actualName, MULTIBRANCH_NEW_NAME);
     }
 
     @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
