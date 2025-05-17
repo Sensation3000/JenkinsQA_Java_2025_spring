@@ -17,6 +17,9 @@ public class FolderProjectPage extends BasePage {
     @FindBy(linkText = "Create a job")
     private WebElement newItemButton;
 
+    @FindBy (xpath = "//*[@id='description']/div[1]")
+    private WebElement description;
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -26,7 +29,8 @@ public class FolderProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getDriver().findElement(By.id("view-message")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
+
     }
 
     public String getFolderStatus() {
@@ -59,6 +63,30 @@ public class FolderProjectPage extends BasePage {
         return new FolderConfigurationPage(getDriver());
     }
 
+    public FolderProjectPage clickAddDescriptionButton(){
+        getDriver().findElement(By.id("description-link")).click();
+
+        return this;
+    }
+
+    public FolderProjectPage clickSaveButton(){
+        getDriver().findElement(By.name("Submit")).click();
+
+        return  this;
+    }
+
+    public FolderProjectPage fillInDescriptionBox(String description){
+        getDriver().findElement(By.name("description")).sendKeys(description);
+
+        return this;
+    }
+
+    public String getDescriptionSecondLine() {
+
+        return description.getText();
+
+    }
+
     public List<String> getProjectNameList() {
 
         return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
@@ -77,5 +105,15 @@ public class FolderProjectPage extends BasePage {
                 .click();
 
         return new CredentialsPage(getDriver());
+    }
+
+    public NewItemPage findNewItemAndClick() {
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getSubFolderName() {
+        return getDriver().findElement(By.className("jenkins-table__link")).getText();
     }
 }
