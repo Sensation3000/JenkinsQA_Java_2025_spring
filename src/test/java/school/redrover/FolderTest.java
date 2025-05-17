@@ -3,7 +3,6 @@ package school.redrover;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -23,7 +22,7 @@ public class FolderTest extends BaseTest {
     private static final String ITEM_NAME = "Test Folder";
     private static final String DESCRIPTION = "Test description";
     private static final String SUB_FOLDER_NAME = "SubFolder";
-    private static final Logger log = LoggerFactory.getLogger(FolderTest.class);
+    private static final String RENAMED_FOLDER_NAME = "Renamed folder";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
@@ -121,14 +120,25 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateWithDescription")
-    public void testCreateFolderInFolder() {
+    public void testRenameFolder() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickRenameOnLeftSidePanel(FOLDER_NAME)
+                .sendNewName(RENAMED_FOLDER_NAME)
+                .clickRenameButton();
+
+        Assert.assertEquals(folderProjectPage.getProjectName(), RENAMED_FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRenameFolder")
+    public void testCreateFolderInFolder() {
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
                 .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
-                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
+                .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()));
 
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
         Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
