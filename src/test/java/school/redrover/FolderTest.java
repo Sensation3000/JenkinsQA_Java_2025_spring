@@ -3,6 +3,7 @@ package school.redrover;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -28,8 +29,7 @@ public class FolderTest extends BaseTest {
     public void  testCreateWithValidName(String folderName) {
         List<String> jobs = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(folderName)
-                .selectFolderAndClickOk()
+                .createNewItem(folderName, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
@@ -42,8 +42,7 @@ public class FolderTest extends BaseTest {
     public void testCreateWithDisplayName() {
         String actualDisplayName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .sendDisplayName(FOLDER_DISPLAY_NAME)
                 .clickSave()
                 .getProjectName();
@@ -70,8 +69,7 @@ public class FolderTest extends BaseTest {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
-                .sendItemName(ITEM_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
@@ -84,13 +82,11 @@ public class FolderTest extends BaseTest {
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_SECOND_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_SECOND_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnNewItemLinkWithChevron(FOLDER_SECOND_NAME)
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();
 
@@ -103,8 +99,7 @@ public class FolderTest extends BaseTest {
 
         String copyFromFieldText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
@@ -117,8 +112,7 @@ public class FolderTest extends BaseTest {
     public void testCreateWithDescription () {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .sendDescription(DESCRIPTION)
                 .clickSave();
 
@@ -131,8 +125,7 @@ public class FolderTest extends BaseTest {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
@@ -146,8 +139,7 @@ public class FolderTest extends BaseTest {
     public void  testAvailabilityHealthMetrics(){
         FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOkWithJS()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .clickHealthMetrics();
 
         List<String> titlesHealthMetrics = List.of(
@@ -164,8 +156,7 @@ public class FolderTest extends BaseTest {
     public void testFolderIsEmpty() {
         String folderStatus = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .getFolderStatus();
 
@@ -176,8 +167,7 @@ public class FolderTest extends BaseTest {
     public void testQuestionMarkIcon() {
         boolean isButtonExist = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .isQuestionMarkIconEnabled();
 
         Assert.assertTrue(isButtonExist);
@@ -199,8 +189,7 @@ public class FolderTest extends BaseTest {
     public void testCreateNewFolder() {
         String currentName = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();
 
@@ -212,10 +201,9 @@ public class FolderTest extends BaseTest {
         String subFolder = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .findNewItemAndClick()
-                .sendItemName(SUB_FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(SUB_FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
-               .getHeader()
+                .getHeader()
                 .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .getSubFolderName();

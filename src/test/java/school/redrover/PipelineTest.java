@@ -20,8 +20,7 @@ public class PipelineTest extends BaseTest {
     public void testCreateNewPipeline() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .clickSave();
 
         Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
@@ -29,7 +28,6 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCopyFromError() {
-
         final String projectNameB = "SecondProject";
         final String copyFrom = "No such item";
 
@@ -61,8 +59,7 @@ public class PipelineTest extends BaseTest {
     public void testCreateWithDescription() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .sendDescription(PIPELINE_DESCRIPTION)
                 .clickSave();
 
@@ -83,8 +80,7 @@ public class PipelineTest extends BaseTest {
     public void testDisableProjectErrorWhenCreating() {
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle();
 
         Assert.assertTrue(pipelineConfigurationPage.isToggleDisabled(), "The switch is not in an active state");
@@ -94,8 +90,7 @@ public class PipelineTest extends BaseTest {
     public void testEnableProject() {
         PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
@@ -108,8 +103,7 @@ public class PipelineTest extends BaseTest {
     public void testCheckDefaultState() {
         String statusToggleDefault = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .checkStatusOnToggle();
 
         Assert.assertEquals(statusToggleDefault, "Enabled");
@@ -119,8 +113,7 @@ public class PipelineTest extends BaseTest {
     public void testChangeStateNewPipeline() {
         String statusToggleChange = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .checkStatusOffToggle();
 
@@ -131,11 +124,10 @@ public class PipelineTest extends BaseTest {
     @Test
     public void checkAvaliableTriggerBoxTest() {
         List<WebElement> BoxAvaliable = new HomePage(getDriver())
-            .clickNewItemOnLeftSidePanel()
-            .sendItemName(PROJECT_NAME)
-            .selectPipelineAndClickOk()
-            .clickTriggerMenu()
-            .clickTriggerCheckbox();
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .clickTriggerMenu()
+                .clickTriggerCheckbox();
         for (WebElement checkbox: BoxAvaliable) {
             Assert.assertTrue(checkbox.isSelected());
         }
@@ -152,5 +144,4 @@ public class PipelineTest extends BaseTest {
             Assert.assertFalse(checkbox.isSelected());
         }
     }
-
 }

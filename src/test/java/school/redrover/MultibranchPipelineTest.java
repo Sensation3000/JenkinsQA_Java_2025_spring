@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
+import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 
@@ -23,7 +24,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
-                .selectMultibranchPipelineAndClickOkWithJS()
+                .selectMultibranchPipelineAndClickOkWithJS()            
                 .clickSaveButton();
 
         Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);

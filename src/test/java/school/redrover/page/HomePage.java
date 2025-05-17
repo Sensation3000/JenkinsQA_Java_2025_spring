@@ -55,6 +55,9 @@ public class HomePage extends BasePage {
     @FindBy(css ="a[href$='/distributed-builds'")
     private WebElement  learnMoreAboutDistributedBuildsLink;
 
+    @FindBy(css ="#breadcrumbs > li:nth-child(1) > a")
+    private WebElement  dashboardButton;
+
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
     public HomePage(WebDriver driver) {
@@ -351,5 +354,9 @@ public class HomePage extends BasePage {
 
     public String getLearnMoreAboutDistributedBuildsLinkText() {
         return learnMoreAboutDistributedBuildsLink.getText();
+    }
+
+    public boolean enabledDashbord() {
+        return  dashboardButton.getText().equals("Dashboard");
     }
 }
