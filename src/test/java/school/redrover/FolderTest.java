@@ -78,7 +78,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
 

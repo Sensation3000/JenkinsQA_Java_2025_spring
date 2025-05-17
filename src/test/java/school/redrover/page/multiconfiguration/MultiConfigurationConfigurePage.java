@@ -140,7 +140,7 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
     public MultiConfigurationConfigurePage clickBlockBuildWhenUpstreamBuildingCheckbox() {
         getDriver().findElement(By.xpath("//label[contains(text(), 'Block build when upstream project')]")).click();
-        //getWait5().until(ExpectedConditions.elementToBeSelected(By.xpath("//input[@name='blockBuildWhenUpstreamBuilding']")));
+
         return this;
     }
 
