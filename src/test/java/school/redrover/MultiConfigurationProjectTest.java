@@ -30,8 +30,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String tooltipIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
                 .checkTooltipVisibility();
 
         Assert.assertTrue(tooltipIsVisible.contains("tippy"));
@@ -42,8 +41,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         boolean projectDisabledMessageIsVisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
                 .clickEnableToggle()
                 .clickSaveButton()
                 .projectDisabledMessageCheck();
@@ -56,8 +54,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         boolean projectDisabledMessageInvisible = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
                 .clickEnableToggle()
                 .clickSaveButton()
                 .clickEnableButton()
@@ -71,8 +68,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
                 .scrollToEnvironmentSectionWithJS()
                 .checkEnvironmentCheckboxesAndClickOnSaveButton()
                 .getHeader()
@@ -89,8 +85,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void createWithValidName(String projectName) {
         List<String> projects= new HomePage(getDriver()).clickNewItemOnLeftSidePanel()
-                .sendItemName(projectName)
-                .selectMultiConfigurationAndClickOk()
+                .createNewItem(projectName, MultiConfigurationConfigurePage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();

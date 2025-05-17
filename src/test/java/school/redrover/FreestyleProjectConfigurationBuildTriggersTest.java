@@ -27,8 +27,7 @@ public class FreestyleProjectConfigurationBuildTriggersTest extends BaseTest {
     public void testCreateFreestyleProjectAndOpenBuildTriggersSection() {
         freestyleConfigurationPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .scrollToBuildTriggers();
 
         Assert.assertEquals(freestyleConfigurationPage.getSectionNameTriggers(), "Triggers");

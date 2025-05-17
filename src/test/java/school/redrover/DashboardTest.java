@@ -6,7 +6,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderConfigurationPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.newitem.NewItemPage;
+import school.redrover.page.pipeline.PipelineConfigurationPage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +26,6 @@ public class DashboardTest extends BaseTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String JOB_NAME = "Freestyle job";
     private static final String JOB_IN_FOLDER_NAME = "Job in folder";
-
     private static final String FAILED_JOB = "Pipeline job to fail";
     private static final String DESCRIPTION = "Dashboard description";
 
@@ -39,10 +42,7 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testDashboardEnabled() {
-        WebDriver driver = getDriver();
-
-        Assert.assertEquals(driver.findElement(By.cssSelector("#breadcrumbs > li:nth-child(1) > a"))
-                .getText(), "Dashboard");
+        Assert.assertTrue(new HomePage(getDriver()).enabledDashbord());
     }
 
     @Test
@@ -123,8 +123,7 @@ public class DashboardTest extends BaseTest {
 
         new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(SUPERIOR_FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(SUPERIOR_FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .clickOnNewItemButton()
                 .sendItemName(JOB_IN_FOLDER_NAME)
@@ -132,13 +131,11 @@ public class DashboardTest extends BaseTest {
                 .getHeader()
                 .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogo()
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(JOB_NAME, FreestyleConfigurationPage.class)
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo();
@@ -194,8 +191,7 @@ public class DashboardTest extends BaseTest {
                 "}";
         String lastFailure = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FAILED_JOB)
-                .selectPipelineAndClickOk()
+                .createNewItem(FAILED_JOB, PipelineConfigurationPage.class)
                 .setScript(script)
                 .clickSave()
                 .clickBuildNow()
@@ -220,13 +216,11 @@ public class DashboardTest extends BaseTest {
         homePage.clickColumnNameInDashboardTable("W");
         setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
 
-        //check the sorting in one direction
         Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
 
         homePage.clickColumnNameInDashboardTable("W");
         setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("W"));
 
-        //change the direction of sorting and test again
         Assert.assertEquals(homePage.getListHealthReportFromDashboard(),expectedSortedList);
         }
 
@@ -239,13 +233,11 @@ public class DashboardTest extends BaseTest {
         homePage.clickColumnNameInDashboardTable("S");
         setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("S"));
 
-        //check the sorting in one direction
         Assert.assertEquals(homePage.getListStatusLastBuildFromDashboard(),expectedSortedList);
 
         homePage.clickColumnNameInDashboardTable("S");
         setExpectedList(expectedSortedList, homePage.verifyAscendingSortingSign("S"));
 
-        //change the direction of sorting and test again
         Assert.assertEquals(homePage.getListStatusLastBuildFromDashboard(),expectedSortedList);
     }
 

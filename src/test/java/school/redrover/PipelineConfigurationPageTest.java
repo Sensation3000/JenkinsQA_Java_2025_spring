@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.page.pipeline.PipelineProjectPage;
 
 public class PipelineConfigurationPageTest extends BaseTest {
@@ -18,8 +19,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testDisableToggleButton() {
         boolean isDisabled = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
@@ -32,8 +32,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testEnableToggleButton() {
         boolean isEnabled = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
@@ -49,8 +48,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testShowTooltipMessageOnHover() {
         WebElement tooltip = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .getToggleTooltipElementOnHover();
 
         Assert.assertTrue(tooltip.isDisplayed());
@@ -61,8 +59,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testShowWarningMessageWhenPipelineDisabled() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave();
 
@@ -74,8 +71,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testNotShowWarningMessageWhenPipelineEnabled() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
@@ -89,8 +85,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testEnableDisableToggleVisibility() {
         boolean isToggleDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .isToggleDisplayed();
 
         Assert.assertTrue(isToggleDisplayed);
@@ -100,8 +95,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testBuildNowOptionIsHiddenForDisabledPipeline() {
         boolean isOptionPresented = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .getHeader()
@@ -116,8 +110,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testBuildNowOptionIsShownForEnabledPipeline() {
         boolean isOptionPresented = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .clickSave()
                 .getHeader()
                 .goToHomePage()
@@ -131,8 +124,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testPreviewIsDisplayedAfterClickingPreviewButton() {
         boolean isPreviewDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .sendDescription(DESCRIPTION)
                 .clickPreviewButton()
                 .isPreviewDisplayed();
@@ -144,8 +136,7 @@ public class PipelineConfigurationPageTest extends BaseTest {
     public void testPreviewIsHiddenAfterClickingHidePreview() {
         boolean isPreviewDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectPipelineAndClickOk()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .sendDescription(DESCRIPTION)
                 .clickPreviewButton()
                 .clickHidePreviewButton()
