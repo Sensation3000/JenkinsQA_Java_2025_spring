@@ -20,10 +20,7 @@ public class CloudTest extends BaseTest {
                 .clickCheckBoxWindowsCloud()
                 .clickInstallButton();
 
-        Assert.assertEquals(
-                pluginsPage.getSuccessInstallStatus(),
-                "Success"
-        );
+        Assert.assertEquals(pluginsPage.getSuccessInstallStatus(), "Success");
     }
 
     @Test(dependsOnMethods = "installWindowsCloudPlugin")

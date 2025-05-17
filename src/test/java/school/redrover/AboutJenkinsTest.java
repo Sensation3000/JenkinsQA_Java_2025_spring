@@ -15,15 +15,12 @@ public class AboutJenkinsTest extends BaseTest {
 
     @Test
     public void testOpenViaJenkinsVersionOnHomePage() {
-
-        final  List<String> expectedOptions = Arrays.asList("Dashboard", "Manage Jenkins", "About Jenkins");
-
         List<String> breadcrumbNavigation = new HomePage(getDriver())
                 .clickJenkinsVersionButton()
                 .clickAboutJenkinsInJenkinsVersionDropDownMenu()
                 .getBreadcrumbsNavigationList();
 
-        Assert.assertEquals(breadcrumbNavigation, expectedOptions);
+        Assert.assertEquals(breadcrumbNavigation, Arrays.asList("Dashboard", "Manage Jenkins", "About Jenkins"));
     }
 
     @Test

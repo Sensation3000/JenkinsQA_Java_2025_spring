@@ -12,7 +12,6 @@ public class PluginsTest extends BaseTest {
 
     @Test
     public void testPluginInstallationStatus() {
-
         String pluginStatus = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickPlugins()

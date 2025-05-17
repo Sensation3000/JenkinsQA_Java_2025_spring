@@ -16,8 +16,7 @@ import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.view.NewViewPage;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
@@ -150,6 +149,14 @@ public class HomePage extends BasePage {
                 .map(WebElement::getText).toList();
     }
 
+    public List<String> getReversedProjectNameList() {
+        List<String> originalList = getProjectNameList();
+        List<String> reversedList = new ArrayList<>(originalList);
+        Collections.reverse(reversedList);
+
+        return reversedList;
+    }
+
     public NewViewPage clickNewView() {
         getWait10().until(ExpectedConditions.elementToBeClickable(newViewPlus)).click();
 
@@ -247,8 +254,10 @@ public class HomePage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public void clickColumnNameInDashboardTable(String columnName) {
+    public HomePage clickColumnNameInDashboardTable(String columnName) {
         getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
+
+        return this;
     }
 
     public boolean verifyAscendingSortingSign(String columnName) {
@@ -262,8 +271,16 @@ public class HomePage extends BasePage {
         if (isJobListEmpty()) {
             return List.of();
         }
+
         return getDriver().findElements(By.cssSelector(".healthReport")).stream()
                 .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+    }
+
+    public List<String> getReverseListHealthReportFromDashboard() {
+        return getListHealthReportFromDashboard()
+                .stream()
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
     public List<String> getListStatusLastBuildFromDashboard() {
@@ -277,6 +294,14 @@ public class HomePage extends BasePage {
         list.removeIf(Objects::isNull);
 
         return list;
+    }
+
+    public List<String> getReversedListStatusLastBuildFromDashboard() {
+        List<String> originalList = getListStatusLastBuildFromDashboard();
+        List<String> reversedList = new ArrayList<>(originalList);
+        Collections.reverse(reversedList);
+
+        return reversedList;
     }
 
     public boolean isBuildQueueDisplayed() {
