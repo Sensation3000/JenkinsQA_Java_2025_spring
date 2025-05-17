@@ -6,8 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.page.HomePage;
-import school.redrover.page.credentials.CredentialsPage;
 import school.redrover.page.newitem.NewItemPage;
 
 import java.util.List;
@@ -25,7 +23,8 @@ public class FolderProjectPage extends BasePage {
     }
 
     public String getProjectName() {
-        return getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='main-panel']/h1"))).getText();
     }
 
     public String getDescription() {
@@ -47,14 +46,6 @@ public class FolderProjectPage extends BasePage {
         getDriver().findElement(By.id("name")).sendKeys(name);
 
         return this;
-    }
-
-    public HomePage selectFreestyleClickOkAndReturnToHomePage() {
-        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getHeader().clickLogo();
-
-        return new HomePage(getDriver());
     }
 
     public FolderConfigurationPage clickConfigure() {
@@ -84,7 +75,6 @@ public class FolderProjectPage extends BasePage {
     public String getDescriptionSecondLine() {
 
         return description.getText();
-
     }
 
     public List<String> getProjectNameList() {
@@ -99,14 +89,6 @@ public class FolderProjectPage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public CredentialsPage clickLeftSideCredentials() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/TestFolder/credentials']")))
-                .click();
-
-        return new CredentialsPage(getDriver());
-    }
-
     public NewItemPage findNewItemAndClick() {
         getDriver().findElement(By.linkText("New Item")).click();
 
@@ -115,5 +97,11 @@ public class FolderProjectPage extends BasePage {
 
     public String getSubFolderName() {
         return getDriver().findElement(By.className("jenkins-table__link")).getText();
+    }
+
+    public FolderRenamePage clickRenameOnLeftSidePanel(String folderName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(folderName)))).click();
+        return new FolderRenamePage(getDriver());
     }
 }
