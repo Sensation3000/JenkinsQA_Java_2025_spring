@@ -38,16 +38,6 @@ public class UsersPage extends BasePage {
                 .visibilityOfAllElementsLocatedBy(By.xpath("//table[@id='people']//a[starts-with(@href, 'user/')]")));
     }
 
-    public String getUserIdTdText() {
-
-        return getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]")).getText();
-    }
-
-    public String getNameTdText() {
-
-        return getDriver().findElement(By.xpath("//tbody/tr[2]/td[3]")).getText();
-    }
-
     public UsersPage clickDeleteUserButton(String userName) {
         String xpath = String.format("//a[@data-url='user/%s/doDelete']", userName.toLowerCase());
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();

@@ -2,17 +2,57 @@ package school.redrover.page.user;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class UserAdminPage extends BasePage {
 
+    @FindBy(css = ".jenkins-app-bar h1")
+    private WebElement adminUserHeader;
+
+    @FindBy(id = "description")
+    private WebElement adminUserDescription;
+
+    @FindBy(id = "description-link")
+    private WebElement editDescriptionButton;
+
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
+    @FindBy(name = "Submit")
+    private WebElement saveDescriptionButton;
+
     public UserAdminPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getAdminIDText() {
+    public String getAdminUserHeaderText() {
         return getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar h1"))).getText();
+                ExpectedConditions.visibilityOf(adminUserHeader)).getText();
+    }
+
+    public String getAdminUserDescription() {
+        return getWait5().until(ExpectedConditions.visibilityOf(adminUserDescription)).getText();
+    }
+
+    public UserAdminPage clickEditDescription() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(editDescriptionButton)).click();
+
+        return this;
+    }
+
+    public UserAdminPage clearAdminUserDescription() {
+        getWait5().until(ExpectedConditions.visibilityOf(descriptionField)).clear();
+
+        return this;
+    }
+
+    public UserAdminPage setAdminUserDescriptionAndSave(String userDescription) {
+        descriptionField.sendKeys(userDescription);
+        getWait5().until(ExpectedConditions.elementToBeClickable(saveDescriptionButton)).click();
+
+        return this;
     }
 }

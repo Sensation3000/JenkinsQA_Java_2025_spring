@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.ProjectUtils;
@@ -60,7 +59,7 @@ public class UserTest extends BaseTest {
                 .clickSearchButton()
                 .sendSearchText("admin")
                 .clickSearch()
-                .getAdminIDText();
+                .getAdminUserHeaderText();
 
         assertEquals(currentAdminIDText, "admin");
     }
@@ -94,5 +93,19 @@ public class UserTest extends BaseTest {
                 .getUserNameErrorMessage();
 
         Assert.assertEquals(errorText, "User name is already taken");
+    }
+
+    @Test
+    public void testChangeCurrentUserDescription() {
+        final String userDescription = "Updated user description";
+
+        String updatedUserDescription = new HomePage(getDriver())
+                .clickAdminUserButtonOnToolbar()
+                .clickEditDescription()
+                .clearAdminUserDescription()
+                .setAdminUserDescriptionAndSave(userDescription)
+                .getAdminUserDescription();
+
+        Assert.assertEquals(updatedUserDescription, userDescription);
     }
 }

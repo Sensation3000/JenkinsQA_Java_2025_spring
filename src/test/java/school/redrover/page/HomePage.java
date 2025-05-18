@@ -14,6 +14,7 @@ import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.myViews.MyViewsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
+import school.redrover.page.user.UserAdminPage;
 import school.redrover.page.view.NewViewPage;
 
 import java.util.*;
@@ -383,5 +384,11 @@ public class HomePage extends BasePage {
 
     public boolean enabledDashbord() {
         return  dashboardButton.getText().equals("Dashboard");
+    }
+
+    public UserAdminPage clickAdminUserButtonOnToolbar() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+
+        return new UserAdminPage(getDriver());
     }
 }
