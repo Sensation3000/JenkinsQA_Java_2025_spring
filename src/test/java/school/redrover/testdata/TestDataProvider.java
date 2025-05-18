@@ -96,4 +96,15 @@ public class TestDataProvider {
                 {"Build Executor Status", "/computer/", ComputerPage.class}
         };
     }
+
+    @DataProvider(name = "tooltipFeatures")
+    public Object[][] provideTooltipFeatures() {
+        return new Object[][]{
+                {"Trigger builds remotely (e.g., from scripts)"},
+                {"Build after other projects are built"},
+                {"Build periodically"},
+                {"GitHub hook trigger for GITScm polling"},
+                {"Poll SCM"}
+        };
+    }
 }
