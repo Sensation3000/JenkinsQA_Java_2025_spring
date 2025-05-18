@@ -27,6 +27,17 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCreatePipelineWithExistingName() {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(PROJECT_NAME)
+                .selectPipeline()
+                .getItemNameInvalidMessage();
+
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineWithExistingName")
     public void testCopyFromError() {
         final String projectNameB = "SecondProject";
         final String copyFrom = "No such item";
