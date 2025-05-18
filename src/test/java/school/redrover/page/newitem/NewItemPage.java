@@ -72,10 +72,6 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public String getInputValue() {
-        return getDriver().findElement(By.id("name")).getShadowRoot().findElement(By.cssSelector("div")).getText();
-    }
-
     public boolean isOkButtonEnabled() {
         return buttonOk.isEnabled();
     }
@@ -87,6 +83,7 @@ public class NewItemPage extends BasePage {
     }
 
     public ErrorPage clickOkButtonWithError() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonOk));
         buttonOk.click();
 
         return new ErrorPage(getDriver());
@@ -170,27 +167,12 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public MultibranchConfigurationPage selectMultibranchAndClickOk() {
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-        buttonOk.click();
-
-        return new MultibranchConfigurationPage(getDriver());
-    }
-
     public MultibranchConfigurationPage selectMultibranchPipelineAndClickOkWithJS() {
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("li[class$='multibranch_WorkflowMultiBranchProject']")));
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button")));
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.id("ok-button")));
 
         return new MultibranchConfigurationPage(getDriver());
-    }
-
-    public FolderConfigurationPage selectFolderAndClickOkWithJS() {
-        TestUtils.scrollAndClickWithJS(getDriver(),
-                getDriver().findElement(By.xpath("//span[text()='Folder']")));
-        buttonOk.click();
-
-        return new FolderConfigurationPage(getDriver());
     }
 
     public MultiConfigurationConfigurePage redirectToMultiConfigurationConfigurePage() {
@@ -200,35 +182,10 @@ public class NewItemPage extends BasePage {
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
-    public ErrorPage redirectToErrorPage() {
-        TestUtils.scrollAndClickWithJS(getDriver(), buttonOk);
-        getWait5().until(ExpectedConditions.urlContains("/createItem"));
-
-        return new ErrorPage(getDriver());
-    }
-
     public List<String> getAllItemsTypesLabels() {
         return getDriver().findElements(By.className("label"))
                 .stream()
                 .map(itemType -> itemType.getText()).collect(Collectors.toList());
-    }
-
-    public NewItemPage enterProjectNameAndSelect(String nameProject, String projectTypeText) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys(nameProject);
-        String xpath = String.format("//span[text()='%s']", projectTypeText);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).click();
-        getWait5().until(ExpectedConditions.visibilityOf(buttonOk)).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-
-        return new NewItemPage(getDriver());
-    }
-
-    public FreestyleConfigurationPage selectFreestyleClickOkAndWaitCreateItemFormIsClose() {
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(buttonOk)).click();
-        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.id("createItem")));
-
-        return new FreestyleConfigurationPage(getDriver());
     }
 
     public OrganizationFolderConfigurePage selectOrganizationFolderAndClickOk() {
@@ -258,11 +215,6 @@ public class NewItemPage extends BasePage {
                 .toList();
     }
 
-    public String getCopyFromText() {
-        WebElement copyFromTextBlock = getDriver().findElement(By.xpath("//div[@class='add-item-copy']"));
-        return copyFromTextBlock.getText().trim();
-    }
-
     public NewItemPage sendTextCopyForm(String text) {
         WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("from")));
@@ -277,13 +229,6 @@ public class NewItemPage extends BasePage {
                 .getText();
     }
 
-    public NewItemPage clickOnJobItem(String itemLabel) {
-        WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
-        TestUtils.scrollAndClickWithJS(getDriver(), itemType);
-
-        return this;
-    }
-
     public boolean isListItemHighlighted(String itemLabel) {
         WebElement itemType = getDriver().findElement(By.xpath(String.format("//span[text()='%s']", itemLabel)));
         WebElement listItem = itemType.findElement(By.xpath("./ancestor::li"));
@@ -295,11 +240,6 @@ public class NewItemPage extends BasePage {
         return getWait5().until
                 (ExpectedConditions.visibilityOfElementLocated((By.cssSelector("#itemname-required.input-validation-message"))))
                 .getText();
-    }
-
-    public boolean isUnsafeCharacterMessageDisplayed() {
-
-        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
     }
 
     public boolean isCopyFromOptionInputDisplayed() {
@@ -339,10 +279,6 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
         return this;
-    }
-
-    public String getEmptyNameMessageColor() {
-        return getDriver().findElement(By.id("itemname-required")).getCssValue("color");
     }
 
     public String getItemNameInvalidMessageColor() {
