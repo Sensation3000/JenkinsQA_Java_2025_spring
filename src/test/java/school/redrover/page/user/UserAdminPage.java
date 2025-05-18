@@ -1,6 +1,5 @@
 package school.redrover.page.user;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,7 +33,7 @@ public class UserAdminPage extends BasePage {
     }
 
     public String getAdminUserDescription() {
-        getWait5().until(ExpectedConditions.visibilityOf(adminUserDescription));
+        getWait5().until(ExpectedConditions.visibilityOf(adminUserHeader));
 
         return adminUserDescription.getText();
     }
