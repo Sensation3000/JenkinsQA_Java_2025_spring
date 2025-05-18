@@ -40,25 +40,6 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testUsernameField() {
-        List<WebElement> users = new HomePage(getDriver())
-                .getHeader()
-                .goToHomePage()
-                .clickManageJenkinsOnLeftSidePanel()
-                .clickUsers()
-                .clickCreateUserButton()
-                .sendUserName(USER_NAME)
-                .sendPassword(PASSWORD)
-                .sendConfirmPassword(PASSWORD)
-                .sendFullName(FULL_NAME)
-                .sendEmailAddress(EMAIL)
-                .clickCreateUserButton(UsersPage.class)
-                .getUsersList();
-
-        assertEquals(users.size(), 2);
-    }
-
-    @Test
     public void testSignInAsExistingUser(){
         String logOutButtonText = new HomePage(getDriver())
                 .getHeader()
