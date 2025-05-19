@@ -2,6 +2,7 @@ package school.redrover.page.user;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
@@ -11,7 +12,11 @@ public class UserAdminPage extends BasePage {
     @FindBy(css = ".jenkins-app-bar h1")
     private WebElement adminUserHeader;
 
-    @FindBy(xpath = "//*[@id='description']/div")
+    @FindAll({
+            @FindBy(xpath = "//*[@id='description']/div"),
+            @FindBy(className = "jenkins-!-margin-bottom-3"),
+            @FindBy(id = "description")
+    })
     private WebElement adminUserDescription;
 
     @FindBy(id = "description-link")
