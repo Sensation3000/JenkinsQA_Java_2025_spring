@@ -18,12 +18,13 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreateNewPipeline() {
-        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .clickCreateJob()
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .clickSave();
+                .clickSave()
+                .getProjectName();
 
-        Assert.assertEquals(pipelineProjectPage.getProjectName(), PROJECT_NAME);
+        Assert.assertEquals(projectName, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
@@ -31,7 +32,7 @@ public class PipelineTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
-                .selectPipeline()
+                .selectItemType(PipelineConfigurationPage.class)
                 .getItemNameInvalidMessage();
 
         Assert.assertEquals(errorMessage, "» A job already exists with the name ‘%s’".formatted(PROJECT_NAME));
@@ -45,7 +46,7 @@ public class PipelineTest extends BaseTest {
         ErrorPage error = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(projectNameB)
-                .selectPipeline()
+                .selectItemType(PipelineConfigurationPage.class)
                 .sendTextCopyForm(copyFrom)
                 .clickOkButtonWithError();
 
@@ -55,15 +56,14 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testDisableProject() {
-
-        PipelineProjectPage disabledProject = new HomePage(getDriver())
+        String messageProjectStatus = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigure()
                 .switchToggle()
-                .clickSave();
+                .clickSave()
+                .getProjectDisabledStatus();
 
-        Assert.assertEquals(disabledProject.getProjectDisabledStatus(),"This project is currently disabled\n" +
-                "Enable");
+        Assert.assertEquals(messageProjectStatus,"This project is currently disabled\n" + "Enable");
     }
 
     @Test
@@ -80,34 +80,38 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateWithDescription")
     public void testDeletePipeline() {
-        HomePage homePage = new HomePage(getDriver())
+        int numberProjects = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
-                .deletePipeline();
+                .deletePipeline()
+                .getProjectNameList()
+                .size();
 
-        Assert.assertEquals(homePage.getProjectNameList().size(), 0);
+        Assert.assertEquals(numberProjects, 0);
     }
 
     @Test
     public void testDisableProjectErrorWhenCreating() {
-        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+        boolean isToggleDisabled = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .switchToggle();
+                .switchToggle()
+                .isToggleDisabled();
 
-        Assert.assertTrue(pipelineConfigurationPage.isToggleDisabled(), "The switch is not in an active state");
+        Assert.assertTrue(isToggleDisabled, "The switch is not in an active state");
     }
 
     @Test
     public void testEnableProject() {
-        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+        boolean isToggleDisabled = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
-                .switchToggle();
+                .switchToggle()
+                .isToggleEnabled();
 
-        Assert.assertTrue(pipelineConfigurationPage.isToggleEnabled(), "The switch is turned on after performing the actions");
+        Assert.assertTrue(isToggleDisabled, "The switch is turned on after performing the actions");
     }
 
     @Test
@@ -138,6 +142,7 @@ public class PipelineTest extends BaseTest {
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .clickTriggerMenu()
                 .clickTriggerCheckbox();
+
         for (WebElement checkbox: BoxAvaliable) {
             Assert.assertTrue(checkbox.isSelected());
         }
@@ -150,6 +155,7 @@ public class PipelineTest extends BaseTest {
             .clickConfigure()
             .clickTriggerMenu()
             .getTrigger();
+
         for (WebElement checkbox : Trigger) {
             Assert.assertFalse(checkbox.isSelected());
         }
