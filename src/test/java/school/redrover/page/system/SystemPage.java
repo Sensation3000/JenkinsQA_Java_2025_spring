@@ -32,10 +32,14 @@ public class SystemPage extends BasePage {
         super(driver);
         PageFactory.initElements(driver,this);
     }
+    public String getSystemPageText() {
+        return h1.getText();
+    }
 
     public boolean isAccessSystemPage(){
         return h1.getText().equals("System");
     }
+
     public SystemPage clearOfExecutors(){
         ofExecutors.clear();
 
