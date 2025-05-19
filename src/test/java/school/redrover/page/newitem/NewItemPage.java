@@ -39,6 +39,9 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "itemname-invalid")
     private WebElement itemNameInvalidMessage;
 
+    @FindBy(id = "from")
+    private List<WebElement> fromOptionInputs;
+
     private String projectPageClass(Class<?> pageClass) {
         Map<Class<?>, String> pageProjectType = Map.of(
                 FreestyleConfigurationPage.class, "Freestyle project",
@@ -126,19 +129,19 @@ public class NewItemPage extends BasePage {
     public List<String> getItemTypesTextList() {
         List<String> itemTypesTextList = new ArrayList<>();
         List<WebElement> webElementList = getDriver().findElements(By.xpath("//li[@role='radio']//span"));
+
         for (WebElement webElement : webElementList) {
             itemTypesTextList.add(webElement.getText());
         }
+
         return itemTypesTextList;
     }
 
     public String getItemNameInvalidMessage() {
-
         return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage)).getText();
     }
 
     public String getCopyFromFieldText() {
-
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("add-item-copy"))).getText();
     }
 
@@ -210,11 +213,9 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage sendTextCopyForm(String text) {
-        WebElement actualTextCopyForm = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("from")));
-        actualTextCopyForm.sendKeys(text);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("from"))).sendKeys(text);
 
-        return new NewItemPage(getDriver());
+        return this;
     }
 
     public String getAutocompleteSuggestionText() {
@@ -237,9 +238,7 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isCopyFromOptionInputDisplayed() {
-        List<WebElement> copyFromOptionInputs = getDriver().findElements(By.id("from"));
-
-        return !copyFromOptionInputs.isEmpty() && copyFromOptionInputs.get(0).isDisplayed();
+        return !fromOptionInputs.isEmpty() && fromOptionInputs.get(0).isDisplayed();
     }
 
     public NewItemPage enterValueToCopyFromInput(String randomAlphaNumericValue) {
@@ -257,9 +256,8 @@ public class NewItemPage extends BasePage {
     }
 
     public String getDropdownItemText() {
-        return getWait10()
-                          .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact")))
-                          .getText();
+        return getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector(".jenkins-dropdown.jenkins-dropdown--compact"))).getText();
     }
 
     public NewItemPage selectItemByName(String projectName) {
@@ -276,15 +274,20 @@ public class NewItemPage extends BasePage {
     }
 
     public String getItemNameInvalidMessageColor() {
-
         return getWait10().until(ExpectedConditions.visibilityOf(itemNameInvalidMessage))
                 .getCssValue("color");
     }
 
-    public <T> T createNewItem(String name, Class<T> Page) {
-        itemName.sendKeys(name);
+    public NewItemPage selectItemType(Class<?> Page) {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath(String.format("//span[@class][text()='%s']", projectPageClass(Page))))).click();
+
+        return this;
+    }
+
+    public <T> T createNewItem(String name, Class<T> Page) {
+        itemName.sendKeys(name);
+        selectItemType(Page);
         buttonOk.click();
 
         try {
@@ -295,7 +298,6 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isUnsafeCharacterMessageDisplayed() {
-
         return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
     }
 }
