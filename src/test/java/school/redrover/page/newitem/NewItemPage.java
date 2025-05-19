@@ -5,22 +5,16 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.DataProvider;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.error.ErrorPage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
-
-import java.lang.reflect.InvocationTargetException;
-import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -298,5 +292,10 @@ public class NewItemPage extends BasePage {
         } catch (Exception e) {
             throw new RuntimeException("Page instantiation failed for: " + Page.getSimpleName(), e);
         }
+    }
+
+    public boolean isUnsafeCharacterMessageDisplayed() {
+
+        return getDriver().findElement(By.id("itemname-invalid")).isDisplayed();
     }
 }
