@@ -69,16 +69,17 @@ public class PipelineConfigurationPageTest extends BaseTest {
 
     @Test(expectedExceptions = NoSuchElementException.class)
     public void testNotShowWarningMessageWhenPipelineEnabled() {
-        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
+        boolean isDisabledProjectWarningMessageDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .switchToggle()
                 .clickSave()
                 .clickConfigure()
                 .switchToggle()
-                .clickSave();
+                .clickSave()
+                .isDisabledProjectWarningMessageDisplayed();
 
-        Assert.assertFalse(pipelineProjectPage.isDisabledProjectWarningMessageDisplayed());
+        Assert.assertFalse(isDisabledProjectWarningMessageDisplayed);
     }
 
     @Test

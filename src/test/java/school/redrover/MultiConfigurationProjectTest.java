@@ -62,7 +62,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testIfOriginalItemConfigurationIsCopied() {
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+        boolean isIfAllEnvironmentCheckboxesAreSelected = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
                 .scrollToEnvironmentSectionWithJS()
@@ -73,9 +73,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .sendItemName(PROJECT_SECOND_NAME)
                 .enterValueToCopyFromInput(PROJECT_NAME)
                 .redirectToMultiConfigurationConfigurePage()
-                .scrollToEnvironmentSectionWithJS();
+                .scrollToEnvironmentSectionWithJS()
+                .verifyIfAllEnvironmentCheckboxesAreSelected();
 
-        Assert.assertTrue(multiConfigurationConfigurePage.verifyIfAllEnvironmentCheckboxesAreSelected());
+        Assert.assertTrue(isIfAllEnvironmentCheckboxesAreSelected);
     }
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)

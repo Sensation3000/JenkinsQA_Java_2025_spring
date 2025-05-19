@@ -20,11 +20,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test
     public void createMultibranchPipelineProject() {
-        MultibranchConfigurationPage multiBranchConfigurationPage = new HomePage(getDriver())
+        boolean isBranchSourceButtonDisplayed = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .createNewItem(projectName, MultibranchConfigurationPage.class);
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
+                .isBranchSourceButtonDisplayed();
 
-        Assert.assertTrue(multiBranchConfigurationPage.isBranchSourceButtonDisplayed());
+        Assert.assertTrue(isBranchSourceButtonDisplayed);
     }
 
     @Test
@@ -133,11 +134,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testDeleteMultibranchPipelineProject(){
-        HomePage homePage = new HomePage(getDriver())
+        List<String> ProjectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
-                .deleteMultiBranchPipeline();
+                .deleteMultiBranchPipeline()
+                .getProjectNameList();
 
-        Assert.assertEquals(homePage.getProjectNameList().size(), 0);
+        Assert.assertEquals(ProjectNameList.size(), 0);
     }
 
     @Test

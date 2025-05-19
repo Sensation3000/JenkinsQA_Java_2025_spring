@@ -24,7 +24,7 @@ public class SystemConfigureTest extends BaseTest {
 
     @Test
     public void testGlobalSystemParameters() {
-        final String actualExecutorsValue = new HomePage(getDriver())
+        String actualExecutorsValue = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemButton()
                 .clearOfExecutors()
@@ -39,7 +39,7 @@ public class SystemConfigureTest extends BaseTest {
 
     @Test(dependsOnMethods = "testGlobalSystemParameters")
     public void testModifyGlobalSystemParameters() {
-        final String actualExecutorsValue = new HomePage(getDriver())
+        String actualExecutorsValue = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemButton()
                 .clearOfExecutors()
@@ -54,7 +54,7 @@ public class SystemConfigureTest extends BaseTest {
 
     @Test(dependsOnMethods = "testModifyGlobalSystemParameters")
     public void testUndoChangeBeforeSave() {
-        final String actualExecutorsValue = new HomePage(getDriver())
+        String actualExecutorsValue = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickSystemButton()
                 .clearOfExecutors()

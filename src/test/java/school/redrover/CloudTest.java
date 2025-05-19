@@ -12,15 +12,16 @@ public class CloudTest extends BaseTest {
 
     @Test
     public void installWindowsCloudPlugin() {
-        PluginsPage pluginsPage = new HomePage(getDriver())
+        String successInstallStatus = new HomePage(getDriver())
                 .clickManageJenkinsOnLeftSidePanel()
                 .clickClouds()
                 .clickInstallPlugin()
                 .sendWindowCloudPlugin()
                 .clickCheckBoxWindowsCloud()
-                .clickInstallButton();
+                .clickInstallButton()
+                .getSuccessInstallStatus();
 
-        Assert.assertEquals(pluginsPage.getSuccessInstallStatus(), "Success");
+        Assert.assertEquals(successInstallStatus, "Success");
     }
 
     @Test(dependsOnMethods = "installWindowsCloudPlugin")

@@ -11,7 +11,7 @@ public class UserAdminPage extends BasePage {
     @FindBy(css = ".jenkins-app-bar h1")
     private WebElement adminUserHeader;
 
-    @FindBy(id = "description")
+    @FindBy(xpath = "//*[@id='description']/div")
     private WebElement adminUserDescription;
 
     @FindBy(id = "description-link")
