@@ -7,12 +7,10 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-
-import java.time.Duration;
 
 public class SystemPage extends BasePage {
 
@@ -79,9 +77,8 @@ public class SystemPage extends BasePage {
     }
 
     public SystemPage setUsageStatisticsCheckbox(boolean enable) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(usageStatisticsCheckbox));
-        wait.until(ExpectedConditions.elementToBeClickable(usageStatisticsCheckbox));
+        getWait5().until(ExpectedConditions.visibilityOf(usageStatisticsCheckbox));
+        getWait5().until(ExpectedConditions.elementToBeClickable(usageStatisticsCheckbox));
 
         if (usageStatisticsCheckbox.isSelected() != enable) {
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", usageStatisticsCheckbox);
