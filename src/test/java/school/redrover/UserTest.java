@@ -96,7 +96,6 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(errorText, "User name is already taken");
     }
 
-    @Ignore
     @Test
     public void testChangeCurrentUserDescription() {
         final String userDescription = "Updated user description";

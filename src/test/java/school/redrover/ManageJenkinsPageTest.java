@@ -12,10 +12,6 @@ public class ManageJenkinsPageTest extends BaseTest {
 
     @Test
     public void testIfMainSectionsAreDisplayedOnManageJenkinsPage() {
-        List<String> actualSectionTitles = new HomePage(getDriver())
-                .clickOnManageJenkinsLink()
-                .getMainSectionTitlesOnManageJenkinsPage();
-
         List<String> expectedSectionTitles = List.of(
                 "System Configuration",
                 "Security",
@@ -23,6 +19,10 @@ public class ManageJenkinsPageTest extends BaseTest {
                 "Troubleshooting",
                 "Tools and Actions"
         );
+
+        List<String> actualSectionTitles = new HomePage(getDriver())
+                .clickOnManageJenkinsLink()
+                .getMainSectionTitlesOnManageJenkinsPage();
 
         Assert.assertEquals(actualSectionTitles, expectedSectionTitles);
     }

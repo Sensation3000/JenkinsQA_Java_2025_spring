@@ -117,14 +117,15 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test (dependsOnMethods = "testAvailableIcons")
     public void testSelectDefaultIcon() {
-        OrganizationFolderPage organizationFolderPage = new HomePage(getDriver())
+        String organizationFolderIconTitleNameFromHeader = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel()
                 .clickAppearance()
                 .selectIcon("Default Icon")
-                .clickSave();
+                .clickSave()
+                .getOrganizationFolderIconTitleNameFromHeader();
 
-        Assert.assertEquals(organizationFolderPage.getOrganizationFolderIconTitleNameFromHeader(), "Folder");
+        Assert.assertEquals(organizationFolderIconTitleNameFromHeader, "Folder");
     }
 
     @Test

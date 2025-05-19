@@ -11,6 +11,7 @@ import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
+import school.redrover.testdata.TestDataProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +30,9 @@ public class DashboardTest extends BaseTest {
     private static final String JOB_IN_FOLDER_NAME = "Job in folder";
     private static final String FAILED_JOB = "Pipeline job to fail";
     private static final String DESCRIPTION = "Dashboard description";
-    private static List<String> ListReportsActual = List.of();
-    private static List<String> ListReportsExpected1 = List.of();
-    private static List<String> ListReportsExpected2 = List.of();
+    private static List<String> ListReportsExpected = List.of();
+    private static List<String> ListReportsActual1 = List.of();
+    private static List<String> ListReportsActual2 = List.of();
 
     private List<String> expectedListOfJobs =
             new ArrayList<>(Arrays.asList(FOLDER_NAME, JOB_NAME, SUPERIOR_FOLDER_NAME));
@@ -52,10 +53,11 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testPossibleToCreateJobFromDashboard() {
-        NewItemPage newItemPage = new HomePage(getDriver())
-                .clickCreateJob();
+        boolean isNewItemPageOpened = new HomePage(getDriver())
+                .clickCreateJob()
+                .isNewItemPageOpened();
 
-        Assert.assertTrue(newItemPage.isNewItemPageOpened());
+        Assert.assertTrue(isNewItemPageOpened);
     }
 
     @Test
@@ -149,29 +151,20 @@ public class DashboardTest extends BaseTest {
     public void testSortNameList() {
         HomePage homePage = new HomePage(getDriver());
 
-        ListReportsExpected1 = homePage
+        ListReportsActual1 = homePage
                 .clickColumnNameInDashboardTable("Name")
                 .getReversedProjectNameList();
 
-        ListReportsExpected2 = homePage
+        ListReportsActual2 = homePage
                 .clickColumnNameInDashboardTable("Name")
                 .getProjectNameList();
 
-        Assert.assertEquals(expectedListOfJobs, ListReportsExpected1);
-        Assert.assertEquals(expectedListOfJobs, ListReportsExpected2);
+        Assert.assertEquals(ListReportsActual1, expectedListOfJobs);
+        Assert.assertEquals(ListReportsActual2, expectedListOfJobs);
     }
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders","testSortNameList","testColumns"})
-    public void testFailedJobDetails(){
-        String script = "node {\n" +
-                "    stage('Create Job') {\n" +
-                "        echo \"Job is being created...\"\n" +
-                "    }\n" +
-                "    stage('Fail Job') {\n" +
-                "        error(\"Forcing failure in the pipeline\") // Гарантированно рушим билд\n" +
-                "    }\n" +
-                "}";
-
+    @Test(dataProvider = "script", dataProviderClass = TestDataProvider.class, dependsOnMethods = {"testListJobsAndFolders","testSortNameList","testColumns"})
+    public void testFailedJobDetails(String script){
         String lastFailure = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(FAILED_JOB, PipelineConfigurationPage.class)
@@ -195,19 +188,19 @@ public class DashboardTest extends BaseTest {
     public void testSortHealthReportColumnDashboard(){
        HomePage homePage = new HomePage(getDriver());
 
-        ListReportsActual = homePage
+        ListReportsExpected = homePage
                 .getListHealthReportFromDashboard();
 
-        ListReportsExpected1 = homePage
+        ListReportsActual1 = homePage
                 .clickColumnNameInDashboardTable("W")
                 .getListHealthReportFromDashboard();
 
-        ListReportsExpected2 = homePage
+        ListReportsActual2 = homePage
                 .clickColumnNameInDashboardTable("W")
                 .getReverseListHealthReportFromDashboard();
 
-        Assert.assertEquals(ListReportsActual, ListReportsExpected1);
-        Assert.assertEquals(ListReportsActual, ListReportsExpected2);
+        Assert.assertEquals(ListReportsActual1, ListReportsExpected);
+        Assert.assertEquals(ListReportsActual2, ListReportsExpected);
     }
 
     @Test(dependsOnMethods = {"testFailedJobDetails","testListJobsAndFolders","testSortNameList","testColumns",
@@ -215,19 +208,19 @@ public class DashboardTest extends BaseTest {
     public void testSortStatusLastBuildColumnDashboard() {
         HomePage homePage = new HomePage(getDriver());
 
-        ListReportsActual = homePage
+        ListReportsExpected = homePage
                 .getListStatusLastBuildFromDashboard();
 
-        ListReportsExpected1 = homePage
+        ListReportsActual1 = homePage
                 .clickColumnNameInDashboardTable("S")
                 .getReversedListStatusLastBuildFromDashboard();
 
-        ListReportsExpected2 = homePage
+        ListReportsActual2 = homePage
                 .clickColumnNameInDashboardTable("S")
                 .getListStatusLastBuildFromDashboard();
 
-        Assert.assertEquals(ListReportsActual, ListReportsExpected1);
-        Assert.assertEquals(ListReportsActual, ListReportsExpected2);
+        Assert.assertEquals(ListReportsActual1, ListReportsExpected);
+        Assert.assertEquals(ListReportsActual2, ListReportsExpected);
     }
 
     @Test
