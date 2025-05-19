@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -136,20 +137,20 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void checkAvaliableTriggerBoxTest() {
-        List<WebElement> BoxAvaliable = new HomePage(getDriver())
+    public void checkAvailableTriggerBoxTest() {
+        List<WebElement> BoxAvailable = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
                 .clickTriggerMenu()
                 .clickTriggerCheckbox();
 
-        for (WebElement checkbox: BoxAvaliable) {
+        for (WebElement checkbox: BoxAvailable) {
             Assert.assertTrue(checkbox.isSelected());
         }
     }
-  
+
     @Test(dependsOnMethods = "testCreateNewPipeline")
-    public void testCheckTriggesPipeline() {
+    public void testCheckTriggersPipeline() {
         List<WebElement> Trigger = new HomePage(getDriver())
             .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
             .clickConfigure()
@@ -159,5 +160,22 @@ public class PipelineTest extends BaseTest {
         for (WebElement checkbox : Trigger) {
             Assert.assertFalse(checkbox.isSelected());
         }
+    }
+
+    @Test
+    public void testCreatePipelineJobUsingScript() {
+        String msg = new HomePage(getDriver())
+                .clickCreateJob()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .clickPipeline()
+                .clickAndSelectSamplesScript()
+                .clickSave()
+                .clickBuildNow()
+                .clickStatus()
+                .clickLastBuild()
+                .clickPipelineConsole()
+                .getConsoleOutput();
+
+        Assert.assertEquals(msg, "Hello World");
     }
 }

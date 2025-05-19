@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import school.redrover.PipelineConfigurationPageTest;
 import school.redrover.common.BasePage;
 
 public class PipelineConfigurationPage extends BasePage {
@@ -167,4 +169,19 @@ public class PipelineConfigurationPage extends BasePage {
         }
         return checkboxes;
     }
+
+   public PipelineConfigurationPage clickPipeline() {
+        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
+
+        return this;
+   }
+
+   public PipelineConfigurationPage clickAndSelectSamplesScript() {
+        Select script = new Select(getDriver().findElement(By.xpath("//div[@class='samples']//select")));
+        List <WebElement> options = List.of (getDriver().findElement(By.xpath("//div[@class='samples']//select//option")));
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(options));
+        script.selectByValue("hello");
+
+        return this;
+   }
 }

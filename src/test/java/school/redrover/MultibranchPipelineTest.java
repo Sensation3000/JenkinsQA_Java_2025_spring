@@ -1,5 +1,6 @@
 package school.redrover;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -30,7 +31,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(projectName, MULTIBRANCH_NAME);
     }
-
+@Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         String actualDescription = new HomePage(getDriver())

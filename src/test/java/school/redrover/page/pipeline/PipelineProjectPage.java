@@ -19,6 +19,9 @@ public class PipelineProjectPage extends BasePage {
     @FindBy(xpath = "//a[@data-build-success='Build scheduled']")
     private WebElement buildNow;
 
+    @FindBy(css = "a.task-link.task-link--active")
+    private WebElement status;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -63,5 +66,22 @@ public class PipelineProjectPage extends BasePage {
     public PipelineProjectPage clickBuildNow() {
         buildNow.click();
         return this;
+    }
+
+    public PipelineProjectPage clickStatus() {
+        status.click();
+        return this;
+    }
+
+    public PipelineProjectPage clickLastBuild() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'lastBuild')]"))).click();
+
+        return this;
+    }
+
+    public PipelineConsolePage clickPipelineConsole() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'pipeline-console')]"))).click();
+
+        return new PipelineConsolePage(getDriver());
     }
 }
