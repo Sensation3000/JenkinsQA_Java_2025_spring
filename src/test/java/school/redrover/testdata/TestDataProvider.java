@@ -107,4 +107,18 @@ public class TestDataProvider {
                 {"Poll SCM"}
         };
     }
+
+    @DataProvider(name = "script")
+    public Object[][] script(){
+        return new Object[][] {
+                {"node {\n" +
+                "    stage('Create Job') {\n" +
+                "        echo \"Job is being created...\"\n" +
+                "    }\n" +
+                "    stage('Fail Job') {\n" +
+                "        error(\"Forcing failure in the pipeline\") // Гарантированно рушим билд\n" +
+                "    }\n" +
+                "}"}
+        };
+    }
 }
