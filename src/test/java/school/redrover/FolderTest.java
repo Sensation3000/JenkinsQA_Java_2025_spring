@@ -21,14 +21,14 @@ public class FolderTest extends BaseTest {
     private static final String HEALTH_METRICS = "Health metrics";
     private static final String ITEM_NAME = "Test Folder";
     private static final String DESCRIPTION = "Test description";
-    private static final Logger log = LoggerFactory.getLogger(FolderTest.class);
+    private static final String SUB_FOLDER_NAME = "SubFolder";
+    private static final String RENAMED_FOLDER_NAME = "Renamed folder";
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
     public void  testCreateWithValidName(String folderName) {
         List<String> jobs = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(folderName)
-                .selectFolderAndClickOk()
+                .createNewItem(folderName, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
@@ -41,8 +41,7 @@ public class FolderTest extends BaseTest {
     public void testCreateWithDisplayName() {
         String actualDisplayName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .sendDisplayName(FOLDER_DISPLAY_NAME)
                 .clickSave()
                 .getProjectName();
@@ -69,8 +68,7 @@ public class FolderTest extends BaseTest {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
-                .sendItemName(ITEM_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
@@ -83,13 +81,11 @@ public class FolderTest extends BaseTest {
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_SECOND_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_SECOND_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnNewItemLinkWithChevron(FOLDER_SECOND_NAME)
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();
 
@@ -102,8 +98,7 @@ public class FolderTest extends BaseTest {
 
         String copyFromFieldText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
@@ -116,8 +111,7 @@ public class FolderTest extends BaseTest {
     public void testCreateWithDescription () {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .sendDescription(DESCRIPTION)
                 .clickSave();
 
@@ -126,15 +120,26 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateWithDescription")
+    public void testRenameFolder() {
+        String folderName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickRenameOnLeftSidePanel(FOLDER_NAME)
+                .sendNewName(RENAMED_FOLDER_NAME)
+                .clickRenameButton()
+                .getProjectName();
+
+        Assert.assertEquals(folderName, RENAMED_FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRenameFolder")
     public void testCreateFolderInFolder() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnNewItemButton()
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
-                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()));
+                .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()));
 
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
         Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), ITEM_NAME);
@@ -145,8 +150,7 @@ public class FolderTest extends BaseTest {
     public void  testAvailabilityHealthMetrics(){
         FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOkWithJS()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .clickHealthMetrics();
 
         List<String> titlesHealthMetrics = List.of(
@@ -163,8 +167,7 @@ public class FolderTest extends BaseTest {
     public void testFolderIsEmpty() {
         String folderStatus = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
                 .getFolderStatus();
 
@@ -175,8 +178,7 @@ public class FolderTest extends BaseTest {
     public void testQuestionMarkIcon() {
         boolean isButtonExist = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
                 .isQuestionMarkIconEnabled();
 
         Assert.assertTrue(isButtonExist);
@@ -192,5 +194,31 @@ public class FolderTest extends BaseTest {
                 .getDescriptionSecondLine();
 
        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test
+    public void testCreateNewFolder() {
+        String currentName = new HomePage(getDriver())
+                .clickCreateJob()
+                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(currentName, FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void testCreatingSubFolder() {
+        String subFolder = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .findNewItemAndClick()
+                .createNewItem(SUB_FOLDER_NAME, FolderConfigurationPage.class)
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .getSubFolderName();
+
+        Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
     }
 }

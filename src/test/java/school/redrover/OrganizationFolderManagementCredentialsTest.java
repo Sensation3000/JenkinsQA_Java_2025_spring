@@ -4,7 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.credentials.GlobalCredentialsPage;
+import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
+import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
@@ -18,8 +19,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
     public void testCreateNewOrganizationFolder() {
         String testFolderName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .createNewItem(ORGANIZATION_FOLDER_NAME, OrganizationFolderConfigurePage.class)
                 .clickSave()
                 .getOrganizationFolderNameFromHeader();
 
@@ -28,9 +28,9 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewOrganizationFolder")
     public void testConfigureOrganizationFolderCredentials() {
-        String credentialsName = new GlobalCredentialsPage(getDriver())
-                .clickProjectName()
-                .clickLeftSideCredentials()
+        String credentialsName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickCredentialsOnLeftSidePanel(ORGANIZATION_FOLDER_NAME)
                 .clickStoredFolderName()
                 .clickDomainFolderName()
                 .addCredentialsButton()
@@ -44,9 +44,9 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testConfigureOrganizationFolderCredentials")
     public void testUpdateOrganizationFolderCredentials() {
-        String updatedCredentialsName = new GlobalCredentialsPage(getDriver())
-                .clickProjectName()
-                .clickLeftSideCredentials()
+        String updatedCredentialsName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickCredentialsOnLeftSidePanel(ORGANIZATION_FOLDER_NAME)
                 .clickStoredFolderName()
                 .clickDomainFolderName()
                 .clickUpdateTooltip()
@@ -61,9 +61,9 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUpdateOrganizationFolderCredentials")
     public void testDeleteOrganizationFolderCredentials() {
-        String emptyCredentialsStatus = new GlobalCredentialsPage(getDriver())
-                .clickProjectName()
-                .clickLeftSideCredentials()
+        String emptyCredentialsStatus = new HomePage(getDriver())
+                .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME, new OrganizationFolderPage(getDriver()))
+                .clickCredentialsOnLeftSidePanel(ORGANIZATION_FOLDER_NAME)
                 .clickStoreCredentialName()
                 .clickDeleteCredentialButton()
                 .clickYesButton()

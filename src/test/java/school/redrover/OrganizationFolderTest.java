@@ -20,8 +20,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreate() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .createNewItem(ORGANIZATION_FOLDER_NAME, OrganizationFolderConfigurePage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .getProjectNameList();
@@ -34,8 +33,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateWithDisplayName() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ORGANIZATION_FOLDER_NAME_2)
-                .selectOrganizationFolderAndClickOk()
+                .createNewItem(ORGANIZATION_FOLDER_NAME_2, OrganizationFolderConfigurePage.class)
                 .setOrganizationFolderDisplayName(DISPLAY_NAME)
                 .clickApply()
                 .getHeader()
@@ -68,9 +66,11 @@ public class OrganizationFolderTest extends BaseTest {
         OrganizationFolderConfigurePage organizationFolderConfigurePage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(ORGANIZATION_FOLDER_NAME_2, new OrganizationFolderPage(getDriver()))
                 .clickConfigureOnLeftSidePanel();
+
         boolean isDisplayNameHelpBlockDisplayed = organizationFolderConfigurePage
                 .clickDisplayNameHelpButton()
                 .isDisplayNameHelpBlockDisplayed();
+
         boolean isDisplayNameHelpBlockNotDisplayed = organizationFolderConfigurePage
                 .clickDisplayNameHelpButton()
                 .isDisplayNameHelpBlockDisplayed();

@@ -14,10 +14,10 @@ import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.myViews.MyViewsPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.signIn.SignInPage;
+import school.redrover.page.user.UserAdminPage;
 import school.redrover.page.view.NewViewPage;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
@@ -54,6 +54,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css ="a[href$='/distributed-builds'")
     private WebElement  learnMoreAboutDistributedBuildsLink;
+
+    @FindBy(css ="#breadcrumbs > li:nth-child(1) > a")
+    private WebElement  dashboardButton;
 
     private final static String JOB_PATTERN = "//tr[@id='job_%s']";
 
@@ -145,6 +148,14 @@ public class HomePage extends BasePage {
 
         return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
                 .map(WebElement::getText).toList();
+    }
+
+    public List<String> getReversedProjectNameList() {
+        List<String> originalList = getProjectNameList();
+        List<String> reversedList = new ArrayList<>(originalList);
+        Collections.reverse(reversedList);
+
+        return reversedList;
     }
 
     public NewViewPage clickNewView() {
@@ -244,8 +255,10 @@ public class HomePage extends BasePage {
                 .getDomAttribute("title");
     }
 
-    public void clickColumnNameInDashboardTable(String columnName) {
+    public HomePage clickColumnNameInDashboardTable(String columnName) {
         getDriver().findElement(By.xpath(String.format("//th/a[text()='%s']", columnName))).click();
+
+        return this;
     }
 
     public boolean verifyAscendingSortingSign(String columnName) {
@@ -259,8 +272,16 @@ public class HomePage extends BasePage {
         if (isJobListEmpty()) {
             return List.of();
         }
+
         return getDriver().findElements(By.cssSelector(".healthReport")).stream()
                 .map(element -> element.getDomAttribute("data")).collect(Collectors.toList());
+    }
+
+    public List<String> getReverseListHealthReportFromDashboard() {
+        return getListHealthReportFromDashboard()
+                .stream()
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
     public List<String> getListStatusLastBuildFromDashboard() {
@@ -274,6 +295,14 @@ public class HomePage extends BasePage {
         list.removeIf(Objects::isNull);
 
         return list;
+    }
+
+    public List<String> getReversedListStatusLastBuildFromDashboard() {
+        List<String> originalList = getListStatusLastBuildFromDashboard();
+        List<String> reversedList = new ArrayList<>(originalList);
+        Collections.reverse(reversedList);
+
+        return reversedList;
     }
 
     public boolean isBuildQueueDisplayed() {
@@ -351,5 +380,15 @@ public class HomePage extends BasePage {
 
     public String getLearnMoreAboutDistributedBuildsLinkText() {
         return learnMoreAboutDistributedBuildsLink.getText();
+    }
+
+    public boolean enabledDashbord() {
+        return  dashboardButton.getText().equals("Dashboard");
+    }
+
+    public UserAdminPage clickAdminUserButtonOnToolbar() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+
+        return new UserAdminPage(getDriver());
     }
 }

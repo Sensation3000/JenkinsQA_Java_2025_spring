@@ -3,6 +3,8 @@ package school.redrover;
 
 import org.testng.Assert;
 import school.redrover.page.HomePage;
+import school.redrover.page.folder.FolderConfigurationPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 import org.testng.annotations.Test;
@@ -78,8 +80,7 @@ public class NewItemTest extends BaseTest {
     public void testDoubleItemNameError() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ITEM_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(ITEM_NAME, FreestyleConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
@@ -95,8 +96,7 @@ public class NewItemTest extends BaseTest {
         final List<String> items = Arrays.asList
                 ("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
 
-        HomePage homePage = new HomePage(getDriver());
-        List<String> listOfJobs = homePage
+        List<String> listOfJobs = new HomePage(getDriver())
                 .clickCreateJob()
                 .getItemTypesTextList();
 
@@ -114,8 +114,7 @@ public class NewItemTest extends BaseTest {
                         "Creates a set of Pipeline projects according to detected branches in one SCM repository.",
                         "Creates a set of multibranch project subfolders by scanning for repositories.");
 
-        HomePage homePage = new HomePage(getDriver());
-        List<String> listOfJobsDisc = homePage
+        List<String> listOfJobsDisc = new HomePage(getDriver())
                 .clickCreateJob()
                 .getJobsDescriptions();
 
@@ -126,8 +125,7 @@ public class NewItemTest extends BaseTest {
     public void testIfCopyFromOptionIsDisplayed() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(ITEM_NAME)
-                .selectFolderAndClickOk()
+                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel();
@@ -188,5 +186,15 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(newItemPage.getNewItemPageHeaderText(), PAGE_HEADER_TEXT);
         Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
+    }
+
+    @Test(dataProvider = "safeCharacters", dataProviderClass = TestDataProvider.class)
+    public void testCreateItemNameWithSafeCharacters(String safeCharacter) {
+        boolean isUnsafeCharacterMessageDisplayed = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(safeCharacter)
+                .isUnsafeCharacterMessageDisplayed();
+
+        Assert.assertFalse(isUnsafeCharacterMessageDisplayed);
     }
 }

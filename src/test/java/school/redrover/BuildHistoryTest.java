@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.buildhistory.BuildHistoryPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;
 
 import java.util.List;
@@ -25,18 +26,16 @@ public class BuildHistoryTest extends BaseTest {
     public void testEmptyBuildHistory() {
         BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
                 .clickBuildHistoryOnLeftSidePanel();
-        List<String> expectedBuildHistoryTableHeaders = List.of("S", "Build", "Time Since", "Status");
 
         Assert.assertTrue(buildHistoryPage.isBuildHistoryEmpty());
-        Assert.assertEquals(buildHistoryPage.getBuildHistoryHeaders(), expectedBuildHistoryTableHeaders);
+        Assert.assertEquals(buildHistoryPage.getBuildHistoryHeaders(), List.of("S", "Build", "Time Since", "Status"));
     }
 
     @Test
     public void testCheckTheBuildStatusDisplay() {
         String buildStatusProjectName = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
                 .clickSaveButton()
                 .clickLeftSideMenuBuildNow()
                 .getHeader()
@@ -50,19 +49,11 @@ public class BuildHistoryTest extends BaseTest {
     @Test(dependsOnMethods = "testCheckTheBuildStatusDisplay")
     public void testChangeIconSize() {
         BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
-                .clickBuildHistoryOnLeftSidePanel()
-                .selectIconSize("S");
-        String smallIcon = buildHistoryPage.getCurrentIconSize();
+                .clickBuildHistoryOnLeftSidePanel();
 
-        buildHistoryPage.selectIconSize("M");
-        String mediumIcon = buildHistoryPage.getCurrentIconSize();
-
-        buildHistoryPage.selectIconSize("L");
-        String largeIcon = buildHistoryPage.getCurrentIconSize();
-
-        Assert.assertEquals(smallIcon, "16px");
-        Assert.assertEquals(mediumIcon, "20.7969px");
-        Assert.assertEquals(largeIcon, "24px");
+        Assert.assertEquals(buildHistoryPage.selectIconSize("S").getCurrentIconSize(), "16px");
+        Assert.assertEquals(buildHistoryPage.selectIconSize("M").getCurrentIconSize(), "20.7969px");
+        Assert.assertEquals(buildHistoryPage.selectIconSize("L").getCurrentIconSize(), "24px");
     }
 
     @Test(dependsOnMethods = "testChangeIconSize")

@@ -1,10 +1,12 @@
 package school.redrover.page.organizationfolder;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.page.credentials.CredentialsPage;
 
 public class OrganizationFolderPage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']/h1")
@@ -62,5 +64,12 @@ public class OrganizationFolderPage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOf(header));
 
         return headerIcon.getDomAttribute("title");
+    }
+
+    public CredentialsPage clickCredentialsOnLeftSidePanel(String jobName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='/job/%s/credentials']".formatted(jobName)))).click();
+
+        return new CredentialsPage(getDriver());
     }
 }

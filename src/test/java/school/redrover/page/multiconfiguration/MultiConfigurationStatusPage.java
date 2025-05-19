@@ -2,10 +2,15 @@ package school.redrover.page.multiconfiguration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultiConfigurationStatusPage extends BasePage {
+
+    @FindBy(css = "a[href*='configure']")
+    private WebElement buttonConfigure;
 
     public MultiConfigurationStatusPage (WebDriver driver) {
         super(driver);
@@ -35,5 +40,11 @@ public class MultiConfigurationStatusPage extends BasePage {
         catch (Exception e) {
             return false;
         }
+    }
+
+    public MultiConfigurationConfigurePage clickConfigure() {
+        buttonConfigure.click();
+
+        return new MultiConfigurationConfigurePage(getDriver());
     }
 }

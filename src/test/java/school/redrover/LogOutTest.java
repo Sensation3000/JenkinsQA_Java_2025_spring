@@ -8,7 +8,7 @@ import school.redrover.page.HomePage;
 public class LogOutTest extends BaseTest {
 
     @Test
-       public void testLogOutFunctionalityWork() {
+    public void testLogOutFunctionalityWork() {
         String signInText = new HomePage(getDriver())
                 .clickLogOutButton()
                 .getSignInText();
