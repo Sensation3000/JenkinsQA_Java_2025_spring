@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
     @FindBy(name = "_.displayNameOrNull")
     private WebElement displayNameField;
+
+    @FindBy(name = "_.childCustomWorkspace")
+    private WebElement customWorkspace;
 
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
@@ -72,8 +76,7 @@ public class MultiConfigurationConfigurePage extends BasePage {
 
     public boolean verifyIfAllEnvironmentCheckboxesAreSelected() {
         List<WebElement> checkboxes = getDriver().findElements(
-                By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']")
-        );
+                By.xpath("//div[@id='environment']/../descendant::input[@type='checkbox']"));
 
         return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
     }
@@ -159,7 +162,6 @@ public class MultiConfigurationConfigurePage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage clickUseCustomWorkspaceCheckbox() {
-
         getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom workspace')]")).click();
 
         return this;
@@ -178,24 +180,23 @@ public class MultiConfigurationConfigurePage extends BasePage {
     }
 
     public MultiConfigurationConfigurePage clickUseCustomChildWorkspaceCheckbox() {
-
         getDriver().findElement(By.xpath("//label[contains(text(), 'Use custom child workspace')]")).click();
 
         return this;
     }
 
     public MultiConfigurationConfigurePage enterCustomChildWorkspaceDirectoryValue(String directory) {
-        WebElement inputField = getDriver().findElement(By.name("_.childCustomWorkspace"));
-        inputField.clear();
-        inputField.sendKeys(directory);
+        customWorkspace.clear();
+        customWorkspace.sendKeys(directory);
 
         return this;
     }
 
     public String checkCustomChildWorkspaceDirectoryValue() {
-        WebElement inputField = getDriver().findElement(By.name("_.childCustomWorkspace"));
-
-        return inputField.getDomAttribute("value");
+        return customWorkspace.getDomAttribute("value");
     }
 
+    public int numberHelpTooltips() {
+        return new FreestyleConfigurationPage(getDriver()).numberHelpTooltips();
+    }
 }

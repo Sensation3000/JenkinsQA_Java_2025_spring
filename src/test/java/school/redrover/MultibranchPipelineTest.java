@@ -21,13 +21,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreate() {
-        MultibranchProjectPage multibranchProjectPage = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
                 .selectMultibranchPipelineAndClickOkWithJS()            
-                .clickSaveButton();
+                .clickSaveButton()
+                .getProjectName();
 
-        Assert.assertEquals(multibranchProjectPage.getProjectName(), MULTIBRANCH_NAME);
+        Assert.assertEquals(projectName, MULTIBRANCH_NAME);
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -59,7 +60,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String errorMessage  = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(MULTIBRANCH_NAME.concat(invalidSymbol))
-                .selectMultibranchPipeline()
+                .selectItemType(MultibranchConfigurationPage.class)
                 .getItemNameInvalidMessage();
 
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
@@ -67,12 +68,13 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testVerifySectionHasTooltip() {
-        new HomePage(getDriver())
+        int numberHelpButtons = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
-                .clickAdvanced();
+                .clickAdvanced()
+                .numberHelpTooltips();
 
-        assertEquals(new FreestyleConfigurationPage(getDriver()).numberHelpTooltips(), 22);
+        assertEquals(numberHelpButtons, 22);
     }
 
     @Test
