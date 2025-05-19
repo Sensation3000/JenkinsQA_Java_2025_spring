@@ -14,7 +14,7 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
 
     @Test
     public void testQuietPeriodValueSet() {
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+        String quietPeriodValue = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .sendItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
@@ -25,14 +25,14 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .clickSaveButton()
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
-                .clickAdvanced();
+                .clickAdvanced().checkQuietPeriodValue();
 
-        Assert.assertEquals(multiConfigurationConfigurePage.checkQuietPeriodValue(), "6");
+        Assert.assertEquals(quietPeriodValue, "6");
     }
 
     @Test(dependsOnMethods = "testQuietPeriodValueSet")
     public void testRetryCountValueSet() {
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage = new HomePage(getDriver())
+        String retryCountValue = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
@@ -42,9 +42,10 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .clickSaveButton()
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
-                .clickAdvanced();
+                .clickAdvanced()
+                .checkRetryCountValue();
 
-        Assert.assertEquals(multiConfigurationConfigurePage.checkRetryCountValue(), "2");
+        Assert.assertEquals(retryCountValue, "2");
     }
 
     @Test(dependsOnMethods = "testQuietPeriodValueSet")
@@ -67,7 +68,7 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
 
     @Test(dependsOnMethods = "testQuietPeriodValueSet")
     public void testCustomWorkspaceSet() {
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
+        String customWorkspaceDirectoryValue = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
@@ -77,14 +78,15 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .clickSaveButton()
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
-                .clickAdvanced();
+                .clickAdvanced()
+                .checkCustomWorkspaceDirectoryValue();
 
-        Assert.assertEquals(multiConfigurationConfigurePage.checkCustomWorkspaceDirectoryValue(), CUSTOM_DIRECTORY);
+        Assert.assertEquals(customWorkspaceDirectoryValue, CUSTOM_DIRECTORY);
     }
 
     @Test(dependsOnMethods = "testQuietPeriodValueSet")
     public void testCustomChildWorkspaceSet() {
-        MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
+        String customChildWorkspaceDirectoryValue = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
@@ -94,8 +96,9 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .clickSaveButton()
                 .clickConfigure()
                 .scrollToAdvancedProjectOptions()
-                .clickAdvanced();
+                .clickAdvanced()
+                .checkCustomChildWorkspaceDirectoryValue();
 
-        Assert.assertEquals(multiConfigurationConfigurePage.checkCustomChildWorkspaceDirectoryValue(), CUSTOM_CHILD_DIRECTORY);
+        Assert.assertEquals(customChildWorkspaceDirectoryValue, CUSTOM_CHILD_DIRECTORY);
     }
 }

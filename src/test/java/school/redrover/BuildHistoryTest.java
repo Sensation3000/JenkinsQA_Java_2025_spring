@@ -16,10 +16,11 @@ public class BuildHistoryTest extends BaseTest {
 
     @Test
     public void testQuickAccessToTheBuildHistorySection() {
-        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
-                .clickBuildHistoryOnLeftSidePanel();
+        String buildHistoryText = new HomePage(getDriver())
+                .clickBuildHistoryOnLeftSidePanel()
+                .getBuildHistoryText();
 
-        Assert.assertTrue(buildHistoryPage.getBuildHistoryText().contains("Build History of Jenkins"));
+        Assert.assertTrue(buildHistoryText.contains("Build History of Jenkins"));
     }
 
     @Test
@@ -58,11 +59,12 @@ public class BuildHistoryTest extends BaseTest {
 
     @Test(dependsOnMethods = "testChangeIconSize")
     public void testVerifyDeleteBuildHistory() {
-        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+        List<String> buildNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickOnBuildProject()
-                .clickDeleteBuild();
+                .clickDeleteBuild()
+                .getBuildNameList();
 
-        Assert.assertTrue(freestyleProjectPage.getBuildNameList().isEmpty());
+        Assert.assertTrue(buildNameList.isEmpty());
     }
 }
