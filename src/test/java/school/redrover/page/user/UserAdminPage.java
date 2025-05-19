@@ -37,9 +37,7 @@ public class UserAdminPage extends BasePage {
                 ExpectedConditions.visibilityOf(adminUserHeader)).getText();
     }
 
-    public String getAdminUserDescription() {
-        getWait5().until(ExpectedConditions.visibilityOf(adminUserHeader));
-
+    public String getAdminUserDescription() {;
         return adminUserDescription.getText();
     }
 
