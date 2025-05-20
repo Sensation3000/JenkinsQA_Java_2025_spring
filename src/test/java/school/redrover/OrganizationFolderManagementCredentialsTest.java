@@ -8,7 +8,7 @@ import school.redrover.page.HomePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
-@Ignore
+
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "TestFolder";
