@@ -75,7 +75,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
     }
 
-    @Test(dependsOnMethods = "testEnableDisablePipeline")
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testIfBranchSourceSectionIsPresent() {
         String branchSourcesSectionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
@@ -85,7 +85,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 
-    @Test(dependsOnMethods = "testEnableDisablePipeline")
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
     public void testTheTypesOfBranchSources() {
         List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
 
@@ -132,7 +132,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertFalse(isSuccessSubstringAppeared);
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    @Test(dependsOnMethods = {"testIfBranchSourceSectionIsPresent", "testTheTypesOfBranchSources"})
     public void testDeleteMultibranchPipelineProject(){
         List<String> ProjectNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))

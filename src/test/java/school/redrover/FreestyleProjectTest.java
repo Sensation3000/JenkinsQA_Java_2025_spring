@@ -329,16 +329,14 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
-                .addPostBuildActions(1)
-                .addPostBuildActions(9)
+                .addPostBuildActions(7)
+                .addBuildSteps(1)
                 .addPostBuildActions(11)
                 .addBuildSteps(1)
-                .addBuildSteps(7)
-                .addPostBuildActions(1)
                 .clickApply()
                 .getChunkHeaderList();
 
-        assertEquals(postBuildNameList.size(), 5);
+        assertEquals(postBuildNameList.size(), 4);
     }
 
     @Test
@@ -377,7 +375,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .numberHelpTooltips();
 
-        assertEquals(numberHelpButtons, 28);
+        assertEquals(numberHelpButtons, 16);
     }
 
     @Test

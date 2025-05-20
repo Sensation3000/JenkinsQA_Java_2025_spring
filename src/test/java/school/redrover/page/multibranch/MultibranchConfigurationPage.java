@@ -15,15 +15,8 @@ public class MultibranchConfigurationPage extends BasePage {
     public MultibranchConfigurationPage(WebDriver driver) { super(driver); }
 
     public MultibranchConfigurationPage hoverOnEnabledDisabledToggle() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Ошибка: sleep прерван", e);
-        }
-
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(By.id("toggle-switch-enable-disable-project"))).perform();
+        new Actions(getDriver()).moveToElement(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("toggle-switch-enable-disable-project")))).perform();
 
         return this;
     }
