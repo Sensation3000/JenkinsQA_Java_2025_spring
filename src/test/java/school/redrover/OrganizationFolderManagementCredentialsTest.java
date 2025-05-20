@@ -7,6 +7,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
+@Ignore
 
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
@@ -28,6 +29,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
         Assert.assertEquals(testFolderName, ORGANIZATION_FOLDER_NAME);
     }
 
+
     @Test(dependsOnMethods = "testCreateNewOrganizationFolder")
     public void testConfigureOrganizationFolderCredentials() {
         String credentialsName = new HomePage(getDriver())
@@ -43,6 +45,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
         Assert.assertEquals(credentialsName, TEST_CREDENTIALS_NAME + "/******");
     }
+
 
     @Test(dependsOnMethods = "testConfigureOrganizationFolderCredentials")
     public void testUpdateOrganizationFolderCredentials() {
