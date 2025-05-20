@@ -200,6 +200,7 @@ public class FolderTest extends BaseTest {
 
        Assert.assertEquals(descriptionText, DESCRIPTION);
     }
+    
     @Test
     public void testEmptyDescriptionBoxUsingApplyButton() {
         String descriptionText = new HomePage(getDriver())
@@ -210,8 +211,6 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, "Saved");
     }
-
-
 
     @Test(dependsOnMethods = "testCreateNewFolder")
     public void testCreatingSubFolder() {
@@ -227,6 +226,7 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
     }
+
     @Test
     public void testCreateNewFolder() {
         String currentName = new HomePage(getDriver())
