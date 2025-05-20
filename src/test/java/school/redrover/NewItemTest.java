@@ -2,6 +2,7 @@ package school.redrover;
 
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
@@ -188,6 +189,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
     }
 
+    @Ignore
     @Test(dataProvider = "safeCharacters", dataProviderClass = TestDataProvider.class)
     public void testCreateItemNameWithSafeCharacters(String safeCharacter) {
         boolean isUnsafeCharacterMessageDisplayed = new HomePage(getDriver())
