@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.page.credentials.CredentialsPage;
 import school.redrover.page.newitem.NewItemPage;
 
 import java.util.List;
@@ -104,13 +103,5 @@ public class FolderProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(folderName)))).click();
         return new FolderRenamePage(getDriver());
-    }
-
-    public CredentialsPage clickLeftSideCredentials() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/TestFolder/credentials']")))
-                .click();
-
-        return new CredentialsPage(getDriver());
     }
 }
