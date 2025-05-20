@@ -64,6 +64,10 @@ public class FolderConfigurationPage extends BasePage {
        return  saveButton.isEnabled();
     }
 
+    public boolean isApplyButtonEnabled() {
+        return  applyButton.isEnabled();
+    }
+
     public String clickApplyForSavedNotification() {
         applyButton.click();
         getWait10().until(ExpectedConditions.visibilityOf(savedNotification));
