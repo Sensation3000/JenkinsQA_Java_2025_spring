@@ -8,18 +8,21 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
-import school.redrover.component.HeaderComponent;
 import school.redrover.page.HomePage;
 
 public class FolderConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[contains(text(), 'Display Name')]/a")
     private WebElement questionMarkButton;
+
     @FindBy(name = "Apply")
     private WebElement  applyButton;
 
     @FindBy(id = "notification-bar")
     private WebElement savedNotification;
+
+    @FindBy(xpath = "//input[@checkdependson]")
+    private WebElement displayNameInput;
 
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
@@ -30,6 +33,10 @@ public class FolderConfigurationPage extends BasePage {
         getDriver().findElement(By.xpath("//input[@checkdependson]")).sendKeys(text);
 
         return this;
+    }
+
+    public String getDisplayName(){
+        return displayNameInput.getAttribute("value");
     }
 
     public FolderConfigurationPage clearDisplayName() {
@@ -77,10 +84,10 @@ public class FolderConfigurationPage extends BasePage {
     public String getTitleHealthMetrics(){
         return getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='health-metrics']"))).getText();
     }
+
     public String getTextDropdownHealthMetrics(){
         return getWait5().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[2]/div[1]/button"))).getText();
     }
-
 }
 
