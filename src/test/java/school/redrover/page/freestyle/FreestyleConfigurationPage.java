@@ -61,7 +61,13 @@ public class FreestyleConfigurationPage extends BasePage {
     private WebElement gitHubProjectURL;
 
     @FindBy(css = "div[data-tippy-root] .tippy-content")
-    private WebElement buttonHelp;
+    private WebElement contentHelp;
+
+    @FindBy(css = ".jenkins-help-button")
+    private List<WebElement> buttonHelp;
+
+    @FindBy(css = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item")
+    private List<WebElement> dropdownPostBuildActions;
 
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
@@ -401,17 +407,14 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public FreestyleConfigurationPage addPostBuildActions(@IntRange(from = 1, to = 11) int itemNumber) {
-        final String locator = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item";
-        List<WebElement> elements = List.of();
-
         for (int i = 0; i < 5; i++) {
             try {
-                new Actions(getDriver()).scrollToElement(buttonAddPostBuildAction).sendKeys(Keys.END).perform();
-                getWait10().until(ExpectedConditions.elementToBeClickable(buttonAddPostBuildAction)).click();
-                elements = getDriver().findElements(By.cssSelector(locator));
+                new Actions(getDriver()).sendKeys(Keys.END).perform();
 
-                if (elements.size() == 11) {
-                    elements.get(--itemNumber).click();
+                getWait5().until(ExpectedConditions.elementToBeClickable(buttonAddPostBuildAction)).click();
+
+                if (dropdownPostBuildActions.size() == 11) {
+                    dropdownPostBuildActions.get(--itemNumber).click();
 
                     return this;
                 }
@@ -566,7 +569,7 @@ public class FreestyleConfigurationPage extends BasePage {
     public int numberHelpTooltips() {
         int numberHelpTooltips = 0;
 
-        List<WebElement> visibleButtonsHelp = getDriver().findElements(By.cssSelector(".jenkins-help-button"))
+        List<WebElement> visibleButtonsHelp = buttonHelp
                 .stream()
                 .filter(WebElement::isDisplayed)
                 .toList();
@@ -574,10 +577,10 @@ public class FreestyleConfigurationPage extends BasePage {
         Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
-            for (int j = 1; j < 5; j++) {
+            for (int j = 2; j < 5; j++) {
                 try{
                     actions.moveToElement(visibleButtonsHelp.get(i)).perform();
-                    if(buttonHelp.getText().contains("Help")) numberHelpTooltips++;
+                    if(contentHelp.getText().contains("Help")) numberHelpTooltips++;
 
                     break;
                 }catch (Exception e){

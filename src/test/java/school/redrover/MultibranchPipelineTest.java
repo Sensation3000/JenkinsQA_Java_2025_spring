@@ -31,7 +31,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(projectName, MULTIBRANCH_NAME);
     }
-@Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescription() {
         String actualDescription = new HomePage(getDriver())
@@ -44,7 +44,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testAddDescription")
     public void testChangeDisplayName() {
         String actualName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
