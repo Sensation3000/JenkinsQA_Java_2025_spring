@@ -18,7 +18,7 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(name = "Apply")
     private WebElement  applyButton;
 
-    @FindBy(xpath = "//*[@id='notification-bar' and contains(text(),'Saved')]")
+    @FindBy(id = "notification-bar")
     private WebElement savedNotification;
 
     public FolderConfigurationPage(WebDriver driver) {
