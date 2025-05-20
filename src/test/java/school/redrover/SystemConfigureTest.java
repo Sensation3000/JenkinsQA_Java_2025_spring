@@ -6,6 +6,7 @@ import school.redrover.page.HomePage;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertFalse;
 
 public class SystemConfigureTest extends BaseTest {
 
@@ -66,5 +67,19 @@ public class SystemConfigureTest extends BaseTest {
                 .getOfExecutors();
 
         assertEquals(actualExecutorsValue, DEFAULT_EXECUTORS_VALUE);
+    }
+
+    @Test
+    public void testDisableUsageStatisticsOption() {
+        boolean actualState = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickSystemButton()
+                .setUsageStatisticsCheckbox(false)
+                .clickButtonSave()
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickSystemButton()
+                .isUsageStatisticsChecked();
+
+        assertFalse(actualState);
     }
 }
