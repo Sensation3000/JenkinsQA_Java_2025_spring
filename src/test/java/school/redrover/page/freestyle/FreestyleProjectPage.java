@@ -301,12 +301,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public boolean isTextBuildScheduled() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return buildScheduled.getText().equals("Build scheduled");
+        return getWait5().until(ExpectedConditions.visibilityOf(buildScheduled)).getText().equals("Build scheduled");
     }
 
     public FreestyleProjectPage clickStatus() {
