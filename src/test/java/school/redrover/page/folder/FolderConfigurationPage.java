@@ -15,6 +15,11 @@ public class FolderConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[contains(text(), 'Display Name')]/a")
     private WebElement questionMarkButton;
+    @FindBy(name = "Apply")
+    private WebElement  applyButton;
+
+    @FindBy(id = "notification-bar")
+    private WebElement savedNotification;
 
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
@@ -43,6 +48,13 @@ public class FolderConfigurationPage extends BasePage {
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
 
         return new FolderProjectPage(getDriver());
+    }
+
+    public String clickApplyForSavedNotification() {
+        applyButton.click();
+        getWait10().until(ExpectedConditions.visibilityOf(savedNotification));
+
+        return savedNotification.getText();
     }
 
     public HomePage saveAndReturnToHomePage() {

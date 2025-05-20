@@ -195,6 +195,16 @@ public class FolderTest extends BaseTest {
 
        Assert.assertEquals(descriptionText, DESCRIPTION);
     }
+    @Test
+    public void testEmptyDescriptionBoxUsingApplyButton() {
+        String descriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickApplyForSavedNotification();
+
+        Assert.assertEquals(descriptionText, "Saved");
+    }
 
     @Test
     public void testCreateNewFolder() {
