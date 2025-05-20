@@ -258,5 +258,15 @@ public class FolderTest extends BaseTest {
 
         Assert.assertFalse(isAlertPresent);
     }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void testSaveButtonExist() {
+        boolean isSaveButton = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
+                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
+                        .isSaveButtonEnabled();
+
+        Assert.assertTrue(isSaveButton);
+    }
 }
 
