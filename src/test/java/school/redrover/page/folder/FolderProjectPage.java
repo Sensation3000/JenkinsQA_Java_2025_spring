@@ -56,6 +56,7 @@ public class FolderProjectPage extends BasePage {
     }
 
     public String getProjectName() {
+        getWait5().until(ExpectedConditions.visibilityOf(addDescriptionButton));
 
         return projectName.getText();
     }
