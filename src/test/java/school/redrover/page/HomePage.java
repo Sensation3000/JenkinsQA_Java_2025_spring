@@ -115,7 +115,7 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickOnJobInListOfItems(String nameItem, T resultPage) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+        getWait10().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//span[text()='%s']".formatted(nameItem)))).click();
 
         return resultPage;
