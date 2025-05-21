@@ -373,7 +373,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
     }
 
-    @Ignore
+   // @Ignore
     @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
     public void testNumberActualVisibleHelpButtons(){
         int numberHelpButtons = new HomePage(getDriver())
