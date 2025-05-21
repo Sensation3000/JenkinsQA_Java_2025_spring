@@ -1,11 +1,9 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.organizationfolder.OrganizationFolderConfigurePage;
 import school.redrover.page.organizationfolder.OrganizationFolderPage;
 
 public class OrganizationFolderManagementCredentialsTest extends BaseTest {
@@ -20,7 +18,8 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
     public void testCreateNewOrganizationFolder() {
         String testFolderName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .createNewItem(ORGANIZATION_FOLDER_NAME, OrganizationFolderConfigurePage.class)
+                .sendItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
                 .clickSave()
                 .getOrganizationFolderNameFromHeader();
 
