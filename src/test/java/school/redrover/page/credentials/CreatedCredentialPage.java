@@ -24,6 +24,12 @@ public class CreatedCredentialPage extends BasePage {
     public CreatedCredentialPage(WebDriver driver) {super(driver);}
 
     public String getCreatedCredentialName() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Ошибка: sleep прерван", e);
+        }
        // By credentialNameLocator = By.xpath("//*[@id='main-panel']/h1");
         int attempts = 0;
         while (attempts < 3) {
