@@ -207,7 +207,7 @@ public class FreestyleProjectPage extends BasePage {
     public FreestyleProjectPage clickEnableButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
        // getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='warning']/form")));
-
+//не всегда появляется
         return this;
     }
 
