@@ -66,7 +66,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(displayedFolderName, FOLDER_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
     public void testCreateFreestyleProjectInFolder() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
@@ -278,4 +277,3 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isApplyButton);
     }
 }
-
