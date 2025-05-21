@@ -577,8 +577,9 @@ public class FreestyleConfigurationPage extends BasePage {
         Actions actions = new Actions(getDriver());
 
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
-            for (int j = 2; j < 5; j++) {
+            for (int j = 1; j < 5; j++) {
                 try{
+                    actions.scrollToElement(visibleButtonsHelp.get(i)).perform();
                     actions.moveToElement(visibleButtonsHelp.get(i)).perform();
                     if(contentHelp.getText().contains("Help")) numberHelpTooltips++;
 

@@ -13,6 +13,7 @@ public class SideMenuInFreestyleProjectComponent extends BaseComponent {
     }
     public <T extends BasePage> T clickItemOnSidePanelInFreestyleProject(String itemName, T resultPage) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='tasks']//a[.//span[text()='" + itemName + "']]"))).click();
+
         return resultPage;
     }
 }
