@@ -277,4 +277,3 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isApplyButton);
     }
 }
-
