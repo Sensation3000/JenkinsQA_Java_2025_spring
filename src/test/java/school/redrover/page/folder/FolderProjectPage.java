@@ -13,7 +13,7 @@ import java.util.List;
 public class FolderProjectPage extends BasePage {
 
     @FindBy(linkText = "Create a job")
-    private WebElement newItemButton;
+    private WebElement newJobButton;
 
     @FindBy(xpath = "//*[@id='description']/div[1]")
     private WebElement description;
@@ -67,8 +67,8 @@ public class FolderProjectPage extends BasePage {
         return folderStatus.getText();
     }
 
-    public NewItemPage clickOnNewItemButton(){
-        newItemButton.click();
+    public NewItemPage clickOnCreateNewJobButton(){
+        newJobButton.click();
 
         return new NewItemPage(getDriver());
     }
