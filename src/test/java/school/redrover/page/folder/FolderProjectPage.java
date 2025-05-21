@@ -13,61 +13,92 @@ import java.util.List;
 public class FolderProjectPage extends BasePage {
 
     @FindBy(linkText = "Create a job")
-    private WebElement newItemButton;
+    private WebElement newJobButton;
 
-    @FindBy (xpath = "//*[@id='description']/div[1]")
+    @FindBy(xpath = "//*[@id='description']/div[1]")
     private WebElement description;
+
+    @FindBy(xpath = "//*[@id='main-panel']/h1")
+    private WebElement projectName;
+
+    @FindBy(id = "view-message")
+    private WebElement descriptionMessage;
+
+    @FindBy(className = "h4")
+    private WebElement folderStatus;
+
+    @FindBy(id = "name")
+    private WebElement itemNameField;
+
+    @FindBy(css = "a[href*='configure']")
+    private WebElement configureButtonLeftSidePanel;
+
+    @FindBy(id = "description-link")
+    private WebElement addDescriptionButton;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
+    @FindBy(name = "description")
+    private WebElement descriptionEditBox;
+
+    @FindBy(className = "jenkins-table__link")
+    private WebElement subFolder;
+
+    @FindBy(linkText = "New Item")
+    private WebElement newItemButtonLeftSidePanel;
+
+    @FindBy(css = ".jenkins-table__link > span:nth-child(1)")
+    private List<WebElement> listOfProjects;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
 
     public String getProjectName() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='main-panel']/h1"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(projectName)).getText();
     }
 
     public String getDescription() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
-
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionMessage)).getText();
     }
 
     public String getFolderStatus() {
-        return getDriver().findElement(By.className("h4")).getText();
+        return folderStatus.getText();
     }
 
-    public NewItemPage clickOnNewItemButton(){
-        newItemButton.click();
+    public NewItemPage clickOnCreateNewJobButton(){
+        newJobButton.click();
 
         return new NewItemPage(getDriver());
     }
 
     public FolderProjectPage sendItemName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        itemNameField.sendKeys(name);
 
         return this;
     }
 
     public FolderConfigurationPage clickConfigure() {
-        getDriver().findElement(By.cssSelector("a[href*='configure']")).click();
+        configureButtonLeftSidePanel.click();
 
         return new FolderConfigurationPage(getDriver());
     }
 
     public FolderProjectPage clickAddDescriptionButton(){
-        getDriver().findElement(By.id("description-link")).click();
+        addDescriptionButton.click();
 
         return this;
     }
 
     public FolderProjectPage clickSaveButton(){
-        getDriver().findElement(By.name("Submit")).click();
+        saveButton.click();
 
         return  this;
     }
 
     public FolderProjectPage fillInDescriptionBox(String description){
-        getDriver().findElement(By.name("description")).sendKeys(description);
+        descriptionEditBox.sendKeys(description);
 
         return this;
     }
@@ -79,8 +110,7 @@ public class FolderProjectPage extends BasePage {
 
     public List<String> getProjectNameList() {
 
-        return getDriver().findElements(By.cssSelector(".jenkins-table__link > span:nth-child(1)")).stream()
-                .map(WebElement::getText).toList();
+        return listOfProjects.stream().map(WebElement::getText).toList();
     }
 
     public String getItemIconTitleByJobName(String jobName) {
@@ -90,18 +120,19 @@ public class FolderProjectPage extends BasePage {
     }
 
     public NewItemPage findNewItemAndClick() {
-        getDriver().findElement(By.linkText("New Item")).click();
+        newItemButtonLeftSidePanel.click();
 
         return new NewItemPage(getDriver());
     }
 
     public String getSubFolderName() {
-        return getDriver().findElement(By.className("jenkins-table__link")).getText();
+        return subFolder.getText();
     }
 
     public FolderRenamePage clickRenameOnLeftSidePanel(String folderName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@href='/job/%s/confirm-rename']".formatted(folderName)))).click();
+
         return new FolderRenamePage(getDriver());
     }
 }

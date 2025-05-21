@@ -12,7 +12,7 @@ public class SideMenuInHomePageComponent extends BaseComponent {
         super(driver);
     }
 
-    public <T extends BasePage> T clickItemOnSidePanel(String itemName, T resultPage) {
+    public <T extends BasePage> T clickItemOnSidePanelInHomePage(String itemName, T resultPage) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='tasks']//a[.//span[text()='" + itemName + "']]"))).click();
         return resultPage;
     }
