@@ -223,7 +223,7 @@ public class FolderTest extends BaseTest {
     public void testEmptyDescriptionBoxUsingApplyButton() {
         String descriptionText = new HomePage(getDriver())
                 .getSideMenuInHomePage()
-                .clickItemOnSidePanelinHomePage("New Item",new NewItemPage(getDriver()))
+                .clickItemOnSidePanelInHomePage("New Item",new NewItemPage(getDriver()))
                 .sendItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickApplyForSavedNotification();
