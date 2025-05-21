@@ -18,6 +18,9 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(name = "Apply")
     private WebElement  applyButton;
 
+    @FindBy(css = "button[name='Submit']")
+    private WebElement  saveButton;
+
     @FindBy(id = "notification-bar")
     private WebElement savedNotification;
 
@@ -55,6 +58,14 @@ public class FolderConfigurationPage extends BasePage {
         TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
 
         return new FolderProjectPage(getDriver());
+    }
+
+    public boolean isSaveButtonEnabled() {
+       return  saveButton.isEnabled();
+    }
+
+    public boolean isApplyButtonEnabled() {
+        return  applyButton.isEnabled();
     }
 
     public String clickApplyForSavedNotification() {
