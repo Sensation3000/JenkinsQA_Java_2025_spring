@@ -124,7 +124,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getDescription(),DESCRIPTION);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateWithDescription")
     public void testRenameFolder() {
         String folderName = new HomePage(getDriver())
@@ -137,7 +136,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderName, RENAMED_FOLDER_NAME);
     }
 
-   @Ignore
     @Test(dependsOnMethods = "testRenameFolder")
     public void testCreateFolderInFolderUsingCreateNewJob() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
