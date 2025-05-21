@@ -21,6 +21,7 @@ public class FolderRenamePage extends BasePage {
     public FolderProjectPage clickRenameButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
+
         return new FolderProjectPage(getDriver());
     }
 }

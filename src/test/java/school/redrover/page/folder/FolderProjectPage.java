@@ -56,7 +56,8 @@ public class FolderProjectPage extends BasePage {
     }
 
     public String getProjectName() {
-        return getWait5().until(ExpectedConditions.visibilityOf(projectName)).getText();
+
+        return projectName.getText();
     }
 
     public String getDescription() {
