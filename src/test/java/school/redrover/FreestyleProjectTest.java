@@ -154,7 +154,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testEditDescription")
     public void testPreviewDescriptionOption() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
@@ -166,7 +165,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getTextFromPreviewDescriptionBlock(), PROJECT_DESCRIPTION);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testPreviewDescriptionOption")
     public void testHidePreviewDescriptionOption() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
@@ -179,7 +177,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(freestyleProjectPage.isPreviewDescriptionBlockDisplayed());
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testHidePreviewDescriptionOption")
     public void testDescriptionCanBeEmpty() {
         String freestyleProjectDescriptionText = new HomePage(getDriver())
@@ -192,7 +189,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectDescriptionText, "");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionCanBeEmpty")
     public void testRenameFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
@@ -204,7 +200,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getProjectName(), UPDATED_PROJECT_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRenameFreestyleProject")
     public void testDeleteFreestyleProject() {
         List<String> projectNameList = new HomePage(getDriver())

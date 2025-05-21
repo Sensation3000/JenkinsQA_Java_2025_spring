@@ -189,7 +189,6 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(newItemPage.getNewItemPageURL(), NEW_ITEM_PAGE_URL);
     }
 
-    @Ignore
     @Test(dataProvider = "safeCharacters", dataProviderClass = TestDataProvider.class)
     public void testCreateItemNameWithSafeCharacters(String safeCharacter) {
         boolean isUnsafeCharacterMessageDisplayed = new HomePage(getDriver())

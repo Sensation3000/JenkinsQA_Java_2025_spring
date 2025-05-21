@@ -44,7 +44,6 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
         Assert.assertEquals(credentialsName, TEST_CREDENTIALS_NAME + "/******");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testConfigureOrganizationFolderCredentials")
     public void testUpdateOrganizationFolderCredentials() {
         String updatedCredentialsName = new HomePage(getDriver())
@@ -61,7 +60,7 @@ public class OrganizationFolderManagementCredentialsTest extends BaseTest {
 
         Assert.assertEquals(updatedCredentialsName, UPDATED_CREDENTIALS_NAME + "/******");
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testUpdateOrganizationFolderCredentials")
     public void testDeleteOrganizationFolderCredentials() {
         String emptyCredentialsStatus = new HomePage(getDriver())
