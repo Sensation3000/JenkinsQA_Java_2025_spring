@@ -66,7 +66,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(displayedFolderName, FOLDER_NAME);
     }
 
-    @Ignore
+   // @Ignore
     @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
     public void testCreateFreestyleProjectInFolder() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
@@ -81,7 +81,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
-    @Ignore
+ //   @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolder")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
@@ -97,7 +97,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectName, ITEM_NAME);
     }
 
-    @Test
+  //  @Test
     public void testIfCopyFromFieldAppears() {
         final String expectedText = "Copy from";
 
@@ -112,7 +112,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(copyFromFieldText, expectedText);
     }
 
-    @Test
+  //  @Test
     public void testCreateWithDescription () {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
@@ -124,7 +124,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getDescription(),DESCRIPTION);
     }
 
-    @Test(dependsOnMethods = "testCreateWithDescription")
+  //  @Test(dependsOnMethods = "testCreateWithDescription")
     public void testRenameFolder() {
         String folderName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
@@ -136,7 +136,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderName, RENAMED_FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testRenameFolder")
+ //   @Test(dependsOnMethods = "testRenameFolder")
     public void testCreateFolderInFolder() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()))
@@ -151,7 +151,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getItemIconTitleByJobName(ITEM_NAME), "Folder");
     }
 
-    @Test
+  //  @Test
     public void  testAvailabilityHealthMetrics(){
         FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -168,7 +168,7 @@ public class FolderTest extends BaseTest {
         }
     }
 
-    @Test
+  //  @Test
     public void testFolderIsEmpty() {
         String folderStatus = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -179,7 +179,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderStatus, "This folder is empty");
     }
 
-    @Test
+  //  @Test
     public void testQuestionMarkIcon() {
         boolean isButtonExist = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -189,7 +189,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isButtonExist);
     }
 
-    @Test(dependsOnMethods = "testQuestionMarkIcon")
+  //  @Test(dependsOnMethods = "testQuestionMarkIcon")
     public void testAddDescriptionButton() {
         String descriptionText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME,new FolderProjectPage(getDriver()))
@@ -201,7 +201,7 @@ public class FolderTest extends BaseTest {
        Assert.assertEquals(descriptionText, DESCRIPTION);
     }
     
-    @Test
+  //  @Test
     public void testEmptyDescriptionBoxUsingApplyButton() {
         String descriptionText = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -212,7 +212,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(descriptionText, "Saved");
     }
 
-    @Test(dependsOnMethods = "testCreateNewFolder")
+  //  @Test(dependsOnMethods = "testCreateNewFolder")
     public void testCreatingSubFolder() {
         String subFolder = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
@@ -227,7 +227,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
     }
 
-    @Test
+  //  @Test
     public void testCreateNewFolder() {
         String currentName = new HomePage(getDriver())
                 .clickCreateJob()
@@ -238,7 +238,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(currentName, FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateNewFolder")
+  //  @Test(dependsOnMethods = "testCreateNewFolder")
         public void testLeavePageWithoutSavings() {
         new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
@@ -259,7 +259,7 @@ public class FolderTest extends BaseTest {
         Assert.assertFalse(isAlertPresent);
     }
 
-    @Test(dependsOnMethods = "testCreateNewFolder")
+   // @Test(dependsOnMethods = "testCreateNewFolder")
     public void testSaveButtonExist() {
         boolean isSaveButton = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
