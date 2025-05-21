@@ -13,6 +13,7 @@ import school.redrover.page.buildhistory.BuildHistoryPage;
 import school.redrover.page.managejenkins.ManageJenkinsPage;
 import school.redrover.page.myViews.MyViewsPage;
 import school.redrover.page.newitem.NewItemPage;
+import school.redrover.page.organizationfolder.OrganizationFolderPage;
 import school.redrover.page.signIn.SignInPage;
 import school.redrover.page.user.UserAdminPage;
 import school.redrover.page.view.NewViewPage;
@@ -385,5 +386,13 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
 
         return new UserAdminPage(getDriver());
+    }
+
+    public OrganizationFolderPage clickProjectName() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
+                .click();
+
+        return new OrganizationFolderPage(getDriver());
     }
 }
