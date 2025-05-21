@@ -18,7 +18,7 @@ public class CreatedCredentialPage extends BasePage {
     public String getCreatedCredentialName() {
         By credentialNameLocator = By.xpath("//*[@id='main-panel']/h1");
         int attempts = 0;
-        while (attempts < 3) {
+        while (attempts < 5) {
             try {
                 return getWait10()
                         .until(ExpectedConditions.visibilityOfElementLocated(credentialNameLocator))
@@ -38,6 +38,7 @@ public class CreatedCredentialPage extends BasePage {
 
         return new CreatedCredentialPage(getDriver());
     }
+
     public GlobalCredentialsPage clickYesButton() {
         yesButton.click();
 
