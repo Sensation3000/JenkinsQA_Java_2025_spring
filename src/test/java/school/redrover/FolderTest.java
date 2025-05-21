@@ -244,7 +244,7 @@ public class FolderTest extends BaseTest {
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
                 .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
                 .clearDisplayName()
-                .sendDisplayName(FOLDER_SECOND_NAME)
+                .sendDisplayName(FOLDER_SECOND_NAME+"GGG")
                 .getHeader()
                 .goToHomePage();
 
@@ -252,8 +252,7 @@ public class FolderTest extends BaseTest {
         try {
             getWait10().until(ExpectedConditions.alertIsPresent());
             isAlertPresent = true;
-        } catch (TimeoutException e) {
-            isAlertPresent = false;
+        } catch (TimeoutException e) {isAlertPresent = false;
         }
 
         Assert.assertFalse(isAlertPresent);
@@ -264,7 +263,7 @@ public class FolderTest extends BaseTest {
         boolean isSaveButton = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
                 .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
-                        .isSaveButtonEnabled();
+                .isSaveButtonEnabled();
 
         Assert.assertTrue(isSaveButton);
     }
