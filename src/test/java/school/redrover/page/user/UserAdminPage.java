@@ -9,7 +9,7 @@ import school.redrover.common.BasePage;
 
 public class UserAdminPage extends BasePage {
 
-    @FindBy(css = ".jenkins-app-bar h1")
+    @FindBy(xpath = "//*[@id='main-panel']/div[1]/div[1]/h1")
     private WebElement adminUserHeader;
 
     @FindAll({

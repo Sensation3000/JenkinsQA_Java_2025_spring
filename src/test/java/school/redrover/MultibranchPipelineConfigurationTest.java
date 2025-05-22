@@ -28,25 +28,51 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(isBranchSourceButtonDisplayed);
     }
 
-    @Test
-    public void testEnableDisablePipeline() {
-        String tooltipDefaultText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(projectName, MultibranchConfigurationPage.class)
-                .getEnableToggleText();
+    @Test(dependsOnMethods = "createMultibranchPipelineProject")
+    public void testTheTypesOfBranchSources() {
+        List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
 
-        Assert.assertEquals(tooltipDefaultText, "Enabled", "Toggle is disabled!");
+        List<String> actualBranchSourceTypeNames = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .scrollAndClickOnBranchSourcesSectionWithJs()
+                .getBranchSourcesTypeNames();
+
+        Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
+    }
+
+    @Test(dependsOnMethods = "testTheTypesOfBranchSources")
+    public void testIfBranchSourceSectionIsPresent() {
+        String branchSourcesSectionText = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .goToConfigurationPage()
+                .getBranchSourcesSectionText();
+
+        Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
+    }
+
+    @Test(dependsOnMethods = {"testIfBranchSourceSectionIsPresent"})
+    public void testDeleteMultibranchPipelineProject(){
+        List<String> ProjectNameList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
+                .deleteMultiBranchPipeline()
+                .getProjectNameList();
+
+        Assert.assertEquals(ProjectNameList.size(), 0);
     }
 
     @Test
-    public void testEnabledDisabledToggleTooltip() {
-        String tooltipEnabledAttribute = new HomePage(getDriver())
+    public void testCancelDeletionProject(){
+        String homePage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(projectName, MultibranchConfigurationPage.class)
-                .hoverOnEnabledDisabledToggle()
-                .getEnabledDisabledToggleShownAttribute();
+                .clickSaveButton()
+                .cancelDeletionMultiBranchPipeline()
+                .getHeader()
+                .goToHomePage()
+                .getProjectName();
 
-        Assert.assertEquals(tooltipEnabledAttribute, "tippy-10", "Tooltip is not displayed!");
+        Assert.assertEquals(homePage, projectName);
     }
 
     @Test
@@ -72,30 +98,42 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .goToConfigurationPage()
                 .getEnableToggleText();
 
-        Assert.assertEquals(toggleText, "Enabled", "EnableToggle is not Enabled");
+        Assert.assertEquals(toggleText, "Enabled");
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
-    public void testIfBranchSourceSectionIsPresent() {
-        String branchSourcesSectionText = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
-                .goToConfigurationPage()
-                .getBranchSourcesSectionText();
+    @Test
+    public void testEnableDisablePipeline() {
+        String tooltipDefaultText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
+                .getEnableToggleText();
 
-        Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
+        Assert.assertEquals(tooltipDefaultText, "Enabled");
     }
 
-    @Test(dependsOnMethods = "createMultibranchPipelineProject")
-    public void testTheTypesOfBranchSources() {
-        List<String> expectedBranchSourceTypeNames = List.of("Git", "GitHub", "Single repository & branch");
+    @Test
+    public void testEnabledDisabledToggleTooltip() {
+        String tooltipEnabledAttribute = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(projectName, MultibranchConfigurationPage.class)
+                .hoverOnEnabledDisabledToggle()
+                .getEnabledDisabledToggleShownAttribute();
 
-        List<String> actualBranchSourceTypeNames = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
-                .goToConfigurationPage()
+        Assert.assertEquals(tooltipEnabledAttribute, "tippy-10");
+    }
+
+    @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
+    public void testGitBranchSourceWithInvalidUrl(String branchSourceType, By repositoryInputLocator) {
+        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .sendItemName(TestUtils.generateRandomAlphanumeric())
+                .selectMultibranchPipelineAndClickOkWithJS()
                 .scrollAndClickOnBranchSourcesSectionWithJs()
-                .getBranchSourcesTypeNames();
+                .clickOnBranchSourcesSectionText(branchSourceType)
+                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL + "!", repositoryInputLocator)
+                .isSuccessSubstringAppeared(branchSourceType);
 
-        Assert.assertEquals(actualBranchSourceTypeNames, expectedBranchSourceTypeNames);
+        Assert.assertFalse(isSuccessSubstringAppeared);
     }
 
     @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
@@ -114,43 +152,5 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .isSuccessSubstringAppeared(branchSourceType);
 
         Assert.assertTrue(isSuccessSubstringAppeared);
-    }
-
-    @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)
-    public void testGitBranchSourceWithInvalidUrl(String branchSourceType, By repositoryInputLocator) {
-        boolean isSuccessSubstringAppeared = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .sendItemName(TestUtils.generateRandomAlphanumeric())
-                .selectMultibranchPipelineAndClickOkWithJS()
-                .scrollAndClickOnBranchSourcesSectionWithJs()
-                .clickOnBranchSourcesSectionText(branchSourceType)
-                .enterValueIntoProjectRepositoryInputAndClickSubmit(VALID_REPOSITORY_URL + "!", repositoryInputLocator)
-                .isSuccessSubstringAppeared(branchSourceType);
-
-        Assert.assertFalse(isSuccessSubstringAppeared);
-    }
-
-    @Test(dependsOnMethods = {"testIfBranchSourceSectionIsPresent", "testTheTypesOfBranchSources"})
-    public void testDeleteMultibranchPipelineProject(){
-        List<String> ProjectNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(projectName, new MultibranchProjectPage(getDriver()))
-                .deleteMultiBranchPipeline()
-                .getProjectNameList();
-
-        Assert.assertEquals(ProjectNameList.size(), 0);
-    }
-
-    @Test
-    public void testCancelDeletionProject(){
-        String homePage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(projectName, MultibranchConfigurationPage.class)
-                .clickSaveButton()
-                .cancelDeletionMultiBranchPipeline()
-                .getHeader()
-                .goToHomePage()
-                .getProjectName();
-
-        Assert.assertEquals(homePage, projectName);
     }
 }
