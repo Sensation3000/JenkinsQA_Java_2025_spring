@@ -580,7 +580,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
         Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < visibleButtonsHelp.size(); i++) {
+        for (int i = 0; i <= visibleButtonsHelp.size(); i++) {
             for (int j = 1; j < 5; j++) {
                 try{
                     actions.scrollToElement(visibleButtonsHelp.get(i)).perform();
@@ -593,8 +593,6 @@ public class FreestyleConfigurationPage extends BasePage {
                     try {
                         actions.scrollToElement(visibleButtonsHelp.get(i + j)).perform();
                     }catch (Exception y){
-                        actions.sendKeys(Keys.END).perform();
-                        actions.scrollToElement(visibleButtonsHelp.get(i)).perform();
                         actions.sendKeys(Keys.END).perform();
                     }
                 }
