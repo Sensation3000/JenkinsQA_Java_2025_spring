@@ -14,7 +14,6 @@ import school.redrover.common.BaseTest;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class NewItemTest extends BaseTest {
 
     private static final String ITEM_NAME = "ItemName";
