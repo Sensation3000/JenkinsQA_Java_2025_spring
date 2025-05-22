@@ -31,24 +31,6 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testQuietPeriodValueSet")
-    public void testRetryCountValueSet() {
-        String retryCountValue = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
-                .clickConfigure()
-                .scrollToAdvancedProjectOptions()
-                .clickAdvanced()
-                .clickRetryCountCheckbox()
-                .enterRetryCountValue()
-                .clickSaveButton()
-                .clickConfigure()
-                .scrollToAdvancedProjectOptions()
-                .clickAdvanced()
-                .checkRetryCountValue();
-
-        Assert.assertEquals(retryCountValue, "2");
-    }
-
-    @Test(dependsOnMethods = "testQuietPeriodValueSet")
     public void testBlockBuildOptionsSet() {
         MultiConfigurationConfigurePage multiConfigurationConfigurePage= new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
@@ -66,7 +48,25 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         Assert.assertTrue(multiConfigurationConfigurePage.isCheckboxBlockBuildWhenDownstreamBuildingSelected());
     }
 
-    @Test(dependsOnMethods = "testQuietPeriodValueSet")
+    @Test(dependsOnMethods = "testBlockBuildOptionsSet")
+    public void testRetryCountValueSet() {
+        String retryCountValue = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
+                .scrollToAdvancedProjectOptions()
+                .clickAdvanced()
+                .clickRetryCountCheckbox()
+                .enterRetryCountValue()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToAdvancedProjectOptions()
+                .clickAdvanced()
+                .checkRetryCountValue();
+
+        Assert.assertEquals(retryCountValue, "2");
+    }
+
+    @Test(dependsOnMethods = "testRetryCountValueSet")
     public void testCustomWorkspaceSet() {
         String customWorkspaceDirectoryValue = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
@@ -84,7 +84,7 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         Assert.assertEquals(customWorkspaceDirectoryValue, CUSTOM_DIRECTORY);
     }
 
-    @Test(dependsOnMethods = "testQuietPeriodValueSet")
+    @Test(dependsOnMethods = "testCustomWorkspaceSet")
     public void testCustomChildWorkspaceSet() {
         String customChildWorkspaceDirectoryValue = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))

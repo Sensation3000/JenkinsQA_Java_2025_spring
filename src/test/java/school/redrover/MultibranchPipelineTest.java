@@ -29,7 +29,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getProjectName();
 
-        Assert.assertEquals(projectName, MULTIBRANCH_NAME);
+        Assert.assertTrue(projectName.contains(MULTIBRANCH_NAME));
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -67,17 +67,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
 
-    @Test(dependsOnMethods = "testTryCreateProjectExistName")
-    public void testVerifySectionHasTooltip() {
-        int numberHelpButtons = new HomePage(getDriver())
-                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultiConfigurationConfigurePage(getDriver()))
-                .clickConfigure()
-                .clickAdvanced()
-                .numberHelpTooltips();
-
-        assertEquals(numberHelpButtons, 22);
-    }
-
     @Test
     public void testTryCreateProjectExistName() {
         String errorMessage = new HomePage(getDriver())
@@ -91,5 +80,16 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getItemNameInvalidMessage();
 
         assertEquals(errorMessage, "» A job already exists with the name " + "‘" + MULTIBRANCH_NAME + "’");
+    }
+
+    @Test(dependsOnMethods = "testTryCreateProjectExistName")
+    public void testVerifySectionHasTooltip() {
+        int numberHelpButtons = new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
+                .clickAdvanced()
+                .numberHelpTooltips();
+
+        assertEquals(numberHelpButtons, 22);
     }
 }

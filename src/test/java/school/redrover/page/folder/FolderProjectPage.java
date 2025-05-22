@@ -3,6 +3,7 @@ package school.redrover.page.folder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
@@ -17,6 +18,13 @@ public class FolderProjectPage extends BasePage {
 
     @FindBy(xpath = "//*[@id='description']/div[1]")
     private WebElement description;
+
+    @FindAll({
+            @FindBy(xpath = "//*[@id='main-panel']/h1"),
+            @FindBy(xpath = "//h1[contains(text(), 'UpdatedTestName')]"),
+            @FindBy(xpath = "(//h1)")
+    })
+    private WebElement h1;
 
     @FindBy(xpath = "//*[@id='main-panel']/h1")
     private WebElement projectName;

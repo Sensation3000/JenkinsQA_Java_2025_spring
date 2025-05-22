@@ -20,12 +20,13 @@ public class DashboardViewTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectForView() {
-        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .clickCreateJob()
                 .createNewItem(JOB_NAME, FreestyleConfigurationPage.class)
-                .clickSaveButton();
+                .clickSaveButton()
+                .getProjectName();
 
-        Assert.assertEquals(freestyleProjectPage.getProjectName(), JOB_NAME);
+        Assert.assertEquals(projectName, JOB_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
@@ -39,7 +40,7 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(homePage.getNameOfView(), VIEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
+    @Test(dependsOnMethods = "testCreateMyView")
     public void testCreateListView() {
         ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()

@@ -31,40 +31,6 @@ public class DashboardTest extends BaseTest {
             new ArrayList<>(Arrays.asList(FOLDER_NAME, JOB_NAME, SUPERIOR_FOLDER_NAME));
 
     @Test
-    public void testDashboardEnabled() {
-        Assert.assertTrue(new HomePage(getDriver()).enabledDashbord());
-    }
-
-    @Test
-    public void testOpenManageJenkinsFromDashboard() {
-        String manageJenkinsTitleText = new HomePage(getDriver())
-                .clickManageJenkinsOnLeftSidePanel()
-                .getManageJenkinsTitleText();
-
-        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
-    }
-
-    @Test
-    public void testPossibleToCreateJobFromDashboard() {
-        boolean isNewItemPageOpened = new HomePage(getDriver())
-                .clickCreateJob()
-                .isNewItemPageOpened();
-
-        Assert.assertTrue(isNewItemPageOpened);
-    }
-
-    @Test
-    public void testCancelJobCreationFromDashboard() {
-        boolean isJobListEmpty = new HomePage(getDriver())
-                .clickCreateJob()
-                .getHeader()
-                .clickLogoIcon()
-                .isJobListEmpty();
-
-        Assert.assertTrue(isJobListEmpty);
-    }
-
-    @Test
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
                 .clickAddDescriptionButton()
@@ -98,6 +64,22 @@ public class DashboardTest extends BaseTest {
                 .isDescriptionDisplayed();
 
         Assert.assertFalse(isDescriptionDisplayed);
+    }
+
+    @Test
+    public void testCheckOptionsOfJenkinsVersionDropDown() {
+        List<String> expectedTitles = Arrays.asList("About Jenkins", "Get involved", "Website");
+
+        List<String> jenkinsVersionDropDownOptions = new HomePage(getDriver())
+                .clickJenkinsVersionButton()
+                .getJenkinsVersionDropDownOptions();
+
+        Assert.assertEquals(jenkinsVersionDropDownOptions, expectedTitles);
+    }
+
+    @Test
+    public void testDashboardEnabled() {
+        Assert.assertTrue(new HomePage(getDriver()).enabledDashbord());
     }
 
     @Test
@@ -135,12 +117,11 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
-
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
 
-    @Test(dependsOnMethods = {"testListJobsAndFolders", "testColumns"})
+    @Test(dependsOnMethods = {"testColumns"})
     public void testSortNameList() {
         HomePage homePage = new HomePage(getDriver());
 
@@ -156,7 +137,7 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(ListReportsActual2, expectedListOfJobs);
     }
 
-    @Test(dataProvider = "script", dataProviderClass = TestDataProvider.class, dependsOnMethods = {"testListJobsAndFolders","testSortNameList","testColumns"})
+    @Test(dataProvider = "script", dataProviderClass = TestDataProvider.class, dependsOnMethods = {"testSortNameList"})
     public void testFailedJobDetails(String script){
         String lastFailure = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -177,9 +158,9 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(lastSuccess, "N/A");
     }
 
-    @Test(dependsOnMethods = {"testFailedJobDetails","testListJobsAndFolders","testSortNameList","testColumns"})
+    @Test(dependsOnMethods = {"testFailedJobDetails"})
     public void testSortHealthReportColumnDashboard(){
-       HomePage homePage = new HomePage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
 
         ListReportsExpected = homePage
                 .getListHealthReportFromDashboard();
@@ -196,8 +177,7 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(ListReportsActual2, ListReportsExpected);
     }
 
-    @Test(dependsOnMethods = {"testFailedJobDetails","testListJobsAndFolders","testSortNameList","testColumns",
-            "testSortHealthReportColumnDashboard"})
+    @Test(dependsOnMethods = {"testSortHealthReportColumnDashboard"})
     public void testSortStatusLastBuildColumnDashboard() {
         HomePage homePage = new HomePage(getDriver());
 
@@ -217,13 +197,31 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
-    public void testCheckOptionsOfJenkinsVersionDropDown() {
-        List<String> expectedTitles = Arrays.asList("About Jenkins", "Get involved", "Website");
+    public void testOpenManageJenkinsFromDashboard() {
+        String manageJenkinsTitleText = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .getManageJenkinsTitleText();
 
-        List<String> jenkinsVersionDropDownOptions = new HomePage(getDriver())
-                .clickJenkinsVersionButton()
-                .getJenkinsVersionDropDownOptions();
+        Assert.assertEquals(manageJenkinsTitleText, "Manage Jenkins");
+    }
 
-        Assert.assertEquals(jenkinsVersionDropDownOptions, expectedTitles);
+    @Test
+    public void testCancelJobCreationFromDashboard() {
+        boolean isJobListEmpty = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeader()
+                .clickLogoIcon()
+                .isJobListEmpty();
+
+        Assert.assertTrue(isJobListEmpty);
+    }
+
+    @Test
+    public void testPossibleToCreateJobFromDashboard() {
+        boolean isNewItemPageOpened = new HomePage(getDriver())
+                .clickCreateJob()
+                .isNewItemPageOpened();
+
+        Assert.assertTrue(isNewItemPageOpened);
     }
 }

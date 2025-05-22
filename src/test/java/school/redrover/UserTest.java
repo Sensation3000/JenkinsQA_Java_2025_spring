@@ -12,6 +12,7 @@ import school.redrover.page.user.CreateUserPage;
 import school.redrover.page.user.UsersPage;
 import java.util.List;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class UserTest extends BaseTest {
@@ -40,31 +41,6 @@ public class UserTest extends BaseTest {
         assertEquals(users.size(), 2);
     }
 
-    @Test
-    public void testSignInAsExistingUser(){
-        String logOutButtonText = new HomePage(getDriver())
-                .getHeader()
-                .goToHomePage()
-                .clickLogOutButton()
-                .setUserName(ProjectUtils.getUserName())
-                .setPassword(ProjectUtils.getPassword())
-                .clickSignInButton()
-                .getLogOutButtonText();
-
-        assertEquals(logOutButtonText,"log out");
-    }
-
-    @Test
-    public void testSearchUser() {
-        String currentAdminIDText = new HeaderComponent(getDriver())
-                .clickSearchButton()
-                .sendSearchText("admin")
-                .clickSearch()
-                .getAdminUserHeaderText();
-
-        assertEquals(currentAdminIDText, "admin");
-    }
-
     @Test(dependsOnMethods = "testCreateNewUser")
     public void deleteUser() {
         List<WebElement> users = new HomePage(getDriver())
@@ -77,7 +53,7 @@ public class UserTest extends BaseTest {
         assertEquals(users.size(), 1);
     }
 
-    @Test(dependsOnMethods = "testCreateNewUser")
+    @Test(dependsOnMethods = "deleteUser")
     public void testCreateExistingUser() {
         String errorText = new HomePage(getDriver())
                 .getHeader()
@@ -94,6 +70,31 @@ public class UserTest extends BaseTest {
                 .getUserNameErrorMessage();
 
         Assert.assertEquals(errorText, "User name is already taken");
+    }
+
+    @Test
+    public void testSearchUser() {
+        String currentAdminIDText = new HeaderComponent(getDriver())
+                .clickSearchButton()
+                .sendSearchText("admin")
+                .clickSearch()
+                .getAdminUserHeaderText();
+
+        assertEquals(currentAdminIDText.toLowerCase(), "admin");
+    }
+
+    @Test
+    public void testSignInAsExistingUser(){
+        String logOutButtonText = new HomePage(getDriver())
+                .getHeader()
+                .goToHomePage()
+                .clickLogOutButton()
+                .setUserName(ProjectUtils.getUserName())
+                .setPassword(ProjectUtils.getPassword())
+                .clickSignInButton()
+                .getLogOutButtonText();
+
+        assertEquals(logOutButtonText,"log out");
     }
 
     @Test

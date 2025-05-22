@@ -3,13 +3,18 @@ package school.redrover.page.organizationfolder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.page.credentials.CredentialsPage;
 
 public class OrganizationFolderPage extends BasePage {
-    @FindBy(xpath = "//*[@id='main-panel']/h1")
+    @FindAll({
+            @FindBy(xpath = "//*[@id='main-panel']/h1"),
+            @FindBy(xpath = "//h1[contains(text(), 'UpdatedTestName')]"),
+            @FindBy(xpath = "(//h1)")
+    })
     private WebElement header;
 
     @FindBy(xpath = "//*[@id='main-panel']/h1/*[name()='svg']")

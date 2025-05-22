@@ -3,6 +3,7 @@ package school.redrover.page.freestyle;
 import org.checkerframework.common.value.qual.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -68,6 +69,12 @@ public class FreestyleConfigurationPage extends BasePage {
 
     @FindBy(css = ".jenkins-dropdown__disabled, button.jenkins-dropdown__item")
     private List<WebElement> dropdownPostBuildActions;
+
+    @FindAll({
+            @FindBy(className = "jenkins-toggle-switch__label__checked-title"),
+            @FindBy(xpath = "//*[@id='toggle-switch-enable-disable-project']/label/span[2]")
+    })
+    private WebElement projectStatus;
 
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
@@ -209,7 +216,7 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getProjectStatus() {
-        return getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title")).getText();
+        return projectStatus.getText();
     }
 
     public FreestyleConfigurationPage waitUntilTextConfigureToBePresentInH1() {
@@ -569,18 +576,16 @@ public class FreestyleConfigurationPage extends BasePage {
     public int numberHelpTooltips() {
         int numberHelpTooltips = 0;
 
-        List<WebElement> visibleButtonsHelp = buttonHelp
-                .stream()
-                .filter(WebElement::isDisplayed)
-                .toList();
+        List<WebElement> visibleButtonsHelp = buttonHelp.stream().filter(WebElement::isDisplayed).toList();
 
         Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i < visibleButtonsHelp.size(); i++) {
+        for (int i = 0; i <= visibleButtonsHelp.size(); i++) {
             for (int j = 1; j < 5; j++) {
                 try{
                     actions.scrollToElement(visibleButtonsHelp.get(i)).perform();
                     actions.moveToElement(visibleButtonsHelp.get(i)).perform();
+
                     if(contentHelp.getText().contains("Help")) numberHelpTooltips++;
 
                     break;

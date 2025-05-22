@@ -72,6 +72,12 @@ public class FreestyleProjectPage extends BasePage {
     })
     private WebElement consoleOutputFinished;
 
+    @FindAll({
+            @FindBy(className = "textarea-preview"),
+            @FindBy(xpath = "//*[@id='description']/form/div[1]/div[1]/div[2]")
+    })
+    private WebElement previewDescriptionBlock;
+
     @FindBy(xpath = "//div[@id='tasks']/div/span/a/span[2]")
     private List<WebElement> leftMenuElementsList;
 
@@ -119,7 +125,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public boolean isPreviewDescriptionBlockDisplayed() {
-        return getDriver().findElement(By.className("textarea-preview")).isDisplayed();
+        return previewDescriptionBlock.isDisplayed();
     }
 
     public boolean isHidePreviewLinkAvailable() {
@@ -206,8 +212,8 @@ public class FreestyleProjectPage extends BasePage {
 
     public FreestyleProjectPage clickEnableButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='warning']/form")));
-
+       // getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='warning']/form")));
+//не всегда появляется
         return this;
     }
 
