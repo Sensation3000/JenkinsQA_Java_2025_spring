@@ -114,7 +114,7 @@ public class DashboardTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(SUPERIOR_FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
-                .clickOnCreateNewJobButton()
+                .clickOnCreateJobButton()
                 .sendItemName(JOB_IN_FOLDER_NAME)
                 .selectFreestyle()
                 .getHeader()

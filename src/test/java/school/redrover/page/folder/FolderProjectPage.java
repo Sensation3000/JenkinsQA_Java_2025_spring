@@ -13,7 +13,7 @@ import java.util.List;
 public class FolderProjectPage extends BasePage {
 
     @FindBy(linkText = "Create a job")
-    private WebElement newJobButton;
+    private WebElement createJobButton;
 
     @FindBy(xpath = "//*[@id='description']/div[1]")
     private WebElement description;
@@ -45,9 +45,6 @@ public class FolderProjectPage extends BasePage {
     @FindBy(className = "jenkins-table__link")
     private WebElement subFolder;
 
-    @FindBy(linkText = "New Item")
-    private WebElement newItemButtonLeftSidePanel;
-
     @FindBy(css = ".jenkins-table__link > span:nth-child(1)")
     private List<WebElement> listOfProjects;
 
@@ -69,8 +66,8 @@ public class FolderProjectPage extends BasePage {
         return folderStatus.getText();
     }
 
-    public NewItemPage clickOnCreateNewJobButton(){
-        newJobButton.click();
+    public NewItemPage clickOnCreateJobButton(){
+        createJobButton.click();
 
         return new NewItemPage(getDriver());
     }
@@ -119,12 +116,6 @@ public class FolderProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//tr[@id='job_%s']/td[1]/div/*[name()='svg']".formatted(jobName))))
                 .getDomAttribute("title");
-    }
-
-    public NewItemPage findNewItemAndClick() {
-        newItemButtonLeftSidePanel.click();
-
-        return new NewItemPage(getDriver());
     }
 
     public String getSubFolderName() {
