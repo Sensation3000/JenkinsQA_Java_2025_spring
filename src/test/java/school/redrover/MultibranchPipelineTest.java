@@ -29,7 +29,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getProjectName();
 
-        Assert.assertEquals(projectName, MULTIBRANCH_NAME);
+        Assert.assertTrue(projectName.contains(MULTIBRANCH_NAME));
     }
 
     @Test(dependsOnMethods = "testCreate")

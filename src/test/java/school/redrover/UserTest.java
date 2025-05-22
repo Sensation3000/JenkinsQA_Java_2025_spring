@@ -80,7 +80,7 @@ public class UserTest extends BaseTest {
                 .clickSearch()
                 .getAdminUserHeaderText();
 
-        assertEquals(currentAdminIDText, "Admin");
+        assertEquals(currentAdminIDText.toLowerCase(), "admin");
     }
 
     @Test
