@@ -28,6 +28,54 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String TIME_PERIOD = "Minute";
 
     @Test
+    public void testAddBuildSteps() {
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .addBuildSteps(7)
+                .addBuildSteps(2)
+                .addBuildSteps(1)
+                .clickApply()
+                .clickSaveButton()
+                .clickConfigure()
+                .getChunkHeaderList();
+
+        assertEquals(projectNameList.size(), 3);
+    }
+
+    @Test(dependsOnMethods = "testAddBuildSteps")
+    public void testAddPostBuildActions() {
+        List<String> postBuildNameList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .addPostBuildActions(1)
+                .addPostBuildActions(5)
+                .addPostBuildActions(1)
+                .addPostBuildActions(11)
+                .clickApply()
+                .getChunkHeaderList();
+
+        assertEquals(postBuildNameList.size(), 6);
+    }
+
+    @Test
+    public void testBuildPeriodically() {
+        final String everyMinuteSchedule = "* * * * *";
+
+        List<String> buildList = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .scrollToBuildTriggers()
+                .setBuildPeriodicallyCheckbox()
+                .sendScheduleText(everyMinuteSchedule)
+                .clickSaveButton()
+                .waitForBuildToAppear(70);
+
+        Assert.assertEquals(buildList.size(), 1);
+        Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
+    }
+
+    @Test
     public void testCreateFreestyleProject() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
@@ -35,15 +83,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton();
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
-    public void testAccessProjectManagementPageFromDashboard() {
-        String currentProjectName = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .getProjectName();
-
-        Assert.assertEquals(currentProjectName, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
@@ -214,29 +253,49 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddBuildSteps() {
-        List<String> projectNameList = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
+    public void testCreateFreestyleProjectWithNoneSCM() {
+        String projectName = new HomePage(getDriver())
+                .clickCreateJob()
                 .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .addBuildSteps(7)
-                .addBuildSteps(2)
+                .selectNoneSCM()
+                .clickSaveButton()
+                .getProjectName();
+
+        Assert.assertEquals(projectName, PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
+    public void testAccessProjectManagementPageFromDashboard() {
+        String currentProjectName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .getProjectName();
+
+        Assert.assertEquals(currentProjectName, PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
+    public void testAddBuildStepsANDPostBuildActions() {
+        List<String> postBuildNameList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .addPostBuildActions(7)
+                .addBuildSteps(1)
+                .addPostBuildActions(11)
                 .addBuildSteps(1)
                 .clickApply()
                 .getChunkHeaderList();
 
-        assertEquals(projectNameList.size(), 3);
+        assertEquals(postBuildNameList.size(), 4);
     }
 
-    @Test
-    public void testCreateWithDescription() {
-        String freestyleProjectDescriptionText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .addDescription(PROJECT_DESCRIPTION)
-                .clickSaveButton()
-                .getDescription();
+    @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
+    public void testNumberActualVisibleHelpButtons(){
+        int numberHelpButtons = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .numberHelpTooltips();
 
-        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
+        assertEquals(numberHelpButtons, 16);
     }
 
     @Test
@@ -253,7 +312,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectPage.getDescription(), PROJECT_DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = "testCreateWithConfig")
+    @Test(dependsOnMethods = "testCreateWithConfig")
     public void testSuccessfulCopyWithConfig () {
 
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
@@ -284,6 +343,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testCreateWithDescription() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .addDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
+    }
+
+    @Test
     public void testTriggerBuildAfterOtherProjects() {
         final List<String> builds = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -307,75 +378,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(builds.size(), 1);
         Assert.assertTrue(buildStatusText.contains("Today"));
         Assert.assertTrue(buildStatusText.contains("#1"));
-    }
-
-    @Test(dependsOnMethods = "testAddBuildSteps")
-    public void testAddPostBuildActions() {
-        List<String> postBuildNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
-                .addPostBuildActions(1)
-                .addPostBuildActions(5)
-                .addPostBuildActions(1)
-                .addPostBuildActions(11)
-                .clickApply()
-                .getChunkHeaderList();
-
-        assertEquals(postBuildNameList.size(), 6);
-    }
-
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
-    public void testAddBuildStepsANDPostBuildActions() {
-        List<String> postBuildNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
-                .addPostBuildActions(7)
-                .addBuildSteps(1)
-                .addPostBuildActions(11)
-                .addBuildSteps(1)
-                .clickApply()
-                .getChunkHeaderList();
-
-        assertEquals(postBuildNameList.size(), 4);
-    }
-
-    @Test
-    public void testCreateFreestyleProjectWithNoneSCM() {
-        String projectName = new HomePage(getDriver())
-                .clickCreateJob()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .selectNoneSCM()
-                .clickSaveButton()
-                .getProjectName();
-
-        Assert.assertEquals(projectName, PROJECT_NAME);
-    }
-
-    @Test
-    public void testBuildPeriodically() {
-        final String everyMinuteSchedule = "* * * * *";
-
-        List<String> buildList = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .scrollToBuildTriggers()
-                .setBuildPeriodicallyCheckbox()
-                .sendScheduleText(everyMinuteSchedule)
-                .clickSaveButton()
-                .waitForBuildToAppear(70);
-
-        Assert.assertEquals(buildList.size(), 1);
-        Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
-    }
-
-    @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
-    public void testNumberActualVisibleHelpButtons(){
-        int numberHelpButtons = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
-                .numberHelpTooltips();
-
-        assertEquals(numberHelpButtons, 16);
     }
 
     @Test
