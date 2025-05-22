@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -394,5 +395,17 @@ public class HomePage extends BasePage {
                 .click();
 
         return new OrganizationFolderPage(getDriver());
+    }
+
+    public boolean isAlertPresent() {
+        boolean isAlertPresent;
+
+        try {
+            getWait10().until(ExpectedConditions.alertIsPresent());
+            isAlertPresent = true;
+        } catch (TimeoutException e) {
+            isAlertPresent = false;
+        }
+        return  isAlertPresent;
     }
 }

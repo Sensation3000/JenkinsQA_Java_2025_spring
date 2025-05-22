@@ -241,20 +241,15 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewFolder")
         public void testLeavePageWithoutSavings() {
-        new HomePage(getDriver())
+
+        boolean isAlertPresent = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
                 .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
                 .clearDisplayName()
                 .sendDisplayName(FOLDER_SECOND_NAME+"GGG")
                 .getHeader()
-                .goToHomePage();
-
-        boolean isAlertPresent;
-        try {
-            getWait10().until(ExpectedConditions.alertIsPresent());
-            isAlertPresent = true;
-        } catch (TimeoutException e) {isAlertPresent = false;
-        }
+                .goToHomePage()
+                .isAlertPresent();
 
         Assert.assertFalse(isAlertPresent);
     }

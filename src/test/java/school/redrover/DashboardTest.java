@@ -135,7 +135,6 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testListJobsAndFolders")
     public void testColumns() {
-
         Assert.assertEquals(new HomePage(getDriver()).getColumnNames(),
                 List.of("S", "W", "Name\n  ↓", "Last Success", "Last Failure", "Last Duration"));
     }
