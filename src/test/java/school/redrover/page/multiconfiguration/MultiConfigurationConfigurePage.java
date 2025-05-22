@@ -81,6 +81,13 @@ public class MultiConfigurationConfigurePage extends BasePage {
         return checkboxes.stream().allMatch(checkbox -> checkbox.isSelected());
     }
 
+    public MultiConfigurationConfigurePage selectAddTimestampsCheckbox() {
+        getDriver().findElement(
+                By.xpath("//label[contains(text(),'Add timestamps to the Console Output')]")).click();
+
+        return this;
+    }
+
     public MultiConfigurationConfigurePage clickAdvanced(){
         buttonAdvanced.click();
 

@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -100,5 +101,22 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
                 .checkCustomChildWorkspaceDirectoryValue();
 
         Assert.assertEquals(customChildWorkspaceDirectoryValue, CUSTOM_CHILD_DIRECTORY);
+    }
+
+    @Test(dependsOnMethods =  "testQuietPeriodValueSet")
+    public void testAddTimestampToConsoleOutput() {
+        String timestamp = new HomePage (getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
+                .scrollToEnvironmentSectionWithJS()
+                .selectAddTimestampsCheckbox()
+                .clickSaveButton()
+                .clickBuildNow()
+                .clickStatus()
+                .clickLastBuild()
+                .clickConsoleOutput()
+                .getTimestampsText();
+
+        Assert.assertEquals(timestamp,"Timestamps");
     }
 }
