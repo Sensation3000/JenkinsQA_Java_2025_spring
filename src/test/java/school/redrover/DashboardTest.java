@@ -1,26 +1,19 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
-import school.redrover.page.newitem.NewItemPage;
 import school.redrover.page.pipeline.PipelineConfigurationPage;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import java.util.*;
 
 public class DashboardTest extends BaseTest {
 
@@ -121,7 +114,7 @@ public class DashboardTest extends BaseTest {
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(SUPERIOR_FOLDER_NAME, FolderConfigurationPage.class)
                 .clickSave()
-                .clickOnNewItemButton()
+                .clickOnCreateJobButton()
                 .sendItemName(JOB_IN_FOLDER_NAME)
                 .selectFreestyle()
                 .getHeader()

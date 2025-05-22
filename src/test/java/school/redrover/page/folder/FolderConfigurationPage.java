@@ -27,6 +27,9 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(xpath = "//input[@checkdependson]")
     private WebElement displayNameInput;
 
+    @FindBy (xpath = "//*[@id='description']/div[1]")
+    private WebElement description;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
@@ -55,13 +58,17 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderProjectPage clickSave() {
-        TestUtils.scrollAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector("button[name='Submit']")));
+        getDriver().findElement(By.name("Submit")).click();
 
-        return new FolderProjectPage(getDriver());
+        return  new FolderProjectPage(getDriver());
     }
 
     public boolean isSaveButtonEnabled() {
        return  saveButton.isEnabled();
+    }
+
+    public boolean isApplyButtonEnabled() {
+        return  applyButton.isEnabled();
     }
 
     public String clickApplyForSavedNotification() {
@@ -96,5 +103,18 @@ public class FolderConfigurationPage extends BasePage {
         return getWait5().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[2]/div[1]/button"))).getText();
     }
+
+    public FolderConfigurationPage clickAddDescriptionButton(){
+        getDriver().findElement(By.id("description-link")).click();
+
+        return this;
+    }
+
+    public FolderConfigurationPage fillInDescriptionBox(String description){
+        getDriver().findElement(By.name("description")).sendKeys(description);
+
+        return this;
+    }
+
 }
 

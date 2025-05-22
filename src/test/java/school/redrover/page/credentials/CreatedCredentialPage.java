@@ -32,7 +32,7 @@ public class CreatedCredentialPage extends BasePage {
         }
        // By credentialNameLocator = By.xpath("//*[@id='main-panel']/h1");
         int attempts = 0;
-        while (attempts < 3) {
+        while (attempts < 5) {
             try {
                 return h1.getText();
             } catch (StaleElementReferenceException e) {
@@ -50,6 +50,7 @@ public class CreatedCredentialPage extends BasePage {
 
         return new CreatedCredentialPage(getDriver());
     }
+
     public GlobalCredentialsPage clickYesButton() {
         yesButton.click();
 
