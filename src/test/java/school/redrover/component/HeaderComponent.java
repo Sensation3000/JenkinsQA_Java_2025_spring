@@ -15,7 +15,8 @@ public class HeaderComponent extends BaseComponent {
 
     @FindAll({
             @FindBy(id = "jenkins-home-link"),
-            @FindBy(xpath = "//*[@id='jenkins-home-link']")
+            @FindBy(xpath = "//*[@id='jenkins-home-link']"),
+            @FindBy(css = "#jenkins-home-link")
     })
     private WebElement logo;
 
