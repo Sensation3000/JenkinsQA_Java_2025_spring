@@ -2,6 +2,7 @@ package school.redrover.component;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseComponent;
@@ -12,7 +13,10 @@ import java.time.Duration;
 
 public class HeaderComponent extends BaseComponent {
 
-    @FindBy(id = "jenkins-home-link")
+    @FindAll({
+            @FindBy(id = "jenkins-home-link"),
+            @FindBy(xpath = "//*[@id='jenkins-home-link']")
+    })
     private WebElement logo;
 
     public HeaderComponent(WebDriver driver) {
