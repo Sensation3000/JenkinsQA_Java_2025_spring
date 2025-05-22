@@ -121,8 +121,8 @@ public class MultibranchConfigurationPage extends BasePage {
     }
 
     public MultibranchConfigurationPage checkPeriodicallyIfNotOtherwiseRun() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("cb0")));
-        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("cb0")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("scan-multibranch-pipeline-triggers")));
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("scan-multibranch-pipeline-triggers")));
         getDriver().findElement(By.xpath("//label[text()='Periodically if not otherwise run']")).click();
 
         return this;

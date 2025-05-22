@@ -65,7 +65,7 @@ public class TestUtils {
     }
 
     public static void scrollToItemWithJS(WebDriver driver, WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'start'});", element);
     }
 
     /**
