@@ -90,8 +90,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickSaveDescriptionButton() {
-        getDriver().findElement(By.cssSelector("#description > form > div:nth-child(3) > button"))
-                .click();
+        getDriver().findElement(By.cssSelector("#description > form > div:nth-child(3) > button")).click();
 
         return this;
     }
@@ -177,7 +176,8 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickOnNewItemLinkWithChevron(String projectName) {
-        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector(String.format("a[href='job/%s/'].jenkins-table__link", projectName)))));
+        WebElement jobTableLink = getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.cssSelector(String.format("a[href='job/%s/'].jenkins-table__link", projectName)))));
 
         new Actions(getDriver()).moveToElement(jobTableLink).perform();
         TestUtils.moveAndClickWithJS(getDriver(), getDriver().findElement(By.cssSelector(String.format("button[data-href$='job/%s/']", projectName))));
@@ -232,11 +232,11 @@ public class HomePage extends BasePage {
 
     public SignInPage clickLogOutButton() {
         logOutButton.click();
+
         return new SignInPage(getDriver());
     }
 
     public List<String> getColumnNames() {
-
         return getDriver().findElements(By.xpath("//th/a")).stream()
                 .map(WebElement::getText).toList();
     }
@@ -326,7 +326,6 @@ public class HomePage extends BasePage {
     }
 
     public String getJobLastSuccess(String jobName) {
-
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[4]")).getText()
                 + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
@@ -334,7 +333,6 @@ public class HomePage extends BasePage {
     }
 
     public String getJobLastFailure(String jobName) {
-
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath(JOB_PATTERN.formatted(jobName)))).findElement(By.xpath(".//td[5]")).getText()
                 + getDriver().findElement(By.xpath(JOB_PATTERN.formatted(jobName)))
@@ -390,9 +388,8 @@ public class HomePage extends BasePage {
     }
 
     public OrganizationFolderPage clickProjectName() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link"))))
-                .click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.cssSelector("a[href*='job'].jenkins-table__link")))).click();
 
         return new OrganizationFolderPage(getDriver());
     }
@@ -406,6 +403,7 @@ public class HomePage extends BasePage {
         } catch (TimeoutException e) {
             isAlertPresent = false;
         }
+
         return  isAlertPresent;
     }
 }
