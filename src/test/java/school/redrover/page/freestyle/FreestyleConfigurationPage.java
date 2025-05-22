@@ -76,6 +76,9 @@ public class FreestyleConfigurationPage extends BasePage {
     })
     private WebElement projectStatus;
 
+    @FindBy(id = "general")
+    private WebElement generalHeader;
+
     private void clickItemNumber(WebElement webElement, int itemNumber) {
         webElement.click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
@@ -216,6 +219,8 @@ public class FreestyleConfigurationPage extends BasePage {
     }
 
     public String getProjectStatus() {
+        getWait5().until(ExpectedConditions.visibilityOf(generalHeader));
+
         return projectStatus.getText();
     }
 

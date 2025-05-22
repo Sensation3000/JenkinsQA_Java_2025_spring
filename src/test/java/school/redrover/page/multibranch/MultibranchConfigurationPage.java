@@ -49,7 +49,7 @@ public class MultibranchConfigurationPage extends BasePage {
     }
 
     public String getNotificationText() {
-        return getDriver().findElement(By.id("notification-bar")).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
     }
 
     public String getDisableToggleText() {
