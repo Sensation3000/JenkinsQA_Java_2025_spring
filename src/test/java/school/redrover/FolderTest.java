@@ -71,7 +71,7 @@ public class FolderTest extends BaseTest {
     public void testCreateFreestyleProjectInFolderUsingCreateNewJob() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnCreateNewJobButton()
+                .clickOnCreateJobButton()
                 .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
@@ -81,7 +81,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolderUsingCreateNewJob")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
@@ -124,7 +123,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderProjectPage.getDescription(),DESCRIPTION);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateWithDescription")
     public void testRenameFolder() {
         String folderName = new HomePage(getDriver())
@@ -137,12 +135,11 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderName, RENAMED_FOLDER_NAME);
     }
 
-   @Ignore
     @Test(dependsOnMethods = "testRenameFolder")
     public void testCreateFolderInFolderUsingCreateNewJob() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(RENAMED_FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnCreateNewJobButton()
+                .clickOnCreateJobButton()
                 .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
@@ -230,7 +227,6 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, "Saved");
     }
-
 
     @Test
     public void testCreateNewFolder() {
