@@ -18,6 +18,39 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_DESCRIPTION = "Pipeline Project Name";
 
     @Test
+    public void checkAvailableTriggerBoxTest() {
+        List<WebElement> BoxAvailable = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .clickTriggerMenu()
+                .clickTriggerCheckbox();
+
+        for (WebElement checkbox: BoxAvailable) {
+            Assert.assertTrue(checkbox.isSelected());
+        }
+    }
+    @Test
+    public void testChangeStateNewPipeline() {
+        String statusToggleChange = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .switchToggle()
+                .checkStatusOffToggle();
+
+        Assert.assertEquals(statusToggleChange, "Disabled");
+    }
+
+    @Test
+    public void testCheckDefaultState() {
+        String statusToggleDefault = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .checkStatusOnToggle();
+
+        Assert.assertEquals(statusToggleDefault, "Enabled");
+    }
+
+    @Test
     public void testCreateNewPipeline() {
         String projectName = new HomePage(getDriver())
                 .clickCreateJob()
@@ -29,6 +62,19 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCheckTriggersPipeline() {
+        List<WebElement> Trigger = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
+                .clickConfigure()
+                .clickTriggerMenu()
+                .getTrigger();
+
+        for (WebElement checkbox : Trigger) {
+            Assert.assertFalse(checkbox.isSelected());
+        }
+    }
+
+    @Test(dependsOnMethods = "testCheckTriggersPipeline")
     public void testCreatePipelineWithExistingName() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
@@ -55,7 +101,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(error.getErrorText(), "No such job: " + copyFrom);
     }
 
-    @Test(dependsOnMethods = "testCreateNewPipeline")
+    @Test(dependsOnMethods = "testCopyFromError")
     public void testDisableProject() {
         String messageProjectStatus = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
@@ -65,6 +111,23 @@ public class PipelineTest extends BaseTest {
                 .getProjectDisabledStatus();
 
         Assert.assertEquals(messageProjectStatus,"This project is currently disabled\n" + "Enable");
+    }
+
+    @Test
+    public void testCreatePipelineJobUsingScript() {
+        String msg = new HomePage(getDriver())
+                .clickCreateJob()
+                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
+                .clickPipeline()
+                .clickAndSelectSamplesScript()
+                .clickSave()
+                .clickBuildNow()
+                .clickStatus()
+                .clickLastBuild()
+                .clickPipelineConsole()
+                .getConsoleOutput();
+
+        Assert.assertEquals(msg, "Hello World");
     }
 
     @Test
@@ -113,69 +176,5 @@ public class PipelineTest extends BaseTest {
                 .isToggleEnabled();
 
         Assert.assertTrue(isToggleDisabled, "The switch is turned on after performing the actions");
-    }
-
-    @Test
-    public void testCheckDefaultState() {
-        String statusToggleDefault = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .checkStatusOnToggle();
-
-        Assert.assertEquals(statusToggleDefault, "Enabled");
-    }
-
-    @Test
-    public void testChangeStateNewPipeline() {
-        String statusToggleChange = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .switchToggle()
-                .checkStatusOffToggle();
-
-        Assert.assertEquals(statusToggleChange, "Disabled");
-    }
-
-    @Test
-    public void checkAvailableTriggerBoxTest() {
-        List<WebElement> BoxAvailable = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .clickTriggerMenu()
-                .clickTriggerCheckbox();
-
-        for (WebElement checkbox: BoxAvailable) {
-            Assert.assertTrue(checkbox.isSelected());
-        }
-    }
-
-    @Test(dependsOnMethods = "testCreateNewPipeline")
-    public void testCheckTriggersPipeline() {
-        List<WebElement> Trigger = new HomePage(getDriver())
-            .clickOnJobInListOfItems(PROJECT_NAME, new PipelineProjectPage(getDriver()))
-            .clickConfigure()
-            .clickTriggerMenu()
-            .getTrigger();
-
-        for (WebElement checkbox : Trigger) {
-            Assert.assertFalse(checkbox.isSelected());
-        }
-    }
-
-    @Test
-    public void testCreatePipelineJobUsingScript() {
-        String msg = new HomePage(getDriver())
-                .clickCreateJob()
-                .createNewItem(PROJECT_NAME, PipelineConfigurationPage.class)
-                .clickPipeline()
-                .clickAndSelectSamplesScript()
-                .clickSave()
-                .clickBuildNow()
-                .clickStatus()
-                .clickLastBuild()
-                .clickPipelineConsole()
-                .getConsoleOutput();
-
-        Assert.assertEquals(msg, "Hello World");
     }
 }
