@@ -39,7 +39,7 @@ public class DashboardViewTest extends BaseTest {
         assertEquals(homePage.getNameOfView(), VIEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectForView")
+    @Test(dependsOnMethods = "testCreateMyView")
     public void testCreateListView() {
         ((EditViewPage) new HomePage(getDriver())
                 .clickNewView()
