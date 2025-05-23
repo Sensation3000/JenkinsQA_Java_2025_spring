@@ -25,7 +25,7 @@ public class MultibranchProjectPage extends BasePage {
         super(driver);
     }
 
-    public MultibranchConfigurationPage goToConfigurationPage() {
+    public MultibranchConfigurationPage clickConfigureLeftSidePanel() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='./configure']"))).click();
 
         return new MultibranchConfigurationPage(getDriver());

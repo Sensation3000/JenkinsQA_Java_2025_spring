@@ -2,10 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.component.HeaderComponent;
 import school.redrover.page.error.ErrorPage;
 import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.freestyle.FreestyleProjectPage;

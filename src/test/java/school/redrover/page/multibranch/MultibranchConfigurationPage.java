@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import school.redrover.MultibranchPipelineConfigurationTest;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
@@ -12,7 +14,9 @@ import java.util.List;
 
 public class MultibranchConfigurationPage extends BasePage {
 
-    public MultibranchConfigurationPage(WebDriver driver) { super(driver); }
+    public MultibranchConfigurationPage(WebDriver driver) {
+        super(driver);
+    }
 
     public MultibranchConfigurationPage hoverOnEnabledDisabledToggle() {
         new Actions(getDriver()).moveToElement(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -36,6 +40,16 @@ public class MultibranchConfigurationPage extends BasePage {
         getDriver().findElement(By.className("jenkins-submit-button")).click();
 
         return new MultibranchProjectPage(getDriver());
+    }
+
+    public MultibranchConfigurationPage clickApplyButton() {
+        getDriver().findElement(By.className("apply-button")).click();
+
+        return this;
+    }
+
+    public String getNotificationText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText();
     }
 
     public String getDisableToggleText() {
@@ -104,5 +118,19 @@ public class MultibranchConfigurationPage extends BasePage {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar h1")));
 
         return new MultibranchPipelineLogScanningPage(getDriver());
+    }
+
+    public MultibranchConfigurationPage checkPeriodicallyIfNotOtherwiseRun() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("scan-multibranch-pipeline-triggers")));
+        TestUtils.scrollToItemWithJS(getDriver(), getDriver().findElement(By.id("scan-multibranch-pipeline-triggers")));
+        getDriver().findElement(By.xpath("//label[text()='Periodically if not otherwise run']")).click();
+
+        return this;
+    }
+
+    public MultibranchConfigurationPage selectIntervalForPeriodicallyIfNotOtherwiseRun(String interval) {
+        new Select(getDriver().findElement(By.name("_.interval"))).selectByValue(interval);
+
+        return this;
     }
 }

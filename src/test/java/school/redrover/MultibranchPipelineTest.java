@@ -1,10 +1,8 @@
 package school.redrover;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.freestyle.FreestyleConfigurationPage;
 import school.redrover.page.multibranch.MultibranchConfigurationPage;
 import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
@@ -36,7 +34,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testAddDescription() {
         String actualDescription = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
-                .goToConfigurationPage()
+                .clickConfigureLeftSidePanel()
                 .sendDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescription();
@@ -48,7 +46,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testChangeDisplayName() {
         String actualName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NAME, new MultibranchProjectPage(getDriver()))
-                .goToConfigurationPage()
+                .clickConfigureLeftSidePanel()
                 .sendMultibranchName(MULTIBRANCH_NEW_NAME)
                 .clickSaveButton()
                 .getProjectName();
