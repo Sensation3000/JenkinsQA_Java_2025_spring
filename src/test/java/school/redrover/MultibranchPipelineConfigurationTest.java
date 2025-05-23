@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -49,7 +50,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(branchSourcesSectionText, "Branch Sources");
     }
 
-    @Test(dependsOnMethods = {"testIfBranchSourceSectionIsPresent"})
+    @Test(dependsOnMethods = "testIfBranchSourceSectionIsPresent")
     public void testScanMultibranchPipelineTriggers(){
         String notificationText = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
@@ -63,20 +64,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testScanMultibranchPipelineTriggers")
-    public void testDeleteMultibranchPipelineProject(){
-        List<String> ProjectNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
-                .deleteMultiBranchPipeline()
-                .getProjectNameList();
-
-        Assert.assertEquals(ProjectNameList.size(), 0);
-    }
-
-    @Test
     public void testCancelDeletionProject(){
         String homePage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(MULTIBRANCH_PIPELINE_NAME, MultibranchConfigurationPage.class)
+                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
+                .clickConfigureLeftSidePanel()
                 .clickSaveButton()
                 .cancelDeletionMultiBranchPipeline()
                 .getHeader()
@@ -86,11 +77,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(homePage, MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCancelDeletionProject")
     public void testDisableMultibranchPipeline() {
         String toggleText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(MULTIBRANCH_PIPELINE_NAME, MultibranchConfigurationPage.class)
+                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
+                .clickConfigureLeftSidePanel()
                 .clickEnabledDisabledToggle()
                 .clickSaveButton()
                 .clickConfigureLeftSidePanel()
@@ -112,25 +103,35 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(toggleText, "Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testEnableMultibranchPipeline")
     public void testEnableDisablePipeline() {
         String tooltipDefaultText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(MULTIBRANCH_PIPELINE_NAME, MultibranchConfigurationPage.class)
+                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
+                .clickConfigureLeftSidePanel()
                 .getEnableToggleText();
 
         Assert.assertEquals(tooltipDefaultText, "Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testEnableDisablePipeline")
     public void testEnabledDisabledToggleTooltip() {
         String tooltipEnabledAttribute = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(MULTIBRANCH_PIPELINE_NAME, MultibranchConfigurationPage.class)
+                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
+                .clickConfigureLeftSidePanel()
                 .hoverOnEnabledDisabledToggle()
                 .getEnabledDisabledToggleShownAttribute();
 
         Assert.assertEquals(tooltipEnabledAttribute, "tippy-10");
+    }
+
+    @Test(dependsOnMethods = "testEnabledDisabledToggleTooltip")
+    public void testDeleteMultibranchPipelineProject(){
+        List<String> ProjectNameList = new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_PIPELINE_NAME, new MultibranchProjectPage(getDriver()))
+                .deleteMultiBranchPipeline()
+                .getProjectNameList();
+
+        Assert.assertEquals(ProjectNameList.size(), 0);
     }
 
     @Test(dataProvider = "branchSourceTypes", dataProviderClass = TestDataProvider.class)

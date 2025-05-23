@@ -103,7 +103,7 @@ public class MultiConfigurationProjectConfigureTest extends BaseTest {
         Assert.assertEquals(customChildWorkspaceDirectoryValue, CUSTOM_CHILD_DIRECTORY);
     }
 
-    @Test(dependsOnMethods =  "testQuietPeriodValueSet")
+    @Test(dependsOnMethods =  "testCustomWorkspaceSet")
     public void testAddTimestampToConsoleOutput() {
         String timestamp = new HomePage (getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
