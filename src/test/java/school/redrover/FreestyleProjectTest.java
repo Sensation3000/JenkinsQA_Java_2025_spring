@@ -26,37 +26,6 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String TIME_PERIOD = "Minute";
 
     @Test
-    public void testAddBuildSteps() {
-        List<String> projectNameList = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .addBuildSteps(7)
-                .addBuildSteps(2)
-                .addBuildSteps(1)
-                .clickApply()
-                .clickSaveButton()
-                .clickConfigure()
-                .getChunkHeaderList();
-
-        assertEquals(projectNameList.size(), 3);
-    }
-
-    @Test(dependsOnMethods = "testAddBuildSteps")
-    public void testAddPostBuildActions() {
-        List<String> postBuildNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
-                .addPostBuildActions(1)
-                .addPostBuildActions(5)
-                .addPostBuildActions(1)
-                .addPostBuildActions(11)
-                .clickApply()
-                .getChunkHeaderList();
-
-        assertEquals(postBuildNameList.size(), 6);
-    }
-
-    @Test
     public void testBuildPeriodically() {
         final String everyMinuteSchedule = "* * * * *";
 
@@ -73,17 +42,12 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
     }
 
-    @Test
-    public void testCreateFreestyleProject() {
-        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickCreateJob()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .clickSaveButton();
-
-        Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+    @Test(dependsOnMethods = "testBuildPeriodically")
+    public void testNameFreestyleProject() {
+        Assert.assertEquals(new HomePage(getDriver()).getProjectName(), PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
+    @Test(dependsOnMethods = "testNameFreestyleProject")
     public void testDisableProject() {
         String warningProjectIsDisabled = new HomePage(getDriver())
                 .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -281,6 +245,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .addPostBuildActions(11)
                 .addBuildSteps(1)
                 .clickApply()
+                .clickSaveButton()
+                .clickConfigure()
                 .getChunkHeaderList();
 
         assertEquals(postBuildNameList.size(), 4);
@@ -296,11 +262,11 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(numberHelpButtons, 16);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testNumberActualVisibleHelpButtons")
     public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .addDescription(PROJECT_DESCRIPTION)
                 .clickThrottleBuilds()
                 .selectTimePeriod(TIME_PERIOD)
@@ -352,13 +318,9 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateWithDescription")
     public void testTriggerBuildAfterOtherProjects() {
         final List<String> builds = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .getHeader()
-                .clickLogo()
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(SECOND_PROJECT_NAME, FreestyleConfigurationPage.class)
                 .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
@@ -378,11 +340,11 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(buildStatusText.contains("#1"));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTriggerBuildAfterOtherProjects")
     public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .addDescription("Freestyle Project Description")
                 .clickSaveButton()
                 .clickProjectBreadcrumbsDropDownMenu();

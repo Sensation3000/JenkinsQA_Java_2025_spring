@@ -25,21 +25,21 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertFalse(newItemPage.isOkButtonEnabled());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testProjectDisabledMessageIsVisible")
     public void testTooltipIsVisible() {
         String tooltipIsVisible = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
                 .checkTooltipVisibility();
 
         Assert.assertTrue(tooltipIsVisible.contains("tippy"));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testProjectDisabledMessageInvisible")
     public void testProjectDisabledMessageIsVisible() {
         boolean projectDisabledMessageIsVisible = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
                 .clickEnableToggle()
                 .clickSaveButton()
                 .projectDisabledMessageCheck();
@@ -60,11 +60,11 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(projectDisabledMessageInvisible);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipIsVisible")
     public void testIfOriginalItemConfigurationIsCopied() {
         boolean isIfAllEnvironmentCheckboxesAreSelected = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, MultiConfigurationConfigurePage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new MultiConfigurationConfigurePage(getDriver()))
+                .clickConfigure()
                 .scrollToEnvironmentSectionWithJS()
                 .checkEnvironmentCheckboxesAndClickOnSaveButton()
                 .getHeader()

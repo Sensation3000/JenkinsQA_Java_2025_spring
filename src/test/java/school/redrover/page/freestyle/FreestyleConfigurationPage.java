@@ -538,7 +538,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
     public FreestyleConfigurationPage clickApply() {
         new Actions(getDriver()).sendKeys(Keys.END).perform();
-        buttonApply.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(buttonApply)).click();
 
         return this;
     }
@@ -585,7 +585,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
         Actions actions = new Actions(getDriver());
 
-        for (int i = 0; i <= visibleButtonsHelp.size(); i++) {
+        for (int i = 0; i < visibleButtonsHelp.size(); i++) {
             for (int j = 1; j < 5; j++) {
                 try{
                     actions.scrollToElement(visibleButtonsHelp.get(i)).perform();

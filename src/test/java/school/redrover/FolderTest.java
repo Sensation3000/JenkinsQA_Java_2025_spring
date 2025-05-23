@@ -28,24 +28,6 @@ public class FolderTest extends BaseTest {
     private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final String RENAMED_FOLDER_NAME = "Renamed folder";
 
-
-    @Test
-    public void  testAvailabilityHealthMetrics(){
-        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(ITEM_NAME, FolderConfigurationPage.class)
-                .clickHealthMetrics();
-
-        List<String> titlesHealthMetrics = List.of(
-                folderConfigurationPage.getTitleHealthMetrics(),
-                folderConfigurationPage.getTextDropdownHealthMetrics());
-
-        for (String titleHealthMetrics : titlesHealthMetrics) {
-
-            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
-        }
-    }
-
     @Test
     public void testCreateNewFolder() {
         String currentName = new HomePage(getDriver())
@@ -58,6 +40,23 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewFolder")
+    public void  testAvailabilityHealthMetrics(){
+        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetrics();
+
+        List<String> titlesHealthMetrics = List.of(
+                folderConfigurationPage.getTitleHealthMetrics(),
+                folderConfigurationPage.getTextDropdownHealthMetrics());
+
+        for (String titleHealthMetrics : titlesHealthMetrics) {
+
+            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
+        }
+    }
+
+    @Test(dependsOnMethods = "testAvailabilityHealthMetrics")
     public void testCreatingSubFolderInFolderUsingNewItem() {
         String subFolder = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
@@ -75,7 +74,6 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreatingSubFolderInFolderUsingNewItem")
     public void testLeavePageWithoutSavings() {
-
         boolean isAlertPresent = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
                 .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
@@ -227,37 +225,33 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(descriptionText, "Saved");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testEmptyDescriptionBoxUsingApplyButton")
     public void testFolderIsEmpty() {
         String folderStatus = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
                 .clickSave()
                 .getFolderStatus();
 
         Assert.assertEquals(folderStatus, "This folder is empty");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testFolderIsEmpty")
     public void testIfCopyFromFieldAppears() {
         final String expectedText = "Copy from";
 
         String copyFromFieldText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
-                .getHeader()
-                .clickLogoIcon()
                 .clickNewItemOnLeftSidePanel()
                 .getCopyFromFieldText();
 
         Assert.assertEquals(copyFromFieldText, expectedText);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testIfCopyFromFieldAppears")
     public void testQuestionMarkIcon() {
         boolean isButtonExist = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
                 .isQuestionMarkIconEnabled();
 
         Assert.assertTrue(isButtonExist);
