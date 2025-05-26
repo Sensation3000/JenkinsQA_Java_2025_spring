@@ -39,4 +39,17 @@ public class NodeTest extends BaseTest {
 
         Assert.assertEquals(statusMessage, "Disconnected by admin");
     }
+
+    @Test (dependsOnMethods = "testMarkNodeOffline")
+    public void testDeleteNode() {
+        List<String> listOfNodes = new HomePage(getDriver())
+                .clickManageJenkinsOnLeftSidePanel()
+                .clickNodes()
+                .clickNodeNameInTheList(NODE_NAME)
+                .clickDeleteAgent()
+                .clickConfirmDelete()
+                .getNodesNameList();
+
+        Assert.assertEquals(listOfNodes.size(), 1);
+    }
 }
