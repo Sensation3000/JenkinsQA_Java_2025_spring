@@ -26,12 +26,59 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String TIME_PERIOD = "Minute";
 
     @Test
+    public void testCreateWithDescription() {
+        String freestyleProjectDescriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .addDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDescription")
+    public void testTriggerBuildAfterOtherProjects() {
+        final List<String> builds = new HomePage(getDriver())
+                .clickNewItemOnLeftSidePanel()
+                .createNewItem(SECOND_PROJECT_NAME, FreestyleConfigurationPage.class)
+                .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
+                .clickSaveButton()
+                .waitUntilTextNameProjectToBePresentInH1(SECOND_PROJECT_NAME)
+                .getHeader()
+                .clickLogo()
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
+                .clickBuildNow()
+                .waitJobStarted()
+                .getBuildList();
+
+        final String buildStatusText = new FreestyleConfigurationPage(getDriver()).getBuildStatusText();
+
+        Assert.assertEquals(builds.size(), 1);
+        Assert.assertTrue(buildStatusText.contains("Today"));
+        Assert.assertTrue(buildStatusText.contains("#1"));
+    }
+
+    @Test(dependsOnMethods = "testTriggerBuildAfterOtherProjects")
+    public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
+                .clickSaveButton()
+                .clickProjectBreadcrumbsDropDownMenu();
+
+        Assert.assertEquals(
+                freestyleProjectPage.getDropDownMenuItemsText(),
+                freestyleProjectPage.getLeftSideMenuWithoutStatus());
+    }
+
+    @Test(dependsOnMethods = "testVerifyDropDownMenuWithLeftSideMenuWithoutStatus")
     public void testBuildPeriodically() {
         final String everyMinuteSchedule = "* * * * *";
 
         List<String> buildList = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .scrollToBuildTriggers()
                 .setBuildPeriodicallyCheckbox()
                 .sendScheduleText(everyMinuteSchedule)
@@ -211,34 +258,33 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogoIcon()
                 .getProjectNameList();
 
-        Assert.assertEquals(projectNameList.size(), 0);
+        Assert.assertEquals(projectNameList.size(), 1);
     }
-
-    @Test
+    @Test(dependsOnMethods = "testDeleteFreestyleProject")
     public void testCreateFreestyleProjectWithNoneSCM() {
         String projectName = new HomePage(getDriver())
-                .clickCreateJob()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
+                .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure()
                 .selectNoneSCM()
                 .clickSaveButton()
                 .getProjectName();
 
-        Assert.assertEquals(projectName, PROJECT_NAME);
+        Assert.assertEquals(projectName, SECOND_PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithNoneSCM")
     public void testAccessProjectManagementPageFromDashboard() {
         String currentProjectName = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .getProjectName();
 
-        Assert.assertEquals(currentProjectName, PROJECT_NAME);
+        Assert.assertEquals(currentProjectName, SECOND_PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .addPostBuildActions(7)
                 .addBuildSteps(1)
@@ -255,7 +301,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
     public void testNumberActualVisibleHelpButtons(){
         int numberHelpButtons = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .numberHelpTooltips();
 
@@ -265,25 +311,24 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testNumberActualVisibleHelpButtons")
     public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .addDescription(PROJECT_DESCRIPTION)
                 .clickThrottleBuilds()
                 .selectTimePeriod(TIME_PERIOD)
                 .clickSaveButton();
 
-        Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
+        Assert.assertEquals(freestyleProjectPage.getProjectName(), SECOND_PROJECT_NAME);
         Assert.assertEquals(freestyleProjectPage.getDescription(), PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateWithConfig")
     public void testSuccessfulCopyWithConfig () {
-
         FreestyleConfigurationPage freestyleConfigurationPage = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .sendItemName(SECOND_PROJECT_NAME)
+                .sendItemName(PROJECT_NAME)
                 .selectFreestyle()
-                .sendTextCopyForm(PROJECT_NAME)
+                .sendTextCopyForm(SECOND_PROJECT_NAME)
                 .clickOkButton();
 
         Assert.assertEquals(freestyleConfigurationPage.getDescriptionText(), PROJECT_DESCRIPTION);
@@ -304,53 +349,5 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(errorPage.getTitle(),"Error");
         Assert.assertEquals(errorPage.getErrorText(), "No such job: %s".formatted(nonexistentName));
-    }
-
-    @Test
-    public void testCreateWithDescription() {
-        String freestyleProjectDescriptionText = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(PROJECT_NAME, FreestyleConfigurationPage.class)
-                .addDescription(PROJECT_DESCRIPTION)
-                .clickSaveButton()
-                .getDescription();
-
-        Assert.assertEquals(freestyleProjectDescriptionText, PROJECT_DESCRIPTION);
-    }
-
-    @Test(dependsOnMethods = "testCreateWithDescription")
-    public void testTriggerBuildAfterOtherProjects() {
-        final List<String> builds = new HomePage(getDriver())
-                .clickNewItemOnLeftSidePanel()
-                .createNewItem(SECOND_PROJECT_NAME, FreestyleConfigurationPage.class)
-                .clickToReverseBuildTriggerAndSetUpStreamProject(PROJECT_NAME)
-                .clickSaveButton()
-                .waitUntilTextNameProjectToBePresentInH1(SECOND_PROJECT_NAME)
-                .getHeader()
-                .clickLogo()
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleConfigurationPage(getDriver()))
-                .clickBuildNow()
-                .waitJobStarted()
-                .getBuildList();
-
-        final String buildStatusText = new FreestyleConfigurationPage(getDriver()).getBuildStatusText();
-
-        Assert.assertEquals(builds.size(), 1);
-        Assert.assertTrue(buildStatusText.contains("Today"));
-        Assert.assertTrue(buildStatusText.contains("#1"));
-    }
-
-    @Test(dependsOnMethods = "testTriggerBuildAfterOtherProjects")
-    public void testVerifyDropDownMenuWithLeftSideMenuWithoutStatus() {
-        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure()
-                .addDescription("Freestyle Project Description")
-                .clickSaveButton()
-                .clickProjectBreadcrumbsDropDownMenu();
-
-        Assert.assertEquals(
-                freestyleProjectPage.getDropDownMenuItemsText(),
-                freestyleProjectPage.getLeftSideMenuWithoutStatus());
     }
 }
