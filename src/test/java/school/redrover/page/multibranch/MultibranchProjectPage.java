@@ -73,7 +73,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public List<String> getAllBranchNames() throws InterruptedException {
-        Thread.sleep(30000);
+        Thread.sleep(60000);
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(ExpectedConditions
@@ -89,7 +89,7 @@ public class MultibranchProjectPage extends BasePage {
         List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
 
         for (int i = 1; i <= branchNames.size(); i++) {
-            WebElement branch = getWait5().until(
+            WebElement branch = getWait10().until(
                     ExpectedConditions.elementToBeClickable(
                             By.xpath("(//tbody//a//span)[" + i + "]/..")
                     )
