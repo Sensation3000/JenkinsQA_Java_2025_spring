@@ -32,9 +32,6 @@ public class FolderProjectPage extends BasePage {
     @FindBy(id = "view-message")
     private WebElement descriptionMessage;
 
-    @FindBy(className = "h4")
-    private WebElement folderStatus;
-
     @FindBy(id = "name")
     private WebElement itemNameField;
 
@@ -55,6 +52,12 @@ public class FolderProjectPage extends BasePage {
 
     @FindBy(css = ".jenkins-table__link > span:nth-child(1)")
     private List<WebElement> listOfProjects;
+
+    @FindAll({
+            @FindBy(xpath = "/*[@id='main-panel']/div[4]/div/section/h2"),
+            @FindBy(className = "h4"),
+    })
+    private WebElement folderStatus;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);

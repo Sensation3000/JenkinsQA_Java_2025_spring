@@ -29,84 +29,6 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER_NAME = "Renamed folder";
 
     @Test
-    public void testCreateNewFolder() {
-        String currentName = new HomePage(getDriver())
-                .clickCreateJob()
-                .createNewItem(FOLDER_NAME, FolderConfigurationPage.class)
-                .clickSave()
-                .getProjectName();
-
-        Assert.assertEquals(currentName, FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateNewFolder")
-    public void  testAvailabilityHealthMetrics(){
-        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickConfigure()
-                .clickHealthMetrics();
-
-        List<String> titlesHealthMetrics = List.of(
-                folderConfigurationPage.getTitleHealthMetrics(),
-                folderConfigurationPage.getTextDropdownHealthMetrics());
-
-        for (String titleHealthMetrics : titlesHealthMetrics) {
-
-            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
-        }
-    }
-
-    @Test(dependsOnMethods = "testAvailabilityHealthMetrics")
-    public void testCreatingSubFolderInFolderUsingNewItem() {
-        String subFolder = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
-                .clickItemOnSidePanel("New Item",new NewItemPage(getDriver()))
-                .sendItemName(SUB_FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSave()
-                .getHeader()
-                .clickLogoIcon()
-                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .getSubFolderName();
-
-        Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreatingSubFolderInFolderUsingNewItem")
-    public void testLeavePageWithoutSavings() {
-        boolean isAlertPresent = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
-                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
-                .clearDisplayName()
-                .sendDisplayName(FOLDER_SECOND_NAME+"GGG")
-                .getHeader()
-                .goToHomePage()
-                .isAlertPresent();
-
-        Assert.assertFalse(isAlertPresent);
-    }
-
-    @Test(dependsOnMethods = "testLeavePageWithoutSavings")
-    public void testSaveButtonExist() {
-        boolean isSaveButton = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
-                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
-                .isSaveButtonEnabled();
-
-        Assert.assertTrue(isSaveButton);
-    }
-
-    @Test(dependsOnMethods = "testSaveButtonExist")
-    public void testApplyButtonExist() {
-        boolean isApplyButton = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
-                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
-                .isApplyButtonEnabled();
-
-        Assert.assertTrue(isApplyButton);
-    }
-
-    @Test
     public void testCreateWithDescription () {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
@@ -266,6 +188,84 @@ public class FolderTest extends BaseTest {
                 .clickSave()
                 .getDescriptionSecondLine();
 
-       Assert.assertEquals(descriptionText, DESCRIPTION);
+        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescriptionButton")
+    public void testCreateNewFolder() {
+        String currentName = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clickSave()
+                .getProjectName();
+
+        Assert.assertEquals(currentName, FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void  testAvailabilityHealthMetrics(){
+        FolderConfigurationPage folderConfigurationPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetrics();
+
+        List<String> titlesHealthMetrics = List.of(
+                folderConfigurationPage.getTitleHealthMetrics(),
+                folderConfigurationPage.getTextDropdownHealthMetrics());
+
+        for (String titleHealthMetrics : titlesHealthMetrics) {
+
+            Assert.assertEquals(titleHealthMetrics, HEALTH_METRICS);
+        }
+    }
+
+    @Test(dependsOnMethods = "testAvailabilityHealthMetrics")
+    public void testCreatingSubFolderInFolderUsingNewItem() {
+        String subFolder = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
+                .clickItemOnSidePanel("New Item",new NewItemPage(getDriver()))
+                .sendItemName(SUB_FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSave()
+                .getHeader()
+                .clickLogoIcon()
+                .clickOnJobInListOfItems(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .getSubFolderName();
+
+        Assert.assertEquals(subFolder, SUB_FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreatingSubFolderInFolderUsingNewItem")
+    public void testLeavePageWithoutSavings() {
+        boolean isAlertPresent = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
+                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
+                .clearDisplayName()
+                .sendDisplayName(FOLDER_SECOND_NAME+"GGG")
+                .getHeader()
+                .goToHomePage()
+                .isAlertPresent();
+
+        Assert.assertFalse(isAlertPresent);
+    }
+
+    @Test(dependsOnMethods = "testLeavePageWithoutSavings")
+    public void testSaveButtonExist() {
+        boolean isSaveButton = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
+                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
+                .isSaveButtonEnabled();
+
+        Assert.assertTrue(isSaveButton);
+    }
+
+    @Test(dependsOnMethods = "testSaveButtonExist")
+    public void testApplyButtonExist() {
+        boolean isApplyButton = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME, new SideMenuInFolderComponent(getDriver()))
+                .clickItemOnSidePanel("Configure", new FolderConfigurationPage(getDriver()))
+                .isApplyButtonEnabled();
+
+        Assert.assertTrue(isApplyButton);
     }
 }
