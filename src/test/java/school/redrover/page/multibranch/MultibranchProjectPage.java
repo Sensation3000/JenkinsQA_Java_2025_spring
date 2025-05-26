@@ -73,7 +73,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public List<String> getAllBranchNames() throws InterruptedException {
-        Thread.sleep(10000);
+        Thread.sleep(30000);
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(ExpectedConditions
