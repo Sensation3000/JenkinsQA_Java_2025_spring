@@ -587,6 +587,7 @@ public class FreestyleConfigurationPage extends BasePage {
 
         for (int i = 0; i < visibleButtonsHelp.size(); i++) {
             int count = 0;
+
             for (int j = 1; (j < 5) || (count < 10); j++) {
                 count++;
 
