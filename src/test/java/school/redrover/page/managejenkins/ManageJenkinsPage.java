@@ -10,6 +10,7 @@ import school.redrover.common.BasePage;
 import school.redrover.page.aboutjenkins.AboutJenkinsPage;
 import school.redrover.page.clouds.CloudsPage;
 import school.redrover.page.credentials.CredentialsPage;
+import school.redrover.page.nodes.NodesPage;
 import school.redrover.page.plugins.PluginsPage;
 import school.redrover.page.script.ScriptConsolePage;
 import school.redrover.page.system.SystemPage;
@@ -28,6 +29,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "//a[@href='credentials']")
     private WebElement buttonCredentials;
+
+    @FindBy (xpath = "//a[@href='computer']")
+    private WebElement buttonNodes;
 
     @FindBy(css = "a[href='cloud']")
     private WebElement buttonClouds;
@@ -59,6 +63,12 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/section[2]/div/div[3]/a")).click();
 
         return new PluginsPage(getDriver());
+    }
+
+    public NodesPage clickNodes() {
+        buttonNodes.click();
+
+        return new NodesPage(getDriver());
     }
 
     public CloudsPage clickClouds() {
