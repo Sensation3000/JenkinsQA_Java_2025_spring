@@ -9,6 +9,8 @@ import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 
 import school.redrover.testdata.TestDataProvider;
 
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 
@@ -17,14 +19,17 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_NAME = "Multibranch Pipeline Job Test";
     private static final String PROJECT_DESCRIPTION = "This is a NEW MultibranchPipeline description";
     private static final String MULTIBRANCH_NEW_NAME = "New Multibranch Name";
+    private static final String MULTIBRANCH_JAVA_GIT = "https://github.com/jenkins-docs/building-a-multibranch-pipeline-project.git";
 
     @Test
     public void testCreate() {
         String projectName = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendItemName(MULTIBRANCH_NAME)
-                .selectMultibranchPipelineAndClickOkWithJS()            
+                .selectMultibranchPipelineAndClickOkWithJS()
+                .selectGitBranchSources(MULTIBRANCH_JAVA_GIT)
                 .clickSaveButton()
+                .navigateToJobStatus(MULTIBRANCH_NAME)
                 .getProjectName();
 
         Assert.assertTrue(projectName.contains(MULTIBRANCH_NAME));
@@ -37,6 +42,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickConfigureLeftSidePanel()
                 .sendDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
+                .navigateToJobStatus(MULTIBRANCH_NAME)
                 .getDescription();
 
         Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
@@ -49,9 +55,23 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickConfigureLeftSidePanel()
                 .sendMultibranchName(MULTIBRANCH_NEW_NAME)
                 .clickSaveButton()
+                .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
                 .getProjectName();
 
         Assert.assertEquals(actualName, MULTIBRANCH_NEW_NAME);
+    }
+
+    @Test(dependsOnMethods = "testChangeDisplayName")
+    public void testDisplayAllEventsPerBranchInMultibranchPipeline() throws InterruptedException {
+        List<String> branchNames = new HomePage(getDriver())
+                .clickOnJobInListOfItems(MULTIBRANCH_NEW_NAME, new MultibranchProjectPage(getDriver()))
+                .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
+                .getAllBranchNames();
+
+        boolean isBranchesHaveEvents = new MultibranchProjectPage(getDriver())
+                .checkEachBranchHasEvents(branchNames);
+
+        Assert.assertTrue(isBranchesHaveEvents);
     }
 
     @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
