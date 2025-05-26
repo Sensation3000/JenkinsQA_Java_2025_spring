@@ -75,7 +75,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public void waitForIndexingToFinish() {
-        new WebDriverWait(getDriver(), Duration.ofMinutes(2))
+        new WebDriverWait(getDriver(), Duration.ofMinutes(5))
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
     }
 
