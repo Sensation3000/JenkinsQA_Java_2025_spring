@@ -4,9 +4,11 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,8 +74,13 @@ public class MultibranchProjectPage extends BasePage {
         throw new RuntimeException("Failed to click job link after 3 attempts due to stale element");
     }
 
+    public void waitForIndexingToFinish() {
+        new WebDriverWait(getDriver(), Duration.ofMinutes(2))
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
+    }
+
     public List<String> getAllBranchNames() throws InterruptedException {
-        Thread.sleep(60000);
+        waitForIndexingToFinish();
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(ExpectedConditions
