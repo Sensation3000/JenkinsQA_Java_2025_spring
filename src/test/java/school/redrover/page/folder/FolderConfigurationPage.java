@@ -10,6 +10,8 @@ import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 
+import java.util.List;
+
 public class FolderConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[contains(text(), 'Display Name')]/a")
@@ -116,5 +118,8 @@ public class FolderConfigurationPage extends BasePage {
         return this;
     }
 
+    public List<String> getAllHealthMetricsTitles() {
+        return List.of(getTitleHealthMetrics(), getTextDropdownHealthMetrics());
+    }
 }
 

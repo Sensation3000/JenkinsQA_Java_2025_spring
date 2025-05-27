@@ -2,6 +2,7 @@ package school.redrover.page.nodes;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class NodeStatusPage extends BasePage {
@@ -16,7 +17,7 @@ public class NodeStatusPage extends BasePage {
     }
 
     public NodeStatusPage clickSubmitMarkOffline() {
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
         return this;
     }
