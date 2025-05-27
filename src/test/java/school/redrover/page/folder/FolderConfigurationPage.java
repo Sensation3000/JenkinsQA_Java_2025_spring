@@ -119,10 +119,7 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public List<String> getAllHealthMetricsTitles() {
-        return List.of(
-                getTitleHealthMetrics(),
-                getTextDropdownHealthMetrics()
-        );
+        return List.of(getTitleHealthMetrics(), getTextDropdownHealthMetrics());
     }
 }
 
