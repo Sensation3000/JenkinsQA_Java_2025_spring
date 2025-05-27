@@ -74,13 +74,9 @@ public class MultibranchProjectPage extends BasePage {
         throw new RuntimeException("Failed to click job link after 3 attempts due to stale element");
     }
 
-    public void waitForIndexingToFinish() {
-        new WebDriverWait(getDriver(), Duration.ofMinutes(10))
+    public List<String> getAllBranchNames() {
+        getWait10()
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
-    }
-
-    public List<String> getAllBranchNames() throws InterruptedException {
-        waitForIndexingToFinish();
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(ExpectedConditions
@@ -89,7 +85,7 @@ public class MultibranchProjectPage extends BasePage {
         return elements.stream()
                 .map(WebElement::getText)
                 .filter(name -> !name.isEmpty())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public boolean checkEachBranchHasEvents(List<String> branchNames) {

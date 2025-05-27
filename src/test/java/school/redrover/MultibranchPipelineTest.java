@@ -62,7 +62,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testChangeDisplayName")
-    public void testDisplayAllEventsPerBranchInMultibranchPipeline() throws InterruptedException {
+    public void testDisplayAllEventsPerBranchInMultibranchPipeline() {
         List<String> branchNames = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NEW_NAME, new MultibranchProjectPage(getDriver()))
                 .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
