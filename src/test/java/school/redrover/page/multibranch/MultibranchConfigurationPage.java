@@ -143,6 +143,7 @@ public class MultibranchConfigurationPage extends BasePage {
 
     public MultibranchConfigurationPage selectGitBranchSources(String gitBranchSource) {
         addBranchSourceDropDownMenu.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Git']")));
         getDriver().findElement(By.xpath("//button[normalize-space()='Git']")).click();
         getWait5().until(ExpectedConditions.visibilityOf(gitProjectRepositoryInput));
         gitProjectRepositoryInput.clear();
