@@ -11,14 +11,13 @@ import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MultibranchConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//button[text()='Add source']")
     private WebElement addBranchSourceDropDownMenu;
 
-    @FindBy(xpath = "(//input[@type='text'])[2]")
+    @FindBy(xpath = "//input[@name='_.remote']")
     private WebElement gitProjectRepositoryInput;
 
     public MultibranchConfigurationPage(WebDriver driver) {
