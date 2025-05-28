@@ -214,9 +214,9 @@ public class FolderTest extends BaseTest {
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
                 .createNewItem(FOLDER_NAME_1, FolderConfigurationPage.class)
-                .getHeader()
-                .clickLogoIcon()
-                .clickOnNewItemLinkWithChevron(FOLDER_NAME_1)
+                .clickSave()
+                .getSideMenuInFolder()
+                .clickNewItem()
                 .createNewItem(FOLDER_NAME_2, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();

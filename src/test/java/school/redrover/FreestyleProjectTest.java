@@ -289,10 +289,10 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
-                .addPostBuildActions(7)
+                .addPostBuildActions(1)
                 .addBuildSteps(1)
                 .addPostBuildActions(11)
-                .addBuildSteps(1)
+                .addBuildSteps(7)
                 .clickApply()
                 .clickSaveButton()
                 .clickConfigure()
@@ -308,7 +308,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .numberHelpTooltips();
 
-        assertEquals(numberHelpButtons, 16);
+        assertEquals(numberHelpButtons, 17);
     }
 
     @Test(dependsOnMethods = "testNumberActualVisibleHelpButtons")
