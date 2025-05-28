@@ -91,18 +91,7 @@ public class MultibranchProjectPage extends BasePage {
             );
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
 
-            boolean hasEvents = getWait10().until(driver -> {
-                List<WebElement> events = driver.findElements(
-                        By.xpath("//ul[@class='permalinks-list']//li[contains(@class, 'permalink-item')]")
-                );
-
-                if (events.isEmpty()) {
-                    driver.navigate().refresh();
-                    return null;
-                }
-
-                return true;
-            });
+            boolean hasEvents = waitForEventsWithRefresh();
 
             isEachBranchHaveEvents.add(hasEvents);
 
@@ -113,5 +102,25 @@ public class MultibranchProjectPage extends BasePage {
         }
 
         return isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
+    }
+
+    private boolean waitForEventsWithRefresh() {
+        int attempts = 0;
+        while (attempts < 5) {
+            try {
+                return new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                        .until(driver -> {
+                            List<WebElement> events = driver.findElements(
+                                    By.xpath("//ul[@class='permalinks-list']//li[contains(@class, 'permalink-item')]")
+                            );
+                            return !events.isEmpty();
+                        });
+            } catch (TimeoutException e) {
+                System.out.println("Events not found, refreshing page. Attempt: " + (attempts + 1));
+                getDriver().navigate().refresh();
+                attempts++;
+            }
+        }
+        return false;
     }
 }
