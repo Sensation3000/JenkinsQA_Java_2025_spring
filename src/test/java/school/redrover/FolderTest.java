@@ -208,12 +208,12 @@ public class FolderTest extends BaseTest {
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
                 .getSideMenuInFolder()
                 .clickNewItem()
-                .createNewItem(FOLDER_NAME_2, FreestyleConfigurationPage.class)
+                .createNewItem(FOLDER_NAME_1, FreestyleConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()));
 
-        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), FOLDER_NAME_2);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), FOLDER_NAME_1);
         Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 2);
     }
 
