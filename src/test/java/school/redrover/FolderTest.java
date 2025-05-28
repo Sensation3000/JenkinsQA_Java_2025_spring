@@ -181,22 +181,20 @@ public class FolderTest extends BaseTest {
         String actualDisplayName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
                 .clickConfigure()
-                .sendDisplayName(FOLDER_NAME_2)
+                .sendDisplayName(FOLDER_NAME_1)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(actualDisplayName, FOLDER_NAME_2);
+        Assert.assertEquals(actualDisplayName, FOLDER_NAME_1);
     }
 
     @Test(dependsOnMethods = "testCreateWithDisplayName")
     public void testDisplayNameCanBeEmpty() {
         String displayedFolderName = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
+                .clickOnJobInListOfItems(FOLDER_NAME_1, new FolderProjectPage(getDriver()))
                 .clickConfigure()
                 .clearDisplayName()
                 .clickSave()
-                .getHeader()
-                .clickLogoIcon()
                 .getProjectName();
 
         Assert.assertEquals(displayedFolderName, FOLDER_NAME_2);
@@ -215,15 +213,15 @@ public class FolderTest extends BaseTest {
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .createNewItem(FOLDER_NAME_2, FolderConfigurationPage.class)
+                .createNewItem(FOLDER_NAME_1, FolderConfigurationPage.class)
                 .getHeader()
                 .clickLogoIcon()
-                .clickOnNewItemLinkWithChevron(FOLDER_NAME_2)
-                .createNewItem(FOLDER_NAME_1, FolderConfigurationPage.class)
+                .clickOnNewItemLinkWithChevron(FOLDER_NAME_1)
+                .createNewItem(FOLDER_NAME_2, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(folderProjectName, FOLDER_NAME_1);
+        Assert.assertEquals(folderProjectName, FOLDER_NAME_2);
     }
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
