@@ -30,7 +30,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public MultibranchConfigurationPage clickConfigureLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='./configure']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='side-panel']/div/div)[2]"))).click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
