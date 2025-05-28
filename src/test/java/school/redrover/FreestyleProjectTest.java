@@ -284,7 +284,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(currentProjectName, SECOND_PROJECT_NAME);
     }
 
-    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
+    @Test(dependsOnMethods = "testNumberActualVisibleHelpButtons")
     public void testAddBuildStepsANDPostBuildActions() {
         List<String> postBuildNameList = new HomePage(getDriver())
                 .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -301,17 +301,17 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(postBuildNameList.size(), 4);
     }
 
-    @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
+    @Test(dependsOnMethods = "testAccessProjectManagementPageFromDashboard")
     public void testNumberActualVisibleHelpButtons(){
         int numberHelpButtons = new HomePage(getDriver())
                 .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .numberHelpTooltips();
 
-        assertEquals(numberHelpButtons, 17);
+        assertEquals(numberHelpButtons, 12);
     }
 
-    @Test(dependsOnMethods = "testNumberActualVisibleHelpButtons")
+    @Test(dependsOnMethods = "testAddBuildStepsANDPostBuildActions")
     public void testCreateWithConfig() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickOnJobInListOfItems(SECOND_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
