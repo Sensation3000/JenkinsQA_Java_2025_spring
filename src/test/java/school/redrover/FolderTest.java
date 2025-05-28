@@ -8,6 +8,8 @@ import school.redrover.component.SideMenuInFolderComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
@@ -203,10 +205,16 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
     public void testCreateFreestyleProjectInFolderUsingCreateNewJob() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
+                .getSideMenuInFolder()
+                .clickNewItem()
+                .createNewItem(FOLDER_NAME_2, FreestyleConfigurationPage.class)
+                .getHeader()
+                .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()));
 
-        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), SUB_FOLDER_NAME);
-        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), FOLDER_NAME_2);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 2);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolderUsingCreateNewJob")
