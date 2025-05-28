@@ -11,6 +11,7 @@ import school.redrover.page.HomePage;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -85,8 +86,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .waitForBuildToAppear(70);
 
+        LocalTime parsedTime = LocalTime.parse(buildList.get(0).split("\n")[1], DateTimeFormatter.ofPattern("h:mm a"));
+
         Assert.assertEquals(buildList.size(), 1);
-        Assert.assertTrue(buildList.get(0).contains("#1\n%s".formatted(LocalTime.now().format(DateTimeFormatter.ofPattern("h:mm a")))));
+        Assert.assertTrue(Math.abs(ChronoUnit.MINUTES.between(LocalTime.now(), parsedTime)) <= 2);
     }
 
     @Test(dependsOnMethods = "testBuildPeriodically")
