@@ -1,6 +1,7 @@
 package school.redrover.page.freestyle;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -125,7 +126,11 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public boolean isPreviewDescriptionBlockDisplayed() {
-        return previewDescriptionBlock.isDisplayed();
+        try {
+            return getWait5().until(ExpectedConditions.visibilityOf(previewDescriptionBlock)).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public boolean isHidePreviewLinkAvailable() {
