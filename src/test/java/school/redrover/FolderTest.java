@@ -8,6 +8,8 @@ import school.redrover.component.SideMenuInFolderComponent;
 import school.redrover.page.HomePage;
 import school.redrover.page.folder.FolderConfigurationPage;
 import school.redrover.page.folder.FolderProjectPage;
+import school.redrover.page.freestyle.FreestyleConfigurationPage;
+import school.redrover.page.freestyle.FreestyleProjectPage;
 import school.redrover.page.newitem.NewItemPage;
 import school.redrover.testdata.TestDataProvider;
 
@@ -181,22 +183,20 @@ public class FolderTest extends BaseTest {
         String actualDisplayName = new HomePage(getDriver())
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
                 .clickConfigure()
-                .sendDisplayName(FOLDER_NAME_2)
+                .sendDisplayName(FOLDER_NAME_1)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(actualDisplayName, FOLDER_NAME_2);
+        Assert.assertEquals(actualDisplayName, FOLDER_NAME_1);
     }
 
     @Test(dependsOnMethods = "testCreateWithDisplayName")
     public void testDisplayNameCanBeEmpty() {
         String displayedFolderName = new HomePage(getDriver())
-                .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
+                .clickOnJobInListOfItems(FOLDER_NAME_1, new FolderProjectPage(getDriver()))
                 .clickConfigure()
                 .clearDisplayName()
                 .clickSave()
-                .getHeader()
-                .clickLogoIcon()
                 .getProjectName();
 
         Assert.assertEquals(displayedFolderName, FOLDER_NAME_2);
@@ -205,25 +205,31 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testDisplayNameCanBeEmpty")
     public void testCreateFreestyleProjectInFolderUsingCreateNewJob() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()))
+                .getSideMenuInFolder()
+                .clickNewItem()
+                .createNewItem(FOLDER_NAME_1, FreestyleConfigurationPage.class)
+                .getHeader()
+                .clickLogoIcon()
                 .clickOnJobInListOfItems(FOLDER_NAME_2, new FolderProjectPage(getDriver()));
 
-        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), SUB_FOLDER_NAME);
-        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 1);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().get(0), FOLDER_NAME_1);
+        Assert.assertEquals(folderProjectPage.getProjectNameList().size(), 2);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectInFolderUsingCreateNewJob")
     public void testIfTwoDifferentFoldersCanHoldItemsWithTheSameNames() {
         String folderProjectName = new HomePage(getDriver())
                 .clickNewItemOnLeftSidePanel()
-                .createNewItem(FOLDER_NAME_2, FolderConfigurationPage.class)
-                .getHeader()
-                .clickLogoIcon()
-                .clickOnNewItemLinkWithChevron(FOLDER_NAME_2)
                 .createNewItem(FOLDER_NAME_1, FolderConfigurationPage.class)
+                .clickSave()
+                .getSideMenuInFolder()
+                .clickNewItem()
+                .createNewItem(FOLDER_NAME_2, FolderConfigurationPage.class)
                 .clickSave()
                 .getProjectName();
 
-        Assert.assertEquals(folderProjectName, FOLDER_NAME_1);
+        Assert.assertEquals(folderProjectName, FOLDER_NAME_2);
     }
 
     @Test(dataProvider = "projectNames", dataProviderClass = TestDataProvider.class)
