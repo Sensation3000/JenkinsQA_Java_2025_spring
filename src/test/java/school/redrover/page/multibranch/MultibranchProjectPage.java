@@ -66,7 +66,7 @@ public class MultibranchProjectPage extends BasePage {
                 return this;
             } catch (WebDriverException e) {
                 try {
-                    Thread.sleep(500); // короткий сон
+                    Thread.sleep(500);
                 } catch (InterruptedException ignored) {}
             }
         }
