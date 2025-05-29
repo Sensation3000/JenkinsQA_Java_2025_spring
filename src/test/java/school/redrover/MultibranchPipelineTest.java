@@ -1,6 +1,5 @@
 package school.redrover;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -64,7 +63,7 @@ public class MultibranchPipelineTest extends BaseTest {
         boolean isBranchesHaveEvents = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NEW_NAME, new MultibranchProjectPage(getDriver()))
                 .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
-                .checkEachBranchHasEvents();
+                .checkEachBranchHasEvents(MULTIBRANCH_NEW_NAME);
 
         Assert.assertTrue(isBranchesHaveEvents);
     }

@@ -88,15 +88,15 @@ public class MultibranchProjectPage extends BasePage {
                 .toList();
     }
 
-    public boolean checkEachBranchHasEvents() {
+    public boolean checkEachBranchHasEvents(String jobName) {
         List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
-        getWait10()
-                .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
+
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Indexing')]")));
         getDriver().navigate().refresh();
 
-        List<WebElement> elements = getWait10().until(ExpectedConditions
-                .numberOfElementsToBeMoreThan(By.xpath("//tbody//a//span"), 0));
-
+        List<WebElement> elements = getWait10().until(
+                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//tbody//a//span"), 0));
 
         for (int i = 1; i <= elements.size(); i++) {
             WebElement branch = getWait10().until(
@@ -106,34 +106,29 @@ public class MultibranchProjectPage extends BasePage {
             );
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
 
-            boolean hasEvents = waitForEventsWithRefresh();
+            boolean hasEvents = false;
+            int attempts = 0;
+            while (attempts < 5) {
+                try {
+                    hasEvents = new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
+                        List<WebElement> events = driver.findElements(
+                                By.xpath("//h2//../ul//li"));
+                        return !events.isEmpty();
+                    });
+                    break;
+                } catch (TimeoutException e) {
+                    getDriver().navigate().refresh();
+                    attempts++;
+                }
+            }
 
             isEachBranchHaveEvents.add(hasEvents);
 
-            getDriver().navigate().back();
-            getWait10().until(
-                    ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//tbody//a//span"))
-            );
+            navigateToJobStatus(jobName);
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//tbody//a//span")));
         }
 
         return isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
-    }
-
-    private boolean waitForEventsWithRefresh() {
-        int attempts = 0;
-        while (attempts < 5) {
-            try {
-                return new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
-                    List<WebElement> events = driver.findElements(
-                            By.xpath("//h2//../ul//li")
-                    );
-                    return !events.isEmpty();
-                });
-            } catch (TimeoutException e) {
-                getDriver().navigate().refresh();
-                attempts++;
-            }
-        }
-        return false;
     }
 }
