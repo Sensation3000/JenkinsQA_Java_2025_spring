@@ -9,9 +9,6 @@ import school.redrover.page.multibranch.MultibranchProjectPage;
 import school.redrover.page.multiconfiguration.MultiConfigurationConfigurePage;
 
 import school.redrover.testdata.TestDataProvider;
-
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 
 
@@ -67,7 +64,7 @@ public class MultibranchPipelineTest extends BaseTest {
         boolean isBranchesHaveEvents = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NEW_NAME, new MultibranchProjectPage(getDriver()))
                 .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
-                .checkAllBranchesHaveEvents();
+                .checkEachBranchHasEvents();
 
         Assert.assertTrue(isBranchesHaveEvents);
     }
