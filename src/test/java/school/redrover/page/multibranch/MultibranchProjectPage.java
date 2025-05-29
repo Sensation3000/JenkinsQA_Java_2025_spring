@@ -66,8 +66,9 @@ public class MultibranchProjectPage extends BasePage {
                 return this;
             } catch (WebDriverException e) {
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ignored) {}
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
             }
         }
         throw new WebDriverException("Failed to navigate to job status for: " + jobName);
