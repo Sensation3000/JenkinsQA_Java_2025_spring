@@ -97,8 +97,7 @@ public class MultibranchProjectPage extends BasePage {
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
                 By.xpath("//div[contains(text(), 'Indexing')]")));
 
-        getDriver().navigate().refresh();
-
+        navigateToJobStatus(jobName);
         List<WebElement> elements = getWait10().until(
                 ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id]//tbody"), 0));
 
