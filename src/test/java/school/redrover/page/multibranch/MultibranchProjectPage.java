@@ -93,6 +93,7 @@ public class MultibranchProjectPage extends BasePage {
         List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
 
         logger.info("Ожидание исчезновения индексации...");
+
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
                 By.xpath("//div[contains(text(), 'Indexing')]")));
 
