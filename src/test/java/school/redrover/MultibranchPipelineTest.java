@@ -64,13 +64,10 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testChangeDisplayName")
     public void testDisplayAllEventsPerBranchInMultibranchPipeline() {
-        List<String> branchNames = new HomePage(getDriver())
+        boolean isBranchesHaveEvents = new HomePage(getDriver())
                 .clickOnJobInListOfItems(MULTIBRANCH_NEW_NAME, new MultibranchProjectPage(getDriver()))
                 .navigateToJobStatus(MULTIBRANCH_NEW_NAME)
-                .getAllBranchNames();
-
-        boolean isBranchesHaveEvents = new MultibranchProjectPage(getDriver())
-                .checkEachBranchHasEvents(branchNames);
+                .checkAllBranchesHaveEvents();
 
         Assert.assertTrue(isBranchesHaveEvents);
     }

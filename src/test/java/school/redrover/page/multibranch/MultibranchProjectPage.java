@@ -9,11 +9,11 @@ import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 public class MultibranchProjectPage extends BasePage {
+    Logger logger = Logger.getLogger(MultibranchProjectPage.class.getName());
 
     @FindBy(id = "view-message")
     private WebElement descriptionText;
@@ -74,59 +74,68 @@ public class MultibranchProjectPage extends BasePage {
         throw new WebDriverException("Failed to navigate to job status for: " + jobName);
     }
 
-    public List<String> getAllBranchNames() {
-        getWait10()
-                .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
+    public boolean checkAllBranchesHaveEvents() {
+        getWait10().until(
+                ExpectedConditions.invisibilityOfElementLocated(
+                        By.xpath("//div[contains(text(), 'Indexing')]")
+                )
+        );
+
         getDriver().navigate().refresh();
+        List<WebElement> branchElements = getWait10().until(
+                ExpectedConditions.numberOfElementsToBeMoreThan(
+                        By.xpath("//tbody//a//span"), 0)
+        );
 
-        List<WebElement> elements = getWait10().until(ExpectedConditions
-                .numberOfElementsToBeMoreThan(By.xpath("//tbody//a//span"), 0));
-
-        return elements.stream()
+        List<String> branchNames = branchElements.stream()
                 .map(WebElement::getText)
                 .filter(name -> !name.isEmpty())
                 .toList();
-    }
-
-    public boolean checkEachBranchHasEvents(List<String> branchNames) {
-        List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
 
         for (int i = 1; i <= branchNames.size(); i++) {
-            WebElement branch = getWait10().until(
-                    ExpectedConditions.elementToBeClickable(
-                            By.xpath("(//tbody//a//span)[" + i + "]/..")
-                    )
-            );
-            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
-
-            boolean hasEvents = waitForEventsWithRefresh();
-
-            isEachBranchHaveEvents.add(hasEvents);
-
-            getDriver().navigate().back();
-            getWait10().until(
-                    ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//tbody//a//span"))
-            );
-        }
-
-        return isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
-    }
-
-    private boolean waitForEventsWithRefresh() {
-        int attempts = 0;
-        while (attempts < 5) {
+            String branchName = branchNames.get(i - 1);
             try {
-                return new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
-                    List<WebElement> events = driver.findElements(
-                            By.xpath("//h2//../ul//li")
-                    );
-                    return !events.isEmpty();
-                });
+                WebElement branch = getWait10().until(
+                        ExpectedConditions.elementToBeClickable(
+                                By.xpath("(//tbody//a//span)[" + i + "]/..")
+                        )
+                );
+
+                ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
+                int attempts = 0;
+                boolean hasEvents = false;
+                while (attempts < 5) {
+                    try {
+                        hasEvents = new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
+                            List<WebElement> events = driver.findElements(
+                                    By.xpath("//h2//../ul//li")
+                            );
+                            return !events.isEmpty();
+                        });
+                        break;
+                    } catch (TimeoutException e) {
+                        getDriver().navigate().refresh();
+                        attempts++;
+                    }
+                }
+
+                if (!hasEvents) {
+                    logger.info("No events found for branch: " + branchName);
+                    return false;
+                }
+
+                getDriver().navigate().back();
+                getWait10().until(
+                        ExpectedConditions.elementToBeClickable(
+                                By.xpath("(//tbody//a//span)[1]/..")
+                        )
+                );
             } catch (TimeoutException e) {
-                getDriver().navigate().refresh();
-                attempts++;
+                logger.info("Timeout when processing branch: " + branchName);
+                return false;
             }
         }
-        return false;
+
+        return true;
     }
 }
