@@ -116,14 +116,13 @@ public class MultibranchProjectPage extends BasePage {
         int attempts = 0;
         while (attempts < 5) {
             try {
-                return getWait10().until(driver -> {
+                return new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
                     List<WebElement> events = driver.findElements(
-                            By.xpath("//ul[@class='permalinks-list']//li[contains(@class, 'permalink-item')]")
+                            By.xpath("//h2//../ul//li")
                     );
                     return !events.isEmpty();
                 });
             } catch (TimeoutException e) {
-                System.out.println("Events not found, refreshing page. Attempt: " + (attempts + 1));
                 getDriver().navigate().refresh();
                 attempts++;
             }
