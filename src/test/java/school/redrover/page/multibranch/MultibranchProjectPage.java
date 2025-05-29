@@ -80,7 +80,7 @@ public class MultibranchProjectPage extends BasePage {
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(ExpectedConditions
-                .numberOfElementsToBeMoreThan(By.xpath("//tbody//a//span"), 0));
+                .numberOfElementsToBeMoreThan(By.xpath("//table[@id]//tbody"), 0));
 
         return elements.stream()
                 .map(WebElement::getText)
@@ -96,7 +96,7 @@ public class MultibranchProjectPage extends BasePage {
         getDriver().navigate().refresh();
 
         List<WebElement> elements = getWait10().until(
-                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//tbody//a//span"), 0));
+                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id]//tbody"), 0));
 
         for (int i = 1; i <= elements.size(); i++) {
             WebElement branch = getWait10().until(
