@@ -59,11 +59,18 @@ public class MultibranchProjectPage extends BasePage {
 
     public MultibranchProjectPage navigateToJobStatus(String jobName) {
         for (int i = 0; i < 5; i++) {
-            WebElement jobLink = getWait10()
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='" + jobName + "']")));
-            jobLink.click();
+            try {
+                getWait10()
+                        .until(ExpectedConditions
+                                .elementToBeClickable(By.xpath("//a[text()='" + jobName + "']"))).click();
+                return this;
+            } catch (WebDriverException e) {
+                try {
+                    Thread.sleep(500); // короткий сон
+                } catch (InterruptedException ignored) {}
+            }
         }
-        return this;
+        throw new WebDriverException("Failed to navigate to job status for: " + jobName);
     }
 
     public List<String> getAllBranchNames() {
