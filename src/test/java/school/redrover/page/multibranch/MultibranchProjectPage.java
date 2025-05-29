@@ -89,7 +89,7 @@ public class MultibranchProjectPage extends BasePage {
                 .toList();
     }
 
-    public boolean checkEachBranchHasEvents(String jobName) throws InterruptedException {
+    public boolean checkEachBranchHasEvents(String jobName)  {
         List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
 
         logger.info("Ожидание исчезновения индексации...");
@@ -99,7 +99,7 @@ public class MultibranchProjectPage extends BasePage {
 
         navigateToJobStatus(jobName);
         List<WebElement> elements = getWait10().until(
-                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id]//tbody"), 0));
+                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a"), 0));
 
         logger.info("Найдено веток: " + elements.size());
 
@@ -108,7 +108,7 @@ public class MultibranchProjectPage extends BasePage {
 
             WebElement branch = getWait10().until(
                     ExpectedConditions.elementToBeClickable(
-                            By.xpath("(//tbody//a//span)[" + i + "]/..")
+                            By.xpath("(//table[@id='projectstatus']//tbody//tr/td[3]//a)[" + i + "]")
                     )
             );
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
@@ -143,7 +143,7 @@ public class MultibranchProjectPage extends BasePage {
             logger.info("Возврат к статусу джобы: " + jobName);
             navigateToJobStatus(jobName);
             getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                    By.xpath("//tbody//a//span")));
+                    By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a")));
         }
 
         boolean result = isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);

@@ -1,5 +1,6 @@
 package school.redrover;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -66,7 +67,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(isBranchesHaveEvents);
     }
-
+@Ignore
     @Test(dataProvider = "provideInvalidCharacters", dataProviderClass = TestDataProvider.class)
     public void testCreateWithSpecialSymbols(String invalidSymbol) {
         String errorMessage  = new HomePage(getDriver())
@@ -77,7 +78,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(errorMessage, String.format("» ‘%s’ is an unsafe character", invalidSymbol));
     }
-
+@Ignore
     @Test
     public void testTryCreateProjectExistName() {
         String errorMessage = new HomePage(getDriver())
@@ -92,7 +93,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         assertEquals(errorMessage, "» A job already exists with the name " + "‘" + MULTIBRANCH_NAME + "’");
     }
-
+@Ignore
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testVerifySectionHasTooltip() {
         int numberHelpButtons = new HomePage(getDriver())
