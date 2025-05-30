@@ -7,14 +7,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class MultibranchProjectPage extends BasePage {
-    Logger logger = Logger.getLogger(MultibranchProjectPage.class.getName());
 
     @FindBy(id = "view-message")
     private WebElement descriptionText;
@@ -92,8 +89,6 @@ public class MultibranchProjectPage extends BasePage {
     public boolean checkEachBranchHasEvents(String jobName)  {
         List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
 
-        logger.info("Ожидание исчезновения индексации...");
-
         getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
                 By.xpath("//div[contains(text(), 'Indexing')]")));
 
@@ -101,11 +96,7 @@ public class MultibranchProjectPage extends BasePage {
         List<WebElement> elements = getWait10().until(
                 ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a"), 0));
 
-        logger.info("Найдено веток: " + elements.size());
-
         for (int i = 1; i <= elements.size(); i++) {
-            logger.info("Проверка ветки #" + i);
-
             WebElement branch = getWait10().until(
                     ExpectedConditions.elementToBeClickable(
                             By.xpath("(//table[@id='projectstatus']//tbody//tr/td[3]//a)[" + i + "]")
@@ -116,38 +107,25 @@ public class MultibranchProjectPage extends BasePage {
             boolean hasEvents = false;
             int attempts = 0;
             while (attempts < 5) {
-                logger.info("Попытка #" + (attempts + 1) + " найти события...");
-
                 try {
                     hasEvents = new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
                         List<WebElement> events = driver.findElements(
                                 By.xpath("//h2//../ul//li"));
                         return !events.isEmpty();
                     });
-
-                    logger.info("События найдены на попытке #" + (attempts + 1));
                     break;
                 } catch (TimeoutException e) {
-                    logger.warning("Timeout: события не найдены, обновляем страницу...");
                     getDriver().navigate().refresh();
                     attempts++;
                 }
             }
 
-            if (!hasEvents) {
-                logger.warning("События не найдены для ветки #" + i);
-            }
-
             isEachBranchHaveEvents.add(hasEvents);
-
-            logger.info("Возврат к статусу джобы: " + jobName);
             navigateToJobStatus(jobName);
             getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                     By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a")));
         }
 
-        boolean result = isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
-        logger.info("Результат: у всех веток есть события? -> " + result);
-        return result;
+        return isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
     }
 }
