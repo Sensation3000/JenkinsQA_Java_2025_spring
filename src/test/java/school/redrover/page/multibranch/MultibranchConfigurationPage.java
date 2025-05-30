@@ -4,15 +4,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import school.redrover.MultibranchPipelineConfigurationTest;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.util.List;
 
 public class MultibranchConfigurationPage extends BasePage {
+
+    @FindBy(xpath = "//button[text()='Add source']")
+    private WebElement addBranchSourceDropDownMenu;
+
+    @FindBy(xpath = "//input[@name='_.remote']")
+    private WebElement gitProjectRepositoryInput;
 
     public MultibranchConfigurationPage(WebDriver driver) {
         super(driver);
@@ -130,6 +136,17 @@ public class MultibranchConfigurationPage extends BasePage {
 
     public MultibranchConfigurationPage selectIntervalForPeriodicallyIfNotOtherwiseRun(String interval) {
         new Select(getDriver().findElement(By.name("_.interval"))).selectByValue(interval);
+
+        return this;
+    }
+
+    public MultibranchConfigurationPage selectGitBranchSources(String gitBranchSource) {
+        addBranchSourceDropDownMenu.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Git']")));
+        getDriver().findElement(By.xpath("//button[normalize-space()='Git']")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(gitProjectRepositoryInput));
+        gitProjectRepositoryInput.clear();
+        gitProjectRepositoryInput.sendKeys(gitBranchSource);
 
         return this;
     }

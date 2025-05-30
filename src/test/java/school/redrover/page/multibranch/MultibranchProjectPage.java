@@ -1,13 +1,15 @@
 package school.redrover.page.multibranch;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 import school.redrover.page.HomePage;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultibranchProjectPage extends BasePage {
 
@@ -26,7 +28,7 @@ public class MultibranchProjectPage extends BasePage {
     }
 
     public MultibranchConfigurationPage clickConfigureLeftSidePanel() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='./configure']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='side-panel']/div/div)[2]"))).click();
 
         return new MultibranchConfigurationPage(getDriver());
     }
@@ -51,5 +53,79 @@ public class MultibranchProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-id='cancel']"))).click();
 
         return this;
+    }
+
+    public MultibranchProjectPage navigateToJobStatus(String jobName) {
+        for (int i = 0; i < 5; i++) {
+            try {
+                getWait10()
+                        .until(ExpectedConditions
+                                .elementToBeClickable(By.xpath("//a[text()='" + jobName + "']"))).click();
+                return this;
+            } catch (WebDriverException e) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }
+        throw new WebDriverException("Failed to navigate to job status for: " + jobName);
+    }
+
+    public List<String> getAllBranchNames() {
+        getWait10()
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'Indexing')]")));
+        getDriver().navigate().refresh();
+
+        List<WebElement> elements = getWait10().until(ExpectedConditions
+                .numberOfElementsToBeMoreThan(By.xpath("//table[@id]//tbody"), 0));
+
+        return elements.stream()
+                .map(WebElement::getText)
+                .filter(name -> !name.isEmpty())
+                .toList();
+    }
+
+    public boolean checkEachBranchHasEvents(String jobName)  {
+        List<Boolean> isEachBranchHaveEvents = new ArrayList<>();
+
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//div[contains(text(), 'Indexing')]")));
+
+        navigateToJobStatus(jobName);
+        List<WebElement> elements = getWait10().until(
+                ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a"), 0));
+
+        for (int i = 1; i <= elements.size(); i++) {
+            WebElement branch = getWait10().until(
+                    ExpectedConditions.elementToBeClickable(
+                            By.xpath("(//table[@id='projectstatus']//tbody//tr/td[3]//a)[" + i + "]")
+                    )
+            );
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", branch);
+
+            boolean hasEvents = false;
+            int attempts = 0;
+            while (attempts < 5) {
+                try {
+                    hasEvents = new WebDriverWait(getDriver(), Duration.ofSeconds(20)).until(driver -> {
+                        List<WebElement> events = driver.findElements(
+                                By.xpath("//h2//../ul//li"));
+                        return !events.isEmpty();
+                    });
+                    break;
+                } catch (TimeoutException e) {
+                    getDriver().navigate().refresh();
+                    attempts++;
+                }
+            }
+
+            isEachBranchHaveEvents.add(hasEvents);
+            navigateToJobStatus(jobName);
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//table[@id='projectstatus']//tbody//tr/td[3]//a")));
+        }
+
+        return isEachBranchHaveEvents.stream().allMatch(Boolean::booleanValue);
     }
 }
